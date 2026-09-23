@@ -25,7 +25,7 @@ public class PolicySetSpecBuilder extends PolicySetSpecFluent<PolicySetSpecBuild
   }
 
   public PolicySetSpec build() {
-    PolicySetSpec buildable = new PolicySetSpec(fluent.getDescription(), fluent.getPolicies());
+    PolicySetSpec buildable = new PolicySetSpec(fluent.getDescription(), fluent.buildExclusions(), fluent.getPolicies());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "addonManager",
     "platform",
     "userWorkloads"
 })
@@ -66,6 +67,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class CapabilitiesSpec implements Editable<CapabilitiesSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("addonManager")
+    private AddonManagerSpec addonManager;
     @JsonProperty("platform")
     private PlatformCapabilitiesSpec platform;
     @JsonProperty("userWorkloads")
@@ -79,10 +82,27 @@ public class CapabilitiesSpec implements Editable<CapabilitiesSpecBuilder>, Kube
     public CapabilitiesSpec() {
     }
 
-    public CapabilitiesSpec(PlatformCapabilitiesSpec platform, UserWorkloadCapabilitiesSpec userWorkloads) {
+    public CapabilitiesSpec(AddonManagerSpec addonManager, PlatformCapabilitiesSpec platform, UserWorkloadCapabilitiesSpec userWorkloads) {
         super();
+        this.addonManager = addonManager;
         this.platform = platform;
         this.userWorkloads = userWorkloads;
+    }
+
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
+    @JsonProperty("addonManager")
+    public AddonManagerSpec getAddonManager() {
+        return addonManager;
+    }
+
+    /**
+     * CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:<br><p>   - The addon Deployment, ServiceAccount and RBAC.<br><p>   - A ClusterManagementAddon managing placement for capability related custom resources.<br><p>   - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.
+     */
+    @JsonProperty("addonManager")
+    public void setAddonManager(AddonManagerSpec addonManager) {
+        this.addonManager = addonManager;
     }
 
     /**

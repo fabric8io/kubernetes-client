@@ -25,7 +25,7 @@ public class DiscoveredClusterSpecBuilder extends DiscoveredClusterSpecFluent<Di
   }
 
   public DiscoveredClusterSpec build() {
-    DiscoveredClusterSpec buildable = new DiscoveredClusterSpec(fluent.getActivityTimestamp(), fluent.getApiUrl(), fluent.getCloudProvider(), fluent.getConsole(), fluent.getCreationTimestamp(), fluent.buildCredential(), fluent.getDisplayName(), fluent.getImportAsManagedCluster(), fluent.getIsManagedCluster(), fluent.getName(), fluent.getOcpClusterId(), fluent.getOpenshiftVersion(), fluent.getOwner(), fluent.getRegion(), fluent.getRhocmClusterId(), fluent.getStatus(), fluent.getType());
+    DiscoveredClusterSpec buildable = new DiscoveredClusterSpec(fluent.getActivityTimestamp(), fluent.getApiUrl(), fluent.getCloudProvider(), fluent.getConsole(), fluent.getCreationTimestamp(), fluent.buildCredential(), fluent.getDisplayName(), fluent.getImportAsManagedCluster(), fluent.getIsManagedCluster(), fluent.getName(), fluent.getOcpClusterId(), fluent.getOpenshiftVersion(), fluent.getProvenance(), fluent.getRegion(), fluent.getRhocmClusterId(), fluent.getStatus(), fluent.getSupportLevel(), fluent.getType(), fluent.getUsage());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

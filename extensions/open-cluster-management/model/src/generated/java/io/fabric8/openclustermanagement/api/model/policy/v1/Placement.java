@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "decisions",
+    "exclusions",
     "placement",
     "placementBinding",
     "placementRule",
@@ -74,6 +75,9 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PlacementDecision> decisions = new ArrayList<>();
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PolicyExclusion> exclusions = new ArrayList<>();
     @JsonProperty("placement")
     private String placement;
     @JsonProperty("placementBinding")
@@ -91,9 +95,10 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     public Placement() {
     }
 
-    public Placement(List<PlacementDecision> decisions, String placement, String placementBinding, String placementRule, String policySet) {
+    public Placement(List<PlacementDecision> decisions, List<PolicyExclusion> exclusions, String placement, String placementBinding, String placementRule, String policySet) {
         super();
         this.decisions = decisions;
+        this.exclusions = exclusions;
         this.placement = placement;
         this.placementBinding = placementBinding;
         this.placementRule = placementRule;
@@ -115,6 +120,23 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     @JsonProperty("decisions")
     public void setDecisions(List<PlacementDecision> decisions) {
         this.decisions = decisions;
+    }
+
+    /**
+     * Exclusions lists managed clusters where the policy is excluded from propagation.
+     */
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PolicyExclusion> getExclusions() {
+        return exclusions;
+    }
+
+    /**
+     * Exclusions lists managed clusters where the policy is excluded from propagation.
+     */
+    @JsonProperty("exclusions")
+    public void setExclusions(List<PolicyExclusion> exclusions) {
+        this.exclusions = exclusions;
     }
 
     /**

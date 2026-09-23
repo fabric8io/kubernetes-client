@@ -25,7 +25,7 @@ public class MultiClusterHubStatusBuilder extends MultiClusterHubStatusFluent<Mu
   }
 
   public MultiClusterHubStatus build() {
-    MultiClusterHubStatus buildable = new MultiClusterHubStatus(fluent.getComponents(), fluent.buildConditions(), fluent.getCurrentVersion(), fluent.getDesiredVersion(), fluent.getPhase());
+    MultiClusterHubStatus buildable = new MultiClusterHubStatus(fluent.getComponents(), fluent.buildConditions(), fluent.getCurrentVersion(), fluent.getDesiredVersion(), fluent.buildMceVersionCompliance(), fluent.getPhase());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "containers",
+    "debug",
     "resources",
     "serviceAccountAnnotations"
 })
@@ -72,6 +73,8 @@ public class CompactSpec implements Editable<CompactSpecBuilder>, KubernetesReso
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<>();
+    @JsonProperty("debug")
+    private CompactDebugSpec debug;
     @JsonProperty("resources")
     private ResourceRequirements resources;
     @JsonProperty("serviceAccountAnnotations")
@@ -86,9 +89,10 @@ public class CompactSpec implements Editable<CompactSpecBuilder>, KubernetesReso
     public CompactSpec() {
     }
 
-    public CompactSpec(List<Container> containers, ResourceRequirements resources, Map<String, String> serviceAccountAnnotations) {
+    public CompactSpec(List<Container> containers, CompactDebugSpec debug, ResourceRequirements resources, Map<String, String> serviceAccountAnnotations) {
         super();
         this.containers = containers;
+        this.debug = debug;
         this.resources = resources;
         this.serviceAccountAnnotations = serviceAccountAnnotations;
     }
@@ -108,6 +112,22 @@ public class CompactSpec implements Editable<CompactSpecBuilder>, KubernetesReso
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    /**
+     * Thanos Compact Spec.
+     */
+    @JsonProperty("debug")
+    public CompactDebugSpec getDebug() {
+        return debug;
+    }
+
+    /**
+     * Thanos Compact Spec.
+     */
+    @JsonProperty("debug")
+    public void setDebug(CompactDebugSpec debug) {
+        this.debug = debug;
     }
 
     /**

@@ -37,7 +37,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+ * Configuration for the hub-side Observability stack.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -160,7 +160,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Pull policy of the MultiClusterObservability images
+     * Pull policy of the MultiClusterObservability images. One of: Always, Never, IfNotPresent. Defaults to IfNotPresent.
      */
     @JsonProperty("imagePullPolicy")
     public String getImagePullPolicy() {
@@ -168,7 +168,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Pull policy of the MultiClusterObservability images
+     * Pull policy of the MultiClusterObservability images. One of: Always, Never, IfNotPresent. Defaults to IfNotPresent.
      */
     @JsonProperty("imagePullPolicy")
     public void setImagePullPolicy(String imagePullPolicy) {
@@ -176,7 +176,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Pull secret of the MultiClusterObservability images
+     * Name of an existing Secret of type kubernetes.io/dockerconfigjson in the same namespace used for pulling MultiClusterObservability images.
      */
     @JsonProperty("imagePullSecret")
     public String getImagePullSecret() {
@@ -184,7 +184,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Pull secret of the MultiClusterObservability images
+     * Name of an existing Secret of type kubernetes.io/dockerconfigjson in the same namespace used for pulling MultiClusterObservability images.
      */
     @JsonProperty("imagePullSecret")
     public void setImagePullSecret(String imagePullSecret) {
@@ -192,7 +192,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Spec of NodeSelector
+     * Node labels used to schedule all Observability workloads. Pods are only placed on nodes matching all specified labels.
      */
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -201,7 +201,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * Spec of NodeSelector
+     * Node labels used to schedule all Observability workloads. Pods are only placed on nodes matching all specified labels.
      */
     @JsonProperty("nodeSelector")
     public void setNodeSelector(Map<String, String> nodeSelector) {
@@ -209,7 +209,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     * Configuration for the hub-side Observability stack.
      */
     @JsonProperty("observabilityAddonSpec")
     public ObservabilityAddonSpec getObservabilityAddonSpec() {
@@ -217,7 +217,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     * Configuration for the hub-side Observability stack.
      */
     @JsonProperty("observabilityAddonSpec")
     public void setObservabilityAddonSpec(ObservabilityAddonSpec observabilityAddonSpec) {
@@ -225,7 +225,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain samples of resolution 2 (1 hour) in bucket.
+     * How long to retain 1-hour downsampled (resolution 2) samples in object storage. Format: duration string, e.g. '365d'.
      */
     @JsonProperty("retentionResolution1h")
     public String getRetentionResolution1h() {
@@ -233,7 +233,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain samples of resolution 2 (1 hour) in bucket.
+     * How long to retain 1-hour downsampled (resolution 2) samples in object storage. Format: duration string, e.g. '365d'.
      */
     @JsonProperty("retentionResolution1h")
     public void setRetentionResolution1h(String retentionResolution1h) {
@@ -241,7 +241,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain samples of resolution 1 (5 minutes) in bucket.
+     * How long to retain 5-minute downsampled (resolution 1) samples in object storage. Format: duration string, e.g. '14d'.
      */
     @JsonProperty("retentionResolution5m")
     public String getRetentionResolution5m() {
@@ -249,7 +249,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain samples of resolution 1 (5 minutes) in bucket.
+     * How long to retain 5-minute downsampled (resolution 1) samples in object storage. Format: duration string, e.g. '14d'.
      */
     @JsonProperty("retentionResolution5m")
     public void setRetentionResolution5m(String retentionResolution5m) {
@@ -257,7 +257,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain raw samples in a bucket.
+     * How long to retain raw samples in a bucket. Format: duration string, e.g. '5d'. Raw data has the highest storage cost per day retained.
      */
     @JsonProperty("retentionResolutionRaw")
     public String getRetentionResolutionRaw() {
@@ -265,7 +265,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * How long to retain raw samples in a bucket.
+     * How long to retain raw samples in a bucket. Format: duration string, e.g. '5d'. Raw data has the highest storage cost per day retained.
      */
     @JsonProperty("retentionResolutionRaw")
     public void setRetentionResolutionRaw(String retentionResolutionRaw) {
@@ -273,7 +273,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     * Configuration for the hub-side Observability stack.
      */
     @JsonProperty("storageConfigObject")
     public StorageConfigObject getStorageConfigObject() {
@@ -281,7 +281,7 @@ public class MultiClusterObservabilitySpec implements Editable<MultiClusterObser
     }
 
     /**
-     * MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.
+     * Configuration for the hub-side Observability stack.
      */
     @JsonProperty("storageConfigObject")
     public void setStorageConfigObject(StorageConfigObject storageConfigObject) {

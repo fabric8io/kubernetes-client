@@ -32,11 +32,16 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * DiscoveredClusterCondition represents an observation of a DiscoveredCluster's state
+ */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "lastTransitionTime",
-    "lastUpdateTime",
+    "message",
+    "observedGeneration",
+    "reason",
     "status",
     "type"
 })
@@ -67,8 +72,12 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
 
     @JsonProperty("lastTransitionTime")
     private String lastTransitionTime;
-    @JsonProperty("lastUpdateTime")
-    private String lastUpdateTime;
+    @JsonProperty("message")
+    private String message;
+    @JsonProperty("observedGeneration")
+    private Long observedGeneration;
+    @JsonProperty("reason")
+    private String reason;
     @JsonProperty("status")
     private String status;
     @JsonProperty("type")
@@ -82,36 +91,82 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
     public DiscoveredClusterCondition() {
     }
 
-    public DiscoveredClusterCondition(String lastTransitionTime, String lastUpdateTime, String status, String type) {
+    public DiscoveredClusterCondition(String lastTransitionTime, String message, Long observedGeneration, String reason, String status, String type) {
         super();
         this.lastTransitionTime = lastTransitionTime;
-        this.lastUpdateTime = lastUpdateTime;
+        this.message = message;
+        this.observedGeneration = observedGeneration;
+        this.reason = reason;
         this.status = status;
         this.type = type;
     }
 
+    /**
+     * DiscoveredClusterCondition represents an observation of a DiscoveredCluster's state
+     */
     @JsonProperty("lastTransitionTime")
     public String getLastTransitionTime() {
         return lastTransitionTime;
     }
 
+    /**
+     * DiscoveredClusterCondition represents an observation of a DiscoveredCluster's state
+     */
     @JsonProperty("lastTransitionTime")
     public void setLastTransitionTime(String lastTransitionTime) {
         this.lastTransitionTime = lastTransitionTime;
     }
 
-    @JsonProperty("lastUpdateTime")
-    public String getLastUpdateTime() {
-        return lastUpdateTime;
-    }
-
-    @JsonProperty("lastUpdateTime")
-    public void setLastUpdateTime(String lastUpdateTime) {
-        this.lastUpdateTime = lastUpdateTime;
+    /**
+     * Human-readable message indicating details about the transition
+     */
+    @JsonProperty("message")
+    public String getMessage() {
+        return message;
     }
 
     /**
-     * Status is the status of the condition. One of True, False, Unknown.
+     * Human-readable message indicating details about the transition
+     */
+    @JsonProperty("message")
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    /**
+     * ObservedGeneration represents the .metadata.generation that the condition was set based upon
+     */
+    @JsonProperty("observedGeneration")
+    public Long getObservedGeneration() {
+        return observedGeneration;
+    }
+
+    /**
+     * ObservedGeneration represents the .metadata.generation that the condition was set based upon
+     */
+    @JsonProperty("observedGeneration")
+    public void setObservedGeneration(Long observedGeneration) {
+        this.observedGeneration = observedGeneration;
+    }
+
+    /**
+     * Programmatic identifier indicating the reason for the condition's last transition
+     */
+    @JsonProperty("reason")
+    public String getReason() {
+        return reason;
+    }
+
+    /**
+     * Programmatic identifier indicating the reason for the condition's last transition
+     */
+    @JsonProperty("reason")
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    /**
+     * Status of the condition (True, False, Unknown)
      */
     @JsonProperty("status")
     public String getStatus() {
@@ -119,7 +174,7 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
     }
 
     /**
-     * Status is the status of the condition. One of True, False, Unknown.
+     * Status of the condition (True, False, Unknown)
      */
     @JsonProperty("status")
     public void setStatus(String status) {
@@ -127,7 +182,7 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
     }
 
     /**
-     * Type is the type of the discovered cluster condition.
+     * Type of the condition
      */
     @JsonProperty("type")
     public String getType() {
@@ -135,7 +190,7 @@ public class DiscoveredClusterCondition implements Editable<DiscoveredClusterCon
     }
 
     /**
-     * Type is the type of the discovered cluster condition.
+     * Type of the condition
      */
     @JsonProperty("type")
     public void setType(String type) {

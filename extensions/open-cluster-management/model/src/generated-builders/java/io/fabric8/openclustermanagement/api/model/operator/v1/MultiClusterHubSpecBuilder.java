@@ -25,7 +25,7 @@ public class MultiClusterHubSpecBuilder extends MultiClusterHubSpecFluent<MultiC
   }
 
   public MultiClusterHubSpec build() {
-    MultiClusterHubSpec buildable = new MultiClusterHubSpec(fluent.getAvailabilityConfig(), fluent.getCustomCAConfigmap(), fluent.getDisableHubSelfManagement(), fluent.getDisableUpdateClusterImageSets(), fluent.getEnableClusterBackup(), fluent.getEnableClusterProxyAddon(), fluent.buildHive(), fluent.getImagePullSecret(), fluent.buildIngress(), fluent.getLocalClusterName(), fluent.getNodeSelector(), fluent.buildOverrides(), fluent.getSeparateCertificateManagement(), fluent.getTolerations());
+    MultiClusterHubSpec buildable = new MultiClusterHubSpec(fluent.getAvailabilityConfig(), fluent.getDisableHubSelfManagement(), fluent.getDisableUpdateClusterImageSets(), fluent.getImagePullSecret(), fluent.getLocalClusterName(), fluent.buildNetworkPolicies(), fluent.getNodeSelector(), fluent.buildOverrides(), fluent.getTolerations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

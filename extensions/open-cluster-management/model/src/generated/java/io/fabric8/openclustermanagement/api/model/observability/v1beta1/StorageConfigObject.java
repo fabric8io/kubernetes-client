@@ -123,7 +123,7 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
     }
 
     /**
-     * Specify the storageClass Stateful Sets. This storage class will also<br><p> be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     * StorageClass used by Observability StatefulSets (Thanos store, ruler, compactor, receiver) and, when no object storage is configured, the object storage PVC.
      */
     @JsonProperty("statefulSetStorageClass")
     public String getStatefulSetStorageClass() {
@@ -131,7 +131,7 @@ public class StorageConfigObject implements Editable<StorageConfigObjectBuilder>
     }
 
     /**
-     * Specify the storageClass Stateful Sets. This storage class will also<br><p> be used for Object Storage if MetricObjectStorage was configured for the system to create the storage.
+     * StorageClass used by Observability StatefulSets (Thanos store, ruler, compactor, receiver) and, when no object storage is configured, the object storage PVC.
      */
     @JsonProperty("statefulSetStorageClass")
     public void setStatefulSetStorageClass(String statefulSetStorageClass) {

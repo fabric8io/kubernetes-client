@@ -28,12 +28,14 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
   private QuerySpecBuilder query;
   private QueryFrontendSpecBuilder queryFrontend;
   private CacheConfigBuilder queryFrontendMemcached;
+  private String queryTimeout;
   private CommonSpecBuilder rbacQueryProxy;
   private ReceiveSpecBuilder receive;
   private RetentionConfigBuilder retentionConfig;
   private RuleSpecBuilder rule;
   private StoreSpecBuilder store;
   private CacheConfigBuilder storeMemcached;
+  private String writeTimeout;
 
   public AdvancedConfigFluent() {
   }
@@ -131,12 +133,14 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
         this.withQuery(instance.getQuery());
         this.withQueryFrontend(instance.getQueryFrontend());
         this.withQueryFrontendMemcached(instance.getQueryFrontendMemcached());
+        this.withQueryTimeout(instance.getQueryTimeout());
         this.withRbacQueryProxy(instance.getRbacQueryProxy());
         this.withReceive(instance.getReceive());
         this.withRetentionConfig(instance.getRetentionConfig());
         this.withRule(instance.getRule());
         this.withStore(instance.getStore());
         this.withStoreMemcached(instance.getStoreMemcached());
+        this.withWriteTimeout(instance.getWriteTimeout());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -350,6 +354,9 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     if (!(Objects.equals(queryFrontendMemcached, that.queryFrontendMemcached))) {
       return false;
     }
+    if (!(Objects.equals(queryTimeout, that.queryTimeout))) {
+      return false;
+    }
     if (!(Objects.equals(rbacQueryProxy, that.rbacQueryProxy))) {
       return false;
     }
@@ -368,6 +375,9 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     if (!(Objects.equals(storeMemcached, that.storeMemcached))) {
       return false;
     }
+    if (!(Objects.equals(writeTimeout, that.writeTimeout))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -384,6 +394,14 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
   
   public String getCustomObservabilityHubURL() {
     return this.customObservabilityHubURL;
+  }
+  
+  public String getQueryTimeout() {
+    return this.queryTimeout;
+  }
+  
+  public String getWriteTimeout() {
+    return this.writeTimeout;
   }
   
   public boolean hasAdditionalProperties() {
@@ -430,6 +448,10 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     return this.queryFrontendMemcached != null;
   }
   
+  public boolean hasQueryTimeout() {
+    return this.queryTimeout != null;
+  }
+  
   public boolean hasRbacQueryProxy() {
     return this.rbacQueryProxy != null;
   }
@@ -454,8 +476,12 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     return this.storeMemcached != null;
   }
   
+  public boolean hasWriteTimeout() {
+    return this.writeTimeout != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(alertmanager, compact, customAlertmanagerHubURL, customObservabilityHubURL, grafana, multiClusterObservabilityAddon, observatoriumAPI, query, queryFrontend, queryFrontendMemcached, rbacQueryProxy, receive, retentionConfig, rule, store, storeMemcached, additionalProperties);
+    return Objects.hash(alertmanager, compact, customAlertmanagerHubURL, customObservabilityHubURL, grafana, multiClusterObservabilityAddon, observatoriumAPI, query, queryFrontend, queryFrontendMemcached, queryTimeout, rbacQueryProxy, receive, retentionConfig, rule, store, storeMemcached, writeTimeout, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -535,6 +561,11 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
         sb.append(queryFrontendMemcached);
         sb.append(",");
     }
+    if (!(queryTimeout == null)) {
+        sb.append("queryTimeout:");
+        sb.append(queryTimeout);
+        sb.append(",");
+    }
     if (!(rbacQueryProxy == null)) {
         sb.append("rbacQueryProxy:");
         sb.append(rbacQueryProxy);
@@ -563,6 +594,11 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     if (!(storeMemcached == null)) {
         sb.append("storeMemcached:");
         sb.append(storeMemcached);
+        sb.append(",");
+    }
+    if (!(writeTimeout == null)) {
+        sb.append("writeTimeout:");
+        sb.append(writeTimeout);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -800,6 +836,11 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
     return (A) this;
   }
   
+  public A withQueryTimeout(String queryTimeout) {
+    this.queryTimeout = queryTimeout;
+    return (A) this;
+  }
+  
   public A withRbacQueryProxy(CommonSpec rbacQueryProxy) {
     this._visitables.remove("rbacQueryProxy");
     if (rbacQueryProxy != null) {
@@ -869,6 +910,11 @@ public class AdvancedConfigFluent<A extends io.fabric8.openclustermanagement.api
         this.storeMemcached = null;
         this._visitables.get("storeMemcached").remove(this.storeMemcached);
     }
+    return (A) this;
+  }
+  
+  public A withWriteTimeout(String writeTimeout) {
+    this.writeTimeout = writeTimeout;
     return (A) this;
   }
   public class AlertmanagerNested<N> extends AlertmanagerSpecFluent<AlertmanagerNested<N>> implements Nested<N>{

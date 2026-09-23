@@ -34,11 +34,13 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
   private String name;
   private String ocpClusterId;
   private String openshiftVersion;
-  private String owner;
+  private String provenance;
   private String region;
   private String rhocmClusterId;
   private String status;
+  private String supportLevel;
   private String type;
+  private String usage;
 
   public DiscoveredClusterSpecFluent() {
   }
@@ -86,11 +88,13 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
         this.withName(instance.getName());
         this.withOcpClusterId(instance.getOcpClusterId());
         this.withOpenshiftVersion(instance.getOpenshiftVersion());
-        this.withOwner(instance.getOwner());
+        this.withProvenance(instance.getProvenance());
         this.withRegion(instance.getRegion());
         this.withRhocmClusterId(instance.getRhocmClusterId());
         this.withStatus(instance.getStatus());
+        this.withSupportLevel(instance.getSupportLevel());
         this.withType(instance.getType());
+        this.withUsage(instance.getUsage());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -154,7 +158,7 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     if (!(Objects.equals(openshiftVersion, that.openshiftVersion))) {
       return false;
     }
-    if (!(Objects.equals(owner, that.owner))) {
+    if (!(Objects.equals(provenance, that.provenance))) {
       return false;
     }
     if (!(Objects.equals(region, that.region))) {
@@ -166,7 +170,13 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     if (!(Objects.equals(status, that.status))) {
       return false;
     }
+    if (!(Objects.equals(supportLevel, that.supportLevel))) {
+      return false;
+    }
     if (!(Objects.equals(type, that.type))) {
+      return false;
+    }
+    if (!(Objects.equals(usage, that.usage))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -223,8 +233,8 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return this.openshiftVersion;
   }
   
-  public String getOwner() {
-    return this.owner;
+  public String getProvenance() {
+    return this.provenance;
   }
   
   public String getRegion() {
@@ -239,8 +249,16 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return this.status;
   }
   
+  public String getSupportLevel() {
+    return this.supportLevel;
+  }
+  
   public String getType() {
     return this.type;
+  }
+  
+  public String getUsage() {
+    return this.usage;
   }
   
   public boolean hasActivityTimestamp() {
@@ -295,8 +313,8 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return this.openshiftVersion != null;
   }
   
-  public boolean hasOwner() {
-    return this.owner != null;
+  public boolean hasProvenance() {
+    return this.provenance != null;
   }
   
   public boolean hasRegion() {
@@ -311,12 +329,20 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return this.status != null;
   }
   
+  public boolean hasSupportLevel() {
+    return this.supportLevel != null;
+  }
+  
   public boolean hasType() {
     return this.type != null;
   }
   
+  public boolean hasUsage() {
+    return this.usage != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(activityTimestamp, apiUrl, cloudProvider, console, creationTimestamp, credential, displayName, importAsManagedCluster, isManagedCluster, name, ocpClusterId, openshiftVersion, owner, region, rhocmClusterId, status, type, additionalProperties);
+    return Objects.hash(activityTimestamp, apiUrl, cloudProvider, console, creationTimestamp, credential, displayName, importAsManagedCluster, isManagedCluster, name, ocpClusterId, openshiftVersion, provenance, region, rhocmClusterId, status, supportLevel, type, usage, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -406,9 +432,9 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
         sb.append(openshiftVersion);
         sb.append(",");
     }
-    if (!(owner == null)) {
-        sb.append("owner:");
-        sb.append(owner);
+    if (!(provenance == null)) {
+        sb.append("provenance:");
+        sb.append(provenance);
         sb.append(",");
     }
     if (!(region == null)) {
@@ -426,9 +452,19 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
         sb.append(status);
         sb.append(",");
     }
+    if (!(supportLevel == null)) {
+        sb.append("supportLevel:");
+        sb.append(supportLevel);
+        sb.append(",");
+    }
     if (!(type == null)) {
         sb.append("type:");
         sb.append(type);
+        sb.append(",");
+    }
+    if (!(usage == null)) {
+        sb.append("usage:");
+        sb.append(usage);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -531,8 +567,8 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return (A) this;
   }
   
-  public A withOwner(String owner) {
-    this.owner = owner;
+  public A withProvenance(String provenance) {
+    this.provenance = provenance;
     return (A) this;
   }
   
@@ -551,8 +587,18 @@ public class DiscoveredClusterSpecFluent<A extends io.fabric8.openclustermanagem
     return (A) this;
   }
   
+  public A withSupportLevel(String supportLevel) {
+    this.supportLevel = supportLevel;
+    return (A) this;
+  }
+  
   public A withType(String type) {
     this.type = type;
+    return (A) this;
+  }
+  
+  public A withUsage(String usage) {
+    this.usage = usage;
     return (A) this;
   }
   public class CredentialNested<N> extends ObjectReferenceFluent<CredentialNested<N>> implements Nested<N>{
