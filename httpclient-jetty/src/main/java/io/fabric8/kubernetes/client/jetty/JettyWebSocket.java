@@ -167,6 +167,10 @@ public class JettyWebSocket implements WebSocket, Session.Listener {
    */
   @Override
   public void onWebSocketError(Throwable cause) {
+    if (webSocketSession == null) {
+      // A failed handshake: the connect future carries it, and StandardHttpClient may retry with the same listener
+      return;
+    }
     if (cause instanceof ClosedChannelException && (outputClosed.get() || !terminated.complete(null))) {
       // TODO: Check better
       //  It appears to be a race condition in Jetty:

@@ -26,11 +26,13 @@ import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
 import org.eclipse.jetty.client.Socks4Proxy;
+import org.eclipse.jetty.client.Socks5;
 import org.eclipse.jetty.client.Socks5Proxy;
 import org.eclipse.jetty.client.WWWAuthenticationProtocolHandler;
 import org.eclipse.jetty.client.transport.HttpClientConnectionFactory;
 import org.eclipse.jetty.client.transport.HttpClientTransportDynamic;
 import org.eclipse.jetty.client.transport.HttpClientTransportOverHTTP;
+import org.eclipse.jetty.http.HttpCookieStore;
 import org.eclipse.jetty.http2.client.HTTP2Client;
 import org.eclipse.jetty.http2.client.transport.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnector;
@@ -41,7 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -111,38 +113,41 @@ public class JettyHttpClientBuilder
       sharedHttpClient.setConnectTimeout(connectTimeout.toMillis());
     }
     sharedHttpClient.setFollowRedirects(followRedirects);
+    // Like the other HttpClient implementations, don't send cookies back, WebSocket upgrades included
+    sharedHttpClient.setHttpCookieStore(new HttpCookieStore.Empty());
     // long running http requests count against this and eventually exhaust
     // the work that can be done
     sharedHttpClient.setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyType != ProxyType.DIRECT && proxyAddress != null) {
       Origin.Address address = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
+      final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
       // Jetty allows for the differentiation of proxy being secure separately from the destination,
       // but we'll always set that flag to false
       switch (proxyType) {
         case HTTP:
           sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
+          if (userPassword != null) {
+            sharedHttpClient.getAuthenticationStore().addAuthentication(new BasicAuthentication(
+                URI.create("http://" + address.asString()), Authentication.ANY_REALM, userPassword[0], userPassword[1]));
+          }
           break;
         case SOCKS4:
           sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
           break;
         case SOCKS5:
-          sharedHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
+          final Socks5Proxy socks5Proxy = new Socks5Proxy(address, false);
+          if (userPassword != null) {
+            socks5Proxy.putAuthenticationFactory(
+                new Socks5.UsernamePasswordAuthenticationFactory(userPassword[0], userPassword[1], StandardCharsets.UTF_8));
+          }
+          sharedHttpClient.getProxyConfiguration().addProxy(socks5Proxy);
           break;
         default:
           throw new KubernetesClientException("Unsupported proxy type");
       }
-      final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
-      if (userPassword != null) {
-        URI proxyUri;
-        try {
-          proxyUri = new URI("http://" + proxyAddress.getHostString() + ":" + proxyAddress.getPort());
-        } catch (URISyntaxException e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
-        sharedHttpClient.getAuthenticationStore()
-            .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
-      } else {
-        addProxyAuthInterceptor();
+      if (userPassword == null) {
+        // Jetty sends plain WebSocket upgrades to the proxy in absolute form, like other http requests
+        addPlainHttpProxyAuthInterceptor(false);
       }
     }
     clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);

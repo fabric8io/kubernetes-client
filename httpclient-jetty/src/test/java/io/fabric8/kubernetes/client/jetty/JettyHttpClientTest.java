@@ -15,12 +15,14 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.http.HttpClient.DerivedClientBuilder;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.mockwebserver.DefaultMockServer;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
@@ -33,9 +35,12 @@ import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -164,6 +169,88 @@ class JettyHttpClientTest {
           }).get(10L, TimeUnit.SECONDS);
       // Then
       assertThat(server.getLastRequest().getHeaders().headers("Connection")).containsExactly("Upgrade");
+    }
+  }
+
+  @Test
+  @DisplayName("WebSocket upgrade, a request header replaces the Jetty default with the same name (User-Agent) instead of adding a second line")
+  void webSocketUpgradeReplacesJettyDefaultHeader() throws Exception {
+    // Given
+    server.expect().withPath("/websocket-user-agent")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    try (var client = new JettyHttpClientFactory().newBuilder(Config.empty()).build()) {
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("/websocket-user-agent")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(server.getLastRequest().getHeaders().headers("User-Agent"))
+          .singleElement(InstanceOfAssertFactories.STRING)
+          .startsWith("fabric8-kubernetes-client");
+    }
+  }
+
+  @Test
+  @DisplayName("cookies set by a response, aren't sent back on later requests or WebSocket upgrades (no other HttpClient implementation keeps them)")
+  void cookiesAreNotKept() throws Exception {
+    // Given
+    server.expect().withPath("/set-cookie").andReturn(200, "ok").withHeader("Set-Cookie", "session=secret").always();
+    server.expect().withPath("/after-cookie").andReturn(200, "ok").always();
+    server.expect().withPath("/websocket-after-cookie")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    try (var client = new JettyHttpClientFactory().newBuilder().build()) {
+      client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/set-cookie")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      server.getLastRequest();
+      // When
+      client.sendAsync(client.newHttpRequestBuilder().uri(server.url("/after-cookie")).build(), String.class)
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(server.getLastRequest().getHeader("Cookie")).isNull();
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("/websocket-after-cookie")))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(server.getLastRequest().getHeader("Cookie")).isNull();
+    }
+  }
+
+  @Test
+  @DisplayName("WebSocket#request() from a thread other than Jetty's (as exec streams do), delivers the next message")
+  void requestFromForeignThreadDeliversNextMessage() throws Exception {
+    // Given
+    server.expect().withPath("/request-from-foreign-thread")
+        .andUpgradeToWebSocket()
+        .open("1", "2", "3")
+        .done()
+        .always();
+    final BlockingQueue<String> received = new LinkedBlockingQueue<>();
+    try (var client = new JettyHttpClientFactory().newBuilder().build()) {
+      final WebSocket ws = client.newWebSocketBuilder()
+          .uri(URI.create(server.url("/request-from-foreign-thread")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+              received.add(text);
+            }
+          }).get(10L, TimeUnit.SECONDS);
+      final List<String> messages = new ArrayList<>();
+      // When
+      for (int i = 0; i < 3; i++) {
+        messages.add(received.poll(10L, TimeUnit.SECONDS));
+        ws.request();
+      }
+      // Then
+      assertThat(messages).containsExactly("1", "2", "3");
     }
   }
 

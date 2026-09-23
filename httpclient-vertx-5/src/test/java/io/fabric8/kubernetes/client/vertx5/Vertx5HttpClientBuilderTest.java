@@ -175,6 +175,18 @@ class Vertx5HttpClientBuilderTest {
         assertThat(client).isNotNull();
       }
     }
+
+    @Test
+    @DisplayName("Decodable Basic proxy credentials don't add a Proxy-Authorization request header, which HTTPS requests would carry through the tunnel")
+    void proxyWithBasicAuth_shouldNotAddProxyAuthorizationInterceptor() {
+      Vertx5HttpClientBuilder<?> builder = new Vertx5HttpClientFactory().newBuilder()
+          .proxyAddress(InetSocketAddress.createUnresolved("proxy.example.com", 8080))
+          .proxyAuthorization(basicCredentials("user", "pa:ss"));
+
+      try (HttpClient ignored = builder.build()) {
+        assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
+      }
+    }
   }
 
   @Nested

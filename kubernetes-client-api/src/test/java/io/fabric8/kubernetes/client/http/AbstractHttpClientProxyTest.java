@@ -25,6 +25,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.util.concurrent.CompletableFuture;
@@ -171,6 +172,36 @@ public abstract class AbstractHttpClientProxyTest {
     return connected
         .handle((webSocket, throwable) -> throwable == null ? "succeeded" : "failed with " + throwable)
         .getNow("is still in progress");
+  }
+
+  @Test
+  @DisplayName("Proxied HttpClient with other authorization doesn't send it inside the CONNECT tunnel of a plain WebSocket (which the API server reads, not the proxy)")
+  protected void proxyConfigurationOtherAuthIsNotSentThroughWebSocketTunnel() throws Exception {
+    final DefaultMockServer origin = new DefaultMockServer(false);
+    origin.start();
+    try (TunnelingProxy proxy = new TunnelingProxy(origin.getPort())) {
+      // Given
+      // Some implementations tunnel the upgrade with CONNECT (Vert.x, JDK), others send it in absolute form to the proxy
+      final String url = origin.url("/tunneled-ws");
+      for (String path : new String[] { "/tunneled-ws", url, url.replaceFirst("^http", "ws") }) {
+        origin.expect().withPath(path).andUpgradeToWebSocket().open().done().always();
+      }
+      try (HttpClient client = getHttpClientFactory().newBuilder()
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort()))
+          .proxyAuthorization("Other kind of auth")
+          .build()) {
+        // When
+        client.newWebSocketBuilder()
+            .uri(URI.create(url))
+            .buildAsync(new WebSocket.Listener() {
+            }).get(10L, TimeUnit.SECONDS);
+      }
+      // Then
+      assertThat(proxy.getRequestHeads()).as("the upgrade should have gone through the proxy").isNotEmpty();
+      assertThat(proxy.getTunneledText()).doesNotContain("Other kind of auth");
+    } finally {
+      origin.shutdown();
+    }
   }
 
   @Test

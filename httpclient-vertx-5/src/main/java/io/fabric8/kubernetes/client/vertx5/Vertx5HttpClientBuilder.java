@@ -157,7 +157,8 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     if (userPassword != null) {
       proxyOptions.setUsername(userPassword[0]).setPassword(userPassword[1]);
     } else {
-      addProxyAuthInterceptor();
+      // Vert.x tunnels WebSockets with CONNECT even without TLS
+      addPlainHttpProxyAuthInterceptor(true);
     }
     return proxyOptions;
   }

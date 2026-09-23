@@ -123,7 +123,8 @@ public class VertxHttpClientBuilder<F extends HttpClient.Factory>
         proxyOptions.setUsername(userPassword[0]);
         proxyOptions.setPassword(userPassword[1]);
       } else {
-        addProxyAuthInterceptor();
+        // Vert.x tunnels WebSockets with CONNECT even without TLS
+        addPlainHttpProxyAuthInterceptor(true);
       }
       options.setProxyOptions(proxyOptions);
     }

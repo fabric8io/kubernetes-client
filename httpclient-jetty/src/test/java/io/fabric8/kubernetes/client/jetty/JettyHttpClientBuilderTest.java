@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.mockwebserver.DefaultMockServer;
@@ -33,12 +34,21 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
@@ -230,6 +240,52 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
+  @DisplayName("proxyType SOCKS5 with proxyAuthorization, authenticates with the SOCKS5 proxy using the username and password (RFC 1929), UTF-8 encoded like Basic credentials")
+  void socks5ProxySendsCredentials() throws Exception {
+    final ExecutorService socks5Executor = Executors.newSingleThreadExecutor();
+    try (var socks5Server = new ServerSocket(0, 1, InetAddress.getLoopbackAddress())) {
+      // Given
+      final CompletableFuture<String> sentCredentials = CompletableFuture.supplyAsync(() -> {
+        try (Socket socket = socks5Server.accept()) {
+          final var in = new DataInputStream(socket.getInputStream());
+          final var out = socket.getOutputStream();
+          in.readUnsignedByte(); // version
+          final byte[] methods = new byte[in.readUnsignedByte()];
+          in.readFully(methods);
+          if (!new String(methods, StandardCharsets.ISO_8859_1).contains("\u0002")) {
+            out.write(new byte[] { 0x05, (byte) 0xFF }); // no acceptable method
+            return "username/password not offered";
+          }
+          out.write(new byte[] { 0x05, 0x02 });
+          in.readUnsignedByte(); // sub-negotiation version
+          final byte[] user = new byte[in.readUnsignedByte()];
+          in.readFully(user);
+          final byte[] password = new byte[in.readUnsignedByte()];
+          in.readFully(password);
+          out.write(new byte[] { 0x01, 0x01 }); // failure, the request itself isn't needed
+          return new String(user, StandardCharsets.UTF_8) + "/" + new String(password, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+          throw new UncheckedIOException(e);
+        }
+      }, socks5Executor);
+      try (var client = factory.newBuilder()
+          .proxyType(ProxyType.SOCKS5)
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), socks5Server.getLocalPort()))
+          .proxyAuthorization(basicCredentials("usér", "pa:ss"))
+          .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+          .build()) {
+        // When
+        client.sendAsync(client.newHttpRequestBuilder().uri("http://example.test/socks5").build(), String.class)
+            .exceptionally(t -> null);
+        // Then
+        assertThat(sentCredentials).succeedsWithin(10, TimeUnit.SECONDS).isEqualTo("usér/pa:ss");
+      }
+    } finally {
+      socks5Executor.shutdownNow();
+    }
+  }
+
+  @Test
   @DisplayName("proxyAuthorization, registers the proxy credentials once on the transport shared by HTTP and WebSocket")
   void proxyAuthenticationIsRegisteredOnSharedTransport() {
     try (var client = factory.newBuilder()
@@ -246,6 +302,17 @@ class JettyHttpClientBuilderTest {
       assertThat(store.findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
           .as("the credentials should be registered once")
           .isNull();
+    }
+  }
+
+  @Test
+  @DisplayName("proxyAuthorization with decodable Basic credentials, doesn't add a Proxy-Authorization request header, which HTTPS requests would carry through the tunnel")
+  void decodableProxyCredentialsAddNoProxyAuthorizationInterceptor() {
+    final var builder = factory.newBuilder()
+        .proxyAddress(PROXY_ADDRESS)
+        .proxyAuthorization(basicCredentials("user", "pa:ss"));
+    try (var ignored = builder.build()) {
+      assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
     }
   }
 
