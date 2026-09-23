@@ -132,7 +132,8 @@ kubernetes-client/                    # Root project
 ├── httpclient-jdk/                   # Java HTTP client implementation
 ├── httpclient-okhttp/                # OkHttp3 implementation
 ├── httpclient-jetty/                 # Jetty HTTP client
-├── httpclient-vertx/                 # Vert.x HTTP client (default)
+├── httpclient-vertx/                 # Vert.x 4 HTTP client (legacy)
+├── httpclient-vertx-5/               # Vert.x 5 HTTP client (default)
 │
 ├── kubernetes-tests/                 # Unit tests with mock server
 ├── kubernetes-itests/                # Integration tests (require cluster)
@@ -196,8 +197,8 @@ OpenShiftClient osClient = kubernetesClient.adapt(OpenShiftClient.class);
 - `client.network().networkPolicies()` - networking.k8s.io/v1
 
 **Pluggable HTTP Clients**: Via SPI (Service Provider Interface)
-- Default: Vert.x
-- Alternatives: OkHttp, Jetty, JDK HttpClient
+- Default: Vert.x 5
+- Alternatives: Vert.x 4 (legacy), OkHttp, Jetty, JDK HttpClient
 
 ## Code Style
 

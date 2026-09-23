@@ -64,12 +64,12 @@ public abstract class AbstractCustomResourceHandler {
         PrinterColumn printerColumn = ((PrinterColumn) property.annotation);
         String column = printerColumn.name();
         String format = printerColumn.format().getValue();
+        // dates stay strings: the API server renders a date column as the age of an RFC 3339 timestamp, so yyyy-MM-dd
+        // shows <invalid>, and so would a future date-time. @AdditionalPrinterColumn(type = DATE) declares an age column
         String type = property.schema.getType();
         if ("object".equals(type) || "array".equals(type)) {
           logger.warn("Printer column '{}' has a type '{}' that is not allowed, will use string instead", column, type);
           type = "string";
-        } else if ("string".equals(type) && "date".equals(property.schema.getFormat())) {
-          type = "date";
         }
         int priority = printerColumn.priority();
 

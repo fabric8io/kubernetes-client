@@ -25,6 +25,7 @@ spec:
                         type: "boolean"
                     type: "object"
                   fromLevel1:
+                    format: "int32"
                     type: "integer"
                   name:
                     type: "string"

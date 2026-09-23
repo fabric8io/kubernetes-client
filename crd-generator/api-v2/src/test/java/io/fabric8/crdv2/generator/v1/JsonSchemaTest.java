@@ -136,8 +136,8 @@ class JsonSchemaTest {
     assertTrue(spec.containsKey("anEnum"));
 
     Function<String, JSONSchemaPropsBuilder> type = t -> new JSONSchemaPropsBuilder().withType(t);
-    assertEquals(type.apply("integer").withMinimum(-5.0).build(), spec.get("min"));
-    assertEquals(type.apply("integer").withMaximum(5.0).build(), spec.get("max"));
+    assertEquals(type.apply("integer").withFormat("int32").withMinimum(-5.0).build(), spec.get("min"));
+    assertEquals(type.apply("integer").withFormat("int32").withMaximum(5.0).build(), spec.get("max"));
     assertEquals(type.apply("string").withPattern("\\b[1-9]\\b").build(), spec.get("singleDigit"));
     assertEquals(type.apply("string").withNullable(true).build(), spec.get("nullable"));
     assertEquals(type.apply("string").withDefault(StringNode.valueOf("my-value")).build(), spec.get("defaultValue"));

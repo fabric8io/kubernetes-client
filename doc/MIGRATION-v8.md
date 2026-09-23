@@ -9,6 +9,9 @@
 - [Jackson 3](#jackson-3)
   - [Generated CRDs](#jackson-3-crd-generator)
 - [`withShardSelector(null)` is ambiguous](#shard-selector-null)
+- [`kubernetes-httpclient-jetty` moved to Jetty 12](#jetty-12)
+- [Vert.x 5 is now the default HttpClient implementation](#vertx5-httpclient)
+  - [Staying on Vert.x 4](#vertx4-httpclient)
 
 
 > [!NOTE]
@@ -97,13 +100,25 @@ The client and the model now use Jackson 3. Any code of yours that uses the Jack
 - **Exposed types:** `Serialization.jsonMapper()`/`yamlMapper()` return Jackson 3 mappers, `unmarshal(..., TypeReference)` takes a `tools.jackson.core.type.TypeReference`, and `JsonNode` model fields (e.g. `JSONSchemaProps` `default`/`example`) are `tools.jackson.databind.JsonNode`.
 - **Mappers are immutable:** `registerModule` and `configure` are gone, use the builder or `mapper.rebuild()`. `new KubernetesSerialization(mapper, ...)` configures and uses a copy, the mapper you pass is left untouched. Subclasses overriding `configureMapper` must return the configured mapper.
 
-The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way: with plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated.
+The default `KubernetesSerialization` (and therefore `KubernetesClientBuilder`) uses `JsonMapper.builderWithJackson2Defaults()` and the new `Jackson2JdkTypesModule`, so your custom types keep their 2.x wire format. If you pass your own mapper, build it the same way:
 
-One difference can't be restored: getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
+```java
+new KubernetesSerialization(JsonMapper.builderWithJackson2Defaults().addModule(new Jackson2JdkTypesModule()).build(), true);
+```
+
+With plain Jackson 3 defaults, properties are sorted alphabetically, enums go through `toString()`, `null` for a primitive fails and getter-only collections are no longer populated. Without the module, `Year` is written as a number, `Month` as its zero-based index, `java.sql.Date` as a UTC date-time and `Locale` as a language tag (`zh-Hant-TW` instead of `zh_TW_#Hant`), and locales written by 7.x lose their script or extension when read.
+
+The module also reads a `yyyy-MM-dd` `java.sql.Date` as a local date. 7.x read it as UTC midnight, which is the previous day west of UTC.
+
+A few differences can't be restored:
+
+- Getters with an upper-case prefix follow the standard bean naming, so `getURL()` is now `URL` instead of `url`. Annotate them with `@JsonProperty` to keep the old name.
+- `Map<Enum, V>` and `Set<Enum>` properties are read as an `EnumMap` and an `EnumSet`.
+- `Optional` values are written. 7.x failed on them.
 
 ### Generated CRDs <a href="#jackson-3-crd-generator" id="jackson-3-crd-generator"/>
 
-The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). If you embed the generator, `CRDGenerator.withObjectMapper(...)` and `ResolvingContext` now take a `tools.jackson.databind.ObjectMapper`. The generator makes that mapper write dates and durations as strings, whatever its settings, because that's what the client writes.
+The CRD generator now uses the Jackson 3 version of `jackson-module-jsonSchema` (`tools.jackson.module:jackson-module-jsonSchema`). If you embed the generator, `CRDGenerator.withObjectMapper(...)` and `ResolvingContext` now take a `tools.jackson.databind.ObjectMapper`. The generator makes that mapper write dates and durations as strings, whatever its settings, because that's what the client writes. Add the `Jackson2JdkTypesModule` to it as well, like the default mapper does, so that `Year`, `Month`, `java.sql.Date` and `Locale` are described the way the client writes them.
 
 The generated CRDs are the same as in 7.x except for the following:
 
@@ -112,7 +127,11 @@ The generated CRDs are the same as in 7.x except for the following:
 - **`Object` properties, `Map` values of type `Object` and raw `Map`s** are now `x-kubernetes-preserve-unknown-fields: true` instead of `type: object`. They hold arbitrary JSON, and `type: object` made the API server prune it and reject scalars. An `Object` property with `@JsonSerialize(as = SomeType.class)` gets the schema of `SomeType`.
 - **`List<Object>` and raw collections** now generate an array whose items are `x-kubernetes-preserve-unknown-fields: true`. Generation used to fail with `Untyped collection <field>`.
 - **Polymorphic types** (`@JsonTypeInfo` / `@JsonSubTypes` on the class, on an interface it implements, or on the property) keep the base type's properties and add `x-kubernetes-preserve-unknown-fields: true`, so the subtypes' content and the type id are no longer pruned. A CRD cannot express the discriminated union itself. `@JsonTypeInfo(use = NONE)` opts a subtype or property out.
-- **Date and time formats** remain only where the value the client writes matches them, since the API server rejects any value that doesn't (`date-time` requires an offset). `Duration`, `LocalDateTime`, `OffsetTime`, `YearMonth`, `MonthDay` and `java.sql.Time` no longer carry `format: date-time` (`PT1H30M`, `2026-01-02T10:15:30`, `10:15:30+01:00`, `2026-01`, `--12-25`, `10:15:30`), and `LocalTime` no longer carries `format: time`. `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Date`, `Timestamp` and `Calendar` keep `date-time`, and `LocalDate` keeps `date`.
+- **Date and time formats** remain only where the value the client writes matches them, since the API server rejects any value that doesn't (`date-time` requires an offset). `Duration`, `LocalDateTime`, `OffsetTime`, `YearMonth`, `MonthDay`, `Year` and `java.sql.Time` no longer carry `format: date-time` (`PT1H30M`, `2026-01-02T10:15:30`, `10:15:30+01:00`, `2026-01`, `--12-25`, `2024`, `10:15:30`), and `LocalTime` no longer carries `format: time`. `java.sql.Date` carries `format: date` instead of `date-time` (`2024-01-15`). `Instant`, `OffsetDateTime`, `ZonedDateTime`, `Date`, `Timestamp` and `Calendar` keep `date-time`, and `LocalDate` keeps `date`.
+- **`@PrinterColumn` on a `LocalDate`** is a `string` column instead of a `date` column. The API server renders a `date` column as the age of an RFC 3339 timestamp, so it showed `<invalid>`. Use `@AdditionalPrinterColumn(type = DATE)` for an age column.
+- **`byte[]` and `ByteBuffer`**, including in `Optional`, `List` and `Map` values, are `type: string, format: byte` instead of an array of integers, like Go's `[]byte`: the client writes them as base64, which the array schema rejected. `@Size` on them limits the length of the base64 string, which is only exact for multiples of 3 bytes: `@Size(min = 2, max = 100)` accepts 1 to 102 bytes. `Byte[]` and `List<Byte>` stay arrays of integers, that's how they're written. The API server rejects an empty string for `format: byte`, and the client writes an empty `byte[]` or `ByteBuffer` as `""`, so leave empty values `null` or annotate a `byte[]` field with `@JsonInclude(JsonInclude.Include.NON_EMPTY)`.
+- **`char[]`** is `type: string` instead of an array of strings, which rejected the string the client writes.
+- **Integers** get the format controller-gen gives their Go counterpart: `int`, `Integer`, `OptionalInt` and `AtomicInteger` get `format: int32`, and `long`, `Long`, `OptionalLong` and `AtomicLong` get `format: int64`, also as list items and map values. `long[]` items change from `type: number` to `integer`. The API server range-checks these formats since Kubernetes 1.36. Java values always fit, but `@Min`/`@Max` bounds have to fit the type too. `short`, `byte` and `BigInteger` get none, and neither does a property with its own serializer or converter (`@JsonSerialize`).
 
 ## `withShardSelector(null)` is ambiguous <a href="#shard-selector-null" id="shard-selector-null"/>
 
@@ -127,3 +146,103 @@ client.pods().withShardSelector((String) null);
 ```
 
 Passing a `null`-valued variable is unaffected, and either overload still clears the selector.
+
+## `kubernetes-httpclient-jetty` moved to Jetty 12 <a href="#jetty-12" id="jetty-12"/>
+
+`kubernetes-httpclient-jetty` now uses Jetty 12.1. Jetty 11 is end of life and there is no Jetty 11 variant of the module; the 7.x line stays on Jetty 11.
+
+- **Classpath:** Jetty 12 can't share a classpath with Jetty 9, 10 or 11. `jetty-util`, `jetty-io`, `jetty-http` and `jetty-client` keep their coordinates, so only one version is resolved: if your application embeds an older Jetty, upgrade it to 12.1 or use another HTTP client. The WebSocket and HTTP/2 artifacts were renamed (`jetty-websocket-jetty-client`, `jetty-http2-client-transport`), so version pins on the old ones no longer apply.
+- **`JettyHttpClientFactory#additionalConfig(HttpClient, WebSocketClient)`** keeps its signature but takes Jetty 12 types. The `WebSocketClient` now runs on the given `HttpClient`, so settings (and the cookie store) apply to both, and proxy or authentication settings you added to both (the workaround for [#8029](https://github.com/fabric8io/kubernetes-client/issues/8029)) are now registered twice. Review what you set on `webSocketClient.getHttpClient()` for WebSockets only, such as a relaxed trust manager or proxy changes: it now applies to every REST request too.
+- **401 handling:** Jetty's `WWW-Authenticate` handler is removed from the `HttpClient`, since it failed the 401 responses the API server sends without a challenge. The client authenticates with the credentials from its `Config`; an `Authentication` registered in Jetty's `AuthenticationStore` through `additionalConfig` no longer answers the API server's 401.
+- **Exposed types:** `JettyHttpResponse`, `JettyAsyncResponseListener` and `JettyWebSocket` use Jetty 12 types and supertypes (`Response.Listener`, `Session.Listener`). The JPMS module names changed too: `org.eclipse.jetty.websocket.jetty.client` is now `org.eclipse.jetty.websocket.client`, and `org.eclipse.jetty.http2.http.client.transport` is `org.eclipse.jetty.http2.client.transport`.
+- **WebSocket back-pressure:** messages that aren't consumed now wait on the socket instead of blocking a Jetty thread, so the "Jetty HttpClient thread is waiting too long for the consumption of previous websocket message" exception is gone.
+
+## Vert.x 5 is now the default HttpClient implementation <a href="#vertx5-httpclient" id="vertx5-httpclient"/>
+
+`io.fabric8:kubernetes-client` and `io.fabric8:openshift-client` now bring in `io.fabric8:kubernetes-httpclient-vertx-5` (Vert.x 5.x) instead of `io.fabric8:kubernetes-httpclient-vertx` (Vert.x 4.x). If you used `kubernetes-httpclient-vertx-5` as an opt-in dependency in 7.x, remove the explicit dependency and the `kubernetes-httpclient-vertx` exclusion.
+
+- **Using another HttpClient:** if you exclude the default client to use OkHttp, the JDK or Jetty, change the exclusion from `kubernetes-httpclient-vertx` to `kubernetes-httpclient-vertx-5`. The old exclusion no longer matches anything, so Vert.x 5 and Netty 4.2 come back onto your classpath. Your client is still the one selected at runtime, so nothing warns you.
+- **Classpath:** Vert.x 5 requires Netty 4.2 and brings `io.vertx:vertx-uri-template`, which `vertx-web-client` 5 requires as a JPMS module. If your application pins Netty 4.1, or manages the `io.vertx` artifacts at 4.x (for example through a platform BOM), align them with Vert.x 5 or [stay on Vert.x 4](#vertx4-httpclient). With Vert.x 4 jars on the classpath, building the Vert.x 5 client fails with an `IllegalStateException`.
+- **`VertxHttpClientFactory`:** the Vert.x 5 factory is `io.fabric8.kubernetes.client.vertx5.Vertx5HttpClientFactory`, and its constructor takes a Vert.x 5 `Vertx`. `additionalConfig(WebClientOptions)` becomes `additionalConfig(WebClientOptions, WebSocketClientOptions, PoolOptions)`, since Vert.x 5 configures WebSockets and the connection pool separately. `TlsWarmup` is `io.fabric8.kubernetes.client.vertx5.TlsWarmup`, and the JPMS module is `io.fabric8.kubernetes.client.vertx5`.
+- **Mock server:** `io.fabric8:mockwebserver` and `io.fabric8:kubernetes-server-mock` now run on Vert.x 5 too.
+
+### Staying on Vert.x 4 <a href="#vertx4-httpclient" id="vertx4-httpclient"/>
+
+Exclude `kubernetes-httpclient-vertx-5` from every fabric8 dependency you declare that brings in `kubernetes-client` (`kubernetes-client`, `openshift-client`, `kubernetes-junit-jupiter`...), add `kubernetes-httpclient-vertx`, and pin the `io.vertx` artifacts to 4.x, so that the mock server and other dependencies can't pull Vert.x 5 back in.
+Pin the `io.vertx` artifacts themselves rather than importing a Vert.x BOM: `vertx-stack-depchain` and `vertx-dependencies` also manage Jackson, Netty and SLF4J, and downgrade the `jackson-annotations` version the client's Jackson 3 requires.
+
+```xml
+<properties>
+  <vertx.version>4.5.34</vertx.version>
+</properties>
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-client</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <!-- vertx-web and vertx-bridge-common come from the mock server -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-web</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-bridge-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+<dependencies>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-client</artifactId>
+    <exclusions>
+      <exclusion>
+        <groupId>io.fabric8</groupId>
+        <artifactId>kubernetes-httpclient-vertx-5</artifactId>
+      </exclusion>
+    </exclusions>
+  </dependency>
+  <dependency>
+    <groupId>io.fabric8</groupId>
+    <artifactId>kubernetes-httpclient-vertx</artifactId>
+  </dependency>
+</dependencies>
+```
+
+With Gradle, which resolves version conflicts to the highest version, exclude the Vert.x 5 client and pin the `io.vertx` modules in every configuration:
+
+```kotlin
+configurations.configureEach {
+  exclude(group = "io.fabric8", module = "kubernetes-httpclient-vertx-5")
+  resolutionStrategy.eachDependency {
+    if (requested.group == "io.vertx") {
+      useVersion("4.5.34")
+    }
+  }
+}
+dependencies {
+  implementation("io.fabric8:kubernetes-client")
+  implementation("io.fabric8:kubernetes-httpclient-vertx")
+}
+```
+
+Only one Vert.x version can be resolved, so the two modules can't work side by side. If both end up on the classpath, the Vert.x 5 client is selected, and building it fails with the `IllegalStateException` above when Vert.x 4 jars were resolved.

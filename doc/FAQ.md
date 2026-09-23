@@ -15,9 +15,9 @@ Fabric8 Kubernetes Client version 6 introduced more options with regards to depe
 
 Furthermore, you will also have choices in the HttpClient implementation that is utilized.  
 
-By default, kubernetes-client has a runtime dependency on Vert.x (`kubernetes-httpclient-vertx`).
+By default, kubernetes-client has a runtime dependency on Vert.x (`kubernetes-httpclient-vertx-5`).
 
-If you wish to use another HttpClient implementation typically you will exclude `kubernetes-httpclient-vertx` and include the other runtime or compile dependency instead.
+If you wish to use another HttpClient implementation typically you will exclude `kubernetes-httpclient-vertx-5` and include the other runtime or compile dependency instead.
 
 ### I've tried adding a dependency to kubernetes-client, but I'm still getting weird class loading issues, what gives?
 
@@ -71,7 +71,7 @@ Finally, the fabric8 client will use 1 thread per PortForward and an additional 
 
 ### Why does the first HTTPS request block / time out on a cold or CPU-throttled JVM?
 
-With the Vert.x HTTP clients (the default `kubernetes-httpclient-vertx` and `kubernetes-httpclient-vertx-5`), the Netty `SslContext`, `SslHandler` and `SSLEngine` are materialized lazily on the Vert.x event loop on the **first** TLS connection.
+With the Vert.x HTTP clients (the default `kubernetes-httpclient-vertx-5` and `kubernetes-httpclient-vertx`), the Netty `SslContext`, `SslHandler` and `SSLEngine` are materialized lazily on the Vert.x event loop on the **first** TLS connection.
 On a cold JVM this pays the one-time class loading of the entire JDK/Netty TLS stack plus the first handshake on the event loop.
 On a healthy host this is fast, but on a JVM that is starting cold under heavy CPU throttling (for example a Kubernetes pod with a low CPU `limit`) it can take several seconds, trip Vert.x's `BlockedThreadChecker`, and in the worst case exceed the connect timeout so the first request fails.
 

@@ -30,9 +30,11 @@ spec:
                 type: "number"
               defaultInt:
                 default: 1337
+                format: "int32"
                 type: "integer"
               defaultInteger:
                 default: 1337
+                format: "int32"
                 type: "integer"
               defaultValue:
                 default: "my-value"
@@ -49,6 +51,7 @@ spec:
                 type: "string"
               from-getter:
                 description: "from-getter-description"
+                format: "int32"
                 type: "integer"
               kubernetesValidationRule:
                 type: "string"
@@ -63,9 +66,11 @@ spec:
                 - reason: "FieldValueForbidden"
                   rule: "self != 'forbidden'"
               max:
+                format: "int32"
                 maximum: 5.0
                 type: "integer"
               min:
+                format: "int32"
                 minimum: -5.0
                 type: "integer"
               nullable:
@@ -75,6 +80,7 @@ spec:
                 pattern: "\\b[1-9]\\b"
                 type: "string"
               sizedField:
+                format: "int32"
                 type: "integer"
               unnamed:
                 type: "string"

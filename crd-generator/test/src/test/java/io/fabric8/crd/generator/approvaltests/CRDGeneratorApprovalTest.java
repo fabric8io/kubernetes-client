@@ -21,6 +21,7 @@ import io.fabric8.crd.generator.approvaltests.complex.Complex;
 import io.fabric8.crd.generator.approvaltests.described.Described;
 import io.fabric8.crd.generator.approvaltests.inherited.Child;
 import io.fabric8.crd.generator.approvaltests.jackson3.Jackson3;
+import io.fabric8.crd.generator.approvaltests.jdktypes.JdkTypes;
 import io.fabric8.crd.generator.approvaltests.json.ContainingJson;
 import io.fabric8.crd.generator.approvaltests.k8svalidation.K8sValidation;
 import io.fabric8.crd.generator.approvaltests.map.ContainingMaps;
@@ -109,6 +110,7 @@ class CRDGeneratorApprovalTest {
     cases.add(new TestCase("children.sample.fabric8.io", Child.class));
     cases.add(new TestCase("containingjsons.sample.fabric8.io", ContainingJson.class));
     cases.add(new TestCase("jackson3s.samples.fabric8.io", Jackson3.class));
+    cases.add(new TestCase("jdktypes.samples.fabric8.io", JdkTypes.class));
     cases.add(new TestCase("k8svalidations.samples.fabric8.io", K8sValidation.class));
     cases.add(new TestCase("containingmaps.sample.fabric8.io", ContainingMaps.class));
     cases.add(new TestCase("replicas.samples.fabric8.io", Replica.class));

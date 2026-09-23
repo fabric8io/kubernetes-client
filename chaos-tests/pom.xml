@@ -53,7 +53,7 @@
       <exclusions>
         <exclusion>
           <groupId>io.fabric8</groupId>
-          <artifactId>kubernetes-httpclient-vertx</artifactId>
+          <artifactId>kubernetes-httpclient-vertx-5</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
@@ -164,7 +164,10 @@
         </dependencies>
       </profile>
       <profile>
-        <id>httpclient-vertx</id>
+        <id>httpclient-vertx-4</id>
+        <properties>
+          <vertx.version>${vertx4.version}</vertx.version>
+        </properties>
         <dependencies>
           <dependency>
             <groupId>io.fabric8</groupId>
@@ -183,9 +186,6 @@
       </profile>
       <profile>
         <id>httpclient-vertx-5</id>
-        <properties>
-          <vertx.version>${vertx5.version}</vertx.version>
-        </properties>
         <dependencies>
           <dependency>
             <groupId>io.fabric8</groupId>

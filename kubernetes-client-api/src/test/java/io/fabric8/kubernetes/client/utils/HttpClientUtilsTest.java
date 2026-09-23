@@ -105,6 +105,33 @@ class HttpClientUtilsTest {
   }
 
   @Test
+  @DisplayName("configureProxy, a proxy URL with a user and no password, authenticates the user with an empty password")
+  void configureProxyUrlUserWithoutPassword() throws Exception {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("http://user@192.168.0.1:8080")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+    // When
+    HttpClientUtils.configureProxy(config, builder);
+    // Then
+    Mockito.verify(builder).proxyAuthorization(HttpClientUtils.basicCredentials("user", ""));
+  }
+
+  @Test
+  @DisplayName("configureProxy, a proxy username without a password, authenticates the user with an empty password")
+  void configureProxyUsernameWithoutPassword() throws Exception {
+    // Given
+    Config config = new ConfigBuilder().withMasterUrl("http://localhost").withHttpProxy("http://192.168.0.1:8080")
+        .withProxyUsername("user")
+        .build();
+    Builder builder = Mockito.mock(HttpClient.Builder.class, Mockito.RETURNS_SELF);
+    // When
+    HttpClientUtils.configureProxy(config, builder);
+    // Then
+    Mockito.verify(builder).proxyAuthorization(HttpClientUtils.basicCredentials("user", ""));
+  }
+
+  @Test
   void testApplyCommonConfigurationWithTlsServerName() {
     // Given
     Config config = new ConfigBuilder()
@@ -185,6 +212,26 @@ class HttpClientUtilsTest {
     return Stream.of(
         arguments("username", "password", "Basic dXNlcm5hbWU6cGFzc3dvcmQ="),
         arguments("username", "Þaßßword£", "Basic dXNlcm5hbWU6w55hw5/Dn3dvcmTCow=="));
+  }
+
+  @Nested
+  @DisplayName("decodeBasicCredentials")
+  class DecodeBasicCredentials {
+
+    @ParameterizedTest(name = "{index}: password ''{0}''")
+    @ValueSource(strings = { "password", "pass:word", ":password:", "" })
+    @DisplayName("splits at the first colon, the password may contain colons (RFC 7617)")
+    void decodesUsernameAndPassword(String password) {
+      assertThat(HttpClientUtils.decodeBasicCredentials(HttpClientUtils.basicCredentials("username", password)))
+          .containsExactly("username", password);
+    }
+
+    @Test
+    @DisplayName("without a colon, can't be decoded")
+    void withoutColonReturnsNull() {
+      final String credentials = "Basic " + Base64.getEncoder().encodeToString("username".getBytes(StandardCharsets.UTF_8));
+      assertThat(HttpClientUtils.decodeBasicCredentials(credentials)).isNull();
+    }
   }
 
   @Nested

@@ -141,7 +141,8 @@ public class HttpClientUtils {
       final String encodedCredentials = basicCredentials.replaceFirst("Basic ", "");
       final String decodedProxyAuthorization = new String(Base64.getDecoder().decode(encodedCredentials),
           StandardCharsets.UTF_8);
-      final String[] userPassword = decodedProxyAuthorization.split(":");
+      // RFC 7617: the user-id can't contain a colon, the password can
+      final String[] userPassword = decodedProxyAuthorization.split(":", 2);
       if (userPassword.length == 2) {
         return userPassword;
       }
@@ -251,13 +252,15 @@ public class HttpClientUtils {
     } else {
       builder.proxyAddress(new InetSocketAddress(proxyUri.getHost(), proxyUri.getPort()));
 
+      // RFC 7617: the colon is required even when the password is empty, otherwise the credentials can't be decoded
       if (config.getProxyUsername() != null) {
-        builder.proxyAuthorization(basicCredentials(config.getProxyUsername(), config.getProxyPassword()));
+        builder.proxyAuthorization(
+            basicCredentials(config.getProxyUsername(), Utils.getNonNullOrElse(config.getProxyPassword(), "")));
       }
 
       String userInfo = proxyUri.getUserInfo();
       if (userInfo != null) {
-        builder.proxyAuthorization(basicCredentials(userInfo));
+        builder.proxyAuthorization(basicCredentials(userInfo.contains(":") ? userInfo : userInfo + ":"));
       }
 
       builder.proxyType(toProxyType(proxyUri.getScheme()));

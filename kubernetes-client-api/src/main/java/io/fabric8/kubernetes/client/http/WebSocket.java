@@ -51,8 +51,11 @@ public interface WebSocket {
 
     /**
      * Called when the remote input closes. It's a terminal event, calls to {@link WebSocket#request()}
-     * do nothing after this. Some {@link HttpClient} implementations will require {@link WebSocket#request()}
-     * to be called to calling onClose.
+     * do nothing after this.
+     * <p>
+     * The {@link HttpClient} implementation answers the remote Close frame, the listener doesn't need to call
+     * {@link WebSocket#sendClose(int, String)}. Some implementations only deliver the remote Close, and answer it,
+     * once {@link WebSocket#request()} has been called.
      */
     default void onClose(WebSocket webSocket, int code, String reason) {
     }

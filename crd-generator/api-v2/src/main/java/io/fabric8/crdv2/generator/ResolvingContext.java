@@ -19,6 +19,7 @@ package io.fabric8.crdv2.generator;
 import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettings;
 import io.fabric8.kubernetes.client.utils.YamlDumpSettingsBuilder;
+import io.fabric8.kubernetes.model.jackson.Jackson2JdkTypesModule;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.JavaType;
 import tools.jackson.databind.ObjectMapper;
@@ -104,7 +105,9 @@ public class ResolvingContext {
   public static ResolvingContext defaultResolvingContext(boolean implicitPreserveUnknownFields,
       YamlDumpSettings yamlDumpSettings) {
     if (OBJECT_MAPPER == null) {
+      // the same JDK type formats as new KubernetesSerialization(), which configures its own copy of this mapper
       OBJECT_MAPPER = JsonMapper.builderWithJackson2Defaults()
+          .addModule(new Jackson2JdkTypesModule())
           .disable(DateTimeFeature.WRITE_DATES_AS_TIMESTAMPS)
           .disable(DateTimeFeature.WRITE_DURATIONS_AS_TIMESTAMPS)
           .build();

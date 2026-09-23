@@ -4,8 +4,16 @@
 
 #### Bugs
 * Fix #7374: (crd-generator) Generated CRDs no longer prune or reject what the client writes: `Object`, raw `Map`, `List<Object>`, raw collection, `@JsonUnwrapped` and polymorphic properties keep their content, and date and time types only declare a format their values match (`Duration`, `LocalDateTime` and the partial types lose `date-time`). `Optional` properties get their value type's schema instead of preserving unknown fields, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
+* Fix #6779: (httpclient-jetty) 401 responses without a `WWW-Authenticate` header, which is how the API server sends them, are returned with their body instead of failing with "HTTP protocol violation: Authentication challenge without WWW-Authenticate header"
+* Fix #6779: (httpclient-jetty, httpclient-vertx, httpclient-vertx-5) A proxy password containing a colon, or a proxy URL with a user and no password, is now used to authenticate with the proxy, instead of falling back to a `Proxy-Authorization` request header that HTTPS requests carry through the proxy tunnel to the API server
+* Fix #6779: A proxy username configured without a password is sent with an empty password instead of `null`
+* Fix #8109: A `java.sql.Date` written as `yyyy-MM-dd` is read as a local date instead of the previous day west of UTC. `Year`, `Month`, `java.sql.Date` and `Locale` keep their 7.x wire format, mappers you build yourself need the new `Jackson2JdkTypesModule`, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
+* Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
+* Fix #8008: (httpclient-vertx-5) Requests with an `InputStream` body and `Expect: 100-continue` (binary builds) no longer hang, and an `InputStream` body of known length is sent with `Content-Length` instead of chunked
+* Fix #8139: (httpclient-okhttp) WebSockets answer the server's Close frame even when the listener doesn't, so port forwarding and custom listeners release the connection instead of waiting for the server to drop it
 
 #### Improvements
+* Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen
 * Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
 
 #### Dependency Upgrade
@@ -18,6 +26,7 @@
 * Fix #8133: bump controller-runtime from 0.19.7 to 0.23.3
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
 * Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
+* Fix #6779: bump Jetty from 11.0.26 to 12.1.13
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
@@ -58,6 +67,8 @@
 * Fix #8133: (open-cluster-management) `MultiClusterHubSpec` drops `customCAConfigmap`, `enableClusterBackup`, `enableClusterProxyAddon`, `hive`, `ingress` and `separateCertificateManagement`. Model classes `BackupConfig`, `ExternalDNSAWSConfig`, `ExternalDNSConfig`, `ExternalDNSGCPConfig`, `FailedProvisionConfig`, `HiveConfigSpec`, `HiveConfigStatus`, `IngressSpec` and `VeleroBackupConfig` removed
 * Fix #8133: (open-cluster-management) Observability `PlatformMetricsSpec` and `UserWorkloadMetricsSpec` replace `collection` with `default` (`PlatformMetricsCollectionSpec` and `UserWorkloadMetricsCollectionSpec` removed), and `PlatformNamespaceRightSizingRecommendationSpec` is renamed to `PlatformRightSizingRecommendationSpec`
 * Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
+* Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
+* Fix #8008: `kubernetes-client` and `openshift-client` default to the Vert.x 5 HttpClient (`kubernetes-httpclient-vertx-5`) instead of Vert.x 4 (`kubernetes-httpclient-vertx`), see the [migration guide](./doc/MIGRATION-v8.md#vertx5-httpclient)
 
 ### 7.9.0 (2026-09-04)
 
