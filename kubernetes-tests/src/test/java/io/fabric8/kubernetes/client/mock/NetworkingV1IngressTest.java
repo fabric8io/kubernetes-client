@@ -28,6 +28,7 @@ import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.HttpURLConnection;
@@ -134,6 +135,16 @@ class NetworkingV1IngressTest {
 
     ingress = client.network().v1().ingresses().inNamespace("ns1").withName("ingress2").get();
     assertNotNull(ingress);
+  }
+
+  @Test
+  @DisplayName("network().ingresses() and network().ingress() use networking.k8s.io/v1")
+  void unversionedAccessorsUseV1() {
+    server.expect().withPath("/apis/networking.k8s.io/v1/namespaces/ns1/ingresses/ingress1")
+        .andReturn(HttpURLConnection.HTTP_OK, new IngressBuilder().build()).times(2);
+
+    assertNotNull(client.network().ingresses().inNamespace("ns1").withName("ingress1").get());
+    assertNotNull(client.network().ingress().inNamespace("ns1").withName("ingress1").get());
   }
 
   @Test

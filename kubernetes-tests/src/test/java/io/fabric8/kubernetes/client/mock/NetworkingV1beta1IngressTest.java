@@ -67,15 +67,15 @@ class NetworkingV1beta1IngressTest {
         .addNewItem()
         .and().build()).once();
 
-    IngressList ingressList = client.network().ingress().list();
+    IngressList ingressList = client.network().v1beta1().ingresses().list();
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
 
-    ingressList = client.network().ingress().inNamespace("ns1").list();
+    ingressList = client.network().v1beta1().ingresses().inNamespace("ns1").list();
     assertNotNull(ingressList);
     assertEquals(2, ingressList.getItems().size());
 
-    ingressList = client.network().ingress().inAnyNamespace().list();
+    ingressList = client.network().v1beta1().ingresses().inAnyNamespace().list();
     assertNotNull(ingressList);
     assertEquals(3, ingressList.getItems().size());
   }
@@ -96,7 +96,7 @@ class NetworkingV1beta1IngressTest {
             .build())
         .once();
 
-    IngressList ingressList = client.network().ingress()
+    IngressList ingressList = client.network().v1beta1().ingresses()
         .withLabel("key1", "value1")
         .withLabel("key2", "value2")
         .withLabel("key3", "value3")
@@ -105,7 +105,7 @@ class NetworkingV1beta1IngressTest {
     assertNotNull(ingressList);
     assertEquals(0, ingressList.getItems().size());
 
-    ingressList = client.network().ingress()
+    ingressList = client.network().v1beta1().ingresses()
         .withLabel("key1", "value1")
         .withLabel("key2", "value2")
         .list();
@@ -121,13 +121,13 @@ class NetworkingV1beta1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2")
         .andReturn(200, new IngressBuilder().build()).once();
 
-    Ingress ingress = client.network().ingress().withName("ingress1").get();
+    Ingress ingress = client.network().v1beta1().ingresses().withName("ingress1").get();
     assertNotNull(ingress);
 
-    ingress = client.network().ingress().withName("ingress2").get();
+    ingress = client.network().v1beta1().ingresses().withName("ingress2").get();
     assertNull(ingress);
 
-    ingress = client.network().ingress().inNamespace("ns1").withName("ingress2").get();
+    ingress = client.network().v1beta1().ingresses().inNamespace("ns1").withName("ingress2").get();
     assertNotNull(ingress);
   }
 
@@ -138,13 +138,14 @@ class NetworkingV1beta1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2")
         .andReturn(200, new IngressBuilder().build()).once();
 
-    boolean deleted = client.network().ingress().withName("ingress1").withGracePeriod(0).delete().size() == 1;
+    boolean deleted = client.network().v1beta1().ingresses().withName("ingress1").withGracePeriod(0).delete().size() == 1;
     assertTrue(deleted);
 
-    deleted = client.network().ingress().withName("ingress2").withGracePeriod(0).delete().size() == 1;
+    deleted = client.network().v1beta1().ingresses().withName("ingress2").withGracePeriod(0).delete().size() == 1;
     assertFalse(deleted);
 
-    deleted = client.network().ingress().inNamespace("ns1").withName("ingress2").withGracePeriod(0).delete().size() == 1;
+    deleted = client.network().v1beta1().ingresses().inNamespace("ns1").withName("ingress2").withGracePeriod(0).delete()
+        .size() == 1;
     assertTrue(deleted);
   }
 
@@ -159,10 +160,10 @@ class NetworkingV1beta1IngressTest {
     server.expect().withPath("/apis/networking.k8s.io/v1beta1/namespaces/ns1/ingresses/ingress2").andReturn(200, ingress2)
         .once();
 
-    Boolean deleted = client.network().ingress().inAnyNamespace().delete(ingress1, ingress2);
+    Boolean deleted = client.network().v1beta1().ingresses().inAnyNamespace().delete(ingress1, ingress2);
     assertTrue(deleted);
 
-    deleted = client.network().ingress().inAnyNamespace().delete(ingress3).size() == 1;
+    deleted = client.network().v1beta1().ingresses().inAnyNamespace().delete(ingress3).size() == 1;
     assertFalse(deleted);
   }
 
@@ -170,7 +171,7 @@ class NetworkingV1beta1IngressTest {
   void testDeleteWithNamespaceMismatch() {
     Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
 
-    Boolean deleted = client.network().ingress().inNamespace("test1").delete(ingress1).size() == 1;
+    Boolean deleted = client.network().v1beta1().ingresses().inNamespace("test1").delete(ingress1).size() == 1;
     assertFalse(deleted);
   }
 
@@ -180,7 +181,7 @@ class NetworkingV1beta1IngressTest {
       Ingress ingress1 = new IngressBuilder().withNewMetadata().withName("ingress1").withNamespace("test").and().build();
       Ingress ingress2 = new IngressBuilder().withNewMetadata().withName("ingress2").withNamespace("ns1").and().build();
 
-      client.network().ingress().inNamespace("test1").withName("myingress1").create(ingress1);
+      client.network().v1beta1().ingresses().inNamespace("test1").withName("myingress1").create(ingress1);
     });
   }
 
@@ -199,7 +200,7 @@ class NetworkingV1beta1IngressTest {
         .andReturn(HttpURLConnection.HTTP_OK, ingressUpdated).once();
 
     // When
-    ingressUpdated = client.network().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);
+    ingressUpdated = client.network().v1beta1().ingresses().inNamespace("ns1").createOrReplace(ingressUpdated);
 
     // Then
     assertNotNull(ingressUpdated);

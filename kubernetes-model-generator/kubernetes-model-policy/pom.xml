@@ -32,7 +32,8 @@
     <clone-kube>true</clone-kube>
     <osgi.import>*</osgi.import>
     <osgi.export>
-      io.fabric8.kubernetes.api.model.policy**
+      io.fabric8.kubernetes.api.model.policy**,
+      io.fabric8.kubernetes.api.model.lifecycle**
     </osgi.export>
   </properties>
 
@@ -59,9 +60,11 @@
                 </schemas>
                 <packageMappings combine.self="append">
                   <io.k8s.api.policy>io.fabric8.kubernetes.api.model.policy</io.k8s.api.policy>
+                  <io.k8s.api.lifecycle>io.fabric8.kubernetes.api.model.lifecycle</io.k8s.api.lifecycle>
                 </packageMappings>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^io\.k8s\.api\.policy\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^io\.k8s\.api\.lifecycle\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

@@ -55,8 +55,8 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList;
 import io.fabric8.kubernetes.client.dsl.ApiextensionsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AppsAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.AuthenticationAPIGroupDSL;
@@ -85,6 +85,7 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.StorageMigrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
 import io.fabric8.kubernetes.client.extended.leaderelection.LeaderElectorBuilder;
@@ -251,6 +252,13 @@ public interface KubernetesClient extends Client {
    * @return StorageAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
    */
   StorageAPIGroupDSL storage();
+
+  /**
+   * API entrypoint for kubernetes resources with APIGroup storagemigration.k8s.io
+   *
+   * @return StorageMigrationAPIGroupDSL which offers entrypoints to specific resources in this APIGroup
+   */
+  StorageMigrationAPIGroupDSL storageMigration();
 
   /**
    * API entrypoint for kubernetes resources with APIGroup batch/v1beta1
@@ -531,7 +539,7 @@ public interface KubernetesClient extends Client {
   RunOperations run();
 
   /**
-   * API entrypoint for RuntimeClass (node.k8s.io/v1beta1)
+   * API entrypoint for RuntimeClass (node.k8s.io/v1)
    *
    * @return {@link NonNamespaceOperation} for RuntimeClass
    */

@@ -67,8 +67,8 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.coordination.v1.Lease;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList;
 import io.fabric8.kubernetes.client.AdmissionRegistrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.ApiVisitor;
 import io.fabric8.kubernetes.client.ApiVisitor.ApiVisitResult;
@@ -123,6 +123,7 @@ import io.fabric8.kubernetes.client.dsl.SchedulingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.ServiceAccountResource;
 import io.fabric8.kubernetes.client.dsl.ServiceResource;
 import io.fabric8.kubernetes.client.dsl.StorageAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.StorageMigrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1APIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1Alpha1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1BatchAPIGroupDSL;
@@ -133,6 +134,7 @@ import io.fabric8.kubernetes.client.dsl.V1EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1StorageMigrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1BatchAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1CertificatesAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1DiscoveryAPIGroupDSL;
@@ -140,6 +142,7 @@ import io.fabric8.kubernetes.client.dsl.V1beta1EventingAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1PolicyAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta1SchedulingAPIGroupDSL;
+import io.fabric8.kubernetes.client.dsl.V1beta1StorageMigrationAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta2FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.V1beta3FlowControlAPIGroupDSL;
 import io.fabric8.kubernetes.client.dsl.base.ResourceDefinitionContext;
@@ -246,6 +249,9 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
     adapters.registerClient(StorageAPIGroupDSL.class, new StorageAPIGroupClient());
     adapters.registerClient(V1StorageAPIGroupClient.class, new V1StorageAPIGroupClient());
     adapters.registerClient(V1beta1StorageAPIGroupClient.class, new V1beta1StorageAPIGroupClient());
+    adapters.registerClient(StorageMigrationAPIGroupDSL.class, new StorageMigrationAPIGroupClient());
+    adapters.registerClient(V1StorageMigrationAPIGroupDSL.class, new V1StorageMigrationAPIGroupClient());
+    adapters.registerClient(V1beta1StorageMigrationAPIGroupDSL.class, new V1beta1StorageMigrationAPIGroupClient());
     adapters.registerClient(V1APIGroupDSL.class, new V1APIGroupClient());
     adapters.registerClient(V1ApiextensionAPIGroupDSL.class, new V1ApiextensionsAPIGroupClient());
     adapters.registerClient(V1beta1ApiextensionAPIGroupDSL.class, new V1beta1ApiextensionsAPIGroupClient());
@@ -681,6 +687,14 @@ public class KubernetesClientImpl extends BaseClient implements NamespacedKubern
   @Override
   public StorageAPIGroupDSL storage() {
     return adapt(StorageAPIGroupClient.class);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public StorageMigrationAPIGroupDSL storageMigration() {
+    return adapt(StorageMigrationAPIGroupClient.class);
   }
 
   /**
