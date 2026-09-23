@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "applyBehavior",
+    "enablePatchTemplates",
     "enableResourceTemplates",
     "patches",
     "resourceApplyMode",
@@ -74,6 +75,8 @@ public class SyncSetCommonSpec implements Editable<SyncSetCommonSpecBuilder>, Ku
 
     @JsonProperty("applyBehavior")
     private String applyBehavior;
+    @JsonProperty("enablePatchTemplates")
+    private Boolean enablePatchTemplates;
     @JsonProperty("enableResourceTemplates")
     private Boolean enableResourceTemplates;
     @JsonProperty("patches")
@@ -97,9 +100,10 @@ public class SyncSetCommonSpec implements Editable<SyncSetCommonSpecBuilder>, Ku
     public SyncSetCommonSpec() {
     }
 
-    public SyncSetCommonSpec(String applyBehavior, Boolean enableResourceTemplates, List<SyncObjectPatch> patches, String resourceApplyMode, List<Object> resources, List<SecretMapping> secretMappings) {
+    public SyncSetCommonSpec(String applyBehavior, Boolean enablePatchTemplates, Boolean enableResourceTemplates, List<SyncObjectPatch> patches, String resourceApplyMode, List<Object> resources, List<SecretMapping> secretMappings) {
         super();
         this.applyBehavior = applyBehavior;
+        this.enablePatchTemplates = enablePatchTemplates;
         this.enableResourceTemplates = enableResourceTemplates;
         this.patches = patches;
         this.resourceApplyMode = resourceApplyMode;
@@ -121,6 +125,22 @@ public class SyncSetCommonSpec implements Editable<SyncSetCommonSpecBuilder>, Ku
     @JsonProperty("applyBehavior")
     public void setApplyBehavior(String applyBehavior) {
         this.applyBehavior = applyBehavior;
+    }
+
+    /**
+     * EnablePatchTemplates, if True, causes hive to honor golang text/templates in Patches[].Patch strings. While the standard syntax is supported, it won't do you a whole lot of good as the parser does not pass a data object (i.e. there is no "dot" for you to use). This currently exists to expose a single function: {{ fromCDLabel "some.label/key" }} will be substituted with the string value of ClusterDeployment.Labels["some.label/key"]. The empty string is interpolated if there are no labels, or if the indicated key does not exist. Note that the patch string must be valid JSON after interpolation. This may make for odd-looking quoting in the uninterpolated string.
+     */
+    @JsonProperty("enablePatchTemplates")
+    public Boolean getEnablePatchTemplates() {
+        return enablePatchTemplates;
+    }
+
+    /**
+     * EnablePatchTemplates, if True, causes hive to honor golang text/templates in Patches[].Patch strings. While the standard syntax is supported, it won't do you a whole lot of good as the parser does not pass a data object (i.e. there is no "dot" for you to use). This currently exists to expose a single function: {{ fromCDLabel "some.label/key" }} will be substituted with the string value of ClusterDeployment.Labels["some.label/key"]. The empty string is interpolated if there are no labels, or if the indicated key does not exist. Note that the patch string must be valid JSON after interpolation. This may make for odd-looking quoting in the uninterpolated string.
+     */
+    @JsonProperty("enablePatchTemplates")
+    public void setEnablePatchTemplates(Boolean enablePatchTemplates) {
+        this.enablePatchTemplates = enablePatchTemplates;
     }
 
     /**

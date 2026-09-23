@@ -25,7 +25,7 @@ public class GCPPlatformStatusBuilder extends GCPPlatformStatusFluent<GCPPlatfor
   }
 
   public GCPPlatformStatus build() {
-    GCPPlatformStatus buildable = new GCPPlatformStatus(fluent.buildCloudLoadBalancerConfig(), fluent.getProjectID(), fluent.getRegion(), fluent.buildResourceLabels(), fluent.buildResourceTags(), fluent.buildServiceEndpoints());
+    GCPPlatformStatus buildable = new GCPPlatformStatus(fluent.buildCloudLoadBalancerConfig(), fluent.getProjectID(), fluent.getRegion(), fluent.buildResourceLabels(), fluent.buildResourceTags(), fluent.getUniverseDomain());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

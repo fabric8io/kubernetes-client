@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "clientFinTimeout",
     "clientTimeout",
+    "configurationManagement",
     "connectTimeout",
     "headerBufferBytes",
     "headerBufferMaxRewriteBytes",
@@ -82,6 +83,8 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     private String clientFinTimeout;
     @JsonProperty("clientTimeout")
     private String clientTimeout;
+    @JsonProperty("configurationManagement")
+    private String configurationManagement;
     @JsonProperty("connectTimeout")
     private String connectTimeout;
     @JsonProperty("headerBufferBytes")
@@ -115,10 +118,11 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     public IngressControllerTuningOptions() {
     }
 
-    public IngressControllerTuningOptions(String clientFinTimeout, String clientTimeout, String connectTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, String healthCheckInterval, String httpKeepAliveTimeout, Integer maxConnections, String reloadInterval, String serverFinTimeout, String serverTimeout, Integer threadCount, String tlsInspectDelay, String tunnelTimeout) {
+    public IngressControllerTuningOptions(String clientFinTimeout, String clientTimeout, String configurationManagement, String connectTimeout, Integer headerBufferBytes, Integer headerBufferMaxRewriteBytes, String healthCheckInterval, String httpKeepAliveTimeout, Integer maxConnections, String reloadInterval, String serverFinTimeout, String serverTimeout, Integer threadCount, String tlsInspectDelay, String tunnelTimeout) {
         super();
         this.clientFinTimeout = clientFinTimeout;
         this.clientTimeout = clientTimeout;
+        this.configurationManagement = configurationManagement;
         this.connectTimeout = connectTimeout;
         this.headerBufferBytes = headerBufferBytes;
         this.headerBufferMaxRewriteBytes = headerBufferMaxRewriteBytes;
@@ -163,6 +167,22 @@ public class IngressControllerTuningOptions implements Editable<IngressControlle
     @JsonProperty("clientTimeout")
     public void setClientTimeout(String clientTimeout) {
         this.clientTimeout = clientTimeout;
+    }
+
+    /**
+     * configurationManagement specifies how OpenShift router should update the HAProxy configuration.  The following values are valid for this field:<br><p> <br><p> &#42; "ForkAndReload". &#42; "Dynamic".<br><p> <br><p> Omitting this field means that the user has no opinion and the platform may choose a reasonable default. This default is subject to change over time.  The current default is "ForkAndReload".<br><p> <br><p> "ForkAndReload" means that OpenShift router should rewrite the HAProxy configuration file and instruct HAProxy to fork and reload. This is OpenShift router's traditional approach.<br><p> <br><p> "Dynamic" means that OpenShift router may use HAProxy's control socket for some configuration updates and fall back to fork and reload for other configuration updates.  This is a newer approach, which may be less mature than ForkAndReload.  This setting can improve load-balancing fairness and metrics accuracy and reduce CPU and memory usage if HAProxy has frequent configuration updates for route and endpoints updates.<br><p> <br><p> Note: The "Dynamic" option is currently experimental and should not be enabled on production clusters.<br><p> <br><p> <br><p> Possible enum values:<br><p>  - `"Dynamic"`<br><p>  - `"ForkAndReload"`
+     */
+    @JsonProperty("configurationManagement")
+    public String getConfigurationManagement() {
+        return configurationManagement;
+    }
+
+    /**
+     * configurationManagement specifies how OpenShift router should update the HAProxy configuration.  The following values are valid for this field:<br><p> <br><p> &#42; "ForkAndReload". &#42; "Dynamic".<br><p> <br><p> Omitting this field means that the user has no opinion and the platform may choose a reasonable default. This default is subject to change over time.  The current default is "ForkAndReload".<br><p> <br><p> "ForkAndReload" means that OpenShift router should rewrite the HAProxy configuration file and instruct HAProxy to fork and reload. This is OpenShift router's traditional approach.<br><p> <br><p> "Dynamic" means that OpenShift router may use HAProxy's control socket for some configuration updates and fall back to fork and reload for other configuration updates.  This is a newer approach, which may be less mature than ForkAndReload.  This setting can improve load-balancing fairness and metrics accuracy and reduce CPU and memory usage if HAProxy has frequent configuration updates for route and endpoints updates.<br><p> <br><p> Note: The "Dynamic" option is currently experimental and should not be enabled on production clusters.<br><p> <br><p> <br><p> Possible enum values:<br><p>  - `"Dynamic"`<br><p>  - `"ForkAndReload"`
+     */
+    @JsonProperty("configurationManagement")
+    public void setConfigurationManagement(String configurationManagement) {
+        this.configurationManagement = configurationManagement;
     }
 
     /**

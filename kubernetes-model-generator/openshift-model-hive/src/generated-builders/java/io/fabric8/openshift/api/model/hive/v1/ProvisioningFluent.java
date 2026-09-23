@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1.ProvisioningFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private LocalObjectReferenceBuilder customizationRef;
   private ClusterImageSetReferenceBuilder imageSetRef;
   private LocalObjectReferenceBuilder installConfigSecretRef;
   private ArrayList<EnvVarBuilder> installerEnv = new ArrayList<EnvVarBuilder>();
@@ -142,6 +143,10 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
     return (A) this;
   }
   
+  public LocalObjectReference buildCustomizationRef() {
+    return this.customizationRef != null ? this.customizationRef.build() : null;
+  }
+  
   public EnvVar buildFirstInstallerEnv() {
     return this.installerEnv.get(0).build();
   }
@@ -190,6 +195,7 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
   protected void copyInstance(Provisioning instance) {
     instance = instance != null ? instance : new Provisioning();
     if (instance != null) {
+        this.withCustomizationRef(instance.getCustomizationRef());
         this.withImageSetRef(instance.getImageSetRef());
         this.withInstallConfigSecretRef(instance.getInstallConfigSecretRef());
         this.withInstallerEnv(instance.getInstallerEnv());
@@ -201,6 +207,10 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
         this.withSshPrivateKeySecretRef(instance.getSshPrivateKeySecretRef());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public CustomizationRefNested<A> editCustomizationRef() {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(null));
   }
   
   public InstallerEnvNested<A> editFirstInstallerEnv() {
@@ -253,6 +263,14 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
       throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "installerEnv"));
     }
     return this.setNewInstallerEnvLike(index, this.buildInstallerEnv(index));
+  }
+  
+  public CustomizationRefNested<A> editOrNewCustomizationRef() {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(new LocalObjectReferenceBuilder().build()));
+  }
+  
+  public CustomizationRefNested<A> editOrNewCustomizationRefLike(LocalObjectReference item) {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(item));
   }
   
   public ImageSetRefNested<A> editOrNewImageSetRef() {
@@ -310,6 +328,9 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
       return false;
     }
     ProvisioningFluent that = (ProvisioningFluent) o;
+    if (!(Objects.equals(customizationRef, that.customizationRef))) {
+      return false;
+    }
     if (!(Objects.equals(imageSetRef, that.imageSetRef))) {
       return false;
     }
@@ -384,6 +405,10 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
     return this.additionalProperties != null;
   }
   
+  public boolean hasCustomizationRef() {
+    return this.customizationRef != null;
+  }
+  
   public boolean hasImageSetRef() {
     return this.imageSetRef != null;
   }
@@ -439,7 +464,7 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
   }
   
   public int hashCode() {
-    return Objects.hash(imageSetRef, installConfigSecretRef, installerEnv, installerImageOverride, manifestsConfigMapRef, manifestsSecretRef, releaseImage, sshKnownHosts, sshPrivateKeySecretRef, additionalProperties);
+    return Objects.hash(customizationRef, imageSetRef, installConfigSecretRef, installerEnv, installerImageOverride, manifestsConfigMapRef, manifestsSecretRef, releaseImage, sshKnownHosts, sshPrivateKeySecretRef, additionalProperties);
   }
   
   public A removeAllFromInstallerEnv(Collection<EnvVar> items) {
@@ -556,6 +581,11 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(customizationRef == null)) {
+        sb.append("customizationRef:");
+        sb.append(customizationRef);
+        sb.append(",");
+    }
     if (!(imageSetRef == null)) {
         sb.append("imageSetRef:");
         sb.append(imageSetRef);
@@ -614,6 +644,18 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withCustomizationRef(LocalObjectReference customizationRef) {
+    this._visitables.remove("customizationRef");
+    if (customizationRef != null) {
+        this.customizationRef = new LocalObjectReferenceBuilder(customizationRef);
+        this._visitables.get("customizationRef").add(this.customizationRef);
+    } else {
+        this.customizationRef = null;
+        this._visitables.get("customizationRef").remove(this.customizationRef);
     }
     return (A) this;
   }
@@ -697,6 +739,18 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
         this._visitables.get("manifestsSecretRef").remove(this.manifestsSecretRef);
     }
     return (A) this;
+  }
+  
+  public CustomizationRefNested<A> withNewCustomizationRef() {
+    return new CustomizationRefNested(null);
+  }
+  
+  public A withNewCustomizationRef(String name) {
+    return (A) this.withCustomizationRef(new LocalObjectReference(name));
+  }
+  
+  public CustomizationRefNested<A> withNewCustomizationRefLike(LocalObjectReference item) {
+    return new CustomizationRefNested(item);
   }
   
   public ImageSetRefNested<A> withNewImageSetRef() {
@@ -799,6 +853,23 @@ public class ProvisioningFluent<A extends io.fabric8.openshift.api.model.hive.v1
         this._visitables.get("sshPrivateKeySecretRef").remove(this.sshPrivateKeySecretRef);
     }
     return (A) this;
+  }
+  public class CustomizationRefNested<N> extends LocalObjectReferenceFluent<CustomizationRefNested<N>> implements Nested<N>{
+  
+    LocalObjectReferenceBuilder builder;
+  
+    CustomizationRefNested(LocalObjectReference item) {
+      this.builder = new LocalObjectReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ProvisioningFluent.this.withCustomizationRef(builder.build());
+    }
+    
+    public N endCustomizationRef() {
+      return and();
+    }
+    
   }
   public class ImageSetRefNested<N> extends ClusterImageSetReferenceFluent<ImageSetRefNested<N>> implements Nested<N>{
   

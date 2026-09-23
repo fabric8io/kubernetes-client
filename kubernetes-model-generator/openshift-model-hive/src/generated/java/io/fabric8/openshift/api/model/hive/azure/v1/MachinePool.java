@@ -44,6 +44,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "networkResourceGroupName",
     "osDisk",
     "osImage",
+    "osImageID",
+    "outboundType",
     "type",
     "virtualNetwork",
     "vmNetworkingType",
@@ -82,6 +84,10 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private OSDisk osDisk;
     @JsonProperty("osImage")
     private OSImage osImage;
+    @JsonProperty("osImageID")
+    private String osImageID;
+    @JsonProperty("outboundType")
+    private String outboundType;
     @JsonProperty("type")
     private String type;
     @JsonProperty("virtualNetwork")
@@ -100,12 +106,14 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String computeSubnet, String networkResourceGroupName, OSDisk osDisk, OSImage osImage, String type, String virtualNetwork, String vmNetworkingType, List<String> zones) {
+    public MachinePool(String computeSubnet, String networkResourceGroupName, OSDisk osDisk, OSImage osImage, String osImageID, String outboundType, String type, String virtualNetwork, String vmNetworkingType, List<String> zones) {
         super();
         this.computeSubnet = computeSubnet;
         this.networkResourceGroupName = networkResourceGroupName;
         this.osDisk = osDisk;
         this.osImage = osImage;
+        this.osImageID = osImageID;
+        this.outboundType = outboundType;
         this.type = type;
         this.virtualNetwork = virtualNetwork;
         this.vmNetworkingType = vmNetworkingType;
@@ -174,6 +182,38 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("osImage")
     public void setOsImage(OSImage osImage) {
         this.osImage = osImage;
+    }
+
+    /**
+     * OSImageID is the resource path of the managed or gallery image to be used on the VMs. Mutually exclusive with OSImage; if both are specified, OSImage is ignored. If neither is specified, the managed cluster will inject a default.
+     */
+    @JsonProperty("osImageID")
+    public String getOsImageID() {
+        return osImageID;
+    }
+
+    /**
+     * OSImageID is the resource path of the managed or gallery image to be used on the VMs. Mutually exclusive with OSImage; if both are specified, OSImage is ignored. If neither is specified, the managed cluster will inject a default.
+     */
+    @JsonProperty("osImageID")
+    public void setOsImageID(String osImageID) {
+        this.osImageID = osImageID;
+    }
+
+    /**
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer".
+     */
+    @JsonProperty("outboundType")
+    public String getOutboundType() {
+        return outboundType;
+    }
+
+    /**
+     * OutboundType is a strategy for how egress from cluster is achieved. When not specified default is "Loadbalancer".
+     */
+    @JsonProperty("outboundType")
+    public void setOutboundType(String outboundType) {
+        this.outboundType = outboundType;
     }
 
     /**

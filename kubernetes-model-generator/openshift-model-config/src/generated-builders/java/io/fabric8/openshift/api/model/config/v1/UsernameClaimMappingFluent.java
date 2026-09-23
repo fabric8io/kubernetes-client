@@ -19,6 +19,7 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
 
   private Map<String,Object> additionalProperties;
   private String claim;
+  private String expression;
   private UsernamePrefixBuilder prefix;
   private String prefixPolicy;
 
@@ -57,6 +58,7 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
     instance = instance != null ? instance : new UsernameClaimMapping();
     if (instance != null) {
         this.withClaim(instance.getClaim());
+        this.withExpression(instance.getExpression());
         this.withPrefix(instance.getPrefix());
         this.withPrefixPolicy(instance.getPrefixPolicy());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -89,6 +91,9 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
     if (!(Objects.equals(claim, that.claim))) {
       return false;
     }
+    if (!(Objects.equals(expression, that.expression))) {
+      return false;
+    }
     if (!(Objects.equals(prefix, that.prefix))) {
       return false;
     }
@@ -109,6 +114,10 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
     return this.claim;
   }
   
+  public String getExpression() {
+    return this.expression;
+  }
+  
   public String getPrefixPolicy() {
     return this.prefixPolicy;
   }
@@ -121,6 +130,10 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
     return this.claim != null;
   }
   
+  public boolean hasExpression() {
+    return this.expression != null;
+  }
+  
   public boolean hasPrefix() {
     return this.prefix != null;
   }
@@ -130,7 +143,7 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
   }
   
   public int hashCode() {
-    return Objects.hash(claim, prefix, prefixPolicy, additionalProperties);
+    return Objects.hash(claim, expression, prefix, prefixPolicy, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -165,6 +178,11 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
         sb.append(claim);
         sb.append(",");
     }
+    if (!(expression == null)) {
+        sb.append("expression:");
+        sb.append(expression);
+        sb.append(",");
+    }
     if (!(prefix == null)) {
         sb.append("prefix:");
         sb.append(prefix);
@@ -194,6 +212,11 @@ public class UsernameClaimMappingFluent<A extends io.fabric8.openshift.api.model
   
   public A withClaim(String claim) {
     this.claim = claim;
+    return (A) this;
+  }
+  
+  public A withExpression(String expression) {
+    this.expression = expression;
     return (A) this;
   }
   

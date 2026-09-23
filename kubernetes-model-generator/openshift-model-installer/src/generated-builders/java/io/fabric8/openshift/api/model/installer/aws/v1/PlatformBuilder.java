@@ -25,7 +25,7 @@ public class PlatformBuilder extends PlatformFluent<PlatformBuilder> implements 
   }
 
   public Platform build() {
-    Platform buildable = new Platform(fluent.getAmiID(), fluent.getBestEffortDeleteIgnition(), fluent.buildDefaultMachinePlatform(), fluent.getHostedZone(), fluent.getHostedZoneRole(), fluent.getLbType(), fluent.getPreserveBootstrapIgnition(), fluent.getPropagateUserTags(), fluent.getPublicIpv4Pool(), fluent.getRegion(), fluent.buildServiceEndpoints(), fluent.getSubnets(), fluent.getUserProvisionedDNS(), fluent.getUserTags(), fluent.buildVpc());
+    Platform buildable = new Platform(fluent.getAmiID(), fluent.getBestEffortDeleteIgnition(), fluent.buildDefaultMachinePlatform(), fluent.getHostedZone(), fluent.getHostedZoneRole(), fluent.getIpFamily(), fluent.getLbType(), fluent.getPreserveBootstrapIgnition(), fluent.getPropagateUserTags(), fluent.getPublicIpv4Pool(), fluent.getRegion(), fluent.buildServiceEndpoints(), fluent.getSubnets(), fluent.getUserProvisionedDNS(), fluent.getUserTags(), fluent.buildVpc());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

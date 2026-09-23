@@ -17,6 +17,7 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
 
   private Map<String,Object> additionalProperties;
   private String claim;
+  private String expression;
   private String prefix;
 
   public PrefixedClaimMappingFluent() {
@@ -50,6 +51,7 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
     instance = instance != null ? instance : new PrefixedClaimMapping();
     if (instance != null) {
         this.withClaim(instance.getClaim());
+        this.withExpression(instance.getExpression());
         this.withPrefix(instance.getPrefix());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -69,6 +71,9 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
     if (!(Objects.equals(claim, that.claim))) {
       return false;
     }
+    if (!(Objects.equals(expression, that.expression))) {
+      return false;
+    }
     if (!(Objects.equals(prefix, that.prefix))) {
       return false;
     }
@@ -86,6 +91,10 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
     return this.claim;
   }
   
+  public String getExpression() {
+    return this.expression;
+  }
+  
   public String getPrefix() {
     return this.prefix;
   }
@@ -98,12 +107,16 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
     return this.claim != null;
   }
   
+  public boolean hasExpression() {
+    return this.expression != null;
+  }
+  
   public boolean hasPrefix() {
     return this.prefix != null;
   }
   
   public int hashCode() {
-    return Objects.hash(claim, prefix, additionalProperties);
+    return Objects.hash(claim, expression, prefix, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -138,6 +151,11 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
         sb.append(claim);
         sb.append(",");
     }
+    if (!(expression == null)) {
+        sb.append("expression:");
+        sb.append(expression);
+        sb.append(",");
+    }
     if (!(prefix == null)) {
         sb.append("prefix:");
         sb.append(prefix);
@@ -162,6 +180,11 @@ public class PrefixedClaimMappingFluent<A extends io.fabric8.openshift.api.model
   
   public A withClaim(String claim) {
     this.claim = claim;
+    return (A) this;
+  }
+  
+  public A withExpression(String expression) {
+    this.expression = expression;
     return (A) this;
   }
   

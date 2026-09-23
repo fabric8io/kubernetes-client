@@ -25,7 +25,7 @@ public class MachineStatusBuilder extends MachineStatusFluent<MachineStatusBuild
   }
 
   public MachineStatus build() {
-    MachineStatus buildable = new MachineStatus(fluent.getAddresses(), fluent.getAuthoritativeAPI(), fluent.buildConditions(), fluent.getErrorMessage(), fluent.getErrorReason(), fluent.buildLastOperation(), fluent.getLastUpdated(), fluent.buildNodeRef(), fluent.getPhase(), fluent.getProviderStatus(), fluent.getSynchronizedGeneration());
+    MachineStatus buildable = new MachineStatus(fluent.getAddresses(), fluent.getAuthoritativeAPI(), fluent.buildConditions(), fluent.getErrorMessage(), fluent.getErrorReason(), fluent.buildLastOperation(), fluent.getLastUpdated(), fluent.buildNodeRef(), fluent.getPhase(), fluent.getProviderStatus(), fluent.getSynchronizedAPI(), fluent.getSynchronizedGeneration());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

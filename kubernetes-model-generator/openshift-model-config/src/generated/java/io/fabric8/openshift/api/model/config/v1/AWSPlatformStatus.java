@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cloudLoadBalancerConfig",
+    "ipFamily",
     "region",
     "resourceTags",
     "serviceEndpoints"
@@ -71,6 +72,8 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
 
     @JsonProperty("cloudLoadBalancerConfig")
     private CloudLoadBalancerConfig cloudLoadBalancerConfig;
+    @JsonProperty("ipFamily")
+    private String ipFamily;
     @JsonProperty("region")
     private String region;
     @JsonProperty("resourceTags")
@@ -88,9 +91,10 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     public AWSPlatformStatus() {
     }
 
-    public AWSPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
+    public AWSPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String ipFamily, String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
         super();
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
+        this.ipFamily = ipFamily;
         this.region = region;
         this.resourceTags = resourceTags;
         this.serviceEndpoints = serviceEndpoints;
@@ -110,6 +114,22 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     @JsonProperty("cloudLoadBalancerConfig")
     public void setCloudLoadBalancerConfig(CloudLoadBalancerConfig cloudLoadBalancerConfig) {
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public String getIpFamily() {
+        return ipFamily;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public void setIpFamily(String ipFamily) {
+        this.ipFamily = ipFamily;
     }
 
     /**

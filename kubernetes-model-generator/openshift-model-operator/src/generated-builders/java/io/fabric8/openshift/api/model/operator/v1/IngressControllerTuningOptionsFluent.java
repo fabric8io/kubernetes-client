@@ -19,6 +19,7 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
   private Map<String,Object> additionalProperties;
   private String clientFinTimeout;
   private String clientTimeout;
+  private String configurationManagement;
   private String connectTimeout;
   private Integer headerBufferBytes;
   private Integer headerBufferMaxRewriteBytes;
@@ -64,6 +65,7 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
     if (instance != null) {
         this.withClientFinTimeout(instance.getClientFinTimeout());
         this.withClientTimeout(instance.getClientTimeout());
+        this.withConfigurationManagement(instance.getConfigurationManagement());
         this.withConnectTimeout(instance.getConnectTimeout());
         this.withHeaderBufferBytes(instance.getHeaderBufferBytes());
         this.withHeaderBufferMaxRewriteBytes(instance.getHeaderBufferMaxRewriteBytes());
@@ -95,6 +97,9 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
       return false;
     }
     if (!(Objects.equals(clientTimeout, that.clientTimeout))) {
+      return false;
+    }
+    if (!(Objects.equals(configurationManagement, that.configurationManagement))) {
       return false;
     }
     if (!(Objects.equals(connectTimeout, that.connectTimeout))) {
@@ -149,6 +154,10 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
   
   public String getClientTimeout() {
     return this.clientTimeout;
+  }
+  
+  public String getConfigurationManagement() {
+    return this.configurationManagement;
   }
   
   public String getConnectTimeout() {
@@ -211,6 +220,10 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
     return this.clientTimeout != null;
   }
   
+  public boolean hasConfigurationManagement() {
+    return this.configurationManagement != null;
+  }
+  
   public boolean hasConnectTimeout() {
     return this.connectTimeout != null;
   }
@@ -260,7 +273,7 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
   }
   
   public int hashCode() {
-    return Objects.hash(clientFinTimeout, clientTimeout, connectTimeout, headerBufferBytes, headerBufferMaxRewriteBytes, healthCheckInterval, httpKeepAliveTimeout, maxConnections, reloadInterval, serverFinTimeout, serverTimeout, threadCount, tlsInspectDelay, tunnelTimeout, additionalProperties);
+    return Objects.hash(clientFinTimeout, clientTimeout, configurationManagement, connectTimeout, headerBufferBytes, headerBufferMaxRewriteBytes, healthCheckInterval, httpKeepAliveTimeout, maxConnections, reloadInterval, serverFinTimeout, serverTimeout, threadCount, tlsInspectDelay, tunnelTimeout, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -298,6 +311,11 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
     if (!(clientTimeout == null)) {
         sb.append("clientTimeout:");
         sb.append(clientTimeout);
+        sb.append(",");
+    }
+    if (!(configurationManagement == null)) {
+        sb.append("configurationManagement:");
+        sb.append(configurationManagement);
         sb.append(",");
     }
     if (!(connectTimeout == null)) {
@@ -384,6 +402,11 @@ public class IngressControllerTuningOptionsFluent<A extends io.fabric8.openshift
   
   public A withClientTimeout(String clientTimeout) {
     this.clientTimeout = clientTimeout;
+    return (A) this;
+  }
+  
+  public A withConfigurationManagement(String configurationManagement) {
+    this.configurationManagement = configurationManagement;
     return (A) this;
   }
   

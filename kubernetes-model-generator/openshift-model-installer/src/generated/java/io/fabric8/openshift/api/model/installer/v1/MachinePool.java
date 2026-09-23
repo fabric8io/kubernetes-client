@@ -44,6 +44,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "diskSetup",
     "fencing",
     "hyperthreading",
+    "management",
     "name",
     "platform",
     "replicas"
@@ -82,6 +83,8 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private Fencing fencing;
     @JsonProperty("hyperthreading")
     private String hyperthreading;
+    @JsonProperty("management")
+    private String management;
     @JsonProperty("name")
     private String name;
     @JsonProperty("platform")
@@ -97,12 +100,13 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String architecture, List<Disk> diskSetup, Fencing fencing, String hyperthreading, String name, MachinePoolPlatform platform, Long replicas) {
+    public MachinePool(String architecture, List<Disk> diskSetup, Fencing fencing, String hyperthreading, String management, String name, MachinePoolPlatform platform, Long replicas) {
         super();
         this.architecture = architecture;
         this.diskSetup = diskSetup;
         this.fencing = fencing;
         this.hyperthreading = hyperthreading;
+        this.management = management;
         this.name = name;
         this.platform = platform;
         this.replicas = replicas;
@@ -171,6 +175,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("hyperthreading")
     public void setHyperthreading(String hyperthreading) {
         this.hyperthreading = hyperthreading;
+    }
+
+    /**
+     * Management is the API that will be used for machine management in the cluster. Using this field for control plane machines requires the ClusterAPIControlPlaneInstall feature gate. Using this field for compute machines requires the ClusterAPIComputeInstall feature gate. Supported platforms: aws Default is ClusterAPI.
+     */
+    @JsonProperty("management")
+    public String getManagement() {
+        return management;
+    }
+
+    /**
+     * Management is the API that will be used for machine management in the cluster. Using this field for control plane machines requires the ClusterAPIControlPlaneInstall feature gate. Using this field for compute machines requires the ClusterAPIComputeInstall feature gate. Supported platforms: aws Default is ClusterAPI.
+     */
+    @JsonProperty("management")
+    public void setManagement(String management) {
+        this.management = management;
     }
 
     /**

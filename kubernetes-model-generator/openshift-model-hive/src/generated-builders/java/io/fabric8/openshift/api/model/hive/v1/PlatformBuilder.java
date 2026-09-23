@@ -25,7 +25,7 @@ public class PlatformBuilder extends PlatformFluent<PlatformBuilder> implements 
   }
 
   public Platform build() {
-    Platform buildable = new Platform(fluent.buildAgentBareMetal(), fluent.buildAws(), fluent.buildAzure(), fluent.buildBaremetal(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildNone(), fluent.buildOpenstack(), fluent.buildOvirt(), fluent.buildVsphere());
+    Platform buildable = new Platform(fluent.buildAgentBareMetal(), fluent.buildAws(), fluent.buildAzure(), fluent.buildBaremetal(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildNone(), fluent.buildNutanix(), fluent.buildOpenstack(), fluent.buildVsphere());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -39,8 +39,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterUseOnly",
-    "name",
-    "region"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,8 +70,6 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     private Boolean clusterUseOnly;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("region")
-    private String region;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +79,10 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     public PSCEndpoint() {
     }
 
-    public PSCEndpoint(Boolean clusterUseOnly, String name, String region) {
+    public PSCEndpoint(Boolean clusterUseOnly, String name) {
         super();
         this.clusterUseOnly = clusterUseOnly;
         this.name = name;
-        this.region = region;
     }
 
     /**
@@ -119,22 +115,6 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Region is the region where the endpoint resides. When the region is empty, the location is assumed to be global.
-     */
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    /**
-     * Region is the region where the endpoint resides. When the region is empty, the location is assumed to be global.
-     */
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     @JsonIgnore

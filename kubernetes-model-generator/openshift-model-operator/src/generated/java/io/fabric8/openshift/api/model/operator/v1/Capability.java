@@ -86,7 +86,7 @@ public class Capability implements Editable<CapabilityBuilder>, KubernetesResour
     }
 
     /**
-     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     * name is the unique name of a capability. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour.
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,7 +94,7 @@ public class Capability implements Editable<CapabilityBuilder>, KubernetesResour
     }
 
     /**
-     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     * name is the unique name of a capability. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour.
      */
     @JsonProperty("name")
     public void setName(String name) {

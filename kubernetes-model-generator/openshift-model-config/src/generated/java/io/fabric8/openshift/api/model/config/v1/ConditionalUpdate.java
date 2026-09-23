@@ -42,6 +42,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "conditions",
     "release",
+    "riskNames",
     "risks"
 })
 @ToString
@@ -74,6 +75,9 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("release")
     private Release release;
+    @JsonProperty("riskNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> riskNames = new ArrayList<>();
     @JsonProperty("risks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConditionalUpdateRisk> risks = new ArrayList<>();
@@ -86,10 +90,11 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     public ConditionalUpdate() {
     }
 
-    public ConditionalUpdate(List<Condition> conditions, Release release, List<ConditionalUpdateRisk> risks) {
+    public ConditionalUpdate(List<Condition> conditions, Release release, List<String> riskNames, List<ConditionalUpdateRisk> risks) {
         super();
         this.conditions = conditions;
         this.release = release;
+        this.riskNames = riskNames;
         this.risks = risks;
     }
 
@@ -124,6 +129,23 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     @JsonProperty("release")
     public void setRelease(Release release) {
         this.release = release;
+    }
+
+    /**
+     * riskNames represents the set of the names of conditionalUpdateRisks that are relevant to this update for some clusters. The Applies condition of each conditionalUpdateRisks entry declares if that risk applies to this cluster. A conditional update is accepted only if each of its risks either does not apply to the cluster or is considered acceptable by the cluster administrator. The latter means that the risk names are included in value of the spec.desiredUpdate.acceptRisks field. Entries must be unique and must not exceed 256 characters. riskNames must not contain more than 500 entries.
+     */
+    @JsonProperty("riskNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRiskNames() {
+        return riskNames;
+    }
+
+    /**
+     * riskNames represents the set of the names of conditionalUpdateRisks that are relevant to this update for some clusters. The Applies condition of each conditionalUpdateRisks entry declares if that risk applies to this cluster. A conditional update is accepted only if each of its risks either does not apply to the cluster or is considered acceptable by the cluster administrator. The latter means that the risk names are included in value of the spec.desiredUpdate.acceptRisks field. Entries must be unique and must not exceed 256 characters. riskNames must not contain more than 500 entries.
+     */
+    @JsonProperty("riskNames")
+    public void setRiskNames(List<String> riskNames) {
+        this.riskNames = riskNames;
     }
 
     /**

@@ -102,7 +102,7 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
     }
 
     /**
-     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.
+     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.<br><p> <br><p> The ARN must follow the format: arn:&lt;partition&gt;:kms:&lt;region&gt;:&lt;account-id&gt;:(key|alias)/&lt;key-id-or-alias&gt;, where: &lt;partition&gt; is the AWS partition (aws, aws-cn, aws-us-gov, aws-iso, aws-iso-b, aws-iso-e, aws-iso-f, or aws-eusc), &lt;region&gt; is the AWS region, &lt;account-id&gt; is a 12-digit numeric identifier for the AWS account, &lt;key-id-or-alias&gt; is the KMS key ID or alias name.
      */
     @JsonProperty("kmsKeyARN")
     public String getKmsKeyARN() {
@@ -110,7 +110,7 @@ public class AWSCSIDriverConfigSpec implements Editable<AWSCSIDriverConfigSpecBu
     }
 
     /**
-     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.
+     * kmsKeyARN sets the cluster default storage class to encrypt volumes with a user-defined KMS key, rather than the default KMS key used by AWS. The value may be either the ARN or Alias ARN of a KMS key.<br><p> <br><p> The ARN must follow the format: arn:&lt;partition&gt;:kms:&lt;region&gt;:&lt;account-id&gt;:(key|alias)/&lt;key-id-or-alias&gt;, where: &lt;partition&gt; is the AWS partition (aws, aws-cn, aws-us-gov, aws-iso, aws-iso-b, aws-iso-e, aws-iso-f, or aws-eusc), &lt;region&gt; is the AWS region, &lt;account-id&gt; is a 12-digit numeric identifier for the AWS account, &lt;key-id-or-alias&gt; is the KMS key ID or alias name.
      */
     @JsonProperty("kmsKeyARN")
     public void setKmsKeyARN(String kmsKeyARN) {

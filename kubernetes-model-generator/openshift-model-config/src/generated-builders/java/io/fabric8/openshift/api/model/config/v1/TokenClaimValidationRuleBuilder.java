@@ -25,7 +25,7 @@ public class TokenClaimValidationRuleBuilder extends TokenClaimValidationRuleFlu
   }
 
   public TokenClaimValidationRule build() {
-    TokenClaimValidationRule buildable = new TokenClaimValidationRule(fluent.buildRequiredClaim(), fluent.getType());
+    TokenClaimValidationRule buildable = new TokenClaimValidationRule(fluent.buildCel(), fluent.buildRequiredClaim(), fluent.getType());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "availableUpdates",
     "capabilities",
+    "conditionalUpdateRisks",
     "conditionalUpdates",
     "conditions",
     "desired",
@@ -78,6 +79,9 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     private List<Release> availableUpdates = new ArrayList<>();
     @JsonProperty("capabilities")
     private ClusterVersionCapabilitiesStatus capabilities;
+    @JsonProperty("conditionalUpdateRisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<ConditionalUpdateRisk> conditionalUpdateRisks = new ArrayList<>();
     @JsonProperty("conditionalUpdates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConditionalUpdate> conditionalUpdates = new ArrayList<>();
@@ -102,10 +106,11 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     public ClusterVersionStatus() {
     }
 
-    public ClusterVersionStatus(List<Release> availableUpdates, ClusterVersionCapabilitiesStatus capabilities, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
+    public ClusterVersionStatus(List<Release> availableUpdates, ClusterVersionCapabilitiesStatus capabilities, List<ConditionalUpdateRisk> conditionalUpdateRisks, List<ConditionalUpdate> conditionalUpdates, List<ClusterOperatorStatusCondition> conditions, Release desired, List<UpdateHistory> history, Long observedGeneration, String versionHash) {
         super();
         this.availableUpdates = availableUpdates;
         this.capabilities = capabilities;
+        this.conditionalUpdateRisks = conditionalUpdateRisks;
         this.conditionalUpdates = conditionalUpdates;
         this.conditions = conditions;
         this.desired = desired;
@@ -145,6 +150,23 @@ public class ClusterVersionStatus implements Editable<ClusterVersionStatusBuilde
     @JsonProperty("capabilities")
     public void setCapabilities(ClusterVersionCapabilitiesStatus capabilities) {
         this.capabilities = capabilities;
+    }
+
+    /**
+     * conditionalUpdateRisks contains the list of risks associated with conditionalUpdates. When performing a conditional update, all its associated risks will be compared with the set of accepted risks in the spec.desiredUpdate.acceptRisks field. If all risks for a conditional update are included in the spec.desiredUpdate.acceptRisks set, the conditional update can proceed, otherwise it is blocked. The risk names in the list must be unique. conditionalUpdateRisks must not contain more than 500 entries.
+     */
+    @JsonProperty("conditionalUpdateRisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<ConditionalUpdateRisk> getConditionalUpdateRisks() {
+        return conditionalUpdateRisks;
+    }
+
+    /**
+     * conditionalUpdateRisks contains the list of risks associated with conditionalUpdates. When performing a conditional update, all its associated risks will be compared with the set of accepted risks in the spec.desiredUpdate.acceptRisks field. If all risks for a conditional update are included in the spec.desiredUpdate.acceptRisks set, the conditional update can proceed, otherwise it is blocked. The risk names in the list must be unique. conditionalUpdateRisks must not contain more than 500 entries.
+     */
+    @JsonProperty("conditionalUpdateRisks")
+    public void setConditionalUpdateRisks(List<ConditionalUpdateRisk> conditionalUpdateRisks) {
+        this.conditionalUpdateRisks = conditionalUpdateRisks;
     }
 
     /**

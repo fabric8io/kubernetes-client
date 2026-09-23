@@ -25,7 +25,7 @@ public class VSphereClusterDeprovisionBuilder extends VSphereClusterDeprovisionF
   }
 
   public VSphereClusterDeprovision build() {
-    VSphereClusterDeprovision buildable = new VSphereClusterDeprovision(fluent.buildCertificatesSecretRef(), fluent.buildCredentialsSecretRef(), fluent.getVCenter());
+    VSphereClusterDeprovision buildable = new VSphereClusterDeprovision(fluent.buildCertificatesSecretRef(), fluent.buildCredentialsSecretRef(), fluent.getVCenter(), fluent.getVCenters());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

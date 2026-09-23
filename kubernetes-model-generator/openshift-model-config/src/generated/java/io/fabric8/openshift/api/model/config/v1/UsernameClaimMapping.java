@@ -35,6 +35,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "claim",
+    "expression",
     "prefix",
     "prefixPolicy"
 })
@@ -65,6 +66,8 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
 
     @JsonProperty("claim")
     private String claim;
+    @JsonProperty("expression")
+    private String expression;
     @JsonProperty("prefix")
     private UsernamePrefix prefix;
     @JsonProperty("prefixPolicy")
@@ -78,15 +81,16 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     public UsernameClaimMapping() {
     }
 
-    public UsernameClaimMapping(String claim, UsernamePrefix prefix, String prefixPolicy) {
+    public UsernameClaimMapping(String claim, String expression, UsernamePrefix prefix, String prefixPolicy) {
         super();
         this.claim = claim;
+        this.expression = expression;
         this.prefix = prefix;
         this.prefixPolicy = prefixPolicy;
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.<br><p> <br><p> claim must not be an empty string ("") and must not exceed 256 characters.
+     * claim is an optional field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled. When the ExternalOIDCWithUpstreamParity feature gate is enabled, claim must not be set when expression is set.<br><p> <br><p> claim must not be an empty string ("") and must not exceed 256 characters.
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -94,11 +98,27 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.<br><p> <br><p> claim must not be an empty string ("") and must not exceed 256 characters.
+     * claim is an optional field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled. When the ExternalOIDCWithUpstreamParity feature gate is enabled, claim must not be set when expression is set.<br><p> <br><p> claim must not be an empty string ("") and must not exceed 256 characters.
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
+    }
+
+    /**
+     * expression is an optional CEL expression used to derive the username from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length. expression must not be set when claim is set.
+     */
+    @JsonProperty("expression")
+    public String getExpression() {
+        return expression;
+    }
+
+    /**
+     * expression is an optional CEL expression used to derive the username from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length. expression must not be set when claim is set.
+     */
+    @JsonProperty("expression")
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     @JsonProperty("prefix")
@@ -112,7 +132,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.<br><p> <br><p> Allowed values are 'Prefix', 'NoPrefix', and omitted (not provided or an empty string).<br><p> <br><p> When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'.<br><p> <br><p> When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim.<br><p> <br><p> When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends `{issuerURL}#` to the value of the JWT claim when the claim is not 'email'. As an example, consider the following scenario:<br><p>    `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>    the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>    and `claim` is set to:<br><p>    - "username": the mapped value will be "https://myoidc.tld#userA"<br><p>    - "email": the mapped value will be "userA@myoidc.tld"
+     * prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.<br><p> <br><p> Allowed values are 'Prefix', 'NoPrefix', and omitted (not provided or an empty string).<br><p> <br><p> When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'. Must not be set to 'Prefix' when expression is set. When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim. When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends `{issuerURL}#` to the value of the JWT claim when the claim is not 'email'.<br><p> <br><p> As an example, consider the following scenario:<br><p> <br><p>    `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>    the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>    and `claim` is set to:<br><p>    - "username": the mapped value will be "https://myoidc.tld#userA"<br><p>    - "email": the mapped value will be "userA@myoidc.tld"<br><p> <br><p> <br><p> Possible enum values:<br><p>  - `""` let's the cluster assign prefixes. If the username claim is email, there is no prefix If the username claim is anything else, it is prefixed by the issuerURL<br><p>  - `"NoPrefix"` means the username claim value will not have any prefix<br><p>  - `"Prefix"` means the prefix value must be specified. It cannot be empty
      */
     @JsonProperty("prefixPolicy")
     public String getPrefixPolicy() {
@@ -120,7 +140,7 @@ public class UsernameClaimMapping implements Editable<UsernameClaimMappingBuilde
     }
 
     /**
-     * prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.<br><p> <br><p> Allowed values are 'Prefix', 'NoPrefix', and omitted (not provided or an empty string).<br><p> <br><p> When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'.<br><p> <br><p> When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim.<br><p> <br><p> When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends `{issuerURL}#` to the value of the JWT claim when the claim is not 'email'. As an example, consider the following scenario:<br><p>    `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>    the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>    and `claim` is set to:<br><p>    - "username": the mapped value will be "https://myoidc.tld#userA"<br><p>    - "email": the mapped value will be "userA@myoidc.tld"
+     * prefixPolicy is an optional field that configures how a prefix should be applied to the value of the JWT claim specified in the 'claim' field.<br><p> <br><p> Allowed values are 'Prefix', 'NoPrefix', and omitted (not provided or an empty string).<br><p> <br><p> When set to 'Prefix', the value specified in the prefix field will be prepended to the value of the JWT claim. The prefix field must be set when prefixPolicy is 'Prefix'. Must not be set to 'Prefix' when expression is set. When set to 'NoPrefix', no prefix will be prepended to the value of the JWT claim. When omitted, this means no opinion and the platform is left to choose any prefixes that are applied which is subject to change over time. Currently, the platform prepends `{issuerURL}#` to the value of the JWT claim when the claim is not 'email'.<br><p> <br><p> As an example, consider the following scenario:<br><p> <br><p>    `prefix` is unset, `issuerURL` is set to `https://myoidc.tld`,<br><p>    the JWT claims include "username":"userA" and "email":"userA@myoidc.tld",<br><p>    and `claim` is set to:<br><p>    - "username": the mapped value will be "https://myoidc.tld#userA"<br><p>    - "email": the mapped value will be "userA@myoidc.tld"<br><p> <br><p> <br><p> Possible enum values:<br><p>  - `""` let's the cluster assign prefixes. If the username claim is email, there is no prefix If the username claim is anything else, it is prefixed by the issuerURL<br><p>  - `"NoPrefix"` means the username claim value will not have any prefix<br><p>  - `"Prefix"` means the prefix value must be specified. It cannot be empty
      */
     @JsonProperty("prefixPolicy")
     public void setPrefixPolicy(String prefixPolicy) {

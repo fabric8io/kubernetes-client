@@ -25,7 +25,7 @@ public class AzureClusterDeprovisionBuilder extends AzureClusterDeprovisionFluen
   }
 
   public AzureClusterDeprovision build() {
-    AzureClusterDeprovision buildable = new AzureClusterDeprovision(fluent.getCloudName(), fluent.buildCredentialsSecretRef(), fluent.getResourceGroupName());
+    AzureClusterDeprovision buildable = new AzureClusterDeprovision(fluent.getBaseDomainResourceGroupName(), fluent.getCloudName(), fluent.buildCredentialsSecretRef(), fluent.getResourceGroupName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

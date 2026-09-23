@@ -63,6 +63,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "imageDigestSources",
     "networking",
     "operatorPublishingStrategy",
+    "osImageStream",
     "platform",
     "proxy",
     "publish",
@@ -140,6 +141,8 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     private Networking networking;
     @JsonProperty("operatorPublishingStrategy")
     private OperatorPublishingStrategy operatorPublishingStrategy;
+    @JsonProperty("osImageStream")
+    private String osImageStream;
     @JsonProperty("platform")
     private Platform platform;
     @JsonProperty("proxy")
@@ -159,7 +162,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     public InstallConfig() {
     }
 
-    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, MachinePool arbiter, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, List<String> featureGates, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, List<ImageDigestSource> imageDigestSources, String kind, ObjectMeta metadata, Networking networking, OperatorPublishingStrategy operatorPublishingStrategy, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
+    public InstallConfig(String additionalTrustBundle, String additionalTrustBundlePolicy, String apiVersion, MachinePool arbiter, String baseDomain, BootstrapInPlace bootstrapInPlace, Capabilities capabilities, List<MachinePool> compute, MachinePool controlPlane, String cpuPartitioningMode, String credentialsMode, List<String> featureGates, String featureSet, Boolean fips, List<ImageContentSource> imageContentSources, List<ImageDigestSource> imageDigestSources, String kind, ObjectMeta metadata, Networking networking, OperatorPublishingStrategy operatorPublishingStrategy, String osImageStream, Platform platform, Proxy proxy, String publish, String pullSecret, String sshKey) {
         super();
         this.additionalTrustBundle = additionalTrustBundle;
         this.additionalTrustBundlePolicy = additionalTrustBundlePolicy;
@@ -181,6 +184,7 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
         this.metadata = metadata;
         this.networking = networking;
         this.operatorPublishingStrategy = operatorPublishingStrategy;
+        this.osImageStream = osImageStream;
         this.platform = platform;
         this.proxy = proxy;
         this.publish = publish;
@@ -510,6 +514,22 @@ public class InstallConfig implements Editable<InstallConfigBuilder>, HasMetadat
     @JsonProperty("operatorPublishingStrategy")
     public void setOperatorPublishingStrategy(OperatorPublishingStrategy operatorPublishingStrategy) {
         this.operatorPublishingStrategy = operatorPublishingStrategy;
+    }
+
+    /**
+     * OSImageStream is the global OS Image Stream to be used for all machines in the cluster.
+     */
+    @JsonProperty("osImageStream")
+    public String getOsImageStream() {
+        return osImageStream;
+    }
+
+    /**
+     * OSImageStream is the global OS Image Stream to be used for all machines in the cluster.
+     */
+    @JsonProperty("osImageStream")
+    public void setOsImageStream(String osImageStream) {
+        this.osImageStream = osImageStream;
     }
 
     /**

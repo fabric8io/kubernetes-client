@@ -25,7 +25,7 @@ public class ClusterDeprovisionPlatformBuilder extends ClusterDeprovisionPlatfor
   }
 
   public ClusterDeprovisionPlatform build() {
-    ClusterDeprovisionPlatform buildable = new ClusterDeprovisionPlatform(fluent.buildAws(), fluent.buildAzure(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildOpenstack(), fluent.buildOvirt(), fluent.buildVsphere());
+    ClusterDeprovisionPlatform buildable = new ClusterDeprovisionPlatform(fluent.buildAws(), fluent.buildAzure(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildNutanix(), fluent.buildOpenstack(), fluent.buildVsphere());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

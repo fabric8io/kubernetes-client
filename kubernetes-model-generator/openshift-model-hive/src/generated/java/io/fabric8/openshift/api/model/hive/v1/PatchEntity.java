@@ -33,7 +33,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * PatchEntity represent a json patch (RFC 6902) to be applied to the install-config
+ * PatchEntity represents a json patch (RFC 6902) to be applied
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -41,7 +41,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "from",
     "op",
     "path",
-    "value"
+    "value",
+    "valueJSON"
 })
 @ToString
 @EqualsAndHashCode
@@ -76,6 +77,8 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     private String path;
     @JsonProperty("value")
     private String value;
+    @JsonProperty("valueJSON")
+    private String valueJSON;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -85,12 +88,13 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     public PatchEntity() {
     }
 
-    public PatchEntity(String from, String op, String path, String value) {
+    public PatchEntity(String from, String op, String path, String value, String valueJSON) {
         super();
         this.from = from;
         this.op = op;
         this.path = path;
         this.value = value;
+        this.valueJSON = valueJSON;
     }
 
     /**
@@ -110,7 +114,7 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     }
 
     /**
-     * Op is the operation to perform: add, remove, replace, move, copy, test
+     * Op is the operation to perform.
      */
     @JsonProperty("op")
     public String getOp() {
@@ -118,7 +122,7 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     }
 
     /**
-     * Op is the operation to perform: add, remove, replace, move, copy, test
+     * Op is the operation to perform.
      */
     @JsonProperty("op")
     public void setOp(String op) {
@@ -142,7 +146,7 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     }
 
     /**
-     * Value is the value to be used in the operation
+     * Value is the &#42;string&#42; value to be used in the operation. For more complex values, use ValueJSON.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -150,11 +154,27 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
     }
 
     /**
-     * Value is the value to be used in the operation
+     * Value is the &#42;string&#42; value to be used in the operation. For more complex values, use ValueJSON.
      */
     @JsonProperty("value")
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * ValueJSON is a string representing a JSON object to be used in the operation. As such, internal quotes must be escaped. If nonempty, Value is ignored.
+     */
+    @JsonProperty("valueJSON")
+    public String getValueJSON() {
+        return valueJSON;
+    }
+
+    /**
+     * ValueJSON is a string representing a JSON object to be used in the operation. As such, internal quotes must be escaped. If nonempty, Value is ignored.
+     */
+    @JsonProperty("valueJSON")
+    public void setValueJSON(String valueJSON) {
+        this.valueJSON = valueJSON;
     }
 
     @JsonIgnore

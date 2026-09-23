@@ -25,7 +25,7 @@ public class ClusterMetadataBuilder extends ClusterMetadataFluent<ClusterMetadat
   }
 
   public ClusterMetadata build() {
-    ClusterMetadata buildable = new ClusterMetadata(fluent.buildAdminKubeconfigSecretRef(), fluent.buildAdminPasswordSecretRef(), fluent.getClusterID(), fluent.getInfraID(), fluent.buildPlatform());
+    ClusterMetadata buildable = new ClusterMetadata(fluent.buildAdminKubeconfigSecretRef(), fluent.buildAdminPasswordSecretRef(), fluent.getClusterID(), fluent.getInfraID(), fluent.buildMetadataJSONSecretRef(), fluent.buildPlatform());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

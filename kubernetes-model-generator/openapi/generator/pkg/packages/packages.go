@@ -50,8 +50,6 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/operator-framework/api/pkg/operators/v...",
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",
-	// Support types required by some APIs such as (github.com/openshift/hive)
-	"github.com/openshift/custom-resource-status/conditions/v...",
 }
 
 var AutoscalingPackagePatterns = []string{

@@ -27,6 +27,7 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   private String armEndpoint;
   private CloudLoadBalancerConfigBuilder cloudLoadBalancerConfig;
   private String cloudName;
+  private String ipFamily;
   private String networkResourceGroupName;
   private String resourceGroupName;
   private ArrayList<AzureResourceTagBuilder> resourceTags = new ArrayList<AzureResourceTagBuilder>();
@@ -144,6 +145,7 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
         this.withArmEndpoint(instance.getArmEndpoint());
         this.withCloudLoadBalancerConfig(instance.getCloudLoadBalancerConfig());
         this.withCloudName(instance.getCloudName());
+        this.withIpFamily(instance.getIpFamily());
         this.withNetworkResourceGroupName(instance.getNetworkResourceGroupName());
         this.withResourceGroupName(instance.getResourceGroupName());
         this.withResourceTags(instance.getResourceTags());
@@ -219,6 +221,9 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(cloudName, that.cloudName))) {
       return false;
     }
+    if (!(Objects.equals(ipFamily, that.ipFamily))) {
+      return false;
+    }
     if (!(Objects.equals(networkResourceGroupName, that.networkResourceGroupName))) {
       return false;
     }
@@ -246,6 +251,10 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.cloudName;
   }
   
+  public String getIpFamily() {
+    return this.ipFamily;
+  }
+  
   public String getNetworkResourceGroupName() {
     return this.networkResourceGroupName;
   }
@@ -270,6 +279,10 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.cloudName != null;
   }
   
+  public boolean hasIpFamily() {
+    return this.ipFamily != null;
+  }
+  
   public boolean hasMatchingResourceTag(Predicate<AzureResourceTagBuilder> predicate) {
       for (AzureResourceTagBuilder item : resourceTags) {
         if (predicate.test(item)) {
@@ -292,7 +305,7 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(armEndpoint, cloudLoadBalancerConfig, cloudName, networkResourceGroupName, resourceGroupName, resourceTags, additionalProperties);
+    return Objects.hash(armEndpoint, cloudLoadBalancerConfig, cloudName, ipFamily, networkResourceGroupName, resourceGroupName, resourceTags, additionalProperties);
   }
   
   public A removeAllFromResourceTags(Collection<AzureResourceTag> items) {
@@ -396,6 +409,11 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
         sb.append(cloudName);
         sb.append(",");
     }
+    if (!(ipFamily == null)) {
+        sb.append("ipFamily:");
+        sb.append(ipFamily);
+        sb.append(",");
+    }
     if (!(networkResourceGroupName == null)) {
         sb.append("networkResourceGroupName:");
         sb.append(networkResourceGroupName);
@@ -447,6 +465,11 @@ public class AzurePlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   
   public A withCloudName(String cloudName) {
     this.cloudName = cloudName;
+    return (A) this;
+  }
+  
+  public A withIpFamily(String ipFamily) {
+    this.ipFamily = ipFamily;
     return (A) this;
   }
   

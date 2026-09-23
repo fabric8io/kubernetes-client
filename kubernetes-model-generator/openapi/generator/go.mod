@@ -5,13 +5,13 @@ go 1.27.0
 // Required by some openshift operator dependencies
 // Force usage of latest Kuberentes Version
 replace (
-	// go list -m -json github.com/openshift/api@release-4.19
-	github.com/openshift/api => github.com/openshift/api v0.0.0-20260923043708-9abfa327cff2
+	// go list -m -json github.com/openshift/api@release-4.22
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20260918190207-231177cd43bc
 	github.com/openshift/assisted-service/api => github.com/openshift/assisted-service/api v1.0.10-0.20251202132226-43bfecff9fdb
 	github.com/openshift/assisted-service/client => github.com/openshift/assisted-service/client v1.0.10-0.20251202132226-43bfecff9fdb
 	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v1.0.10-0.20251202132226-43bfecff9fdb
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
-	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
+	github.com/openshift/installer => github.com/openshift/installer v1.4.22-ec5 // Most up-to-date 4.22 tag, release-4.22 pseudo-versions aren't in sum.golang.org https://issues.redhat.com/browse/OCPBUGS-42448
 
 	// Keep in line with k8s.io/apimachinery (client-go is otherwise resolved to v12.0.0+incompatible)
 	k8s.io/api => k8s.io/api v0.37.0

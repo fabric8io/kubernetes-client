@@ -42,6 +42,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "clusterID",
     "clusterName",
     "infraID",
+    "metadataJSONSecretRef",
     "platform"
 })
 @ToString
@@ -77,6 +78,8 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
     private String clusterName;
     @JsonProperty("infraID")
     private String infraID;
+    @JsonProperty("metadataJSONSecretRef")
+    private LocalObjectReference metadataJSONSecretRef;
     @JsonProperty("platform")
     private ClusterDeprovisionPlatform platform;
     @JsonIgnore
@@ -88,12 +91,13 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
     public ClusterDeprovisionSpec() {
     }
 
-    public ClusterDeprovisionSpec(String baseDomain, String clusterID, String clusterName, String infraID, ClusterDeprovisionPlatform platform) {
+    public ClusterDeprovisionSpec(String baseDomain, String clusterID, String clusterName, String infraID, LocalObjectReference metadataJSONSecretRef, ClusterDeprovisionPlatform platform) {
         super();
         this.baseDomain = baseDomain;
         this.clusterID = clusterID;
         this.clusterName = clusterName;
         this.infraID = infraID;
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
         this.platform = platform;
     }
 
@@ -159,6 +163,22 @@ public class ClusterDeprovisionSpec implements Editable<ClusterDeprovisionSpecBu
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
+    }
+
+    /**
+     * ClusterDeprovisionSpec defines the desired state of ClusterDeprovision
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public LocalObjectReference getMetadataJSONSecretRef() {
+        return metadataJSONSecretRef;
+    }
+
+    /**
+     * ClusterDeprovisionSpec defines the desired state of ClusterDeprovision
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public void setMetadataJSONSecretRef(LocalObjectReference metadataJSONSecretRef) {
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
     }
 
     /**

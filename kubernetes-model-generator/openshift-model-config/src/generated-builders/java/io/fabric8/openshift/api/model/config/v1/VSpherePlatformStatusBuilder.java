@@ -25,7 +25,7 @@ public class VSpherePlatformStatusBuilder extends VSpherePlatformStatusFluent<VS
   }
 
   public VSpherePlatformStatus build() {
-    VSpherePlatformStatus buildable = new VSpherePlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
+    VSpherePlatformStatus buildable = new VSpherePlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getDnsRecordsType(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

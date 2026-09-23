@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "baseDomainResourceGroupName",
     "cloudName",
     "credentialsSecretRef",
     "resourceGroupName"
@@ -67,6 +68,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class AzureClusterDeprovision implements Editable<AzureClusterDeprovisionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("baseDomainResourceGroupName")
+    private String baseDomainResourceGroupName;
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("credentialsSecretRef")
@@ -82,11 +85,28 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     public AzureClusterDeprovision() {
     }
 
-    public AzureClusterDeprovision(String cloudName, LocalObjectReference credentialsSecretRef, String resourceGroupName) {
+    public AzureClusterDeprovision(String baseDomainResourceGroupName, String cloudName, LocalObjectReference credentialsSecretRef, String resourceGroupName) {
         super();
+        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
         this.cloudName = cloudName;
         this.credentialsSecretRef = credentialsSecretRef;
         this.resourceGroupName = resourceGroupName;
+    }
+
+    /**
+     * BaseDomainResourceGroupName is the name of the resource group where the cluster's DNS records were created, if different from the default or the custom ResourceGroupName.
+     */
+    @JsonProperty("baseDomainResourceGroupName")
+    public String getBaseDomainResourceGroupName() {
+        return baseDomainResourceGroupName;
+    }
+
+    /**
+     * BaseDomainResourceGroupName is the name of the resource group where the cluster's DNS records were created, if different from the default or the custom ResourceGroupName.
+     */
+    @JsonProperty("baseDomainResourceGroupName")
+    public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
+        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
     /**

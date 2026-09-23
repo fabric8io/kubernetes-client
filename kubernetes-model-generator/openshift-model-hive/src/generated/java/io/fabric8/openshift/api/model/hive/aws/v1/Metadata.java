@@ -82,7 +82,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account. Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("hostedZoneRole")
     public String getHostedZoneRole() {
@@ -90,7 +90,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account.
+     * HostedZoneRole is the role to assume when performing operations on a hosted zone owned by another account. Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("hostedZoneRole")
     public void setHostedZoneRole(String hostedZoneRole) {

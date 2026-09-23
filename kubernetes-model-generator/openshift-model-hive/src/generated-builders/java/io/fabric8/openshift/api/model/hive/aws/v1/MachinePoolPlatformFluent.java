@@ -24,6 +24,7 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
 
   private Map<String,Object> additionalProperties;
   private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
+  private String amiID;
   private EC2MetadataBuilder metadataService;
   private EC2RootVolumeBuilder rootVolume;
   private SpotMarketOptionsBuilder spotMarketOptions;
@@ -179,6 +180,7 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
     instance = instance != null ? instance : new MachinePoolPlatform();
     if (instance != null) {
         this.withAdditionalSecurityGroupIDs(instance.getAdditionalSecurityGroupIDs());
+        this.withAmiID(instance.getAmiID());
         this.withMetadataService(instance.getMetadataService());
         this.withRootVolume(instance.getRootVolume());
         this.withSpotMarketOptions(instance.getSpotMarketOptions());
@@ -240,6 +242,9 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(additionalSecurityGroupIDs, that.additionalSecurityGroupIDs))) {
       return false;
     }
+    if (!(Objects.equals(amiID, that.amiID))) {
+      return false;
+    }
     if (!(Objects.equals(metadataService, that.metadataService))) {
       return false;
     }
@@ -277,6 +282,10 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
   
   public List<String> getAdditionalSecurityGroupIDs() {
     return this.additionalSecurityGroupIDs;
+  }
+  
+  public String getAmiID() {
+    return this.amiID;
   }
   
   public String getFirstAdditionalSecurityGroupID() {
@@ -362,6 +371,10 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
     return this.additionalSecurityGroupIDs != null && !(this.additionalSecurityGroupIDs.isEmpty());
   }
   
+  public boolean hasAmiID() {
+    return this.amiID != null;
+  }
+  
   public boolean hasMatchingAdditionalSecurityGroupID(Predicate<String> predicate) {
       for (String item : additionalSecurityGroupIDs) {
         if (predicate.test(item)) {
@@ -418,7 +431,7 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(additionalSecurityGroupIDs, metadataService, rootVolume, spotMarketOptions, subnets, type, userTags, zones, additionalProperties);
+    return Objects.hash(additionalSecurityGroupIDs, amiID, metadataService, rootVolume, spotMarketOptions, subnets, type, userTags, zones, additionalProperties);
   }
   
   public A removeAllFromAdditionalSecurityGroupIDs(Collection<String> items) {
@@ -561,6 +574,11 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
         sb.append(additionalSecurityGroupIDs);
         sb.append(",");
     }
+    if (!(amiID == null)) {
+        sb.append("amiID:");
+        sb.append(amiID);
+        sb.append(",");
+    }
     if (!(metadataService == null)) {
         sb.append("metadataService:");
         sb.append(metadataService);
@@ -635,6 +653,11 @@ public class MachinePoolPlatformFluent<A extends io.fabric8.openshift.api.model.
         this.addToAdditionalSecurityGroupIDs(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withAmiID(String amiID) {
+    this.amiID = amiID;
     return (A) this;
   }
   

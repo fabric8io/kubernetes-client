@@ -25,7 +25,7 @@ public class GenericControllerConfigBuilder extends GenericControllerConfigFluen
   }
 
   public GenericControllerConfig build() {
-    GenericControllerConfig buildable = new GenericControllerConfig(fluent.buildAuthentication(), fluent.buildAuthorization(), fluent.buildLeaderElection(), fluent.buildServingInfo());
+    GenericControllerConfig buildable = new GenericControllerConfig(fluent.getApiVersion(), fluent.buildAuthentication(), fluent.buildAuthorization(), fluent.getKind(), fluent.buildLeaderElection(), fluent.buildServingInfo());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

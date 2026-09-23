@@ -25,7 +25,7 @@ public class BareMetalPlatformStatusBuilder extends BareMetalPlatformStatusFluen
   }
 
   public BareMetalPlatformStatus build() {
-    BareMetalPlatformStatus buildable = new BareMetalPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
+    BareMetalPlatformStatus buildable = new BareMetalPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getDnsRecordsType(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

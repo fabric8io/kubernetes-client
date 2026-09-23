@@ -38,7 +38,6 @@
            dependency and both jars ship it. Not `config**`, which also matches `configuration`. -->
       !io.fabric8.openshift.api.model.config.*,
       io.fabric8.openshift.api.model**,
-      io.fabric8.openshift.api.model.customresourcestatus.conditions.v1**,
     </osgi.export>
   </properties>
 
@@ -73,7 +72,6 @@
                 <packageMappings combine.self="append">
                 </packageMappings>
                 <includeGenerationRegexes>
-                  <includeGenerationRegex>^com\.github\.openshift\.custom-resource-status\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.apps\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.authorization\..*$</includeGenerationRegex>
                   <includeGenerationRegex>^io\.openshift\.build\..*$</includeGenerationRegex>

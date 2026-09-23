@@ -18,12 +18,15 @@ import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.Namespaced;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -32,11 +35,13 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * GenericControllerConfig provides information to configure a controller
+ * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "apiVersion",
+    "kind",
     "authentication",
     "authorization",
     "leaderElection",
@@ -63,14 +68,20 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     @BuildableReference(Volume.class),
     @BuildableReference(VolumeMount.class)
 })
+@Version("v1")
+@Group("config.openshift.io")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
-public class GenericControllerConfig implements Editable<GenericControllerConfigBuilder>, KubernetesResource
+public class GenericControllerConfig implements Editable<GenericControllerConfigBuilder>, KubernetesResource, Namespaced
 {
 
+    @JsonProperty("apiVersion")
+    private String apiVersion = "config.openshift.io/v1";
     @JsonProperty("authentication")
     private DelegatedAuthentication authentication;
     @JsonProperty("authorization")
     private DelegatedAuthorization authorization;
+    @JsonProperty("kind")
+    private String kind = "GenericControllerConfig";
     @JsonProperty("leaderElection")
     private LeaderElection leaderElection;
     @JsonProperty("servingInfo")
@@ -84,16 +95,34 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     public GenericControllerConfig() {
     }
 
-    public GenericControllerConfig(DelegatedAuthentication authentication, DelegatedAuthorization authorization, LeaderElection leaderElection, HTTPServingInfo servingInfo) {
+    public GenericControllerConfig(String apiVersion, DelegatedAuthentication authentication, DelegatedAuthorization authorization, String kind, LeaderElection leaderElection, HTTPServingInfo servingInfo) {
         super();
+        this.apiVersion = apiVersion;
         this.authentication = authentication;
         this.authorization = authorization;
+        this.kind = kind;
         this.leaderElection = leaderElection;
         this.servingInfo = servingInfo;
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     */
+    @JsonProperty("apiVersion")
+    public String getApiVersion() {
+        return apiVersion;
+    }
+
+    /**
+     * APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
+     */
+    @JsonProperty("apiVersion")
+    public void setApiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
+    }
+
+    /**
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("authentication")
     public DelegatedAuthentication getAuthentication() {
@@ -101,7 +130,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("authentication")
     public void setAuthentication(DelegatedAuthentication authentication) {
@@ -109,7 +138,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("authorization")
     public DelegatedAuthorization getAuthorization() {
@@ -117,7 +146,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("authorization")
     public void setAuthorization(DelegatedAuthorization authorization) {
@@ -125,7 +154,23 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     */
+    @JsonProperty("kind")
+    public String getKind() {
+        return kind;
+    }
+
+    /**
+     * Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
+     */
+    @JsonProperty("kind")
+    public void setKind(String kind) {
+        this.kind = kind;
+    }
+
+    /**
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("leaderElection")
     public LeaderElection getLeaderElection() {
@@ -133,7 +178,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("leaderElection")
     public void setLeaderElection(LeaderElection leaderElection) {
@@ -141,7 +186,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("servingInfo")
     public HTTPServingInfo getServingInfo() {
@@ -149,7 +194,7 @@ public class GenericControllerConfig implements Editable<GenericControllerConfig
     }
 
     /**
-     * GenericControllerConfig provides information to configure a controller
+     * GenericControllerConfig provides information to configure a controller<br><p> <br><p> Compatibility level 1: Stable within a major release for a minimum of 12 months or 3 minor releases (whichever is longer).
      */
     @JsonProperty("servingInfo")
     public void setServingInfo(HTTPServingInfo servingInfo) {

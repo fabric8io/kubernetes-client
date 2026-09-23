@@ -153,7 +153,7 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     }
 
     /**
-     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     * server is the fully-qualified domain name or the IP address of the vCenter server. This must match the server field of an entry in the vcenters list. The match is case-sensitive; the value must be specified exactly as it appears in the vcenters entry. The value must be between 1 and 255 characters long.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -161,7 +161,7 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     }
 
     /**
-     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     * server is the fully-qualified domain name or the IP address of the vCenter server. This must match the server field of an entry in the vcenters list. The match is case-sensitive; the value must be specified exactly as it appears in the vcenters entry. The value must be between 1 and 255 characters long.
      */
     @JsonProperty("server")
     public void setServer(String server) {

@@ -201,7 +201,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * termination indicates termination type.<br><p> <br><p> &#42; edge - TLS termination is done by the router and http is used to communicate with the backend (default) &#42; passthrough - Traffic is sent straight to the destination without the router providing TLS termination &#42; reencrypt - TLS termination is done by the router and https is used to communicate with the backend<br><p> <br><p> Note: passthrough termination is incompatible with httpHeader actions
+     * termination indicates the TLS termination type.<br><p> <br><p> &#42; edge - TLS termination is done by the router and http is used to communicate with the backend (default)<br><p> <br><p> &#42; passthrough - Traffic is sent straight to the destination without the router providing TLS termination<br><p> <br><p> &#42; reencrypt - TLS termination is done by the router and https is used to communicate with the backend<br><p> <br><p> Note: passthrough termination is incompatible with httpHeader actions
      */
     @JsonProperty("termination")
     public String getTermination() {
@@ -209,7 +209,7 @@ public class TLSConfig implements Editable<TLSConfigBuilder>, KubernetesResource
     }
 
     /**
-     * termination indicates termination type.<br><p> <br><p> &#42; edge - TLS termination is done by the router and http is used to communicate with the backend (default) &#42; passthrough - Traffic is sent straight to the destination without the router providing TLS termination &#42; reencrypt - TLS termination is done by the router and https is used to communicate with the backend<br><p> <br><p> Note: passthrough termination is incompatible with httpHeader actions
+     * termination indicates the TLS termination type.<br><p> <br><p> &#42; edge - TLS termination is done by the router and http is used to communicate with the backend (default)<br><p> <br><p> &#42; passthrough - Traffic is sent straight to the destination without the router providing TLS termination<br><p> <br><p> &#42; reencrypt - TLS termination is done by the router and https is used to communicate with the backend<br><p> <br><p> Note: passthrough termination is incompatible with httpHeader actions
      */
     @JsonProperty("termination")
     public void setTermination(String termination) {

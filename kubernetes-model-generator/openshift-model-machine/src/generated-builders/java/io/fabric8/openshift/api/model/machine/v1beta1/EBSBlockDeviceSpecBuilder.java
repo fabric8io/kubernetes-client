@@ -25,7 +25,7 @@ public class EBSBlockDeviceSpecBuilder extends EBSBlockDeviceSpecFluent<EBSBlock
   }
 
   public EBSBlockDeviceSpec build() {
-    EBSBlockDeviceSpec buildable = new EBSBlockDeviceSpec(fluent.getDeleteOnTermination(), fluent.getEncrypted(), fluent.getIops(), fluent.buildKmsKey(), fluent.getVolumeSize(), fluent.getVolumeType());
+    EBSBlockDeviceSpec buildable = new EBSBlockDeviceSpec(fluent.getDeleteOnTermination(), fluent.getEncrypted(), fluent.getIops(), fluent.buildKmsKey(), fluent.getThroughputMib(), fluent.getVolumeSize(), fluent.getVolumeType());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

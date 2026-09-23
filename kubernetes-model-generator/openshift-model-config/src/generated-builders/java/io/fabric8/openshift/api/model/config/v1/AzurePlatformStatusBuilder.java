@@ -25,7 +25,7 @@ public class AzurePlatformStatusBuilder extends AzurePlatformStatusFluent<AzureP
   }
 
   public AzurePlatformStatus build() {
-    AzurePlatformStatus buildable = new AzurePlatformStatus(fluent.getArmEndpoint(), fluent.buildCloudLoadBalancerConfig(), fluent.getCloudName(), fluent.getNetworkResourceGroupName(), fluent.getResourceGroupName(), fluent.buildResourceTags());
+    AzurePlatformStatus buildable = new AzurePlatformStatus(fluent.getArmEndpoint(), fluent.buildCloudLoadBalancerConfig(), fluent.getCloudName(), fluent.getIpFamily(), fluent.getNetworkResourceGroupName(), fluent.getResourceGroupName(), fluent.buildResourceTags());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

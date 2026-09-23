@@ -4486,8 +4486,8 @@ github.com/opencontainers/image-spec v1.1.1/go.mod h1:qpqAh3Dmcf36wStyyWU+kCeDgr
 github.com/opencontainers/runtime-spec v1.0.2/go.mod h1:jwyrGlmzljRJv/Fgzds9SsS/C5hL+LL3ko9hs6T5lQ0=
 github.com/opencontainers/runtime-spec v1.3.0 h1:YZupQUdctfhpZy3TM39nN9Ika5CBWT5diQ8ibYCRkxg=
 github.com/opencontainers/runtime-spec v1.3.0/go.mod h1:jwyrGlmzljRJv/Fgzds9SsS/C5hL+LL3ko9hs6T5lQ0=
-github.com/openshift/api v0.0.0-20260923043708-9abfa327cff2 h1:G/NZAlJWR9scqnrXjRfQ6X+OKMF+UDX0A4L+Pvzev9Q=
-github.com/openshift/api v0.0.0-20260923043708-9abfa327cff2/go.mod h1:k6qH5QOVa5GDln2VVm8Jz4NV3Z7R2SATHFLwGS6Wh3M=
+github.com/openshift/api v0.0.0-20260918190207-231177cd43bc h1:bBpd9Lr6EmmhXmwE01s3zlUxJXtR2r5UZnFaPKqQ7yI=
+github.com/openshift/api v0.0.0-20260918190207-231177cd43bc/go.mod h1:pyVjK0nZ4sRs4fuQVQ4rubsJdahI1PB94LnQ8sGdvxo=
 github.com/openshift/cloud-credential-operator v0.0.0-20260918225044-5c4a3963b75c h1:UZi/KPmVnMlK7HPP7kb/BPENxe9Mn6Rg7v6quZuCN1I=
 github.com/openshift/cloud-credential-operator v0.0.0-20260918225044-5c4a3963b75c/go.mod h1:GsS1doj65MPP/j85qTJ8vyT0eiUZTiqDRaEWv7yFwqE=
 github.com/openshift/cluster-network-operator v0.0.0-20260911185651-61de77e4d4c4 h1:6HXoPcn1G1B1SReCPJMcNpGo9q0SDd4kreqbw7j2atI=
@@ -4496,8 +4496,8 @@ github.com/openshift/cluster-node-tuning-operator v0.0.0-20260923100330-039bae99
 github.com/openshift/cluster-node-tuning-operator v0.0.0-20260923100330-039bae9921c2/go.mod h1:Bvh3zmfMcuOmwu44Zk2fNLjKS9WBxJQtAwtBygqdIsg=
 github.com/openshift/hive/apis v0.0.0-20260922214150-8104fcfa0aaf h1:2C4GJR/yuTyjxhySxxWpe+oi7p+nrxMP+CnwYyFAvNk=
 github.com/openshift/hive/apis v0.0.0-20260922214150-8104fcfa0aaf/go.mod h1:1c7QK/wVh/UhFaMF8QdMAKqLp0lAtpWOA1rd/mM+ux0=
-github.com/openshift/installer v1.4.21-pre h1:pSJEJKFawMZV6NIWm3BuGaoCwEZ9DkUeA9kZNVdDUx0=
-github.com/openshift/installer v1.4.21-pre/go.mod h1:djLJ4gOVjpN6OzeRZbW4BJ+DuQ1WLGQ3/v2btFP9TsY=
+github.com/openshift/installer v1.4.22-ec5 h1:NG9X2iZG5mbUVZIBhpMtMrGNK7Tbm9dDGAI6aXh/QZc=
+github.com/openshift/installer v1.4.22-ec5/go.mod h1:PbGvWlLRbmmSsaTQBAjhXPzliz9XJAYUdXcY0t/3UiY=
 github.com/opentracing-contrib/go-observer v0.0.0-20170622124052-a52f23424492/go.mod h1:Ngi6UdF0k5OKD5t5wlmGhe/EDKPoUM3BXZSSfIuJbis=
 github.com/opentracing/basictracer-go v1.0.0/go.mod h1:QfBfYuafItcjQuMwinw9GhYKwFXS9KnPs5lxoYwgW74=
 github.com/opentracing/opentracing-go v1.0.2/go.mod h1:UkNAQd3GIcIGf0SeVgPpRdFStlNbqXla1AfSYxPUl2o=

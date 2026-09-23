@@ -39,6 +39,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "credentialsSecretRef",
+    "discardLocalSsdOnHibernate",
     "privateServiceConnect",
     "region"
 })
@@ -69,6 +70,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     @JsonProperty("credentialsSecretRef")
     private LocalObjectReference credentialsSecretRef;
+    @JsonProperty("discardLocalSsdOnHibernate")
+    private Boolean discardLocalSsdOnHibernate;
     @JsonProperty("privateServiceConnect")
     private PrivateServiceConnect privateServiceConnect;
     @JsonProperty("region")
@@ -82,9 +85,10 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(LocalObjectReference credentialsSecretRef, PrivateServiceConnect privateServiceConnect, String region) {
+    public Platform(LocalObjectReference credentialsSecretRef, Boolean discardLocalSsdOnHibernate, PrivateServiceConnect privateServiceConnect, String region) {
         super();
         this.credentialsSecretRef = credentialsSecretRef;
+        this.discardLocalSsdOnHibernate = discardLocalSsdOnHibernate;
         this.privateServiceConnect = privateServiceConnect;
         this.region = region;
     }
@@ -103,6 +107,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("credentialsSecretRef")
     public void setCredentialsSecretRef(LocalObjectReference credentialsSecretRef) {
         this.credentialsSecretRef = credentialsSecretRef;
+    }
+
+    /**
+     * DiscardLocalSsdOnHibernate passes the specified value through to the GCP API to indicate whether the content of any local SSDs should be preserved or discarded. See https://cloud.google.com/compute/docs/disks/local-ssd#stop_instance This field is required when attempting to hibernate clusters with instances possessing SSDs -- e.g. those with GPUs.
+     */
+    @JsonProperty("discardLocalSsdOnHibernate")
+    public Boolean getDiscardLocalSsdOnHibernate() {
+        return discardLocalSsdOnHibernate;
+    }
+
+    /**
+     * DiscardLocalSsdOnHibernate passes the specified value through to the GCP API to indicate whether the content of any local SSDs should be preserved or discarded. See https://cloud.google.com/compute/docs/disks/local-ssd#stop_instance This field is required when attempting to hibernate clusters with instances possessing SSDs -- e.g. those with GPUs.
+     */
+    @JsonProperty("discardLocalSsdOnHibernate")
+    public void setDiscardLocalSsdOnHibernate(Boolean discardLocalSsdOnHibernate) {
+        this.discardLocalSsdOnHibernate = discardLocalSsdOnHibernate;
     }
 
     /**

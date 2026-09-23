@@ -1,6 +1,7 @@
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
 import io.fabric8.kubernetes.api.model.Condition;
 import java.lang.Object;
 import java.lang.String;
@@ -12,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -23,6 +25,7 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
   private Map<String,Object> additionalProperties;
   private String apiVersion;
   private List<Condition> conditions = new ArrayList<Condition>();
+  private DedicatedHostStatusBuilder dedicatedHost;
   private String instanceId;
   private String instanceState;
   private String kind;
@@ -82,16 +85,33 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public DedicatedHostStatus buildDedicatedHost() {
+    return this.dedicatedHost != null ? this.dedicatedHost.build() : null;
+  }
+  
   protected void copyInstance(AWSMachineProviderStatus instance) {
     instance = instance != null ? instance : new AWSMachineProviderStatus();
     if (instance != null) {
         this.withApiVersion(instance.getApiVersion());
         this.withConditions(instance.getConditions());
+        this.withDedicatedHost(instance.getDedicatedHost());
         this.withInstanceId(instance.getInstanceId());
         this.withInstanceState(instance.getInstanceState());
         this.withKind(instance.getKind());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public DedicatedHostNested<A> editDedicatedHost() {
+    return this.withNewDedicatedHostLike(Optional.ofNullable(this.buildDedicatedHost()).orElse(null));
+  }
+  
+  public DedicatedHostNested<A> editOrNewDedicatedHost() {
+    return this.withNewDedicatedHostLike(Optional.ofNullable(this.buildDedicatedHost()).orElse(new DedicatedHostStatusBuilder().build()));
+  }
+  
+  public DedicatedHostNested<A> editOrNewDedicatedHostLike(DedicatedHostStatus item) {
+    return this.withNewDedicatedHostLike(Optional.ofNullable(this.buildDedicatedHost()).orElse(item));
   }
   
   public boolean equals(Object o) {
@@ -109,6 +129,9 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
       return false;
     }
     if (!(Objects.equals(conditions, that.conditions))) {
+      return false;
+    }
+    if (!(Objects.equals(dedicatedHost, that.dedicatedHost))) {
       return false;
     }
     if (!(Objects.equals(instanceId, that.instanceId))) {
@@ -183,6 +206,10 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
     return this.conditions != null && !(this.conditions.isEmpty());
   }
   
+  public boolean hasDedicatedHost() {
+    return this.dedicatedHost != null;
+  }
+  
   public boolean hasInstanceId() {
     return this.instanceId != null;
   }
@@ -205,7 +232,7 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
   }
   
   public int hashCode() {
-    return Objects.hash(apiVersion, conditions, instanceId, instanceState, kind, additionalProperties);
+    return Objects.hash(apiVersion, conditions, dedicatedHost, instanceId, instanceState, kind, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -273,6 +300,11 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
         sb.append(conditions);
         sb.append(",");
     }
+    if (!(dedicatedHost == null)) {
+        sb.append("dedicatedHost:");
+        sb.append(dedicatedHost);
+        sb.append(",");
+    }
     if (!(instanceId == null)) {
         sb.append("instanceId:");
         sb.append(instanceId);
@@ -335,6 +367,18 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public A withDedicatedHost(DedicatedHostStatus dedicatedHost) {
+    this._visitables.remove("dedicatedHost");
+    if (dedicatedHost != null) {
+        this.dedicatedHost = new DedicatedHostStatusBuilder(dedicatedHost);
+        this._visitables.get("dedicatedHost").add(this.dedicatedHost);
+    } else {
+        this.dedicatedHost = null;
+        this._visitables.get("dedicatedHost").remove(this.dedicatedHost);
+    }
+    return (A) this;
+  }
+  
   public A withInstanceId(String instanceId) {
     this.instanceId = instanceId;
     return (A) this;
@@ -350,4 +394,32 @@ public class AWSMachineProviderStatusFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public DedicatedHostNested<A> withNewDedicatedHost() {
+    return new DedicatedHostNested(null);
+  }
+  
+  public A withNewDedicatedHost(String id) {
+    return (A) this.withDedicatedHost(new DedicatedHostStatus(id));
+  }
+  
+  public DedicatedHostNested<A> withNewDedicatedHostLike(DedicatedHostStatus item) {
+    return new DedicatedHostNested(item);
+  }
+  public class DedicatedHostNested<N> extends DedicatedHostStatusFluent<DedicatedHostNested<N>> implements Nested<N>{
+  
+    DedicatedHostStatusBuilder builder;
+  
+    DedicatedHostNested(DedicatedHostStatus item) {
+      this.builder = new DedicatedHostStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) AWSMachineProviderStatusFluent.this.withDedicatedHost(builder.build());
+    }
+    
+    public N endDedicatedHost() {
+      return and();
+    }
+    
+  }
 }

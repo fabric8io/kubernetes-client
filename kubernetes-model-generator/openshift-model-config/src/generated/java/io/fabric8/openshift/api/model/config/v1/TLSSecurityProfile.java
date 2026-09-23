@@ -161,7 +161,7 @@ public class TLSSecurityProfile implements Editable<TLSSecurityProfileBuilder>, 
     }
 
     /**
-     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:<br><p> <br><p> https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure.  Depending on precisely which ciphers are available to a process, the list may be reduced.<br><p> <br><p> Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.
+     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.<br><p> <br><p> The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration's "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: https://ssl-config.mozilla.org/guidelines/5.7.json<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.
      */
     @JsonProperty("type")
     public String getType() {
@@ -169,7 +169,7 @@ public class TLSSecurityProfile implements Editable<TLSSecurityProfileBuilder>, 
     }
 
     /**
-     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters. Old, Intermediate and Modern are TLS security profiles based on:<br><p> <br><p> https://wiki.mozilla.org/Security/Server_Side_TLS#Recommended_configurations<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure.  Depending on precisely which ciphers are available to a process, the list may be reduced.<br><p> <br><p> Note that the Modern profile is currently not supported because it is not yet well adopted by common software libraries.
+     * type is one of Old, Intermediate, Modern or Custom. Custom provides the ability to specify individual TLS security profile parameters.<br><p> <br><p> The profiles are based on version 5.7 of the Mozilla Server Side TLS configuration guidelines. The cipher lists consist of the configuration's "ciphersuites" followed by the Go-specific "ciphers" from the guidelines. See: https://ssl-config.mozilla.org/guidelines/5.7.json<br><p> <br><p> The profiles are intent based, so they may change over time as new ciphers are developed and existing ciphers are found to be insecure. Depending on precisely which ciphers are available to a process, the list may be reduced.
      */
     @JsonProperty("type")
     public void setType(String type) {

@@ -25,7 +25,7 @@ public class MachinePoolBuilder extends MachinePoolFluent<MachinePoolBuilder> im
   }
 
   public MachinePool build() {
-    MachinePool buildable = new MachinePool(fluent.getCoresPerSocket(), fluent.getCpus(), fluent.getMemoryMB(), fluent.buildOsDisk(), fluent.getResourcePool());
+    MachinePool buildable = new MachinePool(fluent.getCoresPerSocket(), fluent.getCpus(), fluent.getDataDisks(), fluent.getMemoryMB(), fluent.getOsDisk(), fluent.getResourcePool(), fluent.getTagIDs(), fluent.getZones());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

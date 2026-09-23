@@ -106,7 +106,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskType defines the type of disk. The valid values are pd-standard and pd-ssd. Defaulted internally to pd-ssd.
+     * DiskType defines the type of disk. The valid values at this time are: pd-standard, pd-ssd, local-ssd, pd-balanced, hyperdisk-balanced. Defaulted internally to pd-ssd.
      */
     @JsonProperty("diskType")
     public String getDiskType() {
@@ -114,7 +114,7 @@ public class OSDisk implements Editable<OSDiskBuilder>, KubernetesResource
     }
 
     /**
-     * DiskType defines the type of disk. The valid values are pd-standard and pd-ssd. Defaulted internally to pd-ssd.
+     * DiskType defines the type of disk. The valid values at this time are: pd-standard, pd-ssd, local-ssd, pd-balanced, hyperdisk-balanced. Defaulted internally to pd-ssd.
      */
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {

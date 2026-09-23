@@ -35,6 +35,12 @@
 * Fix #8142: bump controller-runtime from 0.23.3 to 0.25.1
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
 * Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
+* Fix #8148: bump openshift/api from 1cb53e3 (release-4.19) to 231177c (release-4.22)
+* Fix #8148: bump openshift/cloud-credential-operator from 0e03b7a to 5c4a396
+* Fix #8148: bump openshift/cluster-network-operator from 698e349 to 61de77e
+* Fix #8148: bump openshift/cluster-node-tuning-operator from 2ed182b to 039bae9
+* Fix #8148: bump openshift/hive/apis from 2d25383 to 8104fcf
+* Fix #8148: bump openshift/installer from 1.4.21-pre to 1.4.22-ec5
 * Fix #6779: bump Jetty from 11.0.26 to 12.1.13
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
 * Fix #8142: bump k8s.io/api from 0.35.8 to 0.37.0
@@ -80,6 +86,13 @@
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
 * Fix #8142: (knative) Serving `RevisionSpec` replaces `workloadRef` with `schedulingGroup` and adds `evictionResponders`, like the core `PodSpec` since Kubernetes 1.37
 * Fix #8133: (open-cluster-management) `DiscoveredClusterSpec` drops `owner` and `DiscoveredClusterCondition` drops `lastUpdateTime`
+* Fix #8148: (openshift-model) Model class `io.fabric8.openshift.api.model.customresourcestatus.conditions.v1.Condition` removed, Hive `ClusterDeploymentCustomizationStatus` conditions use the Kubernetes `Condition`
+* Fix #8148: (openshift-model-config) `ClusterImagePolicySpec` and `ImagePolicySpec` policies are `ImageSigstoreVerificationPolicy` and their roots of trust `ImagePolicyFulcioCAWithRekorRootOfTrust`, `ImagePolicyPKIRootOfTrust` and `ImagePolicyPublicKeyRootOfTrust`. Model classes `FulcioCAWithRekor`, `PKI`, `Policy` and `PublicKey` removed
+* Fix #8148: (openshift-model-config) `GCPPlatformStatus` drops `serviceEndpoints`, model class `GCPServiceEndpoint` removed
+* Fix #8148: (openshift-model-hive) oVirt support removed: `ClusterDeprovisionPlatform`, `MachinePoolPlatform` and `Platform` drop `ovirt`, model classes `OvirtClusterDeprovision` and the `io.fabric8.openshift.api.model.hive.ovirt.v1` package removed
+* Fix #8148: (openshift-model-hive) vSphere `MachinePool.osDisk` uses the installer `io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk`, model class `io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk` removed. The module now depends on `openshift-model-installer`, `openshift-model-machine` and `openshift-model-operator`
+* Fix #8148: (openshift-model-installer) GCP `PSCEndpoint` drops `region`
+* Fix #8148: (openshift-model-machineconfiguration) `v1alpha1` model classes `MachineConfigNode`, `PinnedImageSet` and their related types removed, use the `v1` ones
 * Fix #8133: (open-cluster-management) `MultiClusterHubSpec` drops `customCAConfigmap`, `enableClusterBackup`, `enableClusterProxyAddon`, `hive`, `ingress` and `separateCertificateManagement`. Model classes `BackupConfig`, `ExternalDNSAWSConfig`, `ExternalDNSConfig`, `ExternalDNSGCPConfig`, `FailedProvisionConfig`, `HiveConfigSpec`, `HiveConfigStatus`, `IngressSpec` and `VeleroBackupConfig` removed
 * Fix #8133: (open-cluster-management) Observability `PlatformMetricsSpec` and `UserWorkloadMetricsSpec` replace `collection` with `default` (`PlatformMetricsCollectionSpec` and `UserWorkloadMetricsCollectionSpec` removed), and `PlatformNamespaceRightSizingRecommendationSpec` is renamed to `PlatformRightSizingRecommendationSpec`
 * Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`

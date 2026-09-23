@@ -68,7 +68,7 @@ public class ImagePolicySpec implements Editable<ImagePolicySpecBuilder>, Kubern
 {
 
     @JsonProperty("policy")
-    private Policy policy;
+    private ImageSigstoreVerificationPolicy policy;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ImagePolicySpec implements Editable<ImagePolicySpecBuilder>, Kubern
     public ImagePolicySpec() {
     }
 
-    public ImagePolicySpec(Policy policy, List<String> scopes) {
+    public ImagePolicySpec(ImageSigstoreVerificationPolicy policy, List<String> scopes) {
         super();
         this.policy = policy;
         this.scopes = scopes;
@@ -91,7 +91,7 @@ public class ImagePolicySpec implements Editable<ImagePolicySpecBuilder>, Kubern
      * ImagePolicySpec is the specification of the ImagePolicy CRD.
      */
     @JsonProperty("policy")
-    public Policy getPolicy() {
+    public ImageSigstoreVerificationPolicy getPolicy() {
         return policy;
     }
 
@@ -99,7 +99,7 @@ public class ImagePolicySpec implements Editable<ImagePolicySpecBuilder>, Kubern
      * ImagePolicySpec is the specification of the ImagePolicy CRD.
      */
     @JsonProperty("policy")
-    public void setPolicy(Policy policy) {
+    public void setPolicy(ImageSigstoreVerificationPolicy policy) {
         this.policy = policy;
     }
 

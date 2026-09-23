@@ -25,7 +25,7 @@ public class MachineSetStatusBuilder extends MachineSetStatusFluent<MachineSetSt
   }
 
   public MachineSetStatus build() {
-    MachineSetStatus buildable = new MachineSetStatus(fluent.getAuthoritativeAPI(), fluent.getAvailableReplicas(), fluent.buildConditions(), fluent.getErrorMessage(), fluent.getErrorReason(), fluent.getFullyLabeledReplicas(), fluent.getObservedGeneration(), fluent.getReadyReplicas(), fluent.getReplicas(), fluent.getSynchronizedGeneration());
+    MachineSetStatus buildable = new MachineSetStatus(fluent.getAuthoritativeAPI(), fluent.getAvailableReplicas(), fluent.buildConditions(), fluent.getErrorMessage(), fluent.getErrorReason(), fluent.getFullyLabeledReplicas(), fluent.getLabelSelector(), fluent.getObservedGeneration(), fluent.getReadyReplicas(), fluent.getReplicas(), fluent.getSynchronizedAPI(), fluent.getSynchronizedGeneration());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

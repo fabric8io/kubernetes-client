@@ -25,7 +25,7 @@ public class MachineConfigPoolSpecBuilder extends MachineConfigPoolSpecFluent<Ma
   }
 
   public MachineConfigPoolSpec build() {
-    MachineConfigPoolSpec buildable = new MachineConfigPoolSpec(fluent.buildConfiguration(), fluent.buildMachineConfigSelector(), fluent.buildMaxUnavailable(), fluent.buildNodeSelector(), fluent.getPaused(), fluent.buildPinnedImageSets());
+    MachineConfigPoolSpec buildable = new MachineConfigPoolSpec(fluent.buildConfiguration(), fluent.buildMachineConfigSelector(), fluent.buildMaxUnavailable(), fluent.buildNodeSelector(), fluent.buildOsImageStream(), fluent.getPaused(), fluent.buildPinnedImageSets());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

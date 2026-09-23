@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "availabilityZone",
+    "host",
     "region",
     "tenancy"
 })
@@ -68,6 +69,8 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
 
     @JsonProperty("availabilityZone")
     private String availabilityZone;
+    @JsonProperty("host")
+    private HostPlacement host;
     @JsonProperty("region")
     private String region;
     @JsonProperty("tenancy")
@@ -81,9 +84,10 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     public Placement() {
     }
 
-    public Placement(String availabilityZone, String region, String tenancy) {
+    public Placement(String availabilityZone, HostPlacement host, String region, String tenancy) {
         super();
         this.availabilityZone = availabilityZone;
+        this.host = host;
         this.region = region;
         this.tenancy = tenancy;
     }
@@ -105,6 +109,22 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
+     * Placement indicates where to create the instance in AWS
+     */
+    @JsonProperty("host")
+    public HostPlacement getHost() {
+        return host;
+    }
+
+    /**
+     * Placement indicates where to create the instance in AWS
+     */
+    @JsonProperty("host")
+    public void setHost(HostPlacement host) {
+        this.host = host;
+    }
+
+    /**
      * region is the region to use to create the instance
      */
     @JsonProperty("region")
@@ -121,7 +141,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host. When set to default Runs on shared multi-tenant hardware. When dedicated Runs on single-tenant hardware (any dedicated instance hardware). When host and the host object is not provided: Runs on Dedicated Host; best-effort restart on same host. When `host` and `host` object is provided with affinity `dedicatedHost` defined: Runs on specified Dedicated Host.
      */
     @JsonProperty("tenancy")
     public String getTenancy() {
@@ -129,7 +149,7 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     }
 
     /**
-     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host.
+     * tenancy indicates if instance should run on shared or single-tenant hardware. There are supported 3 options: default, dedicated and host. When set to default Runs on shared multi-tenant hardware. When dedicated Runs on single-tenant hardware (any dedicated instance hardware). When host and the host object is not provided: Runs on Dedicated Host; best-effort restart on same host. When `host` and `host` object is provided with affinity `dedicatedHost` defined: Runs on specified Dedicated Host.
      */
     @JsonProperty("tenancy")
     public void setTenancy(String tenancy) {

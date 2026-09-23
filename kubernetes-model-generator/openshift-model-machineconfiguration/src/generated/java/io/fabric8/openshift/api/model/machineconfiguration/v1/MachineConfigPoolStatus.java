@@ -45,6 +45,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "degradedMachineCount",
     "machineCount",
     "observedGeneration",
+    "osImageStream",
     "poolSynchronizersStatus",
     "readyMachineCount",
     "unavailableMachineCount",
@@ -89,6 +90,8 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     private Integer machineCount;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
+    @JsonProperty("osImageStream")
+    private OSImageStreamReference osImageStream;
     @JsonProperty("poolSynchronizersStatus")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PoolSynchronizerStatus> poolSynchronizersStatus = new ArrayList<>();
@@ -107,7 +110,7 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     public MachineConfigPoolStatus() {
     }
 
-    public MachineConfigPoolStatus(List<CertExpiry> certExpirys, List<MachineConfigPoolCondition> conditions, MachineConfigPoolStatusConfiguration configuration, Integer degradedMachineCount, Integer machineCount, Long observedGeneration, List<PoolSynchronizerStatus> poolSynchronizersStatus, Integer readyMachineCount, Integer unavailableMachineCount, Integer updatedMachineCount) {
+    public MachineConfigPoolStatus(List<CertExpiry> certExpirys, List<MachineConfigPoolCondition> conditions, MachineConfigPoolStatusConfiguration configuration, Integer degradedMachineCount, Integer machineCount, Long observedGeneration, OSImageStreamReference osImageStream, List<PoolSynchronizerStatus> poolSynchronizersStatus, Integer readyMachineCount, Integer unavailableMachineCount, Integer updatedMachineCount) {
         super();
         this.certExpirys = certExpirys;
         this.conditions = conditions;
@@ -115,6 +118,7 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
         this.degradedMachineCount = degradedMachineCount;
         this.machineCount = machineCount;
         this.observedGeneration = observedGeneration;
+        this.osImageStream = osImageStream;
         this.poolSynchronizersStatus = poolSynchronizersStatus;
         this.readyMachineCount = readyMachineCount;
         this.unavailableMachineCount = unavailableMachineCount;
@@ -217,6 +221,22 @@ public class MachineConfigPoolStatus implements Editable<MachineConfigPoolStatus
     @JsonProperty("observedGeneration")
     public void setObservedGeneration(Long observedGeneration) {
         this.observedGeneration = observedGeneration;
+    }
+
+    /**
+     * MachineConfigPoolStatus is the status for MachineConfigPool resource.
+     */
+    @JsonProperty("osImageStream")
+    public OSImageStreamReference getOsImageStream() {
+        return osImageStream;
+    }
+
+    /**
+     * MachineConfigPoolStatus is the status for MachineConfigPool resource.
+     */
+    @JsonProperty("osImageStream")
+    public void setOsImageStream(OSImageStreamReference osImageStream) {
+        this.osImageStream = osImageStream;
     }
 
     /**

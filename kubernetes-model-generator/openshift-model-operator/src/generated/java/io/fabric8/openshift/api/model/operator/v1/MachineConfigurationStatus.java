@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "bootImageSkewEnforcementStatus",
     "conditions",
     "managedBootImagesStatus",
     "nodeDisruptionPolicyStatus",
@@ -68,6 +69,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class MachineConfigurationStatus implements Editable<MachineConfigurationStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("bootImageSkewEnforcementStatus")
+    private BootImageSkewEnforcementStatus bootImageSkewEnforcementStatus;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
@@ -86,12 +89,23 @@ public class MachineConfigurationStatus implements Editable<MachineConfiguration
     public MachineConfigurationStatus() {
     }
 
-    public MachineConfigurationStatus(List<Condition> conditions, ManagedBootImages managedBootImagesStatus, NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus, Long observedGeneration) {
+    public MachineConfigurationStatus(BootImageSkewEnforcementStatus bootImageSkewEnforcementStatus, List<Condition> conditions, ManagedBootImages managedBootImagesStatus, NodeDisruptionPolicyStatus nodeDisruptionPolicyStatus, Long observedGeneration) {
         super();
+        this.bootImageSkewEnforcementStatus = bootImageSkewEnforcementStatus;
         this.conditions = conditions;
         this.managedBootImagesStatus = managedBootImagesStatus;
         this.nodeDisruptionPolicyStatus = nodeDisruptionPolicyStatus;
         this.observedGeneration = observedGeneration;
+    }
+
+    @JsonProperty("bootImageSkewEnforcementStatus")
+    public BootImageSkewEnforcementStatus getBootImageSkewEnforcementStatus() {
+        return bootImageSkewEnforcementStatus;
+    }
+
+    @JsonProperty("bootImageSkewEnforcementStatus")
+    public void setBootImageSkewEnforcementStatus(BootImageSkewEnforcementStatus bootImageSkewEnforcementStatus) {
+        this.bootImageSkewEnforcementStatus = bootImageSkewEnforcementStatus;
     }
 
     /**

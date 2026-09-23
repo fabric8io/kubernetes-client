@@ -27,6 +27,7 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
   private ConfigMapNameReferenceBuilder clientCA;
   private APIServerEncryptionBuilder encryption;
   private APIServerServingCertsBuilder servingCerts;
+  private String tlsAdherence;
   private TLSSecurityProfileBuilder tlsSecurityProfile;
 
   public APIServerSpecFluent() {
@@ -112,6 +113,7 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
         this.withClientCA(instance.getClientCA());
         this.withEncryption(instance.getEncryption());
         this.withServingCerts(instance.getServingCerts());
+        this.withTlsAdherence(instance.getTlsAdherence());
         this.withTlsSecurityProfile(instance.getTlsSecurityProfile());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -203,6 +205,9 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
     if (!(Objects.equals(servingCerts, that.servingCerts))) {
       return false;
     }
+    if (!(Objects.equals(tlsAdherence, that.tlsAdherence))) {
+      return false;
+    }
     if (!(Objects.equals(tlsSecurityProfile, that.tlsSecurityProfile))) {
       return false;
     }
@@ -241,6 +246,10 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
       return null;
   }
   
+  public String getTlsAdherence() {
+    return this.tlsAdherence;
+  }
+  
   public boolean hasAdditionalCORSAllowedOrigins() {
     return this.additionalCORSAllowedOrigins != null && !(this.additionalCORSAllowedOrigins.isEmpty());
   }
@@ -274,12 +283,16 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
     return this.servingCerts != null;
   }
   
+  public boolean hasTlsAdherence() {
+    return this.tlsAdherence != null;
+  }
+  
   public boolean hasTlsSecurityProfile() {
     return this.tlsSecurityProfile != null;
   }
   
   public int hashCode() {
-    return Objects.hash(additionalCORSAllowedOrigins, audit, clientCA, encryption, servingCerts, tlsSecurityProfile, additionalProperties);
+    return Objects.hash(additionalCORSAllowedOrigins, audit, clientCA, encryption, servingCerts, tlsAdherence, tlsSecurityProfile, additionalProperties);
   }
   
   public A removeAllFromAdditionalCORSAllowedOrigins(Collection<String> items) {
@@ -360,6 +373,11 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
     if (!(servingCerts == null)) {
         sb.append("servingCerts:");
         sb.append(servingCerts);
+        sb.append(",");
+    }
+    if (!(tlsAdherence == null)) {
+        sb.append("tlsAdherence:");
+        sb.append(tlsAdherence);
         sb.append(",");
     }
     if (!(tlsSecurityProfile == null)) {
@@ -498,6 +516,11 @@ public class APIServerSpecFluent<A extends io.fabric8.openshift.api.model.config
         this.servingCerts = null;
         this._visitables.get("servingCerts").remove(this.servingCerts);
     }
+    return (A) this;
+  }
+  
+  public A withTlsAdherence(String tlsAdherence) {
+    this.tlsAdherence = tlsAdherence;
     return (A) this;
   }
   

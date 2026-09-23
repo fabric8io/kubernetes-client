@@ -25,7 +25,7 @@ public class AWSPlatformStatusBuilder extends AWSPlatformStatusFluent<AWSPlatfor
   }
 
   public AWSPlatformStatus build() {
-    AWSPlatformStatus buildable = new AWSPlatformStatus(fluent.buildCloudLoadBalancerConfig(), fluent.getRegion(), fluent.buildResourceTags(), fluent.buildServiceEndpoints());
+    AWSPlatformStatus buildable = new AWSPlatformStatus(fluent.buildCloudLoadBalancerConfig(), fluent.getIpFamily(), fluent.getRegion(), fluent.buildResourceTags(), fluent.buildServiceEndpoints());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -26,6 +26,8 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
   private String networkResourceGroupName;
   private OSDiskBuilder osDisk;
   private OSImageBuilder osImage;
+  private String osImageID;
+  private String outboundType;
   private String type;
   private String virtualNetwork;
   private String vmNetworkingType;
@@ -101,6 +103,8 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
         this.withNetworkResourceGroupName(instance.getNetworkResourceGroupName());
         this.withOsDisk(instance.getOsDisk());
         this.withOsImage(instance.getOsImage());
+        this.withOsImageID(instance.getOsImageID());
+        this.withOutboundType(instance.getOutboundType());
         this.withType(instance.getType());
         this.withVirtualNetwork(instance.getVirtualNetwork());
         this.withVmNetworkingType(instance.getVmNetworkingType());
@@ -156,6 +160,12 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
     if (!(Objects.equals(osImage, that.osImage))) {
       return false;
     }
+    if (!(Objects.equals(osImageID, that.osImageID))) {
+      return false;
+    }
+    if (!(Objects.equals(outboundType, that.outboundType))) {
+      return false;
+    }
     if (!(Objects.equals(type, that.type))) {
       return false;
     }
@@ -201,6 +211,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
   
   public String getNetworkResourceGroupName() {
     return this.networkResourceGroupName;
+  }
+  
+  public String getOsImageID() {
+    return this.osImageID;
+  }
+  
+  public String getOutboundType() {
+    return this.outboundType;
   }
   
   public String getType() {
@@ -252,6 +270,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
     return this.osImage != null;
   }
   
+  public boolean hasOsImageID() {
+    return this.osImageID != null;
+  }
+  
+  public boolean hasOutboundType() {
+    return this.outboundType != null;
+  }
+  
   public boolean hasType() {
     return this.type != null;
   }
@@ -269,7 +295,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
   }
   
   public int hashCode() {
-    return Objects.hash(computeSubnet, networkResourceGroupName, osDisk, osImage, type, virtualNetwork, vmNetworkingType, zones, additionalProperties);
+    return Objects.hash(computeSubnet, networkResourceGroupName, osDisk, osImage, osImageID, outboundType, type, virtualNetwork, vmNetworkingType, zones, additionalProperties);
   }
   
   public A removeAllFromZones(Collection<String> items) {
@@ -347,6 +373,16 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
         sb.append(osImage);
         sb.append(",");
     }
+    if (!(osImageID == null)) {
+        sb.append("osImageID:");
+        sb.append(osImageID);
+        sb.append(",");
+    }
+    if (!(outboundType == null)) {
+        sb.append("outboundType:");
+        sb.append(outboundType);
+        sb.append(",");
+    }
     if (!(type == null)) {
         sb.append("type:");
         sb.append(type);
@@ -406,8 +442,8 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
     return new OsImageNested(null);
   }
   
-  public A withNewOsImage(String offer,String publisher,String sku,String version) {
-    return (A) this.withOsImage(new OSImage(offer, publisher, sku, version));
+  public A withNewOsImage(String offer,String plan,String publisher,String sku,String version) {
+    return (A) this.withOsImage(new OSImage(offer, plan, publisher, sku, version));
   }
   
   public OsImageNested<A> withNewOsImageLike(OSImage item) {
@@ -435,6 +471,16 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.azu
         this.osImage = null;
         this._visitables.get("osImage").remove(this.osImage);
     }
+    return (A) this;
+  }
+  
+  public A withOsImageID(String osImageID) {
+    this.osImageID = osImageID;
+    return (A) this;
+  }
+  
+  public A withOutboundType(String outboundType) {
+    this.outboundType = outboundType;
     return (A) this;
   }
   

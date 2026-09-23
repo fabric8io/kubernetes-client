@@ -46,8 +46,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "gcp",
     "ibmcloud",
     "none",
+    "nutanix",
     "openstack",
-    "ovirt",
     "vsphere"
 })
 @ToString
@@ -89,10 +89,10 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud;
     @JsonProperty("none")
     private io.fabric8.openshift.api.model.hive.none.v1.Platform none;
+    @JsonProperty("nutanix")
+    private io.fabric8.openshift.api.model.hive.nutanix.v1.Platform nutanix;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack;
-    @JsonProperty("ovirt")
-    private io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt;
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere;
     @JsonIgnore
@@ -104,7 +104,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.aws.v1.Platform aws, io.fabric8.openshift.api.model.hive.azure.v1.Platform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.hive.none.v1.Platform none, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
+    public Platform(BareMetalPlatform agentBareMetal, io.fabric8.openshift.api.model.hive.aws.v1.Platform aws, io.fabric8.openshift.api.model.hive.azure.v1.Platform azure, io.fabric8.openshift.api.model.hive.baremetal.v1.Platform baremetal, io.fabric8.openshift.api.model.hive.gcp.v1.Platform gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.Platform ibmcloud, io.fabric8.openshift.api.model.hive.none.v1.Platform none, io.fabric8.openshift.api.model.hive.nutanix.v1.Platform nutanix, io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack, io.fabric8.openshift.api.model.hive.vsphere.v1.Platform vsphere) {
         super();
         this.agentBareMetal = agentBareMetal;
         this.aws = aws;
@@ -113,8 +113,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
         this.none = none;
+        this.nutanix = nutanix;
         this.openstack = openstack;
-        this.ovirt = ovirt;
         this.vsphere = vsphere;
     }
 
@@ -233,6 +233,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     /**
      * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
      */
+    @JsonProperty("nutanix")
+    public io.fabric8.openshift.api.model.hive.nutanix.v1.Platform getNutanix() {
+        return nutanix;
+    }
+
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
+    @JsonProperty("nutanix")
+    public void setNutanix(io.fabric8.openshift.api.model.hive.nutanix.v1.Platform nutanix) {
+        this.nutanix = nutanix;
+    }
+
+    /**
+     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.hive.openstack.v1.Platform getOpenstack() {
         return openstack;
@@ -244,22 +260,6 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack) {
         this.openstack = openstack;
-    }
-
-    /**
-     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
-     */
-    @JsonProperty("ovirt")
-    public io.fabric8.openshift.api.model.hive.ovirt.v1.Platform getOvirt() {
-        return ovirt;
-    }
-
-    /**
-     * Platform is the configuration for the specific platform upon which to perform the installation. Only one of the platform configuration should be set.
-     */
-    @JsonProperty("ovirt")
-    public void setOvirt(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt) {
-        this.ovirt = ovirt;
     }
 
     /**

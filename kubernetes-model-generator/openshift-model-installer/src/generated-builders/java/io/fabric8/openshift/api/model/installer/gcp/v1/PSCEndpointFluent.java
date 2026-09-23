@@ -19,7 +19,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
   private Map<String,Object> additionalProperties;
   private Boolean clusterUseOnly;
   private String name;
-  private String region;
 
   public PSCEndpointFluent() {
   }
@@ -53,7 +52,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
     if (instance != null) {
         this.withClusterUseOnly(instance.getClusterUseOnly());
         this.withName(instance.getName());
-        this.withRegion(instance.getRegion());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -75,9 +73,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
     if (!(Objects.equals(name, that.name))) {
       return false;
     }
-    if (!(Objects.equals(region, that.region))) {
-      return false;
-    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -96,10 +91,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
     return this.name;
   }
   
-  public String getRegion() {
-    return this.region;
-  }
-  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -112,12 +103,8 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
     return this.name != null;
   }
   
-  public boolean hasRegion() {
-    return this.region != null;
-  }
-  
   public int hashCode() {
-    return Objects.hash(clusterUseOnly, name, region, additionalProperties);
+    return Objects.hash(clusterUseOnly, name, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -157,11 +144,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
         sb.append(name);
         sb.append(",");
     }
-    if (!(region == null)) {
-        sb.append("region:");
-        sb.append(region);
-        sb.append(",");
-    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -190,11 +172,6 @@ public class PSCEndpointFluent<A extends io.fabric8.openshift.api.model.installe
   
   public A withName(String name) {
     this.name = name;
-    return (A) this;
-  }
-  
-  public A withRegion(String region) {
-    this.region = region;
     return (A) this;
   }
   

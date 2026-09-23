@@ -50,6 +50,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "nodeRef",
     "phase",
     "providerStatus",
+    "synchronizedAPI",
     "synchronizedGeneration"
 })
 @ToString
@@ -100,6 +101,8 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     @JsonProperty("providerStatus")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     private Object providerStatus;
+    @JsonProperty("synchronizedAPI")
+    private String synchronizedAPI;
     @JsonProperty("synchronizedGeneration")
     private Long synchronizedGeneration;
     @JsonIgnore
@@ -111,7 +114,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     public MachineStatus() {
     }
 
-    public MachineStatus(List<NodeAddress> addresses, String authoritativeAPI, List<Condition> conditions, String errorMessage, String errorReason, LastOperation lastOperation, String lastUpdated, ObjectReference nodeRef, String phase, Object providerStatus, Long synchronizedGeneration) {
+    public MachineStatus(List<NodeAddress> addresses, String authoritativeAPI, List<Condition> conditions, String errorMessage, String errorReason, LastOperation lastOperation, String lastUpdated, ObjectReference nodeRef, String phase, Object providerStatus, String synchronizedAPI, Long synchronizedGeneration) {
         super();
         this.addresses = addresses;
         this.authoritativeAPI = authoritativeAPI;
@@ -123,6 +126,7 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
         this.nodeRef = nodeRef;
         this.phase = phase;
         this.providerStatus = providerStatus;
+        this.synchronizedAPI = synchronizedAPI;
         this.synchronizedGeneration = synchronizedGeneration;
     }
 
@@ -287,6 +291,22 @@ public class MachineStatus implements Editable<MachineStatusBuilder>, Kubernetes
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
     public void setProviderStatus(Object providerStatus) {
         this.providerStatus = providerStatus;
+    }
+
+    /**
+     * synchronizedAPI holds the last stable value of authoritativeAPI. It is used to detect migration cancellation requests and to restore the resource to its previous state. Valid values are "MachineAPI" and "ClusterAPI". When omitted, the resource has not yet been reconciled by the migration controller.
+     */
+    @JsonProperty("synchronizedAPI")
+    public String getSynchronizedAPI() {
+        return synchronizedAPI;
+    }
+
+    /**
+     * synchronizedAPI holds the last stable value of authoritativeAPI. It is used to detect migration cancellation requests and to restore the resource to its previous state. Valid values are "MachineAPI" and "ClusterAPI". When omitted, the resource has not yet been reconciled by the migration controller.
+     */
+    @JsonProperty("synchronizedAPI")
+    public void setSynchronizedAPI(String synchronizedAPI) {
+        this.synchronizedAPI = synchronizedAPI;
     }
 
     /**

@@ -25,7 +25,7 @@ public class ConditionalUpdateRiskBuilder extends ConditionalUpdateRiskFluent<Co
   }
 
   public ConditionalUpdateRisk build() {
-    ConditionalUpdateRisk buildable = new ConditionalUpdateRisk(fluent.buildMatchingRules(), fluent.getMessage(), fluent.getName(), fluent.getUrl());
+    ConditionalUpdateRisk buildable = new ConditionalUpdateRisk(fluent.getConditions(), fluent.buildMatchingRules(), fluent.getMessage(), fluent.getName(), fluent.getUrl());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

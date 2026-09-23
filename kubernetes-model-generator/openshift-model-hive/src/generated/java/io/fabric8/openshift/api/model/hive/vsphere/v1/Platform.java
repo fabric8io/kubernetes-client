@@ -44,6 +44,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "datacenter",
     "defaultDatastore",
     "folder",
+    "infrastructure",
     "network",
     "vCenter"
 })
@@ -84,6 +85,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String defaultDatastore;
     @JsonProperty("folder")
     private String folder;
+    @JsonProperty("infrastructure")
+    private io.fabric8.openshift.api.model.installer.vsphere.v1.Platform infrastructure;
     @JsonProperty("network")
     private String network;
     @JsonProperty("vCenter")
@@ -97,7 +100,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(LocalObjectReference certificatesSecretRef, String cluster, LocalObjectReference credentialsSecretRef, String datacenter, String defaultDatastore, String folder, String network, String vCenter) {
+    public Platform(LocalObjectReference certificatesSecretRef, String cluster, LocalObjectReference credentialsSecretRef, String datacenter, String defaultDatastore, String folder, io.fabric8.openshift.api.model.installer.vsphere.v1.Platform infrastructure, String network, String vCenter) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.cluster = cluster;
@@ -105,6 +108,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.datacenter = datacenter;
         this.defaultDatastore = defaultDatastore;
         this.folder = folder;
+        this.infrastructure = infrastructure;
         this.network = network;
         this.vCenter = vCenter;
     }
@@ -126,7 +130,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Cluster is the name of the cluster virtual machines will be cloned into.
+     * Cluster is the name of the cluster virtual machines will be cloned into. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("cluster")
     public String getCluster() {
@@ -134,7 +138,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Cluster is the name of the cluster virtual machines will be cloned into.
+     * Cluster is the name of the cluster virtual machines will be cloned into. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("cluster")
     public void setCluster(String cluster) {
@@ -158,7 +162,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Datacenter is the name of the datacenter to use in the vCenter.
+     * Datacenter is the name of the datacenter to use in the vCenter. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("datacenter")
     public String getDatacenter() {
@@ -166,7 +170,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Datacenter is the name of the datacenter to use in the vCenter.
+     * Datacenter is the name of the datacenter to use in the vCenter. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("datacenter")
     public void setDatacenter(String datacenter) {
@@ -174,7 +178,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * DefaultDatastore is the default datastore to use for provisioning volumes.
+     * DefaultDatastore is the default datastore to use for provisioning volumes. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("defaultDatastore")
     public String getDefaultDatastore() {
@@ -182,7 +186,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * DefaultDatastore is the default datastore to use for provisioning volumes.
+     * DefaultDatastore is the default datastore to use for provisioning volumes. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("defaultDatastore")
     public void setDefaultDatastore(String defaultDatastore) {
@@ -190,7 +194,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Folder is the name of the folder that will be used and/or created for virtual machines.
+     * Folder is the name of the folder that will be used and/or created for virtual machines. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("folder")
     public String getFolder() {
@@ -198,7 +202,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Folder is the name of the folder that will be used and/or created for virtual machines.
+     * Folder is the name of the folder that will be used and/or created for virtual machines. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("folder")
     public void setFolder(String folder) {
@@ -206,7 +210,23 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Network specifies the name of the network to be used by the cluster.
+     * Platform stores any global configuration used for vSphere platforms.
+     */
+    @JsonProperty("infrastructure")
+    public io.fabric8.openshift.api.model.installer.vsphere.v1.Platform getInfrastructure() {
+        return infrastructure;
+    }
+
+    /**
+     * Platform stores any global configuration used for vSphere platforms.
+     */
+    @JsonProperty("infrastructure")
+    public void setInfrastructure(io.fabric8.openshift.api.model.installer.vsphere.v1.Platform infrastructure) {
+        this.infrastructure = infrastructure;
+    }
+
+    /**
+     * Network specifies the name of the network to be used by the cluster. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("network")
     public String getNetwork() {
@@ -214,7 +234,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * Network specifies the name of the network to be used by the cluster.
+     * Network specifies the name of the network to be used by the cluster. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("network")
     public void setNetwork(String network) {
@@ -222,7 +242,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VCenter is the domain name or IP address of the vCenter.
+     * VCenter is the domain name or IP address of the vCenter. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("vCenter")
     public String getVCenter() {
@@ -230,7 +250,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * VCenter is the domain name or IP address of the vCenter.
+     * VCenter is the domain name or IP address of the vCenter. Deprecated: Please use Platform.Infrastructure instead See also: Platform.ConvertDeprecatedFields
      */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {

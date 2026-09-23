@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "encrypted",
     "iops",
     "kmsKey",
+    "throughputMib",
     "volumeSize",
     "volumeType"
 })
@@ -77,6 +78,8 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     private Long iops;
     @JsonProperty("kmsKey")
     private AWSResourceReference kmsKey;
+    @JsonProperty("throughputMib")
+    private Integer throughputMib;
     @JsonProperty("volumeSize")
     private Long volumeSize;
     @JsonProperty("volumeType")
@@ -90,12 +93,13 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     public EBSBlockDeviceSpec() {
     }
 
-    public EBSBlockDeviceSpec(Boolean deleteOnTermination, Boolean encrypted, Long iops, AWSResourceReference kmsKey, Long volumeSize, String volumeType) {
+    public EBSBlockDeviceSpec(Boolean deleteOnTermination, Boolean encrypted, Long iops, AWSResourceReference kmsKey, Integer throughputMib, Long volumeSize, String volumeType) {
         super();
         this.deleteOnTermination = deleteOnTermination;
         this.encrypted = encrypted;
         this.iops = iops;
         this.kmsKey = kmsKey;
+        this.throughputMib = throughputMib;
         this.volumeSize = volumeSize;
         this.volumeType = volumeType;
     }
@@ -165,6 +169,22 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     /**
+     * throughputMib to provision in MiB/s supported for the volume type. Not applicable to all types.<br><p> <br><p> This parameter is valid only for gp3 volumes. Valid Range: Minimum value of 125. Maximum value of 2000.<br><p> <br><p> When omitted, this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 125.
+     */
+    @JsonProperty("throughputMib")
+    public Integer getThroughputMib() {
+        return throughputMib;
+    }
+
+    /**
+     * throughputMib to provision in MiB/s supported for the volume type. Not applicable to all types.<br><p> <br><p> This parameter is valid only for gp3 volumes. Valid Range: Minimum value of 125. Maximum value of 2000.<br><p> <br><p> When omitted, this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 125.
+     */
+    @JsonProperty("throughputMib")
+    public void setThroughputMib(Integer throughputMib) {
+        this.throughputMib = throughputMib;
+    }
+
+    /**
      * The size of the volume, in GiB.<br><p> <br><p> Constraints: 1-16384 for General Purpose SSD (gp2), 4-16384 for Provisioned IOPS SSD (io1), 500-16384 for Throughput Optimized HDD (st1), 500-16384 for Cold HDD (sc1), and 1-1024 for Magnetic (standard) volumes. If you specify a snapshot, the volume size must be equal to or larger than the snapshot size.<br><p> <br><p> Default: If you're creating the volume from a snapshot and don't specify a volume size, the default is the snapshot size.
      */
     @JsonProperty("volumeSize")
@@ -181,7 +201,7 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     /**
-     * The volume type: gp2, io1, st1, sc1, or standard. Default: standard
+     * volumeType can be of type gp2, gp3, io1, st1, sc1, or standard. Default: standard
      */
     @JsonProperty("volumeType")
     public String getVolumeType() {
@@ -189,7 +209,7 @@ public class EBSBlockDeviceSpec implements Editable<EBSBlockDeviceSpecBuilder>, 
     }
 
     /**
-     * The volume type: gp2, io1, st1, sc1, or standard. Default: standard
+     * volumeType can be of type gp2, gp3, io1, st1, sc1, or standard. Default: standard
      */
     @JsonProperty("volumeType")
     public void setVolumeType(String volumeType) {

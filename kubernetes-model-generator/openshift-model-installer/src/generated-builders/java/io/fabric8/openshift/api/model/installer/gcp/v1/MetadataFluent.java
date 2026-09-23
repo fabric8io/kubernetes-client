@@ -291,8 +291,8 @@ public class MetadataFluent<A extends io.fabric8.openshift.api.model.installer.g
     return new EndpointNested(null);
   }
   
-  public A withNewEndpoint(Boolean clusterUseOnly,String name,String region) {
-    return (A) this.withEndpoint(new PSCEndpoint(clusterUseOnly, name, region));
+  public A withNewEndpoint(Boolean clusterUseOnly,String name) {
+    return (A) this.withEndpoint(new PSCEndpoint(clusterUseOnly, name));
   }
   
   public EndpointNested<A> withNewEndpointLike(PSCEndpoint item) {

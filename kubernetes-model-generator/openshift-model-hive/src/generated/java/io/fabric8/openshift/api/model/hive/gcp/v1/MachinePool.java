@@ -45,6 +45,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "osDisk",
     "secureBoot",
     "serviceAccount",
+    "tags",
     "type",
     "userTags",
     "zones"
@@ -84,6 +85,9 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private String secureBoot;
     @JsonProperty("serviceAccount")
     private String serviceAccount;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("userTags")
@@ -101,13 +105,14 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String networkProjectID, String onHostMaintenance, OSDisk osDisk, String secureBoot, String serviceAccount, String type, List<UserTag> userTags, List<String> zones) {
+    public MachinePool(String networkProjectID, String onHostMaintenance, OSDisk osDisk, String secureBoot, String serviceAccount, List<String> tags, String type, List<UserTag> userTags, List<String> zones) {
         super();
         this.networkProjectID = networkProjectID;
         this.onHostMaintenance = onHostMaintenance;
         this.osDisk = osDisk;
         this.secureBoot = secureBoot;
         this.serviceAccount = serviceAccount;
+        this.tags = tags;
         this.type = type;
         this.userTags = userTags;
         this.zones = zones;
@@ -191,6 +196,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("serviceAccount")
     public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
+    }
+
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset. Not to be confused with UserTags.
+     */
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset. Not to be confused with UserTags.
+     */
+    @JsonProperty("tags")
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**

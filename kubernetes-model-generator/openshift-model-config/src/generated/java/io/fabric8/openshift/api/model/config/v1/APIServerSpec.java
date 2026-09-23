@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "clientCA",
     "encryption",
     "servingCerts",
+    "tlsAdherence",
     "tlsSecurityProfile"
 })
 @ToString
@@ -79,6 +80,8 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
     private APIServerEncryption encryption;
     @JsonProperty("servingCerts")
     private APIServerServingCerts servingCerts;
+    @JsonProperty("tlsAdherence")
+    private String tlsAdherence;
     @JsonProperty("tlsSecurityProfile")
     private TLSSecurityProfile tlsSecurityProfile;
     @JsonIgnore
@@ -90,13 +93,14 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
     public APIServerSpec() {
     }
 
-    public APIServerSpec(List<String> additionalCORSAllowedOrigins, Audit audit, ConfigMapNameReference clientCA, APIServerEncryption encryption, APIServerServingCerts servingCerts, TLSSecurityProfile tlsSecurityProfile) {
+    public APIServerSpec(List<String> additionalCORSAllowedOrigins, Audit audit, ConfigMapNameReference clientCA, APIServerEncryption encryption, APIServerServingCerts servingCerts, String tlsAdherence, TLSSecurityProfile tlsSecurityProfile) {
         super();
         this.additionalCORSAllowedOrigins = additionalCORSAllowedOrigins;
         this.audit = audit;
         this.clientCA = clientCA;
         this.encryption = encryption;
         this.servingCerts = servingCerts;
+        this.tlsAdherence = tlsAdherence;
         this.tlsSecurityProfile = tlsSecurityProfile;
     }
 
@@ -155,6 +159,22 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
     @JsonProperty("servingCerts")
     public void setServingCerts(APIServerServingCerts servingCerts) {
         this.servingCerts = servingCerts;
+    }
+
+    /**
+     * tlsAdherence controls if components in the cluster adhere to the TLS security profile configured on this APIServer resource.<br><p> <br><p> Valid values are "LegacyAdheringComponentsOnly" and "StrictAllComponents".<br><p> <br><p> When set to "LegacyAdheringComponentsOnly", components that already honor the cluster-wide TLS profile continue to do so. Components that do not already honor it continue to use their individual TLS configurations.<br><p> <br><p> When set to "StrictAllComponents", all components must honor the configured TLS profile unless they have a component-specific TLS configuration that overrides it. This mode is recommended for security-conscious deployments and is required for certain compliance frameworks.<br><p> <br><p> Note: Some components such as Kubelet and IngressController have their own dedicated TLS configuration mechanisms via KubeletConfig and IngressController CRs respectively. When these component-specific TLS configurations are set, they take precedence over the cluster-wide tlsSecurityProfile. When not set, these components fall back to the cluster-wide default.<br><p> <br><p> Components that encounter an unknown value for tlsAdherence should treat it as "StrictAllComponents" and log a warning to ensure forward compatibility while defaulting to the more secure behavior.<br><p> <br><p> This field is optional. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is LegacyAdheringComponentsOnly.<br><p> <br><p> Once set, this field may be changed to a different value, but may not be removed.
+     */
+    @JsonProperty("tlsAdherence")
+    public String getTlsAdherence() {
+        return tlsAdherence;
+    }
+
+    /**
+     * tlsAdherence controls if components in the cluster adhere to the TLS security profile configured on this APIServer resource.<br><p> <br><p> Valid values are "LegacyAdheringComponentsOnly" and "StrictAllComponents".<br><p> <br><p> When set to "LegacyAdheringComponentsOnly", components that already honor the cluster-wide TLS profile continue to do so. Components that do not already honor it continue to use their individual TLS configurations.<br><p> <br><p> When set to "StrictAllComponents", all components must honor the configured TLS profile unless they have a component-specific TLS configuration that overrides it. This mode is recommended for security-conscious deployments and is required for certain compliance frameworks.<br><p> <br><p> Note: Some components such as Kubelet and IngressController have their own dedicated TLS configuration mechanisms via KubeletConfig and IngressController CRs respectively. When these component-specific TLS configurations are set, they take precedence over the cluster-wide tlsSecurityProfile. When not set, these components fall back to the cluster-wide default.<br><p> <br><p> Components that encounter an unknown value for tlsAdherence should treat it as "StrictAllComponents" and log a warning to ensure forward compatibility while defaulting to the more secure behavior.<br><p> <br><p> This field is optional. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is LegacyAdheringComponentsOnly.<br><p> <br><p> Once set, this field may be changed to a different value, but may not be removed.
+     */
+    @JsonProperty("tlsAdherence")
+    public void setTlsAdherence(String tlsAdherence) {
+        this.tlsAdherence = tlsAdherence;
     }
 
     @JsonProperty("tlsSecurityProfile")

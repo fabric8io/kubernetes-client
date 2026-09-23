@@ -21,6 +21,7 @@ import java.util.Optional;
 public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.model.hive.v1.AzureClusterDeprovisionFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String baseDomainResourceGroupName;
   private String cloudName;
   private LocalObjectReferenceBuilder credentialsSecretRef;
   private String resourceGroupName;
@@ -59,6 +60,7 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
   protected void copyInstance(AzureClusterDeprovision instance) {
     instance = instance != null ? instance : new AzureClusterDeprovision();
     if (instance != null) {
+        this.withBaseDomainResourceGroupName(instance.getBaseDomainResourceGroupName());
         this.withCloudName(instance.getCloudName());
         this.withCredentialsSecretRef(instance.getCredentialsSecretRef());
         this.withResourceGroupName(instance.getResourceGroupName());
@@ -89,6 +91,9 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
       return false;
     }
     AzureClusterDeprovisionFluent that = (AzureClusterDeprovisionFluent) o;
+    if (!(Objects.equals(baseDomainResourceGroupName, that.baseDomainResourceGroupName))) {
+      return false;
+    }
     if (!(Objects.equals(cloudName, that.cloudName))) {
       return false;
     }
@@ -108,6 +113,10 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
     return this.additionalProperties;
   }
   
+  public String getBaseDomainResourceGroupName() {
+    return this.baseDomainResourceGroupName;
+  }
+  
   public String getCloudName() {
     return this.cloudName;
   }
@@ -118,6 +127,10 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasBaseDomainResourceGroupName() {
+    return this.baseDomainResourceGroupName != null;
   }
   
   public boolean hasCloudName() {
@@ -133,7 +146,7 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(cloudName, credentialsSecretRef, resourceGroupName, additionalProperties);
+    return Objects.hash(baseDomainResourceGroupName, cloudName, credentialsSecretRef, resourceGroupName, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -163,6 +176,11 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(baseDomainResourceGroupName == null)) {
+        sb.append("baseDomainResourceGroupName:");
+        sb.append(baseDomainResourceGroupName);
+        sb.append(",");
+    }
     if (!(cloudName == null)) {
         sb.append("cloudName:");
         sb.append(cloudName);
@@ -192,6 +210,11 @@ public class AzureClusterDeprovisionFluent<A extends io.fabric8.openshift.api.mo
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
+    this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     return (A) this;
   }
   
