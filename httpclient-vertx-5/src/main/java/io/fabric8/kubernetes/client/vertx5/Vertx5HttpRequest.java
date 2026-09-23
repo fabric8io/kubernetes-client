@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
+import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -97,14 +98,19 @@ class Vertx5HttpRequest {
           // Framing has to be set before the head is written: setChunked() throws once writeHead() has flushed it.
           prepareFraming(req, request.body());
 
+          // A failed write fails the request: when the connection closes before the request is created, Vert.x drops the
+          // close and never completes response(). Once the response arrived, a failed write doesn't replace it.
+          final Handler<Throwable> onWriteFailure = t -> promise
+              .tryFail(t instanceof IOException ? t : new IOException(t.getMessage(), t));
+
           // If the caller asked for 100-continue semantics we first flush the headers,
           // wait for the server to acknowledge, then stream the body.
           if (request.isExpectContinue()) {
-            req.continueHandler(v -> writeBody(req, request.body()));
-            req.writeHead().onFailure(promise::fail);
+            req.continueHandler(v -> writeBody(req, request.body(), onWriteFailure));
+            req.writeHead().onFailure(onWriteFailure);
           } else {
             // Normal request - send headers and body
-            writeBody(req, request.body());
+            writeBody(req, request.body(), onWriteFailure);
           }
 
           return promise.future();
@@ -125,21 +131,22 @@ class Vertx5HttpRequest {
    *
    * @param req the Vert.x HTTP client request
    * @param body the body content to send, or null for no body
+   * @param onWriteFailure notified if the request can't be written
    */
-  private void writeBody(HttpClientRequest req, BodyContent body) {
+  private void writeBody(HttpClientRequest req, BodyContent body, Handler<Throwable> onWriteFailure) {
     if (body == null) {
-      req.end();
+      req.end().onFailure(onWriteFailure);
       return;
     }
 
     if (body instanceof StandardHttpRequest.StringBodyContent) {
       StandardHttpRequest.StringBodyContent s = (StandardHttpRequest.StringBodyContent) body;
-      req.end(Buffer.buffer(s.getContent()));
+      req.end(Buffer.buffer(s.getContent())).onFailure(onWriteFailure);
       return;
     }
     if (body instanceof StandardHttpRequest.ByteArrayBodyContent) {
       StandardHttpRequest.ByteArrayBodyContent b = (StandardHttpRequest.ByteArrayBodyContent) body;
-      req.end(Buffer.buffer(b.getContent()));
+      req.end(Buffer.buffer(b.getContent())).onFailure(onWriteFailure);
       return;
     }
     if (body instanceof StandardHttpRequest.InputStreamBodyContent) {
@@ -147,7 +154,7 @@ class Vertx5HttpRequest {
       InputStream is = i.getContent();
       ReadStream<Buffer> stream = new InputStreamReadStream(this, is, req);
       // Use pipeTo which only streams the body data and calls end().
-      stream.pipeTo(req);
+      stream.pipeTo(req).onFailure(onWriteFailure);
       return;
     }
     req.reset(0L, new IllegalArgumentException("Unsupported body content: " + body.getClass()));
