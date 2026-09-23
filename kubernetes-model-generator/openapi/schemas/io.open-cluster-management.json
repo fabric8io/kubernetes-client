@@ -58,12 +58,12 @@
       "type": "object",
       "properties": {
         "enableMetrics": {
-          "description": "EnableMetrics indicates the observability addon push metrics to hub server.",
+          "description": "When false, the managed cluster addon stops pushing metrics to the hub.",
           "type": "boolean",
           "default": false
         },
         "interval": {
-          "description": "Interval for the observability addon push metrics to hub server.",
+          "description": "Interval in seconds at which the observability addon on each managed cluster pushes metrics to the hub.",
           "type": "integer",
           "format": "int32"
         },
@@ -108,15 +108,15 @@
           "default": ""
         },
         "serviceAccountProjection": {
-          "description": "serviceAccountProjection indicates whether mount service account token to thanos pods. Default is false.",
+          "description": "When true, mounts a projected service account token into Thanos pods. Enable this for cloud-provider IAM integration instead of static credentials.",
           "type": "boolean"
         },
         "tlsSecretMountPath": {
-          "description": "TLS secret mount path for the custom certificate for the object store",
+          "description": "Filesystem path where the custom TLS certificate is mounted inside Thanos pods. Only relevant when tlsSecretName is set.",
           "type": "string"
         },
         "tlsSecretName": {
-          "description": "TLS secret contains the custom certificate for the object store",
+          "description": "Name of a Secret containing a custom CA certificate for the object store endpoint. Required when the object store uses a self-signed certificate or a private CA not trusted by the system root store.",
           "type": "string"
         }
       },
@@ -14183,27 +14183,37 @@
       }
     },
     "io.open-cluster-management.discovery.v1.DiscoveredClusterCondition": {
+      "description": "DiscoveredClusterCondition represents an observation of a DiscoveredCluster's state",
       "type": "object",
       "required": [
-        "type",
-        "status"
+        "type"
       ],
       "properties": {
         "lastTransitionTime": {
-          "description": "LastTransitionTime is the last time the condition changed from one status to another.",
+          "description": "Last time the condition transitioned from one status to another",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
         },
-        "lastUpdateTime": {
-          "description": "The last time this condition was updated.",
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
+        "message": {
+          "description": "Human-readable message indicating details about the transition",
+          "type": "string"
+        },
+        "observedGeneration": {
+          "description": "ObservedGeneration represents the .metadata.generation that the condition was set based upon",
+          "type": "integer",
+          "format": "int64"
+        },
+        "reason": {
+          "description": "Programmatic identifier indicating the reason for the condition's last transition",
+          "type": "string"
         },
         "status": {
-          "description": "Status is the status of the condition. One of True, False, Unknown.",
+          "description": "Status of the condition (True, False, Unknown)",
           "type": "string"
         },
         "type": {
-          "description": "Type is the type of the discovered cluster condition.",
-          "type": "string"
+          "description": "Type of the condition",
+          "type": "string",
+          "default": ""
         }
       },
       "x-fabric8-info": {
@@ -14312,8 +14322,8 @@
           "description": "OpenshiftVersion specifies the OpenShift version running on the cluster.",
           "type": "string"
         },
-        "owner": {
-          "description": "Owner identifies the owner or organization responsible for the cluster.",
+        "provenance": {
+          "description": "Provenance indicates how the cluster was discovered (e.g., Telemetry, Manual).",
           "type": "string"
         },
         "region": {
@@ -14328,10 +14338,18 @@
           "description": "Status represents the current state of the discovered cluster (e.g Active, Stale).",
           "type": "string"
         },
+        "supportLevel": {
+          "description": "SupportLevel specifies the support tier for the cluster (e.g., Self-Support, L1-L3, Premium).",
+          "type": "string"
+        },
         "type": {
           "description": "Type defines the type of cluster, such as OpenShift, Kubernetes, or a specific managed service type.",
           "type": "string",
           "default": ""
+        },
+        "usage": {
+          "description": "Usage indicates the cluster's intended purpose (e.g., Development/Test, Production).",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -14347,11 +14365,17 @@
       "type": "object",
       "properties": {
         "conditions": {
-          "description": "INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run \"make\" to regenerate code after modifying this file",
+          "description": "Conditions represent the latest available observations of the DiscoveredCluster's state",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.open-cluster-management.discovery.v1.DiscoveredClusterCondition"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
         }
       },
       "x-fabric8-info": {
@@ -14849,7 +14873,7 @@
       }
     },
     "io.open-cluster-management.observability.v1beta1.MultiClusterObservabilitySpec": {
-      "description": "MultiClusterObservabilitySpec defines the desired state of MultiClusterObservability.",
+      "description": "Configuration for the hub-side Observability stack.",
       "type": "object",
       "required": [
         "storageConfigObject"
@@ -14865,15 +14889,15 @@
           "default": false
         },
         "imagePullPolicy": {
-          "description": "Pull policy of the MultiClusterObservability images",
+          "description": "Pull policy of the MultiClusterObservability images. One of: Always, Never, IfNotPresent. Defaults to IfNotPresent.",
           "type": "string"
         },
         "imagePullSecret": {
-          "description": "Pull secret of the MultiClusterObservability images",
+          "description": "Name of an existing Secret of type kubernetes.io/dockerconfigjson in the same namespace used for pulling MultiClusterObservability images.",
           "type": "string"
         },
         "nodeSelector": {
-          "description": "Spec of NodeSelector",
+          "description": "Node labels used to schedule all Observability workloads. Pods are only placed on nodes matching all specified labels.",
           "type": "object",
           "additionalProperties": {
             "type": "string"
@@ -14884,19 +14908,19 @@
           "$ref": "#/definitions/com.github.stolostron.multicluster-observability-operator.operators.multiclusterobservability.api.shared.ObservabilityAddonSpec"
         },
         "retentionResolution1h": {
-          "description": "How long to retain samples of resolution 2 (1 hour) in bucket.",
+          "description": "How long to retain 1-hour downsampled (resolution 2) samples in object storage. Format: duration string, e.g. '365d'.",
           "type": "string"
         },
         "retentionResolution5m": {
-          "description": "How long to retain samples of resolution 1 (5 minutes) in bucket.",
+          "description": "How long to retain 5-minute downsampled (resolution 1) samples in object storage. Format: duration string, e.g. '14d'.",
           "type": "string"
         },
         "retentionResolutionRaw": {
-          "description": "How long to retain raw samples in a bucket.",
+          "description": "How long to retain raw samples in a bucket. Format: duration string, e.g. '5d'. Raw data has the highest storage cost per day retained.",
           "type": "string"
         },
         "storageConfigObject": {
-          "description": "Specifies the storage to be used by Observability",
+          "description": "S3 storage configuration for Observability StatefulSets and object storage.",
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta1.StorageConfigObject"
         },
         "tolerations": {
@@ -14916,11 +14940,11 @@
       }
     },
     "io.open-cluster-management.observability.v1beta1.MultiClusterObservabilityStatus": {
-      "description": "MultiClusterObservabilityStatus defines the observed state of MultiClusterObservability.",
+      "description": "Observed state of the MultiClusterObservability installation, including component health and addon status.",
       "type": "object",
       "properties": {
         "conditions": {
-          "description": "Represents the status of each deployment",
+          "description": "Conditions describing the current state of the MultiClusterObservability installation. Condition types include: Ready, Installing, Failed, MetricsDisabled, MultiClusterObservabilityAddonDegraded.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/com.github.stolostron.multicluster-observability-operator.operators.multiclusterobservability.api.shared.Condition"
@@ -15071,7 +15095,7 @@
       ],
       "properties": {
         "metricObjectStorage": {
-          "description": "Object store config secret for metrics",
+          "description": "Reference to a Secret containing the Thanos object storage configuration. The secret must use the Thanos storage config format (YAML). See spec.storageConfigObject.metricObjectStorage.key.",
           "$ref": "#/definitions/com.github.stolostron.multicluster-observability-operator.operators.multiclusterobservability.api.shared.PreConfiguredStorage"
         },
         "statefulSetSize": {
@@ -15079,7 +15103,7 @@
           "type": "string"
         },
         "statefulSetStorageClass": {
-          "description": "Specify the storageClass Stateful Sets. This storage class will also\nbe used for Object Storage if MetricObjectStorage was configured for the system to create the storage.",
+          "description": "StorageClass used by Observability StatefulSets (Thanos store, ruler, compactor, receiver) and, when no object storage is configured, the object storage PVC.",
           "type": "string"
         }
       },
@@ -15088,6 +15112,27 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta1",
         "Kind": "StorageConfigObject",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.AddonManagerSpec": {
+      "type": "object",
+      "properties": {
+        "logVerbosity": {
+          "description": "Log verbosity for the addon-manager.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "resources": {
+          "description": "Compute Resources required by this component.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.ResourceRequirements"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "AddonManagerSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15134,6 +15179,10 @@
           "description": "Specifies the store memcached",
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.CacheConfig"
         },
+        "queryTimeout": {
+          "description": "QueryTimeout is the timeout for queries and reads through the observability gateway. It is applied to Grafana datasources, HAProxy route, rbac-query-proxy, and the observatorium-api server read timeout. Default is 300s.",
+          "type": "string"
+        },
         "rbacQueryProxy": {
           "description": "The spec of rbac-query-proxy",
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.CommonSpec"
@@ -15157,6 +15206,10 @@
         "storeMemcached": {
           "description": "Specifies the store memcached",
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.CacheConfig"
+        },
+        "writeTimeout": {
+          "description": "WriteTimeout is the timeout for metrics ingestion through the observatorium-api gateway. Controls the server write timeout for the response path. Increase for large payloads over high-latency networks. Default is 720s.",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -15236,6 +15289,10 @@
       "description": "CapabilitiesSpec defines the platform and user workload observabilities capabilities managed exclusively by the multicluster-observability-addon. Enabling any of these capabilities will result in deploying the following resources:\n  - The addon Deployment, ServiceAccount and RBAC.\n  - A ClusterManagementAddon managing placement for capability related custom resources.\n  - An AddonDeploymentConfig managing the addon feature gates for activated capabilities.",
       "type": "object",
       "properties": {
+        "addonManager": {
+          "description": "AddonManager defines the configuration spec for the addon-manager.",
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.AddonManagerSpec"
+        },
         "platform": {
           "description": "Platform defines the spec for platform observability capabilities managed by the addon. The platform is defined as the ACM/OCM/OCP components running on managed clusters to run, manage and observe the managed clusters themselves locally as well as remotely from a hub. Such components live on namespaces with prefixes for example:\n  - openshift-\n  - open-cluster-management-\n  - default",
           "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformCapabilitiesSpec"
@@ -15291,6 +15348,36 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.observability.v1beta2.CompactDebugSpec": {
+      "type": "object",
+      "properties": {
+        "blockMetaFetchConcurrency": {
+          "description": "BlockMetaFetchConcurrency is the number of concurrent requests to fetch block metadata.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "downsampleConcurrency": {
+          "description": "DownsampleConcurrency is the number of goroutines to use when downsampling blocks.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "logLevel": {
+          "description": "LogLevel for the compactor (e.g., debug, info, warn, error).",
+          "type": "string"
+        },
+        "waitInterval": {
+          "description": "WaitInterval is the time to wait between compaction cycles. Setting this will also synchronize --compact.cleanup-interval and --compact.progress-interval.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "CompactDebugSpec",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.observability.v1beta2.CompactSpec": {
       "description": "Thanos Compact Spec.",
       "type": "object",
@@ -15301,6 +15388,10 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
+        },
+        "debug": {
+          "description": "Debug defines the configuration for debugging and tuning the compactor.",
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.CompactDebugSpec"
         },
         "resources": {
           "description": "Compute Resources required by the compact.",
@@ -15336,6 +15427,23 @@
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
         "Kind": "InstrumentationSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.observability.v1beta2.MetricsAlertsSpec": {
+      "description": "MetricsAlertsSpec defines the spec for the addon to forward alerts.",
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "description": "Enabled defines a flag to enable/disable the metrics alerts forwarding.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "MetricsAlertsSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15541,7 +15649,12 @@
         "namespaceRightSizingRecommendation": {
           "description": "Feature to enable namespace right-sizing recommendation capabilities for the Analytics.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformNamespaceRightSizingRecommendationSpec"
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformRightSizingRecommendationSpec"
+        },
+        "virtualizationRightSizingRecommendation": {
+          "description": "Feature to enable virtualization right-sizing recommendation capabilities for the Analytics.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformRightSizingRecommendationSpec"
         }
       },
       "x-fabric8-info": {
@@ -15631,8 +15744,8 @@
         "Scope": "Namespaced"
       }
     },
-    "io.open-cluster-management.observability.v1beta2.PlatformMetricsCollectionSpec": {
-      "description": "PlatformMetricsCollectionSpec defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
+    "io.open-cluster-management.observability.v1beta2.PlatformMetricsDefaultSpec": {
+      "description": "PlatformMetricsDefaultSpec defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
       "type": "object",
       "properties": {
         "enabled": {
@@ -15644,7 +15757,7 @@
         "Type": "nested",
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
-        "Kind": "PlatformMetricsCollectionSpec",
+        "Kind": "PlatformMetricsDefaultSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15652,10 +15765,15 @@
       "description": "PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.",
       "type": "object",
       "properties": {
-        "collection": {
-          "description": "Collection defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
+        "alerts": {
+          "description": "Alerts defines the spec for the addon to forward alerts from fleet managed clusters.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformMetricsCollectionSpec"
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.MetricsAlertsSpec"
+        },
+        "default": {
+          "description": "Default defines the spec for the addon to collect and forward metrics from fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.PlatformMetricsDefaultSpec"
         },
         "ui": {
           "description": "UI defines the spec for the addon to enable UI through COO on the hub",
@@ -15671,11 +15789,11 @@
         "Scope": "Namespaced"
       }
     },
-    "io.open-cluster-management.observability.v1beta2.PlatformNamespaceRightSizingRecommendationSpec": {
+    "io.open-cluster-management.observability.v1beta2.PlatformRightSizingRecommendationSpec": {
       "type": "object",
       "properties": {
         "enabled": {
-          "description": "Enabled defines a flag to enable/disable the namespace right-sizing feature for the Analytics.",
+          "description": "Enabled defines a flag to enable/disable the right-sizing feature for the Analytics.",
           "type": "boolean"
         },
         "namespaceBinding": {
@@ -15687,7 +15805,7 @@
         "Type": "nested",
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
-        "Kind": "PlatformNamespaceRightSizingRecommendationSpec",
+        "Kind": "PlatformRightSizingRecommendationSpec",
         "Scope": "Namespaced"
       }
     },
@@ -15760,6 +15878,22 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.observability.v1beta2.ReceiveDebugSpec": {
+      "type": "object",
+      "properties": {
+        "logLevel": {
+          "description": "LogLevel for the receiver (e.g., debug, info, warn, error).",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "observability.open-cluster-management.io",
+        "Version": "v1beta2",
+        "Kind": "ReceiveDebugSpec",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.observability.v1beta2.ReceiveSpec": {
       "description": "Thanos Receive Spec.",
       "type": "object",
@@ -15770,6 +15904,10 @@
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.Container"
           }
+        },
+        "debug": {
+          "description": "Debug defines the configuration for debugging and tuning the receiver.",
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.ReceiveDebugSpec"
         },
         "replicas": {
           "description": "Replicas for this component.",
@@ -16041,8 +16179,8 @@
         "Scope": "Namespaced"
       }
     },
-    "io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsCollectionSpec": {
-      "description": "UserWorkloadLogsSpec defines the spec for the addon to collect,forward and store logs from user workloads hosted on fleet managed clusters.",
+    "io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsDefaultSpec": {
+      "description": "UserWorkloadMetricsDefaultSpec defines the spec for the addon to collect and forward metrics from user workloads hosted on fleet managed clusters.",
       "type": "object",
       "properties": {
         "enabled": {
@@ -16054,7 +16192,7 @@
         "Type": "nested",
         "Group": "observability.open-cluster-management.io",
         "Version": "v1beta2",
-        "Kind": "UserWorkloadMetricsCollectionSpec",
+        "Kind": "UserWorkloadMetricsDefaultSpec",
         "Scope": "Namespaced"
       }
     },
@@ -16062,10 +16200,15 @@
       "description": "UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.",
       "type": "object",
       "properties": {
-        "collection": {
-          "description": "Collection defines the spec for the addon to collect and forward metrics from user workloads hosted on fleet managed clusters.",
+        "alerts": {
+          "description": "Alerts defines the spec for the addon to forward alerts from user workloads hosted on fleet managed clusters.",
           "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsCollectionSpec"
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.MetricsAlertsSpec"
+        },
+        "default": {
+          "description": "Default defines the spec for the addon to collect and forward metrics from user workloads hosted on fleet managed clusters.",
+          "default": {},
+          "$ref": "#/definitions/io.open-cluster-management.observability.v1beta2.UserWorkloadMetricsDefaultSpec"
         }
       },
       "x-fabric8-info": {
@@ -16186,29 +16329,6 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "AwsIrsaConfig",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.BackupConfig": {
-      "description": "BackupConfig contains settings for the Velero backup integration.",
-      "type": "object",
-      "properties": {
-        "minBackupPeriodSeconds": {
-          "description": "(Deprecated) MinBackupPeriodSeconds specifies that a minimum of MinBackupPeriodSeconds will occur in between each backup. This is used to rate limit backups. This potentially batches together multiple changes into 1 backup. No backups will be lost as changes that happen during this interval are queued up and will result in a backup happening once the interval has been completed.",
-          "type": "integer",
-          "format": "int32"
-        },
-        "velero": {
-          "description": "(Deprecated) Velero specifies configuration for the Velero backup integration.",
-          "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.VeleroBackupConfig"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "BackupConfig",
         "Scope": "Namespaced"
       }
     },
@@ -16811,80 +16931,6 @@
         "Scope": "Namespaced"
       }
     },
-    "io.open-cluster-management.operator.v1.ExternalDNSAWSConfig": {
-      "description": "ExternalDNSAWSConfig contains AWS-specific settings for external DNS",
-      "type": "object",
-      "properties": {
-        "credentials": {
-          "description": "(Deprecated) Credentials references a secret that will be used to authenticate with AWS Route53. It will need permission to manage entries in each of the managed domains for this cluster. Secret should have AWS keys named 'aws_access_key_id' and 'aws_secret_access_key'.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "ExternalDNSAWSConfig",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.ExternalDNSConfig": {
-      "description": "ExternalDNSConfig contains settings for running external-dns in a Hive environment.",
-      "type": "object",
-      "properties": {
-        "aws": {
-          "description": "(Deprecated) AWS contains AWS-specific settings for external DNS",
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ExternalDNSAWSConfig"
-        },
-        "gcp": {
-          "description": "(Deprecated) GCP contains GCP-specific settings for external DNS",
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ExternalDNSGCPConfig"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "ExternalDNSConfig",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.ExternalDNSGCPConfig": {
-      "description": "ExternalDNSGCPConfig contains GCP-specific settings for external DNS",
-      "type": "object",
-      "properties": {
-        "credentials": {
-          "description": "(Deprecated) Credentials references a secret that will be used to authenticate with GCP DNS. It will need permission to manage entries in each of the managed domains for this cluster. Secret should have a key names 'osServiceAccount.json'. The credentials must specify the project to use.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "ExternalDNSGCPConfig",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.FailedProvisionConfig": {
-      "description": "FailedProvisionConfig contains settings to control behavior undertaken by Hive when an installation attempt fails.",
-      "type": "object",
-      "properties": {
-        "skipGatherLogs": {
-          "description": "(Deprecated) SkipGatherLogs disables functionality that attempts to gather full logs from the cluster if an installation fails for any reason. The logs will be stored in a persistent volume for up to 7 days.",
-          "type": "boolean"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "FailedProvisionConfig",
-        "Scope": "Namespaced"
-      }
-    },
     "io.open-cluster-management.operator.v1.FeatureGate": {
       "type": "object",
       "required": [
@@ -16977,67 +17023,6 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "GenerationStatus",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.HiveConfigSpec": {
-      "type": "object",
-      "required": [
-        "failedProvisionConfig"
-      ],
-      "properties": {
-        "additionalCertificateAuthorities": {
-          "description": "(Deprecated) AdditionalCertificateAuthorities is a list of references to secrets in the 'hive' namespace that contain an additional Certificate Authority to use when communicating with target clusters. These certificate authorities will be used in addition to any self-signed CA generated by each cluster on installation.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-          }
-        },
-        "backup": {
-          "description": "(Deprecated) Backup specifies configuration for backup integration. If absent, backup integration will be disabled.",
-          "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.BackupConfig"
-        },
-        "externalDNS": {
-          "description": "(Deprecated) ExternalDNS specifies configuration for external-dns if it is to be deployed by Hive. If absent, external-dns will not be deployed.",
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.ExternalDNSConfig"
-        },
-        "failedProvisionConfig": {
-          "description": "(Deprecated) FailedProvisionConfig is used to configure settings related to handling provision failures.",
-          "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.FailedProvisionConfig"
-        },
-        "globalPullSecret": {
-          "description": "(Deprecated) GlobalPullSecret is used to specify a pull secret that will be used globally by all of the cluster deployments. For each cluster deployment, the contents of GlobalPullSecret will be merged with the specific pull secret for a cluster deployment(if specified), with precedence given to the contents of the pull secret for the cluster deployment.",
-          "$ref": "#/definitions/io.k8s.api.core.v1.LocalObjectReference"
-        },
-        "maintenanceMode": {
-          "description": "(Deprecated) MaintenanceMode can be set to true to disable the hive controllers in situations where we need to ensure nothing is running that will add or act upon finalizers on Hive types. This should rarely be needed. Sets replicas to 0 for the hive-controllers deployment to accomplish this.",
-          "type": "boolean"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "HiveConfigSpec",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.HiveConfigStatus": {
-      "description": "HiveConfigStatus defines the observed state of Hive",
-      "type": "object",
-      "properties": {
-        "aggregatorClientCAHash": {
-          "description": "(Deprecated) AggregatorClientCAHash keeps an md5 hash of the aggregator client CA configmap data from the openshift-config-managed namespace. When the configmap changes, admission is redeployed.",
-          "type": "string"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "HiveConfigStatus",
         "Scope": "Namespaced"
       }
     },
@@ -17206,26 +17191,6 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "ImporterConfiguration",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.open-cluster-management.operator.v1.IngressSpec": {
-      "description": "IngressSpec specifies configuration options for ingress management",
-      "type": "object",
-      "properties": {
-        "sslCiphers": {
-          "description": "List of SSL ciphers enabled for management ingress. Defaults to full list of supported ciphers",
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "IngressSpec",
         "Scope": "Namespaced"
       }
     },
@@ -17574,6 +17539,35 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.operator.v1.MCEVersionComplianceStatus": {
+      "description": "MCEVersionComplianceStatus tracks MultiClusterEngine version compliance against required channel",
+      "type": "object",
+      "properties": {
+        "currentVersion": {
+          "description": "CurrentVersion is the actual version of the MCE that is currently installed",
+          "type": "string"
+        },
+        "isCompliant": {
+          "description": "IsCompliant indicates whether the current MCE version meets or exceeds the required channel version",
+          "type": "boolean"
+        },
+        "message": {
+          "description": "Message provides additional details about the compliance status",
+          "type": "string"
+        },
+        "requiredChannel": {
+          "description": "RequiredChannel is the channel version that MCE should meet or exceed",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "MCEVersionComplianceStatus",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.operator.v1.MultiClusterHub": {
       "description": "MulticlusterHub defines the configuration for an instance of a multicluster hub, a central point for managing multiple Kubernetes-based clusters. The deployment of multicluster hub components is determined based on the configuration that is defined in this resource.",
       "type": "object",
@@ -17649,10 +17643,6 @@
           "description": "Specifies deployment replication for improved availability. Options are: Basic and High (default)",
           "type": "string"
         },
-        "customCAConfigmap": {
-          "description": "(Deprecated) Provide the customized OpenShift default ingress CA certificate to RHACM",
-          "type": "string"
-        },
         "disableHubSelfManagement": {
           "description": "Disable automatic import of the hub cluster as a managed cluster",
           "type": "boolean"
@@ -17661,31 +17651,17 @@
           "description": "Disable automatic update of ClusterImageSets",
           "type": "boolean"
         },
-        "enableClusterBackup": {
-          "description": "(Deprecated) Enable cluster backup",
-          "type": "boolean",
-          "default": false
-        },
-        "enableClusterProxyAddon": {
-          "description": "(Deprecated) Enable cluster proxy addon",
-          "type": "boolean"
-        },
-        "hive": {
-          "description": "(Deprecated) Overrides for the default HiveConfig spec",
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.HiveConfigSpec"
-        },
         "imagePullSecret": {
           "description": "Override pull secret for accessing MultiClusterHub operand and endpoint images",
           "type": "string"
         },
-        "ingress": {
-          "description": "(Deprecated) Configuration options for ingress management",
-          "default": {},
-          "$ref": "#/definitions/io.open-cluster-management.operator.v1.IngressSpec"
-        },
         "localClusterName": {
           "description": "The name of the local-cluster resource",
           "type": "string"
+        },
+        "networkPolicies": {
+          "description": "NetworkPolicies configures NetworkPolicy deployment for ACM components",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.NetworkPoliciesConfig"
         },
         "nodeSelector": {
           "description": "Set the nodeselectors",
@@ -17697,11 +17673,6 @@
         "overrides": {
           "description": "Developer Overrides",
           "$ref": "#/definitions/io.open-cluster-management.operator.v1.Overrides"
-        },
-        "separateCertificateManagement": {
-          "description": "(Deprecated) Install cert-manager into its own namespace",
-          "type": "boolean",
-          "default": false
         },
         "tolerations": {
           "description": "Tolerations causes all components to tolerate any taints.",
@@ -17745,6 +17716,10 @@
           "description": "DesiredVersion indicates the desired version",
           "type": "string"
         },
+        "mceVersionCompliance": {
+          "description": "MCEVersionCompliance tracks whether the MCE version meets the required channel version",
+          "$ref": "#/definitions/io.open-cluster-management.operator.v1.MCEVersionComplianceStatus"
+        },
         "phase": {
           "description": "Represents the running phase of the MultiClusterHub",
           "type": "string",
@@ -17756,6 +17731,27 @@
         "Group": "operator.open-cluster-management.io",
         "Version": "v1",
         "Kind": "MultiClusterHubStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.operator.v1.NetworkPoliciesConfig": {
+      "description": "NetworkPoliciesConfig provides configuration for NetworkPolicy deployment",
+      "type": "object",
+      "required": [
+        "enabled"
+      ],
+      "properties": {
+        "enabled": {
+          "description": "Enabled controls whether NetworkPolicies are deployed for ACM components Default: true in ACM 5.0+",
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "operator.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "NetworkPoliciesConfig",
         "Scope": "Namespaced"
       }
     },
@@ -17795,7 +17791,11 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.open-cluster-management.operator.v1.ComponentConfig"
-          }
+          },
+          "x-kubernetes-list-map-keys": [
+            "name"
+          ],
+          "x-kubernetes-list-type": "map"
         },
         "imagePullPolicy": {
           "description": "Pull policy of the MultiCluster hub images",
@@ -18234,23 +18234,6 @@
         "Scope": "Namespaced"
       }
     },
-    "io.open-cluster-management.operator.v1.VeleroBackupConfig": {
-      "description": "VeleroBackupConfig contains settings for the Velero backup integration.",
-      "type": "object",
-      "properties": {
-        "enabled": {
-          "description": "(Deprecated) Enabled dictates if Velero backup integration is enabled. If not specified, the default is disabled.",
-          "type": "boolean"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "nested",
-        "Group": "operator.open-cluster-management.io",
-        "Version": "v1",
-        "Kind": "VeleroBackupConfig",
-        "Scope": "Namespaced"
-      }
-    },
     "io.open-cluster-management.operator.v1.WorkAgentConfiguration": {
       "type": "object",
       "properties": {
@@ -18375,6 +18358,12 @@
         },
         "compliant": {
           "type": "string"
+        },
+        "remainingBindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.open-cluster-management.policy.v1.RemainingBinding"
+          }
         }
       },
       "x-fabric8-info": {
@@ -18436,6 +18425,13 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.open-cluster-management.policy.v1.PlacementDecision"
+          }
+        },
+        "exclusions": {
+          "description": "Exclusions lists managed clusters where the policy is excluded from propagation.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.open-cluster-management.policy.v1.PolicyExclusion"
           }
         },
         "placement": {
@@ -18648,6 +18644,7 @@
       }
     },
     "io.open-cluster-management.policy.v1.PolicyCustomValidator": {
+      "description": "PolicyCustomValidator validates Policy create and update requests.",
       "type": "object",
       "x-fabric8-info": {
         "Type": "nested",
@@ -18658,7 +18655,7 @@
       }
     },
     "io.open-cluster-management.policy.v1.PolicyDependency": {
-      "description": "Each PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.",
+      "description": "PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.",
       "type": "object",
       "required": [
         "name",
@@ -18693,6 +18690,22 @@
         "Group": "policy.open-cluster-management.io",
         "Version": "v1",
         "Kind": "PolicyDependency",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.policy.v1.PolicyExclusion": {
+      "description": "PolicyExclusion reports a managed cluster excluded from propagation by a policy set exclusion.",
+      "type": "object",
+      "properties": {
+        "clusterName": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "PolicyExclusion",
         "Scope": "Namespaced"
       }
     },
@@ -18844,6 +18857,22 @@
         "Group": "policy.open-cluster-management.io",
         "Version": "v1",
         "Kind": "PolicyTemplate",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.policy.v1.RemainingBinding": {
+      "description": "RemainingBinding reports a placement binding that still places the policy on a managed cluster when the policy is excluded on a policy set.",
+      "type": "object",
+      "properties": {
+        "placementBinding": {
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1",
+        "Kind": "RemainingBinding",
         "Scope": "Namespaced"
       }
     },
@@ -19122,6 +19151,50 @@
         "Scope": "Namespaced"
       }
     },
+    "io.open-cluster-management.policy.v1beta1.PolicySetCustomValidator": {
+      "description": "PolicySetCustomValidator validates PolicySet create and update requests.",
+      "type": "object",
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1beta1",
+        "Kind": "PolicySetCustomValidator",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.policy.v1beta1.PolicySetExclusion": {
+      "description": "PolicySetExclusion defines a policy in the set that should not be propagated to specific managed clusters while keeping the PolicySet association intact.",
+      "type": "object",
+      "required": [
+        "policyName",
+        "clusterNames"
+      ],
+      "properties": {
+        "clusterNames": {
+          "description": "ClusterNames is a list of managed cluster names where the policy should not be propagated.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policyName": {
+          "description": "PolicyName is the name of a policy in the PolicySet.",
+          "type": "string",
+          "default": ""
+        },
+        "reason": {
+          "description": "Reason is an optional explanation for the exclusion.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1beta1",
+        "Kind": "PolicySetExclusion",
+        "Scope": "Namespaced"
+      }
+    },
     "io.open-cluster-management.policy.v1beta1.PolicySetList": {
       "description": "PolicySetList contains a list of policy sets.",
       "type": "object",
@@ -19167,6 +19240,13 @@
           "description": "Description is the description of this policy set.",
           "type": "string"
         },
+        "exclusions": {
+          "description": "Exclusions lists policies that should not be propagated to specific managed clusters through this PolicySet's placement binding. Other policies in the PolicySet and other placement bindings are not affected.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.PolicySetExclusion"
+          }
+        },
         "policies": {
           "description": "Policies is a list of policy names that are contained within the policy set.",
           "type": "array",
@@ -19191,6 +19271,13 @@
           "description": "Compliant reports the observed status resulting from the compliance of the policies within.",
           "type": "string"
         },
+        "exclusions": {
+          "description": "Exclusions reports cluster-level exclusions the controller has applied for policies in the set.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.PolicySetStatusExclusion"
+          }
+        },
         "placement": {
           "type": "array",
           "items": {
@@ -19198,7 +19285,7 @@
           }
         },
         "statusMessage": {
-          "description": "StatusMessge reports the current state while determining the compliance of the policy set.",
+          "description": "StatusMessage reports the current state while determining the compliance of the policy set.",
           "type": "string"
         }
       },
@@ -19207,6 +19294,35 @@
         "Group": "policy.open-cluster-management.io",
         "Version": "v1beta1",
         "Kind": "PolicySetStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.open-cluster-management.policy.v1beta1.PolicySetStatusExclusion": {
+      "description": "PolicySetStatusExclusion reports active cluster exclusions observed for a policy in the set.",
+      "type": "object",
+      "required": [
+        "policyName",
+        "clusters"
+      ],
+      "properties": {
+        "clusters": {
+          "description": "Clusters lists managed cluster names where the policy is excluded from propagation.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policyName": {
+          "description": "PolicyName is the name of the excluded policy.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "policy.open-cluster-management.io",
+        "Version": "v1beta1",
+        "Kind": "PolicySetStatusExclusion",
         "Scope": "Namespaced"
       }
     },
@@ -19295,14 +19411,12 @@
           "default": ""
         },
         "details": {
-          "description": "used by replicated policy",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.open-cluster-management.policy.v1beta1.ReplicatedDetailsPerTemplate"
           }
         },
         "violation_message": {
-          "description": "used by replicated policy",
           "type": "string",
           "default": ""
         }

@@ -38,7 +38,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "collection"
+    "alerts",
+    "default"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,8 +66,10 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class UserWorkloadMetricsSpec implements Editable<UserWorkloadMetricsSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("collection")
-    private UserWorkloadMetricsCollectionSpec collection;
+    @JsonProperty("alerts")
+    private MetricsAlertsSpec alerts;
+    @JsonProperty("default")
+    private UserWorkloadMetricsDefaultSpec _default;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,25 +79,42 @@ public class UserWorkloadMetricsSpec implements Editable<UserWorkloadMetricsSpec
     public UserWorkloadMetricsSpec() {
     }
 
-    public UserWorkloadMetricsSpec(UserWorkloadMetricsCollectionSpec collection) {
+    public UserWorkloadMetricsSpec(MetricsAlertsSpec alerts, UserWorkloadMetricsDefaultSpec _default) {
         super();
-        this.collection = collection;
+        this.alerts = alerts;
+        this._default = _default;
     }
 
     /**
      * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
      */
-    @JsonProperty("collection")
-    public UserWorkloadMetricsCollectionSpec getCollection() {
-        return collection;
+    @JsonProperty("alerts")
+    public MetricsAlertsSpec getAlerts() {
+        return alerts;
     }
 
     /**
      * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
      */
-    @JsonProperty("collection")
-    public void setCollection(UserWorkloadMetricsCollectionSpec collection) {
-        this.collection = collection;
+    @JsonProperty("alerts")
+    public void setAlerts(MetricsAlertsSpec alerts) {
+        this.alerts = alerts;
+    }
+
+    /**
+     * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
+     */
+    @JsonProperty("default")
+    public UserWorkloadMetricsDefaultSpec getDefault() {
+        return _default;
+    }
+
+    /**
+     * UserWorkloadMetricsSpec defines the spec for the addon to collect, forward and store metrics from user workloads hosted on fleet managed clusters.
+     */
+    @JsonProperty("default")
+    public void setDefault(UserWorkloadMetricsDefaultSpec _default) {
+        this._default = _default;
     }
 
     @JsonIgnore

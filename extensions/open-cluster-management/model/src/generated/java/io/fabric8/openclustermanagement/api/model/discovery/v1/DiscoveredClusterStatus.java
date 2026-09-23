@@ -85,7 +85,7 @@ public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatus
     }
 
     /**
-     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     * Conditions represent the latest available observations of the DiscoveredCluster's state
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -94,7 +94,7 @@ public class DiscoveredClusterStatus implements Editable<DiscoveredClusterStatus
     }
 
     /**
-     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     * Conditions represent the latest available observations of the DiscoveredCluster's state
      */
     @JsonProperty("conditions")
     public void setConditions(List<DiscoveredClusterCondition> conditions) {

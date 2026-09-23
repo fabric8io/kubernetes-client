@@ -25,7 +25,7 @@ public class PlatformAnalyticsSpecBuilder extends PlatformAnalyticsSpecFluent<Pl
   }
 
   public PlatformAnalyticsSpec build() {
-    PlatformAnalyticsSpec buildable = new PlatformAnalyticsSpec(fluent.buildIncidentDetection(), fluent.buildNamespaceRightSizingRecommendation());
+    PlatformAnalyticsSpec buildable = new PlatformAnalyticsSpec(fluent.buildIncidentDetection(), fluent.buildNamespaceRightSizingRecommendation(), fluent.buildVirtualizationRightSizingRecommendation());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -25,7 +25,7 @@ public class CapabilitiesSpecBuilder extends CapabilitiesSpecFluent<Capabilities
   }
 
   public CapabilitiesSpec build() {
-    CapabilitiesSpec buildable = new CapabilitiesSpec(fluent.buildPlatform(), fluent.buildUserWorkloads());
+    CapabilitiesSpec buildable = new CapabilitiesSpec(fluent.buildAddonManager(), fluent.buildPlatform(), fluent.buildUserWorkloads());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

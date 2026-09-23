@@ -127,7 +127,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * serviceAccountProjection indicates whether mount service account token to thanos pods. Default is false.
+     * When true, mounts a projected service account token into Thanos pods. Enable this for cloud-provider IAM integration instead of static credentials.
      */
     @JsonProperty("serviceAccountProjection")
     public Boolean getServiceAccountProjection() {
@@ -135,7 +135,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * serviceAccountProjection indicates whether mount service account token to thanos pods. Default is false.
+     * When true, mounts a projected service account token into Thanos pods. Enable this for cloud-provider IAM integration instead of static credentials.
      */
     @JsonProperty("serviceAccountProjection")
     public void setServiceAccountProjection(Boolean serviceAccountProjection) {
@@ -143,7 +143,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * TLS secret mount path for the custom certificate for the object store
+     * Filesystem path where the custom TLS certificate is mounted inside Thanos pods. Only relevant when tlsSecretName is set.
      */
     @JsonProperty("tlsSecretMountPath")
     public String getTlsSecretMountPath() {
@@ -151,7 +151,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * TLS secret mount path for the custom certificate for the object store
+     * Filesystem path where the custom TLS certificate is mounted inside Thanos pods. Only relevant when tlsSecretName is set.
      */
     @JsonProperty("tlsSecretMountPath")
     public void setTlsSecretMountPath(String tlsSecretMountPath) {
@@ -159,7 +159,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * TLS secret contains the custom certificate for the object store
+     * Name of a Secret containing a custom CA certificate for the object store endpoint. Required when the object store uses a self-signed certificate or a private CA not trusted by the system root store.
      */
     @JsonProperty("tlsSecretName")
     public String getTlsSecretName() {
@@ -167,7 +167,7 @@ public class PreConfiguredStorage implements Editable<PreConfiguredStorageBuilde
     }
 
     /**
-     * TLS secret contains the custom certificate for the object store
+     * Name of a Secret containing a custom CA certificate for the object store endpoint. Required when the object store uses a self-signed certificate or a private CA not trusted by the system root store.
      */
     @JsonProperty("tlsSecretName")
     public void setTlsSecretName(String tlsSecretName) {

@@ -25,7 +25,7 @@ public class PolicySetStatusBuilder extends PolicySetStatusFluent<PolicySetStatu
   }
 
   public PolicySetStatus build() {
-    PolicySetStatus buildable = new PolicySetStatus(fluent.getCompliant(), fluent.buildPlacement(), fluent.getStatusMessage());
+    PolicySetStatus buildable = new PolicySetStatus(fluent.getCompliant(), fluent.buildExclusions(), fluent.buildPlacement(), fluent.getStatusMessage());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

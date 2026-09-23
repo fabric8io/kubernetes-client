@@ -26,18 +26,13 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
 
   private Map<String,Object> additionalProperties;
   private String availabilityConfig;
-  private String customCAConfigmap;
   private Boolean disableHubSelfManagement;
   private Boolean disableUpdateClusterImageSets;
-  private Boolean enableClusterBackup;
-  private Boolean enableClusterProxyAddon;
-  private HiveConfigSpecBuilder hive;
   private String imagePullSecret;
-  private IngressSpecBuilder ingress;
   private String localClusterName;
+  private NetworkPoliciesConfigBuilder networkPolicies;
   private Map<String,String> nodeSelector;
   private OverridesBuilder overrides;
-  private Boolean separateCertificateManagement;
   private List<Toleration> tolerations = new ArrayList<Toleration>();
 
   public MultiClusterHubSpecFluent() {
@@ -119,12 +114,8 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return (A) this;
   }
   
-  public HiveConfigSpec buildHive() {
-    return this.hive != null ? this.hive.build() : null;
-  }
-  
-  public IngressSpec buildIngress() {
-    return this.ingress != null ? this.ingress.build() : null;
+  public NetworkPoliciesConfig buildNetworkPolicies() {
+    return this.networkPolicies != null ? this.networkPolicies.build() : null;
   }
   
   public Overrides buildOverrides() {
@@ -135,45 +126,28 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     instance = instance != null ? instance : new MultiClusterHubSpec();
     if (instance != null) {
         this.withAvailabilityConfig(instance.getAvailabilityConfig());
-        this.withCustomCAConfigmap(instance.getCustomCAConfigmap());
         this.withDisableHubSelfManagement(instance.getDisableHubSelfManagement());
         this.withDisableUpdateClusterImageSets(instance.getDisableUpdateClusterImageSets());
-        this.withEnableClusterBackup(instance.getEnableClusterBackup());
-        this.withEnableClusterProxyAddon(instance.getEnableClusterProxyAddon());
-        this.withHive(instance.getHive());
         this.withImagePullSecret(instance.getImagePullSecret());
-        this.withIngress(instance.getIngress());
         this.withLocalClusterName(instance.getLocalClusterName());
+        this.withNetworkPolicies(instance.getNetworkPolicies());
         this.withNodeSelector(instance.getNodeSelector());
         this.withOverrides(instance.getOverrides());
-        this.withSeparateCertificateManagement(instance.getSeparateCertificateManagement());
         this.withTolerations(instance.getTolerations());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
   
-  public HiveNested<A> editHive() {
-    return this.withNewHiveLike(Optional.ofNullable(this.buildHive()).orElse(null));
+  public NetworkPoliciesNested<A> editNetworkPolicies() {
+    return this.withNewNetworkPoliciesLike(Optional.ofNullable(this.buildNetworkPolicies()).orElse(null));
   }
   
-  public IngressNested<A> editIngress() {
-    return this.withNewIngressLike(Optional.ofNullable(this.buildIngress()).orElse(null));
+  public NetworkPoliciesNested<A> editOrNewNetworkPolicies() {
+    return this.withNewNetworkPoliciesLike(Optional.ofNullable(this.buildNetworkPolicies()).orElse(new NetworkPoliciesConfigBuilder().build()));
   }
   
-  public HiveNested<A> editOrNewHive() {
-    return this.withNewHiveLike(Optional.ofNullable(this.buildHive()).orElse(new HiveConfigSpecBuilder().build()));
-  }
-  
-  public HiveNested<A> editOrNewHiveLike(HiveConfigSpec item) {
-    return this.withNewHiveLike(Optional.ofNullable(this.buildHive()).orElse(item));
-  }
-  
-  public IngressNested<A> editOrNewIngress() {
-    return this.withNewIngressLike(Optional.ofNullable(this.buildIngress()).orElse(new IngressSpecBuilder().build()));
-  }
-  
-  public IngressNested<A> editOrNewIngressLike(IngressSpec item) {
-    return this.withNewIngressLike(Optional.ofNullable(this.buildIngress()).orElse(item));
+  public NetworkPoliciesNested<A> editOrNewNetworkPoliciesLike(NetworkPoliciesConfig item) {
+    return this.withNewNetworkPoliciesLike(Optional.ofNullable(this.buildNetworkPolicies()).orElse(item));
   }
   
   public OverridesNested<A> editOrNewOverrides() {
@@ -202,40 +176,25 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     if (!(Objects.equals(availabilityConfig, that.availabilityConfig))) {
       return false;
     }
-    if (!(Objects.equals(customCAConfigmap, that.customCAConfigmap))) {
-      return false;
-    }
     if (!(Objects.equals(disableHubSelfManagement, that.disableHubSelfManagement))) {
       return false;
     }
     if (!(Objects.equals(disableUpdateClusterImageSets, that.disableUpdateClusterImageSets))) {
       return false;
     }
-    if (!(Objects.equals(enableClusterBackup, that.enableClusterBackup))) {
-      return false;
-    }
-    if (!(Objects.equals(enableClusterProxyAddon, that.enableClusterProxyAddon))) {
-      return false;
-    }
-    if (!(Objects.equals(hive, that.hive))) {
-      return false;
-    }
     if (!(Objects.equals(imagePullSecret, that.imagePullSecret))) {
       return false;
     }
-    if (!(Objects.equals(ingress, that.ingress))) {
+    if (!(Objects.equals(localClusterName, that.localClusterName))) {
       return false;
     }
-    if (!(Objects.equals(localClusterName, that.localClusterName))) {
+    if (!(Objects.equals(networkPolicies, that.networkPolicies))) {
       return false;
     }
     if (!(Objects.equals(nodeSelector, that.nodeSelector))) {
       return false;
     }
     if (!(Objects.equals(overrides, that.overrides))) {
-      return false;
-    }
-    if (!(Objects.equals(separateCertificateManagement, that.separateCertificateManagement))) {
       return false;
     }
     if (!(Objects.equals(tolerations, that.tolerations))) {
@@ -255,24 +214,12 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return this.availabilityConfig;
   }
   
-  public String getCustomCAConfigmap() {
-    return this.customCAConfigmap;
-  }
-  
   public Boolean getDisableHubSelfManagement() {
     return this.disableHubSelfManagement;
   }
   
   public Boolean getDisableUpdateClusterImageSets() {
     return this.disableUpdateClusterImageSets;
-  }
-  
-  public Boolean getEnableClusterBackup() {
-    return this.enableClusterBackup;
-  }
-  
-  public Boolean getEnableClusterProxyAddon() {
-    return this.enableClusterProxyAddon;
   }
   
   public Toleration getFirstToleration() {
@@ -304,10 +251,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return this.nodeSelector;
   }
   
-  public Boolean getSeparateCertificateManagement() {
-    return this.separateCertificateManagement;
-  }
-  
   public Toleration getToleration(int index) {
     return this.tolerations.get(index);
   }
@@ -324,10 +267,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return this.availabilityConfig != null;
   }
   
-  public boolean hasCustomCAConfigmap() {
-    return this.customCAConfigmap != null;
-  }
-  
   public boolean hasDisableHubSelfManagement() {
     return this.disableHubSelfManagement != null;
   }
@@ -336,24 +275,8 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return this.disableUpdateClusterImageSets != null;
   }
   
-  public boolean hasEnableClusterBackup() {
-    return this.enableClusterBackup != null;
-  }
-  
-  public boolean hasEnableClusterProxyAddon() {
-    return this.enableClusterProxyAddon != null;
-  }
-  
-  public boolean hasHive() {
-    return this.hive != null;
-  }
-  
   public boolean hasImagePullSecret() {
     return this.imagePullSecret != null;
-  }
-  
-  public boolean hasIngress() {
-    return this.ingress != null;
   }
   
   public boolean hasLocalClusterName() {
@@ -369,6 +292,10 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
       return false;
   }
   
+  public boolean hasNetworkPolicies() {
+    return this.networkPolicies != null;
+  }
+  
   public boolean hasNodeSelector() {
     return this.nodeSelector != null;
   }
@@ -377,16 +304,12 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return this.overrides != null;
   }
   
-  public boolean hasSeparateCertificateManagement() {
-    return this.separateCertificateManagement != null;
-  }
-  
   public boolean hasTolerations() {
     return this.tolerations != null && !(this.tolerations.isEmpty());
   }
   
   public int hashCode() {
-    return Objects.hash(availabilityConfig, customCAConfigmap, disableHubSelfManagement, disableUpdateClusterImageSets, enableClusterBackup, enableClusterProxyAddon, hive, imagePullSecret, ingress, localClusterName, nodeSelector, overrides, separateCertificateManagement, tolerations, additionalProperties);
+    return Objects.hash(availabilityConfig, disableHubSelfManagement, disableUpdateClusterImageSets, imagePullSecret, localClusterName, networkPolicies, nodeSelector, overrides, tolerations, additionalProperties);
   }
   
   public A removeAllFromTolerations(Collection<Toleration> items) {
@@ -473,11 +396,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
         sb.append(availabilityConfig);
         sb.append(",");
     }
-    if (!(customCAConfigmap == null)) {
-        sb.append("customCAConfigmap:");
-        sb.append(customCAConfigmap);
-        sb.append(",");
-    }
     if (!(disableHubSelfManagement == null)) {
         sb.append("disableHubSelfManagement:");
         sb.append(disableHubSelfManagement);
@@ -488,34 +406,19 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
         sb.append(disableUpdateClusterImageSets);
         sb.append(",");
     }
-    if (!(enableClusterBackup == null)) {
-        sb.append("enableClusterBackup:");
-        sb.append(enableClusterBackup);
-        sb.append(",");
-    }
-    if (!(enableClusterProxyAddon == null)) {
-        sb.append("enableClusterProxyAddon:");
-        sb.append(enableClusterProxyAddon);
-        sb.append(",");
-    }
-    if (!(hive == null)) {
-        sb.append("hive:");
-        sb.append(hive);
-        sb.append(",");
-    }
     if (!(imagePullSecret == null)) {
         sb.append("imagePullSecret:");
         sb.append(imagePullSecret);
         sb.append(",");
     }
-    if (!(ingress == null)) {
-        sb.append("ingress:");
-        sb.append(ingress);
-        sb.append(",");
-    }
     if (!(localClusterName == null)) {
         sb.append("localClusterName:");
         sb.append(localClusterName);
+        sb.append(",");
+    }
+    if (!(networkPolicies == null)) {
+        sb.append("networkPolicies:");
+        sb.append(networkPolicies);
         sb.append(",");
     }
     if (!(nodeSelector == null) && !(nodeSelector.isEmpty())) {
@@ -526,11 +429,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     if (!(overrides == null)) {
         sb.append("overrides:");
         sb.append(overrides);
-        sb.append(",");
-    }
-    if (!(separateCertificateManagement == null)) {
-        sb.append("separateCertificateManagement:");
-        sb.append(separateCertificateManagement);
         sb.append(",");
     }
     if (!(tolerations == null) && !(tolerations.isEmpty())) {
@@ -560,11 +458,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return (A) this;
   }
   
-  public A withCustomCAConfigmap(String customCAConfigmap) {
-    this.customCAConfigmap = customCAConfigmap;
-    return (A) this;
-  }
-  
   public A withDisableHubSelfManagement() {
     return withDisableHubSelfManagement(true);
   }
@@ -583,50 +476,8 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return (A) this;
   }
   
-  public A withEnableClusterBackup() {
-    return withEnableClusterBackup(true);
-  }
-  
-  public A withEnableClusterBackup(Boolean enableClusterBackup) {
-    this.enableClusterBackup = enableClusterBackup;
-    return (A) this;
-  }
-  
-  public A withEnableClusterProxyAddon() {
-    return withEnableClusterProxyAddon(true);
-  }
-  
-  public A withEnableClusterProxyAddon(Boolean enableClusterProxyAddon) {
-    this.enableClusterProxyAddon = enableClusterProxyAddon;
-    return (A) this;
-  }
-  
-  public A withHive(HiveConfigSpec hive) {
-    this._visitables.remove("hive");
-    if (hive != null) {
-        this.hive = new HiveConfigSpecBuilder(hive);
-        this._visitables.get("hive").add(this.hive);
-    } else {
-        this.hive = null;
-        this._visitables.get("hive").remove(this.hive);
-    }
-    return (A) this;
-  }
-  
   public A withImagePullSecret(String imagePullSecret) {
     this.imagePullSecret = imagePullSecret;
-    return (A) this;
-  }
-  
-  public A withIngress(IngressSpec ingress) {
-    this._visitables.remove("ingress");
-    if (ingress != null) {
-        this.ingress = new IngressSpecBuilder(ingress);
-        this._visitables.get("ingress").add(this.ingress);
-    } else {
-        this.ingress = null;
-        this._visitables.get("ingress").remove(this.ingress);
-    }
     return (A) this;
   }
   
@@ -635,20 +486,28 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return (A) this;
   }
   
-  public HiveNested<A> withNewHive() {
-    return new HiveNested(null);
+  public A withNetworkPolicies(NetworkPoliciesConfig networkPolicies) {
+    this._visitables.remove("networkPolicies");
+    if (networkPolicies != null) {
+        this.networkPolicies = new NetworkPoliciesConfigBuilder(networkPolicies);
+        this._visitables.get("networkPolicies").add(this.networkPolicies);
+    } else {
+        this.networkPolicies = null;
+        this._visitables.get("networkPolicies").remove(this.networkPolicies);
+    }
+    return (A) this;
   }
   
-  public HiveNested<A> withNewHiveLike(HiveConfigSpec item) {
-    return new HiveNested(item);
+  public NetworkPoliciesNested<A> withNewNetworkPolicies() {
+    return new NetworkPoliciesNested(null);
   }
   
-  public IngressNested<A> withNewIngress() {
-    return new IngressNested(null);
+  public A withNewNetworkPolicies(Boolean enabled) {
+    return (A) this.withNetworkPolicies(new NetworkPoliciesConfig(enabled));
   }
   
-  public IngressNested<A> withNewIngressLike(IngressSpec item) {
-    return new IngressNested(item);
+  public NetworkPoliciesNested<A> withNewNetworkPoliciesLike(NetworkPoliciesConfig item) {
+    return new NetworkPoliciesNested(item);
   }
   
   public OverridesNested<A> withNewOverrides() {
@@ -680,15 +539,6 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     return (A) this;
   }
   
-  public A withSeparateCertificateManagement() {
-    return withSeparateCertificateManagement(true);
-  }
-  
-  public A withSeparateCertificateManagement(Boolean separateCertificateManagement) {
-    this.separateCertificateManagement = separateCertificateManagement;
-    return (A) this;
-  }
-  
   public A withTolerations(List<Toleration> tolerations) {
     if (tolerations != null) {
         this.tolerations = new ArrayList();
@@ -713,36 +563,19 @@ public class MultiClusterHubSpecFluent<A extends io.fabric8.openclustermanagemen
     }
     return (A) this;
   }
-  public class HiveNested<N> extends HiveConfigSpecFluent<HiveNested<N>> implements Nested<N>{
+  public class NetworkPoliciesNested<N> extends NetworkPoliciesConfigFluent<NetworkPoliciesNested<N>> implements Nested<N>{
   
-    HiveConfigSpecBuilder builder;
+    NetworkPoliciesConfigBuilder builder;
   
-    HiveNested(HiveConfigSpec item) {
-      this.builder = new HiveConfigSpecBuilder(this, item);
+    NetworkPoliciesNested(NetworkPoliciesConfig item) {
+      this.builder = new NetworkPoliciesConfigBuilder(this, item);
     }
   
     public N and() {
-      return (N) MultiClusterHubSpecFluent.this.withHive(builder.build());
+      return (N) MultiClusterHubSpecFluent.this.withNetworkPolicies(builder.build());
     }
     
-    public N endHive() {
-      return and();
-    }
-    
-  }
-  public class IngressNested<N> extends IngressSpecFluent<IngressNested<N>> implements Nested<N>{
-  
-    IngressSpecBuilder builder;
-  
-    IngressNested(IngressSpec item) {
-      this.builder = new IngressSpecBuilder(this, item);
-    }
-  
-    public N and() {
-      return (N) MultiClusterHubSpecFluent.this.withIngress(builder.build());
-    }
-    
-    public N endIngress() {
+    public N endNetworkPolicies() {
       return and();
     }
     

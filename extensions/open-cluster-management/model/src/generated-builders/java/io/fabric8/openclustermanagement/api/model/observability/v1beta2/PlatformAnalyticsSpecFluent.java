@@ -20,7 +20,8 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
 
   private Map<String,Object> additionalProperties;
   private PlatformIncidentDetectionSpecBuilder incidentDetection;
-  private PlatformNamespaceRightSizingRecommendationSpecBuilder namespaceRightSizingRecommendation;
+  private PlatformRightSizingRecommendationSpecBuilder namespaceRightSizingRecommendation;
+  private PlatformRightSizingRecommendationSpecBuilder virtualizationRightSizingRecommendation;
 
   public PlatformAnalyticsSpecFluent() {
   }
@@ -53,8 +54,12 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     return this.incidentDetection != null ? this.incidentDetection.build() : null;
   }
   
-  public PlatformNamespaceRightSizingRecommendationSpec buildNamespaceRightSizingRecommendation() {
+  public PlatformRightSizingRecommendationSpec buildNamespaceRightSizingRecommendation() {
     return this.namespaceRightSizingRecommendation != null ? this.namespaceRightSizingRecommendation.build() : null;
+  }
+  
+  public PlatformRightSizingRecommendationSpec buildVirtualizationRightSizingRecommendation() {
+    return this.virtualizationRightSizingRecommendation != null ? this.virtualizationRightSizingRecommendation.build() : null;
   }
   
   protected void copyInstance(PlatformAnalyticsSpec instance) {
@@ -62,6 +67,7 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     if (instance != null) {
         this.withIncidentDetection(instance.getIncidentDetection());
         this.withNamespaceRightSizingRecommendation(instance.getNamespaceRightSizingRecommendation());
+        this.withVirtualizationRightSizingRecommendation(instance.getVirtualizationRightSizingRecommendation());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -83,11 +89,23 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
   }
   
   public NamespaceRightSizingRecommendationNested<A> editOrNewNamespaceRightSizingRecommendation() {
-    return this.withNewNamespaceRightSizingRecommendationLike(Optional.ofNullable(this.buildNamespaceRightSizingRecommendation()).orElse(new PlatformNamespaceRightSizingRecommendationSpecBuilder().build()));
+    return this.withNewNamespaceRightSizingRecommendationLike(Optional.ofNullable(this.buildNamespaceRightSizingRecommendation()).orElse(new PlatformRightSizingRecommendationSpecBuilder().build()));
   }
   
-  public NamespaceRightSizingRecommendationNested<A> editOrNewNamespaceRightSizingRecommendationLike(PlatformNamespaceRightSizingRecommendationSpec item) {
+  public NamespaceRightSizingRecommendationNested<A> editOrNewNamespaceRightSizingRecommendationLike(PlatformRightSizingRecommendationSpec item) {
     return this.withNewNamespaceRightSizingRecommendationLike(Optional.ofNullable(this.buildNamespaceRightSizingRecommendation()).orElse(item));
+  }
+  
+  public VirtualizationRightSizingRecommendationNested<A> editOrNewVirtualizationRightSizingRecommendation() {
+    return this.withNewVirtualizationRightSizingRecommendationLike(Optional.ofNullable(this.buildVirtualizationRightSizingRecommendation()).orElse(new PlatformRightSizingRecommendationSpecBuilder().build()));
+  }
+  
+  public VirtualizationRightSizingRecommendationNested<A> editOrNewVirtualizationRightSizingRecommendationLike(PlatformRightSizingRecommendationSpec item) {
+    return this.withNewVirtualizationRightSizingRecommendationLike(Optional.ofNullable(this.buildVirtualizationRightSizingRecommendation()).orElse(item));
+  }
+  
+  public VirtualizationRightSizingRecommendationNested<A> editVirtualizationRightSizingRecommendation() {
+    return this.withNewVirtualizationRightSizingRecommendationLike(Optional.ofNullable(this.buildVirtualizationRightSizingRecommendation()).orElse(null));
   }
   
   public boolean equals(Object o) {
@@ -105,6 +123,9 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
       return false;
     }
     if (!(Objects.equals(namespaceRightSizingRecommendation, that.namespaceRightSizingRecommendation))) {
+      return false;
+    }
+    if (!(Objects.equals(virtualizationRightSizingRecommendation, that.virtualizationRightSizingRecommendation))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -129,8 +150,12 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     return this.namespaceRightSizingRecommendation != null;
   }
   
+  public boolean hasVirtualizationRightSizingRecommendation() {
+    return this.virtualizationRightSizingRecommendation != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(incidentDetection, namespaceRightSizingRecommendation, additionalProperties);
+    return Objects.hash(incidentDetection, namespaceRightSizingRecommendation, virtualizationRightSizingRecommendation, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -170,6 +195,11 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
         sb.append(namespaceRightSizingRecommendation);
         sb.append(",");
     }
+    if (!(virtualizationRightSizingRecommendation == null)) {
+        sb.append("virtualizationRightSizingRecommendation:");
+        sb.append(virtualizationRightSizingRecommendation);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -199,10 +229,10 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     return (A) this;
   }
   
-  public A withNamespaceRightSizingRecommendation(PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+  public A withNamespaceRightSizingRecommendation(PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
     this._visitables.remove("namespaceRightSizingRecommendation");
     if (namespaceRightSizingRecommendation != null) {
-        this.namespaceRightSizingRecommendation = new PlatformNamespaceRightSizingRecommendationSpecBuilder(namespaceRightSizingRecommendation);
+        this.namespaceRightSizingRecommendation = new PlatformRightSizingRecommendationSpecBuilder(namespaceRightSizingRecommendation);
         this._visitables.get("namespaceRightSizingRecommendation").add(this.namespaceRightSizingRecommendation);
     } else {
         this.namespaceRightSizingRecommendation = null;
@@ -228,11 +258,35 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
   }
   
   public A withNewNamespaceRightSizingRecommendation(Boolean enabled,String namespaceBinding) {
-    return (A) this.withNamespaceRightSizingRecommendation(new PlatformNamespaceRightSizingRecommendationSpec(enabled, namespaceBinding));
+    return (A) this.withNamespaceRightSizingRecommendation(new PlatformRightSizingRecommendationSpec(enabled, namespaceBinding));
   }
   
-  public NamespaceRightSizingRecommendationNested<A> withNewNamespaceRightSizingRecommendationLike(PlatformNamespaceRightSizingRecommendationSpec item) {
+  public NamespaceRightSizingRecommendationNested<A> withNewNamespaceRightSizingRecommendationLike(PlatformRightSizingRecommendationSpec item) {
     return new NamespaceRightSizingRecommendationNested(item);
+  }
+  
+  public VirtualizationRightSizingRecommendationNested<A> withNewVirtualizationRightSizingRecommendation() {
+    return new VirtualizationRightSizingRecommendationNested(null);
+  }
+  
+  public A withNewVirtualizationRightSizingRecommendation(Boolean enabled,String namespaceBinding) {
+    return (A) this.withVirtualizationRightSizingRecommendation(new PlatformRightSizingRecommendationSpec(enabled, namespaceBinding));
+  }
+  
+  public VirtualizationRightSizingRecommendationNested<A> withNewVirtualizationRightSizingRecommendationLike(PlatformRightSizingRecommendationSpec item) {
+    return new VirtualizationRightSizingRecommendationNested(item);
+  }
+  
+  public A withVirtualizationRightSizingRecommendation(PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation) {
+    this._visitables.remove("virtualizationRightSizingRecommendation");
+    if (virtualizationRightSizingRecommendation != null) {
+        this.virtualizationRightSizingRecommendation = new PlatformRightSizingRecommendationSpecBuilder(virtualizationRightSizingRecommendation);
+        this._visitables.get("virtualizationRightSizingRecommendation").add(this.virtualizationRightSizingRecommendation);
+    } else {
+        this.virtualizationRightSizingRecommendation = null;
+        this._visitables.get("virtualizationRightSizingRecommendation").remove(this.virtualizationRightSizingRecommendation);
+    }
+    return (A) this;
   }
   public class IncidentDetectionNested<N> extends PlatformIncidentDetectionSpecFluent<IncidentDetectionNested<N>> implements Nested<N>{
   
@@ -251,12 +305,12 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     }
     
   }
-  public class NamespaceRightSizingRecommendationNested<N> extends PlatformNamespaceRightSizingRecommendationSpecFluent<NamespaceRightSizingRecommendationNested<N>> implements Nested<N>{
+  public class NamespaceRightSizingRecommendationNested<N> extends PlatformRightSizingRecommendationSpecFluent<NamespaceRightSizingRecommendationNested<N>> implements Nested<N>{
   
-    PlatformNamespaceRightSizingRecommendationSpecBuilder builder;
+    PlatformRightSizingRecommendationSpecBuilder builder;
   
-    NamespaceRightSizingRecommendationNested(PlatformNamespaceRightSizingRecommendationSpec item) {
-      this.builder = new PlatformNamespaceRightSizingRecommendationSpecBuilder(this, item);
+    NamespaceRightSizingRecommendationNested(PlatformRightSizingRecommendationSpec item) {
+      this.builder = new PlatformRightSizingRecommendationSpecBuilder(this, item);
     }
   
     public N and() {
@@ -264,6 +318,23 @@ public class PlatformAnalyticsSpecFluent<A extends io.fabric8.openclustermanagem
     }
     
     public N endNamespaceRightSizingRecommendation() {
+      return and();
+    }
+    
+  }
+  public class VirtualizationRightSizingRecommendationNested<N> extends PlatformRightSizingRecommendationSpecFluent<VirtualizationRightSizingRecommendationNested<N>> implements Nested<N>{
+  
+    PlatformRightSizingRecommendationSpecBuilder builder;
+  
+    VirtualizationRightSizingRecommendationNested(PlatformRightSizingRecommendationSpec item) {
+      this.builder = new PlatformRightSizingRecommendationSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PlatformAnalyticsSpecFluent.this.withVirtualizationRightSizingRecommendation(builder.build());
+    }
+    
+    public N endVirtualizationRightSizingRecommendation() {
       return and();
     }
     

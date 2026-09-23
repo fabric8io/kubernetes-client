@@ -18,6 +18,7 @@ import java.util.Optional;
 public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.api.model.observability.v1beta2.CapabilitiesSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private AddonManagerSpecBuilder addonManager;
   private PlatformCapabilitiesSpecBuilder platform;
   private UserWorkloadCapabilitiesSpecBuilder userWorkloads;
 
@@ -48,6 +49,10 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
     return (A) this;
   }
   
+  public AddonManagerSpec buildAddonManager() {
+    return this.addonManager != null ? this.addonManager.build() : null;
+  }
+  
   public PlatformCapabilitiesSpec buildPlatform() {
     return this.platform != null ? this.platform.build() : null;
   }
@@ -59,10 +64,23 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
   protected void copyInstance(CapabilitiesSpec instance) {
     instance = instance != null ? instance : new CapabilitiesSpec();
     if (instance != null) {
+        this.withAddonManager(instance.getAddonManager());
         this.withPlatform(instance.getPlatform());
         this.withUserWorkloads(instance.getUserWorkloads());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public AddonManagerNested<A> editAddonManager() {
+    return this.withNewAddonManagerLike(Optional.ofNullable(this.buildAddonManager()).orElse(null));
+  }
+  
+  public AddonManagerNested<A> editOrNewAddonManager() {
+    return this.withNewAddonManagerLike(Optional.ofNullable(this.buildAddonManager()).orElse(new AddonManagerSpecBuilder().build()));
+  }
+  
+  public AddonManagerNested<A> editOrNewAddonManagerLike(AddonManagerSpec item) {
+    return this.withNewAddonManagerLike(Optional.ofNullable(this.buildAddonManager()).orElse(item));
   }
   
   public PlatformNested<A> editOrNewPlatform() {
@@ -100,6 +118,9 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
       return false;
     }
     CapabilitiesSpecFluent that = (CapabilitiesSpecFluent) o;
+    if (!(Objects.equals(addonManager, that.addonManager))) {
+      return false;
+    }
     if (!(Objects.equals(platform, that.platform))) {
       return false;
     }
@@ -120,6 +141,10 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
     return this.additionalProperties != null;
   }
   
+  public boolean hasAddonManager() {
+    return this.addonManager != null;
+  }
+  
   public boolean hasPlatform() {
     return this.platform != null;
   }
@@ -129,7 +154,7 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
   }
   
   public int hashCode() {
-    return Objects.hash(platform, userWorkloads, additionalProperties);
+    return Objects.hash(addonManager, platform, userWorkloads, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -159,6 +184,11 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(addonManager == null)) {
+        sb.append("addonManager:");
+        sb.append(addonManager);
+        sb.append(",");
+    }
     if (!(platform == null)) {
         sb.append("platform:");
         sb.append(platform);
@@ -184,6 +214,26 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
     return (A) this;
+  }
+  
+  public A withAddonManager(AddonManagerSpec addonManager) {
+    this._visitables.remove("addonManager");
+    if (addonManager != null) {
+        this.addonManager = new AddonManagerSpecBuilder(addonManager);
+        this._visitables.get("addonManager").add(this.addonManager);
+    } else {
+        this.addonManager = null;
+        this._visitables.get("addonManager").remove(this.addonManager);
+    }
+    return (A) this;
+  }
+  
+  public AddonManagerNested<A> withNewAddonManager() {
+    return new AddonManagerNested(null);
+  }
+  
+  public AddonManagerNested<A> withNewAddonManagerLike(AddonManagerSpec item) {
+    return new AddonManagerNested(item);
   }
   
   public PlatformNested<A> withNewPlatform() {
@@ -224,6 +274,23 @@ public class CapabilitiesSpecFluent<A extends io.fabric8.openclustermanagement.a
         this._visitables.get("userWorkloads").remove(this.userWorkloads);
     }
     return (A) this;
+  }
+  public class AddonManagerNested<N> extends AddonManagerSpecFluent<AddonManagerNested<N>> implements Nested<N>{
+  
+    AddonManagerSpecBuilder builder;
+  
+    AddonManagerNested(AddonManagerSpec item) {
+      this.builder = new AddonManagerSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) CapabilitiesSpecFluent.this.withAddonManager(builder.build());
+    }
+    
+    public N endAddonManager() {
+      return and();
+    }
+    
   }
   public class PlatformNested<N> extends PlatformCapabilitiesSpecFluent<PlatformNested<N>> implements Nested<N>{
   

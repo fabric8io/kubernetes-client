@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * MultiClusterObservabilityStatus defines the observed state of MultiClusterObservability.
+ * Observed state of the MultiClusterObservability installation, including component health and addon status.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -86,7 +86,7 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
     }
 
     /**
-     * Represents the status of each deployment
+     * Conditions describing the current state of the MultiClusterObservability installation. Condition types include: Ready, Installing, Failed, MetricsDisabled, MultiClusterObservabilityAddonDegraded.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -95,7 +95,7 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
     }
 
     /**
-     * Represents the status of each deployment
+     * Conditions describing the current state of the MultiClusterObservability installation. Condition types include: Ready, Installing, Failed, MetricsDisabled, MultiClusterObservabilityAddonDegraded.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {

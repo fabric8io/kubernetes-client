@@ -25,7 +25,7 @@ public class ReceiveSpecBuilder extends ReceiveSpecFluent<ReceiveSpecBuilder> im
   }
 
   public ReceiveSpec build() {
-    ReceiveSpec buildable = new ReceiveSpec(fluent.buildContainers(), fluent.getReplicas(), fluent.buildResources(), fluent.getServiceAccountAnnotations());
+    ReceiveSpec buildable = new ReceiveSpec(fluent.buildContainers(), fluent.buildDebug(), fluent.getReplicas(), fluent.buildResources(), fluent.getServiceAccountAnnotations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

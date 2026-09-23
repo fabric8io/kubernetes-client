@@ -36,7 +36,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Each PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.
+ * PolicyDependency defines an object reference which must be in a certain compliance state before the policy should be created.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

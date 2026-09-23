@@ -25,7 +25,7 @@ public class PlatformMetricsSpecBuilder extends PlatformMetricsSpecFluent<Platfo
   }
 
   public PlatformMetricsSpec build() {
-    PlatformMetricsSpec buildable = new PlatformMetricsSpec(fluent.buildCollection(), fluent.buildUi());
+    PlatformMetricsSpec buildable = new PlatformMetricsSpec(fluent.buildAlerts(), fluent.buildDefault(), fluent.buildUi());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

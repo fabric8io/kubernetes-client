@@ -98,7 +98,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * EnableMetrics indicates the observability addon push metrics to hub server.
+     * When false, the managed cluster addon stops pushing metrics to the hub.
      */
     @JsonProperty("enableMetrics")
     public Boolean getEnableMetrics() {
@@ -106,7 +106,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * EnableMetrics indicates the observability addon push metrics to hub server.
+     * When false, the managed cluster addon stops pushing metrics to the hub.
      */
     @JsonProperty("enableMetrics")
     public void setEnableMetrics(Boolean enableMetrics) {
@@ -114,7 +114,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * Interval for the observability addon push metrics to hub server.
+     * Interval in seconds at which the observability addon on each managed cluster pushes metrics to the hub.
      */
     @JsonProperty("interval")
     public Integer getInterval() {
@@ -122,7 +122,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * Interval for the observability addon push metrics to hub server.
+     * Interval in seconds at which the observability addon on each managed cluster pushes metrics to the hub.
      */
     @JsonProperty("interval")
     public void setInterval(Integer interval) {

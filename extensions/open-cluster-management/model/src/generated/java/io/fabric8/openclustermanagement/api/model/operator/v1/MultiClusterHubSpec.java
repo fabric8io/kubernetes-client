@@ -42,18 +42,13 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "availabilityConfig",
-    "customCAConfigmap",
     "disableHubSelfManagement",
     "disableUpdateClusterImageSets",
-    "enableClusterBackup",
-    "enableClusterProxyAddon",
-    "hive",
     "imagePullSecret",
-    "ingress",
     "localClusterName",
+    "networkPolicies",
     "nodeSelector",
     "overrides",
-    "separateCertificateManagement",
     "tolerations"
 })
 @ToString
@@ -83,31 +78,21 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
 
     @JsonProperty("availabilityConfig")
     private String availabilityConfig;
-    @JsonProperty("customCAConfigmap")
-    private String customCAConfigmap;
     @JsonProperty("disableHubSelfManagement")
     private Boolean disableHubSelfManagement;
     @JsonProperty("disableUpdateClusterImageSets")
     private Boolean disableUpdateClusterImageSets;
-    @JsonProperty("enableClusterBackup")
-    private Boolean enableClusterBackup;
-    @JsonProperty("enableClusterProxyAddon")
-    private Boolean enableClusterProxyAddon;
-    @JsonProperty("hive")
-    private HiveConfigSpec hive;
     @JsonProperty("imagePullSecret")
     private String imagePullSecret;
-    @JsonProperty("ingress")
-    private IngressSpec ingress;
     @JsonProperty("localClusterName")
     private String localClusterName;
+    @JsonProperty("networkPolicies")
+    private NetworkPoliciesConfig networkPolicies;
     @JsonProperty("nodeSelector")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> nodeSelector = new LinkedHashMap<>();
     @JsonProperty("overrides")
     private Overrides overrides;
-    @JsonProperty("separateCertificateManagement")
-    private Boolean separateCertificateManagement;
     @JsonProperty("tolerations")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Toleration> tolerations = new ArrayList<>();
@@ -120,21 +105,16 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     public MultiClusterHubSpec() {
     }
 
-    public MultiClusterHubSpec(String availabilityConfig, String customCAConfigmap, Boolean disableHubSelfManagement, Boolean disableUpdateClusterImageSets, Boolean enableClusterBackup, Boolean enableClusterProxyAddon, HiveConfigSpec hive, String imagePullSecret, IngressSpec ingress, String localClusterName, Map<String, String> nodeSelector, Overrides overrides, Boolean separateCertificateManagement, List<Toleration> tolerations) {
+    public MultiClusterHubSpec(String availabilityConfig, Boolean disableHubSelfManagement, Boolean disableUpdateClusterImageSets, String imagePullSecret, String localClusterName, NetworkPoliciesConfig networkPolicies, Map<String, String> nodeSelector, Overrides overrides, List<Toleration> tolerations) {
         super();
         this.availabilityConfig = availabilityConfig;
-        this.customCAConfigmap = customCAConfigmap;
         this.disableHubSelfManagement = disableHubSelfManagement;
         this.disableUpdateClusterImageSets = disableUpdateClusterImageSets;
-        this.enableClusterBackup = enableClusterBackup;
-        this.enableClusterProxyAddon = enableClusterProxyAddon;
-        this.hive = hive;
         this.imagePullSecret = imagePullSecret;
-        this.ingress = ingress;
         this.localClusterName = localClusterName;
+        this.networkPolicies = networkPolicies;
         this.nodeSelector = nodeSelector;
         this.overrides = overrides;
-        this.separateCertificateManagement = separateCertificateManagement;
         this.tolerations = tolerations;
     }
 
@@ -152,22 +132,6 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     @JsonProperty("availabilityConfig")
     public void setAvailabilityConfig(String availabilityConfig) {
         this.availabilityConfig = availabilityConfig;
-    }
-
-    /**
-     * (Deprecated) Provide the customized OpenShift default ingress CA certificate to RHACM
-     */
-    @JsonProperty("customCAConfigmap")
-    public String getCustomCAConfigmap() {
-        return customCAConfigmap;
-    }
-
-    /**
-     * (Deprecated) Provide the customized OpenShift default ingress CA certificate to RHACM
-     */
-    @JsonProperty("customCAConfigmap")
-    public void setCustomCAConfigmap(String customCAConfigmap) {
-        this.customCAConfigmap = customCAConfigmap;
     }
 
     /**
@@ -203,54 +167,6 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     }
 
     /**
-     * (Deprecated) Enable cluster backup
-     */
-    @JsonProperty("enableClusterBackup")
-    public Boolean getEnableClusterBackup() {
-        return enableClusterBackup;
-    }
-
-    /**
-     * (Deprecated) Enable cluster backup
-     */
-    @JsonProperty("enableClusterBackup")
-    public void setEnableClusterBackup(Boolean enableClusterBackup) {
-        this.enableClusterBackup = enableClusterBackup;
-    }
-
-    /**
-     * (Deprecated) Enable cluster proxy addon
-     */
-    @JsonProperty("enableClusterProxyAddon")
-    public Boolean getEnableClusterProxyAddon() {
-        return enableClusterProxyAddon;
-    }
-
-    /**
-     * (Deprecated) Enable cluster proxy addon
-     */
-    @JsonProperty("enableClusterProxyAddon")
-    public void setEnableClusterProxyAddon(Boolean enableClusterProxyAddon) {
-        this.enableClusterProxyAddon = enableClusterProxyAddon;
-    }
-
-    /**
-     * MultiClusterHubSpec defines the desired state of MultiClusterHub
-     */
-    @JsonProperty("hive")
-    public HiveConfigSpec getHive() {
-        return hive;
-    }
-
-    /**
-     * MultiClusterHubSpec defines the desired state of MultiClusterHub
-     */
-    @JsonProperty("hive")
-    public void setHive(HiveConfigSpec hive) {
-        this.hive = hive;
-    }
-
-    /**
      * Override pull secret for accessing MultiClusterHub operand and endpoint images
      */
     @JsonProperty("imagePullSecret")
@@ -267,22 +183,6 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     }
 
     /**
-     * MultiClusterHubSpec defines the desired state of MultiClusterHub
-     */
-    @JsonProperty("ingress")
-    public IngressSpec getIngress() {
-        return ingress;
-    }
-
-    /**
-     * MultiClusterHubSpec defines the desired state of MultiClusterHub
-     */
-    @JsonProperty("ingress")
-    public void setIngress(IngressSpec ingress) {
-        this.ingress = ingress;
-    }
-
-    /**
      * The name of the local-cluster resource
      */
     @JsonProperty("localClusterName")
@@ -296,6 +196,22 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     @JsonProperty("localClusterName")
     public void setLocalClusterName(String localClusterName) {
         this.localClusterName = localClusterName;
+    }
+
+    /**
+     * MultiClusterHubSpec defines the desired state of MultiClusterHub
+     */
+    @JsonProperty("networkPolicies")
+    public NetworkPoliciesConfig getNetworkPolicies() {
+        return networkPolicies;
+    }
+
+    /**
+     * MultiClusterHubSpec defines the desired state of MultiClusterHub
+     */
+    @JsonProperty("networkPolicies")
+    public void setNetworkPolicies(NetworkPoliciesConfig networkPolicies) {
+        this.networkPolicies = networkPolicies;
     }
 
     /**
@@ -329,22 +245,6 @@ public class MultiClusterHubSpec implements Editable<MultiClusterHubSpecBuilder>
     @JsonProperty("overrides")
     public void setOverrides(Overrides overrides) {
         this.overrides = overrides;
-    }
-
-    /**
-     * (Deprecated) Install cert-manager into its own namespace
-     */
-    @JsonProperty("separateCertificateManagement")
-    public Boolean getSeparateCertificateManagement() {
-        return separateCertificateManagement;
-    }
-
-    /**
-     * (Deprecated) Install cert-manager into its own namespace
-     */
-    @JsonProperty("separateCertificateManagement")
-    public void setSeparateCertificateManagement(Boolean separateCertificateManagement) {
-        this.separateCertificateManagement = separateCertificateManagement;
     }
 
     /**

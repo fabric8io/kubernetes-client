@@ -36,7 +36,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "incidentDetection",
-    "namespaceRightSizingRecommendation"
+    "namespaceRightSizingRecommendation",
+    "virtualizationRightSizingRecommendation"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,7 +67,9 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     @JsonProperty("incidentDetection")
     private PlatformIncidentDetectionSpec incidentDetection;
     @JsonProperty("namespaceRightSizingRecommendation")
-    private PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation;
+    private PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation;
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    private PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,10 +79,11 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     public PlatformAnalyticsSpec() {
     }
 
-    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection, PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection, PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation, PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation) {
         super();
         this.incidentDetection = incidentDetection;
         this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
+        this.virtualizationRightSizingRecommendation = virtualizationRightSizingRecommendation;
     }
 
     @JsonProperty("incidentDetection")
@@ -93,13 +97,23 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     }
 
     @JsonProperty("namespaceRightSizingRecommendation")
-    public PlatformNamespaceRightSizingRecommendationSpec getNamespaceRightSizingRecommendation() {
+    public PlatformRightSizingRecommendationSpec getNamespaceRightSizingRecommendation() {
         return namespaceRightSizingRecommendation;
     }
 
     @JsonProperty("namespaceRightSizingRecommendation")
-    public void setNamespaceRightSizingRecommendation(PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+    public void setNamespaceRightSizingRecommendation(PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
         this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
+    }
+
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    public PlatformRightSizingRecommendationSpec getVirtualizationRightSizingRecommendation() {
+        return virtualizationRightSizingRecommendation;
+    }
+
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    public void setVirtualizationRightSizingRecommendation(PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation) {
+        this.virtualizationRightSizingRecommendation = virtualizationRightSizingRecommendation;
     }
 
     @JsonIgnore

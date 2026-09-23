@@ -50,11 +50,13 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "name",
     "ocpClusterId",
     "openshiftVersion",
-    "owner",
+    "provenance",
     "region",
     "rhocmClusterId",
     "status",
-    "type"
+    "supportLevel",
+    "type",
+    "usage"
 })
 @ToString
 @EqualsAndHashCode
@@ -105,16 +107,20 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     private String ocpClusterId;
     @JsonProperty("openshiftVersion")
     private String openshiftVersion;
-    @JsonProperty("owner")
-    private String owner;
+    @JsonProperty("provenance")
+    private String provenance;
     @JsonProperty("region")
     private String region;
     @JsonProperty("rhocmClusterId")
     private String rhocmClusterId;
     @JsonProperty("status")
     private String status;
+    @JsonProperty("supportLevel")
+    private String supportLevel;
     @JsonProperty("type")
     private String type;
+    @JsonProperty("usage")
+    private String usage;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -124,7 +130,7 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     public DiscoveredClusterSpec() {
     }
 
-    public DiscoveredClusterSpec(String activityTimestamp, String apiUrl, String cloudProvider, String console, String creationTimestamp, ObjectReference credential, String displayName, Boolean importAsManagedCluster, Boolean isManagedCluster, String name, String ocpClusterId, String openshiftVersion, String owner, String region, String rhocmClusterId, String status, String type) {
+    public DiscoveredClusterSpec(String activityTimestamp, String apiUrl, String cloudProvider, String console, String creationTimestamp, ObjectReference credential, String displayName, Boolean importAsManagedCluster, Boolean isManagedCluster, String name, String ocpClusterId, String openshiftVersion, String provenance, String region, String rhocmClusterId, String status, String supportLevel, String type, String usage) {
         super();
         this.activityTimestamp = activityTimestamp;
         this.apiUrl = apiUrl;
@@ -138,11 +144,13 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
         this.name = name;
         this.ocpClusterId = ocpClusterId;
         this.openshiftVersion = openshiftVersion;
-        this.owner = owner;
+        this.provenance = provenance;
         this.region = region;
         this.rhocmClusterId = rhocmClusterId;
         this.status = status;
+        this.supportLevel = supportLevel;
         this.type = type;
+        this.usage = usage;
     }
 
     /**
@@ -338,19 +346,19 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
-     * Owner identifies the owner or organization responsible for the cluster.
+     * Provenance indicates how the cluster was discovered (e.g., Telemetry, Manual).
      */
-    @JsonProperty("owner")
-    public String getOwner() {
-        return owner;
+    @JsonProperty("provenance")
+    public String getProvenance() {
+        return provenance;
     }
 
     /**
-     * Owner identifies the owner or organization responsible for the cluster.
+     * Provenance indicates how the cluster was discovered (e.g., Telemetry, Manual).
      */
-    @JsonProperty("owner")
-    public void setOwner(String owner) {
-        this.owner = owner;
+    @JsonProperty("provenance")
+    public void setProvenance(String provenance) {
+        this.provenance = provenance;
     }
 
     /**
@@ -402,6 +410,22 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     }
 
     /**
+     * SupportLevel specifies the support tier for the cluster (e.g., Self-Support, L1-L3, Premium).
+     */
+    @JsonProperty("supportLevel")
+    public String getSupportLevel() {
+        return supportLevel;
+    }
+
+    /**
+     * SupportLevel specifies the support tier for the cluster (e.g., Self-Support, L1-L3, Premium).
+     */
+    @JsonProperty("supportLevel")
+    public void setSupportLevel(String supportLevel) {
+        this.supportLevel = supportLevel;
+    }
+
+    /**
      * Type defines the type of cluster, such as OpenShift, Kubernetes, or a specific managed service type.
      */
     @JsonProperty("type")
@@ -415,6 +439,22 @@ public class DiscoveredClusterSpec implements Editable<DiscoveredClusterSpecBuil
     @JsonProperty("type")
     public void setType(String type) {
         this.type = type;
+    }
+
+    /**
+     * Usage indicates the cluster's intended purpose (e.g., Development/Test, Production).
+     */
+    @JsonProperty("usage")
+    public String getUsage() {
+        return usage;
+    }
+
+    /**
+     * Usage indicates the cluster's intended purpose (e.g., Development/Test, Production).
+     */
+    @JsonProperty("usage")
+    public void setUsage(String usage) {
+        this.usage = usage;
     }
 
     @JsonIgnore

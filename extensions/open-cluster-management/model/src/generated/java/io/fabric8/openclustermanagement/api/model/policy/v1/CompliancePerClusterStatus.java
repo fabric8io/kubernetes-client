@@ -1,7 +1,9 @@
 
 package io.fabric8.openclustermanagement.api.model.policy.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -40,7 +42,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "clustername",
     "clusternamespace",
-    "compliant"
+    "compliant",
+    "remainingBindings"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +76,9 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
     private String clusternamespace;
     @JsonProperty("compliant")
     private String compliant;
+    @JsonProperty("remainingBindings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<RemainingBinding> remainingBindings = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +88,12 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
     public CompliancePerClusterStatus() {
     }
 
-    public CompliancePerClusterStatus(String clustername, String clusternamespace, String compliant) {
+    public CompliancePerClusterStatus(String clustername, String clusternamespace, String compliant, List<RemainingBinding> remainingBindings) {
         super();
         this.clustername = clustername;
         this.clusternamespace = clusternamespace;
         this.compliant = compliant;
+        this.remainingBindings = remainingBindings;
     }
 
     /**
@@ -135,6 +142,23 @@ public class CompliancePerClusterStatus implements Editable<CompliancePerCluster
     @JsonProperty("compliant")
     public void setCompliant(String compliant) {
         this.compliant = compliant;
+    }
+
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
+    @JsonProperty("remainingBindings")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<RemainingBinding> getRemainingBindings() {
+        return remainingBindings;
+    }
+
+    /**
+     * CompliancePerClusterStatus reports the name of a managed cluster and its compliance state for this policy.
+     */
+    @JsonProperty("remainingBindings")
+    public void setRemainingBindings(List<RemainingBinding> remainingBindings) {
+        this.remainingBindings = remainingBindings;
     }
 
     @JsonIgnore

@@ -24,6 +24,7 @@
 * Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
+* Fix #8133: bump controller-runtime from 0.19.7 to 0.23.3
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
 * Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
 * Fix #6779: bump Jetty from 11.0.26 to 12.1.13
@@ -42,7 +43,13 @@
 * Fix #8118: bump knative.dev/networking from 0.0.0-20260529061306-c8de379770b9 to 0.0.0-20260921014731-e39778429a0f
 * Fix #8118: bump knative.dev/pkg from 0.0.0-20260422015212-ec452872dcc1 to 0.0.0-20260918182429-5dc1978f0042
 * Fix #8118: bump knative.dev/serving from 0.49.1 to 0.50.0
+* Fix #8133: bump open-cluster-management.io/governance-policy-propagator from 0.18.0 to 0.20.0
 * Fix #8126: bump prometheus-operator from 0.91.0 to 0.94.0
+* Fix #8133: bump stolostron/discovery from 6a13204 to ea34ca3
+* Fix #8133: bump stolostron/klusterlet-addon-controller from 0d7e21c to 5341d76
+* Fix #8133: bump stolostron/multicluster-observability-operator from 3a17a1a to 553f19c
+* Fix #8133: bump stolostron/multiclusterhub-operator from c3e46b4 to 30a5420
+* Fix #8133: bump stolostron/search-v2-operator from 030a382 to 8d84710
 * Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
 * Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
 * Fix #8097: bump volcano.sh/apis from 1.11.0 to 1.15.2
@@ -57,6 +64,9 @@
 * Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+* Fix #8133: (open-cluster-management) `DiscoveredClusterSpec` drops `owner` and `DiscoveredClusterCondition` drops `lastUpdateTime`
+* Fix #8133: (open-cluster-management) `MultiClusterHubSpec` drops `customCAConfigmap`, `enableClusterBackup`, `enableClusterProxyAddon`, `hive`, `ingress` and `separateCertificateManagement`. Model classes `BackupConfig`, `ExternalDNSAWSConfig`, `ExternalDNSConfig`, `ExternalDNSGCPConfig`, `FailedProvisionConfig`, `HiveConfigSpec`, `HiveConfigStatus`, `IngressSpec` and `VeleroBackupConfig` removed
+* Fix #8133: (open-cluster-management) Observability `PlatformMetricsSpec` and `UserWorkloadMetricsSpec` replace `collection` with `default` (`PlatformMetricsCollectionSpec` and `UserWorkloadMetricsCollectionSpec` removed), and `PlatformNamespaceRightSizingRecommendationSpec` is renamed to `PlatformRightSizingRecommendationSpec`
 * Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
 * Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
 * Fix #8008: `kubernetes-client` and `openshift-client` default to the Vert.x 5 HttpClient (`kubernetes-httpclient-vertx-5`) instead of Vert.x 4 (`kubernetes-httpclient-vertx`), see the [migration guide](./doc/MIGRATION-v8.md#vertx5-httpclient)

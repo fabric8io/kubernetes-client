@@ -109,7 +109,7 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     }
 
     /**
-     * used by replicated policy
+     * ReplicatedPolicyStatus defines the replicated policy status.
      */
     @JsonProperty("details")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -118,7 +118,7 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     }
 
     /**
-     * used by replicated policy
+     * ReplicatedPolicyStatus defines the replicated policy status.
      */
     @JsonProperty("details")
     public void setDetails(List<ReplicatedDetailsPerTemplate> details) {
@@ -126,7 +126,7 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     }
 
     /**
-     * used by replicated policy
+     * ReplicatedPolicyStatus defines the replicated policy status.
      */
     @JsonProperty("violation_message")
     public String getViolationMessage() {
@@ -134,7 +134,7 @@ public class ReplicatedPolicyStatus implements Editable<ReplicatedPolicyStatusBu
     }
 
     /**
-     * used by replicated policy
+     * ReplicatedPolicyStatus defines the replicated policy status.
      */
     @JsonProperty("violation_message")
     public void setViolationMessage(String violationMessage) {

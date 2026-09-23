@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "description",
+    "exclusions",
     "policies"
 })
 @ToString
@@ -70,6 +71,9 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
 
     @JsonProperty("description")
     private String description;
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PolicySetExclusion> exclusions = new ArrayList<>();
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> policies = new ArrayList<>();
@@ -82,9 +86,10 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
     public PolicySetSpec() {
     }
 
-    public PolicySetSpec(String description, List<String> policies) {
+    public PolicySetSpec(String description, List<PolicySetExclusion> exclusions, List<String> policies) {
         super();
         this.description = description;
+        this.exclusions = exclusions;
         this.policies = policies;
     }
 
@@ -102,6 +107,23 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * Exclusions lists policies that should not be propagated to specific managed clusters through this PolicySet's placement binding. Other policies in the PolicySet and other placement bindings are not affected.
+     */
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PolicySetExclusion> getExclusions() {
+        return exclusions;
+    }
+
+    /**
+     * Exclusions lists policies that should not be propagated to specific managed clusters through this PolicySet's placement binding. Other policies in the PolicySet and other placement bindings are not affected.
+     */
+    @JsonProperty("exclusions")
+    public void setExclusions(List<PolicySetExclusion> exclusions) {
+        this.exclusions = exclusions;
     }
 
     /**

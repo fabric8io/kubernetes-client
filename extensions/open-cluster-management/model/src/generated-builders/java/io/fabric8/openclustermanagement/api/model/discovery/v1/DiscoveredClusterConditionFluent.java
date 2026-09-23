@@ -1,6 +1,7 @@
 package io.fabric8.openclustermanagement.api.model.discovery.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -17,7 +18,9 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
 
   private Map<String,Object> additionalProperties;
   private String lastTransitionTime;
-  private String lastUpdateTime;
+  private String message;
+  private Long observedGeneration;
+  private String reason;
   private String status;
   private String type;
 
@@ -52,7 +55,9 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
     instance = instance != null ? instance : new DiscoveredClusterCondition();
     if (instance != null) {
         this.withLastTransitionTime(instance.getLastTransitionTime());
-        this.withLastUpdateTime(instance.getLastUpdateTime());
+        this.withMessage(instance.getMessage());
+        this.withObservedGeneration(instance.getObservedGeneration());
+        this.withReason(instance.getReason());
         this.withStatus(instance.getStatus());
         this.withType(instance.getType());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -73,7 +78,13 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
     if (!(Objects.equals(lastTransitionTime, that.lastTransitionTime))) {
       return false;
     }
-    if (!(Objects.equals(lastUpdateTime, that.lastUpdateTime))) {
+    if (!(Objects.equals(message, that.message))) {
+      return false;
+    }
+    if (!(Objects.equals(observedGeneration, that.observedGeneration))) {
+      return false;
+    }
+    if (!(Objects.equals(reason, that.reason))) {
       return false;
     }
     if (!(Objects.equals(status, that.status))) {
@@ -96,8 +107,16 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
     return this.lastTransitionTime;
   }
   
-  public String getLastUpdateTime() {
-    return this.lastUpdateTime;
+  public String getMessage() {
+    return this.message;
+  }
+  
+  public Long getObservedGeneration() {
+    return this.observedGeneration;
+  }
+  
+  public String getReason() {
+    return this.reason;
   }
   
   public String getStatus() {
@@ -116,8 +135,16 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
     return this.lastTransitionTime != null;
   }
   
-  public boolean hasLastUpdateTime() {
-    return this.lastUpdateTime != null;
+  public boolean hasMessage() {
+    return this.message != null;
+  }
+  
+  public boolean hasObservedGeneration() {
+    return this.observedGeneration != null;
+  }
+  
+  public boolean hasReason() {
+    return this.reason != null;
   }
   
   public boolean hasStatus() {
@@ -129,7 +156,7 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
   }
   
   public int hashCode() {
-    return Objects.hash(lastTransitionTime, lastUpdateTime, status, type, additionalProperties);
+    return Objects.hash(lastTransitionTime, message, observedGeneration, reason, status, type, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -164,9 +191,19 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
         sb.append(lastTransitionTime);
         sb.append(",");
     }
-    if (!(lastUpdateTime == null)) {
-        sb.append("lastUpdateTime:");
-        sb.append(lastUpdateTime);
+    if (!(message == null)) {
+        sb.append("message:");
+        sb.append(message);
+        sb.append(",");
+    }
+    if (!(observedGeneration == null)) {
+        sb.append("observedGeneration:");
+        sb.append(observedGeneration);
+        sb.append(",");
+    }
+    if (!(reason == null)) {
+        sb.append("reason:");
+        sb.append(reason);
         sb.append(",");
     }
     if (!(status == null)) {
@@ -201,8 +238,18 @@ public class DiscoveredClusterConditionFluent<A extends io.fabric8.openclusterma
     return (A) this;
   }
   
-  public A withLastUpdateTime(String lastUpdateTime) {
-    this.lastUpdateTime = lastUpdateTime;
+  public A withMessage(String message) {
+    this.message = message;
+    return (A) this;
+  }
+  
+  public A withObservedGeneration(Long observedGeneration) {
+    this.observedGeneration = observedGeneration;
+    return (A) this;
+  }
+  
+  public A withReason(String reason) {
+    this.reason = reason;
     return (A) this;
   }
   
