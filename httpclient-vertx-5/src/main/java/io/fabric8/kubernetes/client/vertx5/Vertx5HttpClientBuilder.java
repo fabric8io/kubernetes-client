@@ -133,7 +133,7 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
   }
 
   /**
-   * Builds the proxy configuration and registers the auth interceptor when the credentials cannot be decoded.
+   * Builds the proxy configuration, credentials included.
    *
    * <p>
    * Resolved once per build and applied to both the HTTP and the WebSocket client options. Unlike the Vert.x 4
@@ -156,8 +156,9 @@ public class Vertx5HttpClientBuilder<F extends HttpClient.Factory>
     final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
     if (userPassword != null) {
       proxyOptions.setUsername(userPassword[0]).setPassword(userPassword[1]);
-    } else {
-      addProxyAuthInterceptor();
+    } else if (this.proxyType == HttpClient.ProxyType.HTTP) {
+      // Vert.x sends it to the proxy, on the CONNECT too, never inside a tunnel. SOCKS proxies can't use it.
+      proxyOptions.setProxyAuthorization(this.proxyAuthorization);
     }
     return proxyOptions;
   }

@@ -175,6 +175,18 @@ class Vertx5HttpClientBuilderTest {
         assertThat(client).isNotNull();
       }
     }
+
+    @Test
+    @DisplayName("Decodable Basic proxy credentials don't add a Proxy-Authorization request header, which HTTPS requests would carry through the tunnel")
+    void proxyWithBasicAuth_shouldNotAddProxyAuthorizationInterceptor() {
+      Vertx5HttpClientBuilder<?> builder = new Vertx5HttpClientFactory().newBuilder()
+          .proxyAddress(InetSocketAddress.createUnresolved("proxy.example.com", 8080))
+          .proxyAuthorization(basicCredentials("user", "pa:ss"));
+
+      try (HttpClient ignored = builder.build()) {
+        assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
+      }
+    }
   }
 
   @Nested
@@ -425,6 +437,19 @@ class Vertx5HttpClientBuilderTest {
           .returns(ProxyType.SOCKS5, ProxyOptions::getType)
           .returns("user", ProxyOptions::getUsername)
           .returns("pass", ProxyOptions::getPassword);
+    }
+
+    @Test
+    @DisplayName("Proxy credentials that aren't Basic, go to the HTTP proxy through Vert.x (on the CONNECT too) instead of a request header")
+    void nonBasicProxyCredentialsGoToVertxProxyOptions() {
+      final AtomicReference<Vertx5HttpClientBuilder<?>> builderRef = new AtomicReference<>();
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(builder -> builderRef.set(builder
+          .proxyAddress(InetSocketAddress.createUnresolved("proxy.example.com", 3128))
+          .proxyAuthorization("Negotiate token")));
+      assertThat(wsOptions.getProxyOptions())
+          .returns(ProxyType.HTTP, ProxyOptions::getType)
+          .returns("Negotiate token", ProxyOptions::getProxyAuthorization);
+      assertThat(builderRef.get().getInterceptors()).doesNotContainKey("PROXY-AUTH");
     }
 
     @Test

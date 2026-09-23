@@ -180,4 +180,31 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
     }
   }
 
+  /**
+   * Like {@link #addProxyAuthInterceptor()}, but only on the requests an HTTP proxy reads. Not on the ones it tunnels
+   * with CONNECT, where the header would reach the API server instead, and not at all for SOCKS proxies, which don't
+   * read HTTP headers.
+   * <p>
+   * For clients that don't move the header to the CONNECT request themselves.
+   *
+   * @param webSocketsTunneled whether the client tunnels WebSocket upgrades with CONNECT even without TLS
+   */
+  protected void addPlainHttpProxyAuthInterceptor(boolean webSocketsTunneled) {
+    if (proxyAuthorization != null && proxyType == ProxyType.HTTP) {
+      this.interceptors.put("PROXY-AUTH", new Interceptor() {
+
+        @Override
+        public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
+          final String scheme = httpRequest.uri().getScheme();
+          final boolean tunneled = "https".equalsIgnoreCase(scheme) || "wss".equalsIgnoreCase(scheme)
+              || (webSocketsTunneled && builder instanceof WebSocket.Builder);
+          if (!tunneled) {
+            builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+          }
+        }
+
+      });
+    }
+  }
+
 }

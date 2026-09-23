@@ -24,4 +24,9 @@ public class Vertx5HttpClientProxyHttpsTest extends AbstractHttpClientProxyHttps
   protected HttpClient.Factory getHttpClientFactory() {
     return new Vertx5HttpClientFactory();
   }
+
+  @Override
+  protected boolean sendsOtherAuthorizationOnConnect() {
+    return true;
+  }
 }

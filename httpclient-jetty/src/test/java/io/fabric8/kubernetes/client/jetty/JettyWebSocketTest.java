@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -54,8 +56,11 @@ class JettyWebSocketTest {
   void webSocketExceptionConversion() {
     // Given
     final var listener = new Listener();
+    final var jws = new JettyWebSocket(listener);
+    jws.onWebSocketOpen(mock(Session.class));
+    listener.events.clear();
     // When
-    new JettyWebSocket(listener).onWebSocketError(new MessageTooLargeException("too big"));
+    jws.onWebSocketError(new MessageTooLargeException("too big"));
     // Then
     assertThat(listener.events)
         .containsOnlyKeys("onError")
@@ -164,8 +169,11 @@ class JettyWebSocketTest {
   void webSocketErrorNotifiesOnError() {
     // Given
     final var listener = new Listener();
+    final var jws = new JettyWebSocket(listener);
+    jws.onWebSocketOpen(mock(Session.class));
+    listener.events.clear();
     // When
-    new JettyWebSocket(listener).onWebSocketError(new Exception("WebSocket Error!"));
+    jws.onWebSocketError(new Exception("WebSocket Error!"));
     // Then
     assertThat(listener.events)
         .containsOnlyKeys("onError")
@@ -175,11 +183,59 @@ class JettyWebSocketTest {
   }
 
   @Test
+  @DisplayName("WebSocket error before open (failed handshake), doesn't notify the listener: the connect future carries it and the handshake may be retried with the same listener")
+  void webSocketErrorBeforeOpenIsNotNotified() {
+    // Given
+    final var listener = new Listener();
+    // When
+    new JettyWebSocket(listener).onWebSocketError(new Exception("handshake failed"));
+    // Then
+    assertThat(listener.events).isEmpty();
+  }
+
+  @Test
+  @DisplayName("WebSocket upgrade retried after a 503, opens without the listener having been notified of the failed attempt")
+  void retriedUpgradeDoesNotNotifyListenerOfFailedAttempt() throws Exception {
+    final var server = new DefaultMockServer(false);
+    server.start();
+    try (var client = new JettyHttpClientFactory().newBuilder()
+        .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(1).withRequestRetryBackoffInterval(10).build())
+        .build()) {
+      // Given
+      server.expect().withPath("/retried-upgrade").andReturn(503, "unavailable").once();
+      server.expect().withPath("/retried-upgrade")
+          .andUpgradeToWebSocket()
+          .open()
+          .done()
+          .always();
+      final List<Throwable> errors = new CopyOnWriteArrayList<>();
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create(server.url("/retried-upgrade")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onError(WebSocket webSocket, Throwable error) {
+              errors.add(error);
+            }
+          })
+          .get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(errors)
+          .as("ExecWebSocketListener and WatcherWebSocketListener end for good on onError, before the retry opens")
+          .isEmpty();
+    } finally {
+      server.shutdown();
+    }
+  }
+
+  @Test
   @DisplayName("Remote WebSocket error, ignored if connection is already closed and is ClosedChannelException")
   void webSocketErrorIgnoredWhenClosed() {
     // Given
     final var listener = new Listener();
     final var jws = new JettyWebSocket(listener);
+    jws.onWebSocketOpen(mock(Session.class));
+    listener.events.clear();
     jws.onWebSocketClose(1000, "closed", Callback.NOOP);
     // When
     jws.onWebSocketError(new ClosedChannelException());
@@ -194,6 +250,8 @@ class JettyWebSocketTest {
     // Given
     final var listener = new Listener();
     final var jws = new JettyWebSocket(listener);
+    jws.onWebSocketOpen(mock(Session.class));
+    listener.events.clear();
     jws.onWebSocketClose(1000, "closed", Callback.NOOP);
     // When
     jws.onWebSocketError(new Exception("NOT ClosedChannelException"));

@@ -32,4 +32,10 @@ public class OkHttpClientProxyHttpsTest extends AbstractHttpClientProxyHttpsTest
       }
     };
   }
+
+  @Override
+  protected boolean sendsOtherAuthorizationOnConnect() {
+    // OkHttp calls the proxy authenticator preemptively for the CONNECT
+    return true;
+  }
 }
