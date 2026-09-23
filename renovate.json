@@ -129,6 +129,12 @@
       "groupName": "kubernetes"
     },
     {
+      "description": "kube-openapi's main branch can move ahead of k8s.io/apimachinery (e.g. to structured-merge-diff/v7) and break the generator build. It gets its own monthly PR, which stays red until k8s.io catches up, instead of blocking the kubernetes group. The group's go mod tidy still raises it whenever a k8s.io release requires a newer one",
+      "matchPackageNames": ["k8s.io/kube-openapi"],
+      "groupName": "kube-openapi",
+      "schedule": ["* 0-3 1 * *"]
+    },
+    {
       "matchPackageNames": ["github.com/openshift/**"],
       "groupName": "openshift"
     },
