@@ -7057,8 +7057,8 @@ k8s.io/kube-openapi v0.0.0-20231010175941-2dd684a91f00/go.mod h1:AsvuZPBlUDVuCdz
 k8s.io/kube-openapi v0.0.0-20240228011516-70dd3763d340/go.mod h1:yD4MZYeKMBwQKVht279WycxKyM84kkAx2DPrTXaeb98=
 k8s.io/kube-openapi v0.0.0-20250910181357-589584f1c912/go.mod h1:kdmbQkyfwUagLfXIad1y2TdrjPFWp2Q89B3qkRwf/pQ=
 k8s.io/kube-openapi v0.0.0-20260721132016-d427ff9ee9ad/go.mod h1:0/mqHCVhlumdJ3BhCfnjSZQE037nAhNodh1/hK0T8/I=
-k8s.io/kube-openapi v0.0.0-20260911184034-7970a1e230da h1:O6Ol/8CmuC3trGD9yKRqyhigj4f5Q47SbzvVwX9st34=
-k8s.io/kube-openapi v0.0.0-20260911184034-7970a1e230da/go.mod h1:iD9rD6UUoLGygkqzeIo19ZleoLH3bY+C9310g7HHeZM=
+k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098 h1:z5+pcu1jTyKK5mNTe2/+x+U6Uuv9jRVOJQLaBJJMpeI=
+k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098/go.mod h1:0/mqHCVhlumdJ3BhCfnjSZQE037nAhNodh1/hK0T8/I=
 k8s.io/metrics v0.37.0 h1:XSZCXYRUOuKUe6KHlH/ImBJRuST52+q214Ftci+fi0Y=
 k8s.io/metrics v0.37.0/go.mod h1:E14Jt50A9sFS2m3gLRdTA0ya7IliI0Sx3NxS5VKoCvM=
 k8s.io/streaming v0.37.0/go.mod h1:APlJR26ZWRcVy5bIEj0QRrKUXROtBHPcxl2NT7EAzPU=
@@ -7218,8 +7218,6 @@ sigs.k8s.io/structured-merge-diff/v6 v6.3.0/go.mod h1:M3W8sfWvn2HhQDIbGWj3S099Yo
 sigs.k8s.io/structured-merge-diff/v6 v6.4.1/go.mod h1:M3W8sfWvn2HhQDIbGWj3S099YozAsymCo/wrT5ohRUE=
 sigs.k8s.io/structured-merge-diff/v6 v6.4.2 h1:qdOxHwrl2Kaag1aQEarlYcOA9vSyGCp3CIki3aW8c4Q=
 sigs.k8s.io/structured-merge-diff/v6 v6.4.2/go.mod h1:M3W8sfWvn2HhQDIbGWj3S099YozAsymCo/wrT5ohRUE=
-sigs.k8s.io/structured-merge-diff/v7 v7.0.0 h1:LnKTE1vO6tDITDMVOJ5oCsWauLIAPJnV9egetSfUCpI=
-sigs.k8s.io/structured-merge-diff/v7 v7.0.0/go.mod h1:xKoMSgtnJnkfRR+CTNSQ1dBVhkKJR5OQl5RxX/OqHbI=
 sigs.k8s.io/yaml v1.1.0/go.mod h1:UJmg0vDUVViEyp3mgSv9WPwZCDxu4rQW1olrI1uml+o=
 sigs.k8s.io/yaml v1.2.0/go.mod h1:yfXDCHCao9+ENCvLSE62v9VSji2MKu5jeNfTrofGhJc=
 sigs.k8s.io/yaml v1.3.0/go.mod h1:GeOyir5tyXNByN85N/dRIT9es5UQNerPYEKK56eTBm8=

@@ -7,6 +7,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerBuilder;
 import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.kubernetes.api.model.EphemeralContainer;
+import io.fabric8.kubernetes.api.model.EvictionResponder;
 import io.fabric8.kubernetes.api.model.HostAlias;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
@@ -16,6 +17,7 @@ import io.fabric8.kubernetes.api.model.PodOS;
 import io.fabric8.kubernetes.api.model.PodReadinessGate;
 import io.fabric8.kubernetes.api.model.PodResourceClaim;
 import io.fabric8.kubernetes.api.model.PodSchedulingGate;
+import io.fabric8.kubernetes.api.model.PodSchedulingGroup;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.Quantity;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
@@ -26,7 +28,6 @@ import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeBuilder;
 import io.fabric8.kubernetes.api.model.VolumeFluent;
-import io.fabric8.kubernetes.api.model.WorkloadReference;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Long;
@@ -61,6 +62,7 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   private String dnsPolicy;
   private Boolean enableServiceLinks;
   private List<EphemeralContainer> ephemeralContainers = new ArrayList<EphemeralContainer>();
+  private List<EvictionResponder> evictionResponders = new ArrayList<EvictionResponder>();
   private List<HostAlias> hostAliases = new ArrayList<HostAlias>();
   private Boolean hostIPC;
   private Boolean hostNetwork;
@@ -86,6 +88,7 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   private String runtimeClassName;
   private String schedulerName;
   private List<PodSchedulingGate> schedulingGates = new ArrayList<PodSchedulingGate>();
+  private PodSchedulingGroup schedulingGroup;
   private PodSecurityContext securityContext;
   private String serviceAccount;
   private String serviceAccountName;
@@ -97,7 +100,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   private List<Toleration> tolerations = new ArrayList<Toleration>();
   private List<TopologySpreadConstraint> topologySpreadConstraints = new ArrayList<TopologySpreadConstraint>();
   private ArrayList<VolumeBuilder> volumes = new ArrayList<VolumeBuilder>();
-  private WorkloadReference workloadRef;
 
   public RevisionSpecFluent() {
   }
@@ -124,6 +126,16 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     }
     for (EphemeralContainer item : items) {
       this.ephemeralContainers.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToEvictionResponders(Collection<EvictionResponder> items) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    for (EvictionResponder item : items) {
+      this.evictionResponders.add(item);
     }
     return (A) this;
   }
@@ -232,6 +244,10 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return new ContainersNested(-1, item);
   }
   
+  public A addNewEvictionResponder(String name,Integer priority) {
+    return (A) this.addToEvictionResponders(new EvictionResponder(name, priority));
+  }
+  
   public ImagePullSecretsNested<A> addNewImagePullSecret() {
     return new ImagePullSecretsNested(-1, null);
   }
@@ -338,6 +354,24 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
       this.ephemeralContainers = new ArrayList();
     }
     this.ephemeralContainers.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToEvictionResponders(EvictionResponder... items) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    for (EvictionResponder item : items) {
+      this.evictionResponders.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToEvictionResponders(int index,EvictionResponder item) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    this.evictionResponders.add(index, item);
     return (A) this;
   }
   
@@ -686,6 +720,7 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         this.withDnsPolicy(instance.getDnsPolicy());
         this.withEnableServiceLinks(instance.getEnableServiceLinks());
         this.withEphemeralContainers(instance.getEphemeralContainers());
+        this.withEvictionResponders(instance.getEvictionResponders());
         this.withHostAliases(instance.getHostAliases());
         this.withHostIPC(instance.getHostIPC());
         this.withHostNetwork(instance.getHostNetwork());
@@ -711,6 +746,7 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         this.withRuntimeClassName(instance.getRuntimeClassName());
         this.withSchedulerName(instance.getSchedulerName());
         this.withSchedulingGates(instance.getSchedulingGates());
+        this.withSchedulingGroup(instance.getSchedulingGroup());
         this.withSecurityContext(instance.getSecurityContext());
         this.withServiceAccount(instance.getServiceAccount());
         this.withServiceAccountName(instance.getServiceAccountName());
@@ -722,7 +758,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         this.withTolerations(instance.getTolerations());
         this.withTopologySpreadConstraints(instance.getTopologySpreadConstraints());
         this.withVolumes(instance.getVolumes());
-        this.withWorkloadRef(instance.getWorkloadRef());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -921,6 +956,9 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     if (!(Objects.equals(ephemeralContainers, that.ephemeralContainers))) {
       return false;
     }
+    if (!(Objects.equals(evictionResponders, that.evictionResponders))) {
+      return false;
+    }
     if (!(Objects.equals(hostAliases, that.hostAliases))) {
       return false;
     }
@@ -996,6 +1034,9 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     if (!(Objects.equals(schedulingGates, that.schedulingGates))) {
       return false;
     }
+    if (!(Objects.equals(schedulingGroup, that.schedulingGroup))) {
+      return false;
+    }
     if (!(Objects.equals(securityContext, that.securityContext))) {
       return false;
     }
@@ -1027,9 +1068,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
       return false;
     }
     if (!(Objects.equals(volumes, that.volumes))) {
-      return false;
-    }
-    if (!(Objects.equals(workloadRef, that.workloadRef))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -1078,8 +1116,20 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.ephemeralContainers;
   }
   
+  public EvictionResponder getEvictionResponder(int index) {
+    return this.evictionResponders.get(index);
+  }
+  
+  public List<EvictionResponder> getEvictionResponders() {
+    return this.evictionResponders;
+  }
+  
   public EphemeralContainer getFirstEphemeralContainer() {
     return this.ephemeralContainers.get(0);
+  }
+  
+  public EvictionResponder getFirstEvictionResponder() {
+    return this.evictionResponders.get(0);
   }
   
   public HostAlias getFirstHostAlias() {
@@ -1146,6 +1196,10 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.ephemeralContainers.get(ephemeralContainers.size() - 1);
   }
   
+  public EvictionResponder getLastEvictionResponder() {
+    return this.evictionResponders.get(evictionResponders.size() - 1);
+  }
+  
   public HostAlias getLastHostAlias() {
     return this.hostAliases.get(hostAliases.size() - 1);
   }
@@ -1172,6 +1226,15 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   
   public EphemeralContainer getMatchingEphemeralContainer(Predicate<EphemeralContainer> predicate) {
       for (EphemeralContainer item : ephemeralContainers) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public EvictionResponder getMatchingEvictionResponder(Predicate<EvictionResponder> predicate) {
+      for (EvictionResponder item : evictionResponders) {
         if (predicate.test(item)) {
           return item;
         }
@@ -1301,6 +1364,10 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.schedulingGates;
   }
   
+  public PodSchedulingGroup getSchedulingGroup() {
+    return this.schedulingGroup;
+  }
+  
   public PodSecurityContext getSecurityContext() {
     return this.securityContext;
   }
@@ -1349,10 +1416,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.topologySpreadConstraints;
   }
   
-  public WorkloadReference getWorkloadRef() {
-    return this.workloadRef;
-  }
-  
   public boolean hasActiveDeadlineSeconds() {
     return this.activeDeadlineSeconds != null;
   }
@@ -1391,6 +1454,10 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   
   public boolean hasEphemeralContainers() {
     return this.ephemeralContainers != null && !(this.ephemeralContainers.isEmpty());
+  }
+  
+  public boolean hasEvictionResponders() {
+    return this.evictionResponders != null && !(this.evictionResponders.isEmpty());
   }
   
   public boolean hasHostAliases() {
@@ -1444,6 +1511,15 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
   
   public boolean hasMatchingEphemeralContainer(Predicate<EphemeralContainer> predicate) {
       for (EphemeralContainer item : ephemeralContainers) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingEvictionResponder(Predicate<EvictionResponder> predicate) {
+      for (EvictionResponder item : evictionResponders) {
         if (predicate.test(item)) {
           return true;
         }
@@ -1592,6 +1668,10 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.schedulingGates != null && !(this.schedulingGates.isEmpty());
   }
   
+  public boolean hasSchedulingGroup() {
+    return this.schedulingGroup != null;
+  }
+  
   public boolean hasSecurityContext() {
     return this.securityContext != null;
   }
@@ -1636,12 +1716,8 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return this.volumes != null && !(this.volumes.isEmpty());
   }
   
-  public boolean hasWorkloadRef() {
-    return this.workloadRef != null;
-  }
-  
   public int hashCode() {
-    return Objects.hash(activeDeadlineSeconds, affinity, automountServiceAccountToken, containerConcurrency, containers, dnsConfig, dnsPolicy, enableServiceLinks, ephemeralContainers, hostAliases, hostIPC, hostNetwork, hostPID, hostUsers, hostname, hostnameOverride, idleTimeoutSeconds, imagePullSecrets, initContainers, nodeName, nodeSelector, os, overhead, preemptionPolicy, priority, priorityClassName, readinessGates, resourceClaims, resources, responseStartTimeoutSeconds, restartPolicy, runtimeClassName, schedulerName, schedulingGates, securityContext, serviceAccount, serviceAccountName, setHostnameAsFQDN, shareProcessNamespace, subdomain, terminationGracePeriodSeconds, timeoutSeconds, tolerations, topologySpreadConstraints, volumes, workloadRef, additionalProperties);
+    return Objects.hash(activeDeadlineSeconds, affinity, automountServiceAccountToken, containerConcurrency, containers, dnsConfig, dnsPolicy, enableServiceLinks, ephemeralContainers, evictionResponders, hostAliases, hostIPC, hostNetwork, hostPID, hostUsers, hostname, hostnameOverride, idleTimeoutSeconds, imagePullSecrets, initContainers, nodeName, nodeSelector, os, overhead, preemptionPolicy, priority, priorityClassName, readinessGates, resourceClaims, resources, responseStartTimeoutSeconds, restartPolicy, runtimeClassName, schedulerName, schedulingGates, schedulingGroup, securityContext, serviceAccount, serviceAccountName, setHostnameAsFQDN, shareProcessNamespace, subdomain, terminationGracePeriodSeconds, timeoutSeconds, tolerations, topologySpreadConstraints, volumes, additionalProperties);
   }
   
   public A removeAllFromContainers(Collection<Container> items) {
@@ -1662,6 +1738,16 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     }
     for (EphemeralContainer item : items) {
       this.ephemeralContainers.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromEvictionResponders(Collection<EvictionResponder> items) {
+    if (this.evictionResponders == null) {
+      return (A) this;
+    }
+    for (EvictionResponder item : items) {
+      this.evictionResponders.remove(item);
     }
     return (A) this;
   }
@@ -1804,6 +1890,16 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     }
     for (EphemeralContainer item : items) {
       this.ephemeralContainers.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromEvictionResponders(EvictionResponder... items) {
+    if (this.evictionResponders == null) {
+      return (A) this;
+    }
+    for (EvictionResponder item : items) {
+      this.evictionResponders.remove(item);
     }
     return (A) this;
   }
@@ -2055,6 +2151,14 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return (A) this;
   }
   
+  public A setToEvictionResponders(int index,EvictionResponder item) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    this.evictionResponders.set(index, item);
+    return (A) this;
+  }
+  
   public A setToHostAliases(int index,HostAlias item) {
     if (this.hostAliases == null) {
       this.hostAliases = new ArrayList();
@@ -2196,6 +2300,11 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         sb.append(ephemeralContainers);
         sb.append(",");
     }
+    if (!(evictionResponders == null) && !(evictionResponders.isEmpty())) {
+        sb.append("evictionResponders:");
+        sb.append(evictionResponders);
+        sb.append(",");
+    }
     if (!(hostAliases == null) && !(hostAliases.isEmpty())) {
         sb.append("hostAliases:");
         sb.append(hostAliases);
@@ -2321,6 +2430,11 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         sb.append(schedulingGates);
         sb.append(",");
     }
+    if (!(schedulingGroup == null)) {
+        sb.append("schedulingGroup:");
+        sb.append(schedulingGroup);
+        sb.append(",");
+    }
     if (!(securityContext == null)) {
         sb.append("securityContext:");
         sb.append(securityContext);
@@ -2374,11 +2488,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     if (!(volumes == null) && !(volumes.isEmpty())) {
         sb.append("volumes:");
         sb.append(volumes);
-        sb.append(",");
-    }
-    if (!(workloadRef == null)) {
-        sb.append("workloadRef:");
-        sb.append(workloadRef);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -2489,6 +2598,31 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     if (ephemeralContainers != null) {
       for (EphemeralContainer item : ephemeralContainers) {
         this.addToEphemeralContainers(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withEvictionResponders(List<EvictionResponder> evictionResponders) {
+    if (evictionResponders != null) {
+        this.evictionResponders = new ArrayList();
+        for (EvictionResponder item : evictionResponders) {
+          this.addToEvictionResponders(item);
+        }
+    } else {
+      this.evictionResponders = null;
+    }
+    return (A) this;
+  }
+  
+  public A withEvictionResponders(EvictionResponder... evictionResponders) {
+    if (this.evictionResponders != null) {
+        this.evictionResponders.clear();
+        _visitables.remove("evictionResponders");
+    }
+    if (evictionResponders != null) {
+      for (EvictionResponder item : evictionResponders) {
+        this.addToEvictionResponders(item);
       }
     }
     return (A) this;
@@ -2638,8 +2772,8 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return new ResourcesNested(item);
   }
   
-  public A withNewWorkloadRef(String name,String podGroup,String podGroupReplicaKey) {
-    return (A) this.withWorkloadRef(new WorkloadReference(name, podGroup, podGroupReplicaKey));
+  public A withNewSchedulingGroup(String podGroupName) {
+    return (A) this.withSchedulingGroup(new PodSchedulingGroup(podGroupName));
   }
   
   public A withNodeName(String nodeName) {
@@ -2792,6 +2926,11 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
     return (A) this;
   }
   
+  public A withSchedulingGroup(PodSchedulingGroup schedulingGroup) {
+    this.schedulingGroup = schedulingGroup;
+    return (A) this;
+  }
+  
   public A withSecurityContext(PodSecurityContext securityContext) {
     this.securityContext = securityContext;
     return (A) this;
@@ -2915,11 +3054,6 @@ public class RevisionSpecFluent<A extends io.fabric8.knative.serving.v1.Revision
         this.addToVolumes(item);
       }
     }
-    return (A) this;
-  }
-  
-  public A withWorkloadRef(WorkloadReference workloadRef) {
-    this.workloadRef = workloadRef;
     return (A) this;
   }
   public class ContainersNested<N> extends ContainerFluent<ContainersNested<N>> implements Nested<N>{

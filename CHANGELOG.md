@@ -25,16 +25,23 @@
 * Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
 * Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
 * Fix #8133: bump controller-runtime from 0.19.7 to 0.23.3
+* Fix #8142: bump controller-runtime from 0.23.3 to 0.25.1
 * Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
 * Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
 * Fix #6779: bump Jetty from 11.0.26 to 12.1.13
 * Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
+* Fix #8142: bump k8s.io/api from 0.35.8 to 0.37.0
 * Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
 * Fix #8086: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.7.0 to 1.7.1
 * Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
+* Fix #8142: bump k8s.io/client-go from 0.35.8 to 0.37.0
+* Fix #8142: bump k8s.io/cloud-provider from 0.35.8 to 0.37.0
+* Fix #8142: bump k8s.io/csi-translation-lib from 0.35.8 to 0.37.0
 * Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
+* Fix #8142: bump k8s.io/kube-scheduler from 0.35.8 to 0.37.0
 * Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
+* Fix #8142: bump k8s.io/mount-utils from 0.35.8 to 0.37.0
 * Fix #8118: bump knative.dev/caching from 0.0.0-20260422140616-453ad996bbe2 to 0.0.0-20260821014320-af6341f3ab2b
 * Fix #8118: bump knative.dev/eventing from 0.49.1 to 0.50.0
 * Fix #8118: bump knative.dev/eventing-github from 0.49.1 to 0.50.0
@@ -64,6 +71,7 @@
 * Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
 * Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
 * Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+* Fix #8142: (knative) Serving `RevisionSpec` replaces `workloadRef` with `schedulingGroup` and adds `evictionResponders`, like the core `PodSpec` since Kubernetes 1.37
 * Fix #8133: (open-cluster-management) `DiscoveredClusterSpec` drops `owner` and `DiscoveredClusterCondition` drops `lastUpdateTime`
 * Fix #8133: (open-cluster-management) `MultiClusterHubSpec` drops `customCAConfigmap`, `enableClusterBackup`, `enableClusterProxyAddon`, `hive`, `ingress` and `separateCertificateManagement`. Model classes `BackupConfig`, `ExternalDNSAWSConfig`, `ExternalDNSConfig`, `ExternalDNSGCPConfig`, `FailedProvisionConfig`, `HiveConfigSpec`, `HiveConfigStatus`, `IngressSpec` and `VeleroBackupConfig` removed
 * Fix #8133: (open-cluster-management) Observability `PlatformMetricsSpec` and `UserWorkloadMetricsSpec` replace `collection` with `default` (`PlatformMetricsCollectionSpec` and `UserWorkloadMetricsCollectionSpec` removed), and `PlatformNamespaceRightSizingRecommendationSpec` is renamed to `PlatformRightSizingRecommendationSpec`

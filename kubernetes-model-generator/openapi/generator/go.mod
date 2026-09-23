@@ -13,7 +13,7 @@ replace (
 	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
 	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
 
-	// Held at v0.35.x by the controller-runtime pin below: client-go v0.36.0+ doesn't compile with controller-runtime v0.23.x
+	// Keep in line with k8s.io/apimachinery (client-go is otherwise resolved to v12.0.0+incompatible)
 	k8s.io/api => k8s.io/api v0.37.0
 	k8s.io/client-go => k8s.io/client-go v0.37.0
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.0
@@ -28,7 +28,7 @@ replace (
 	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
 	sigs.k8s.io/cluster-api/api => sigs.k8s.io/cluster-api/api v1.14.2
 
-	// v0.23.x is the latest release built on k8s.io v0.35.x (v0.24+ needs v0.36); governance-policy-propagator v0.19+ needs at least v0.23
+	// Must match the k8s.io minor above (v0.25.x is built on k8s.io v0.37.x); governance-policy-propagator v0.19+ needs at least v0.23
 	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.25.1
 )
 
@@ -75,7 +75,7 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
 	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
-	k8s.io/kube-openapi v0.0.0-20260911184034-7970a1e230da
+	k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
 	k8s.io/metrics v0.37.0
 	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
 	knative.dev/eventing v0.50.0
@@ -246,6 +246,5 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
-	sigs.k8s.io/structured-merge-diff/v7 v7.0.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
