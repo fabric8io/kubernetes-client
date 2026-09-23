@@ -19,6 +19,7 @@
 * Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
 * Fix #8008: (httpclient-vertx-5) Requests with an `InputStream` body and `Expect: 100-continue` (binary builds) no longer hang, and an `InputStream` body of known length is sent with `Content-Length` instead of chunked
 * Fix #8139: (httpclient-okhttp) WebSockets answer the server's Close frame even when the listener doesn't, so port forwarding and custom listeners release the connection instead of waiting for the server to drop it
+* Fix #8152: (httpclient-vertx, httpclient-vertx-5, httpclient-jetty, httpclient-jdk) WebSockets send a ping every `Config#websocketPingInterval` (30s by default), like OkHttp already did, so load balancers that close idle connections no longer drop quiet watches
 
 #### Improvements
 * Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen

@@ -321,7 +321,7 @@ public class JdkHttpClientImpl extends StandardHttpClient<JdkHttpClientImpl, Jdk
     CompletableFuture<WebSocketResponse> response = new CompletableFuture<>();
 
     URI uri = WebSocket.toWebSocketUri(request.uri());
-    final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(listener);
+    final JdkWebSocketImpl fabric8WebSocket = new JdkWebSocketImpl(listener, builder.getWebsocketPingInterval());
     newBuilder.buildAsync(uri, fabric8WebSocket).whenComplete((jdkWebSocket, t) -> {
       if (t instanceof CompletionException && t.getCause() != null) {
         t = t.getCause();

@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.TimeUnit;
@@ -43,9 +44,14 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
   private final ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
   private final WritableByteChannel byteChannel = Channels.newChannel(byteArrayOutputStream);
   private final CompletableFuture<Void> terminated = new CompletableFuture<>();
+  private final Duration pingInterval;
 
-  public JdkWebSocketImpl(Listener listener) {
+  /**
+   * @param pingInterval interval at which ping frames keep the idle connection alive, or null to disable them
+   */
+  public JdkWebSocketImpl(Listener listener, Duration pingInterval) {
     this.listener = listener;
+    this.pingInterval = pingInterval;
   }
 
   @Override
@@ -95,6 +101,12 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
   public void onOpen(java.net.http.WebSocket webSocket) {
     this.webSocket = webSocket;
     webSocket.request(1);
+    if (pingInterval != null) {
+      final CompletableFuture<?> pings = Utils.scheduleAtFixedRate(Runnable::run,
+          () -> webSocket.sendPing(ByteBuffer.allocate(0)), pingInterval.toMillis(), pingInterval.toMillis(),
+          TimeUnit.MILLISECONDS);
+      terminated.whenComplete((v, t) -> pings.cancel(true));
+    }
     listener.onOpen(this);
   }
 

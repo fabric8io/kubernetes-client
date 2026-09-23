@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.websocketx.CorruptedWebSocketFrameException;
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
 import org.slf4j.Logger;
@@ -27,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 class VertxWebSocket implements WebSocket {
@@ -74,6 +76,24 @@ class VertxWebSocket implements WebSocket {
       }
     });
     listener.onOpen(this);
+  }
+
+  /**
+   * Sends a ping frame every {@code interval} so that proxies and load balancers don't drop the connection
+   * while it's idle (e.g. a watch on resources that don't change).
+   * <p>
+   * The timer is cancelled when the WebSocket closes, or on the first tick after it closed if the close
+   * happened before the close handler was registered.
+   */
+  void startPings(Vertx vertx, Duration interval) {
+    final long timerId = vertx.setPeriodic(interval.toMillis(), id -> {
+      if (ws.isClosed()) {
+        vertx.cancelTimer(id);
+      } else {
+        ws.writePing(Buffer.buffer());
+      }
+    });
+    ws.closeHandler(v -> vertx.cancelTimer(timerId));
   }
 
   @Override

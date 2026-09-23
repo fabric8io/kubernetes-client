@@ -32,6 +32,7 @@ import java.net.ProtocolException;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -44,8 +45,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.Assertions.entry;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.Mockito.after;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -554,6 +557,29 @@ class JettyWebSocketTest {
     // Then
     assertThat(jws.queueSize()).isZero();
     verify(session).disconnect();
+  }
+
+  @Test
+  @DisplayName("With a ping interval, sends pings while open and stops once closed (the ping task doesn't outlive the socket)")
+  void pingsStopOnClose() {
+    // Given
+    final Session session = mock(Session.class);
+    final var jws = new JettyWebSocket(new Listener(), Duration.ofMillis(10));
+    jws.onWebSocketOpen(session);
+    verify(session, timeout(5000).atLeast(2)).sendPing(Mockito.any(), Mockito.any());
+    // When
+    jws.onWebSocketClose(1000, "done", Callback.NOOP);
+    Mockito.clearInvocations(session);
+    // Then
+    verify(session, after(200).atMost(1)).sendPing(Mockito.any(), Mockito.any());
+  }
+
+  @Test
+  @DisplayName("Without a ping interval, sends no pings")
+  void noPingsWithoutInterval() {
+    final Session session = mock(Session.class);
+    new JettyWebSocket(new Listener()).onWebSocketOpen(session);
+    verify(session, after(200).never()).sendPing(Mockito.any(), Mockito.any());
   }
 
   private static final class Listener implements WebSocket.Listener {

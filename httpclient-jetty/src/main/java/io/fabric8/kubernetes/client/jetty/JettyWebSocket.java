@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -56,8 +57,18 @@ public class JettyWebSocket implements WebSocket, Session.Listener {
   // demand only once the listener's onOpen has returned, and not after the close
   private boolean receiving;
 
+  private final Duration pingInterval;
+
   public JettyWebSocket(WebSocket.Listener listener) {
+    this(listener, null);
+  }
+
+  /**
+   * @param pingInterval interval at which ping frames keep the idle connection alive, or null to disable them
+   */
+  public JettyWebSocket(WebSocket.Listener listener, Duration pingInterval) {
     this.listener = listener;
+    this.pingInterval = pingInterval;
     sendQueue = new AtomicLong();
   }
 
@@ -121,6 +132,12 @@ public class JettyWebSocket implements WebSocket, Session.Listener {
   @Override
   public void onWebSocketOpen(Session session) {
     this.webSocketSession = session;
+    if (pingInterval != null) {
+      final CompletableFuture<?> pings = Utils.scheduleAtFixedRate(Runnable::run,
+          () -> session.sendPing(ByteBuffer.allocate(0), Callback.NOOP), pingInterval.toMillis(),
+          pingInterval.toMillis(), TimeUnit.MILLISECONDS);
+      terminated.whenComplete((v, t) -> pings.cancel(true));
+    }
     listener.onOpen(this);
     synchronized (this) {
       receiving = true;

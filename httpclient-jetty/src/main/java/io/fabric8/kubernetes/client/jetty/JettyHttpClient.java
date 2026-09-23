@@ -184,7 +184,7 @@ public class JettyHttpClient extends StandardHttpClient<JettyHttpClient, JettyHt
       };
       // Extra-future required because we can't Map the UpgradeException to a WebSocketHandshakeException easily
       final CompletableFuture<WebSocketResponse> future = new CompletableFuture<>();
-      final JettyWebSocket webSocket = new JettyWebSocket(listener);
+      final JettyWebSocket webSocket = new JettyWebSocket(listener, builder.getWebsocketPingInterval());
       jettyWs.connect(webSocket, cur, upgradeListener)
           .whenComplete((s, ex) -> {
             if (ex != null) {

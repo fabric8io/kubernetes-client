@@ -207,6 +207,10 @@ public class HttpClientUtils {
       builder.connectTimeout(config.getConnectionTimeout(), TimeUnit.MILLISECONDS);
     }
 
+    if (config.getWebsocketPingInterval() != null && config.getWebsocketPingInterval() > 0) {
+      builder.websocketPingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
+    }
+
     if (config.isHttp2Disable()) {
       builder.preferHttp11();
     }
