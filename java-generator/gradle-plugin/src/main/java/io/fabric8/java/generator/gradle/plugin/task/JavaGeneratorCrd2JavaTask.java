@@ -76,6 +76,14 @@ public class JavaGeneratorCrd2JavaTask extends DefaultTask {
       throw new GradleException("No source or urls specified");
     }
 
-    runners.forEach(r -> r.run(extensionClass.getTargetOrDefault()));
+    // Set the thread context classloader to ensure ServiceLoader can find Kubernetes model classes
+    // This is required for Gradle 9.6+ due to stricter classloader isolation
+    final ClassLoader originalClassLoader = Thread.currentThread().getContextClassLoader();
+    try {
+      Thread.currentThread().setContextClassLoader(getClass().getClassLoader());
+      runners.forEach(r -> r.run(extensionClass.getTargetOrDefault()));
+    } finally {
+      Thread.currentThread().setContextClassLoader(originalClassLoader);
+    }
   }
 }
