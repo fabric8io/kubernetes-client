@@ -18,8 +18,6 @@ package io.fabric8.kubernetes.client.utils;
 import org.awaitility.Awaitility;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -37,73 +35,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class AsyncUtilsTest {
-
-  @Test
-  @DisplayName("retryWithExponentialBackoff, synchronous failure during retry completes the returned future exceptionally")
-  void completesExceptionallyWhenRetryActionThrows() {
-    final AtomicInteger attempts = new AtomicInteger();
-    final IllegalStateException failure = new IllegalStateException("Token refresh failed");
-    final Supplier<CompletableFuture<Void>> action = () -> {
-      if (attempts.incrementAndGet() == 1) {
-        return CompletableFuture.failedFuture(new IOException("Connection reset"));
-      }
-      throw failure;
-    };
-    final CompletableFuture<Void> result = retryWithExponentialBackoff(action, ignored -> {
-    }, Duration.ofMillis(100), new ExponentialBackoffIntervalCalculator(1, 3),
-        (value, throwable, interval) -> throwable instanceof IOException ? interval : -1);
-
-    try {
-      assertThatThrownBy(() -> result.get(5, TimeUnit.SECONDS))
-          .isInstanceOf(ExecutionException.class)
-          .hasCause(failure);
-      assertThat(attempts).hasValue(2);
-    } finally {
-      result.cancel(false);
-    }
-  }
-
-  @ParameterizedTest(name = "failed attempt: {0}")
-  @ValueSource(booleans = { false, true })
-  @DisplayName("A throwing retry decision completes the result with the callback failure")
-  void completesExceptionallyWhenRetryDecisionThrows(boolean failedAttempt) {
-    final CompletableFuture<String> attempt = new CompletableFuture<>();
-    final IllegalStateException failure = new IllegalStateException("Retry decision failed");
-    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> attempt, ignored -> {
-    }, Duration.ZERO, new ExponentialBackoffIntervalCalculator(1, 3),
-        (value, throwable, interval) -> {
-          throw failure;
-        });
-
-    if (failedAttempt) {
-      attempt.completeExceptionally(new IOException("Connection reset"));
-    } else {
-      attempt.complete("Response");
-    }
-
-    assertThat(result).isCompletedExceptionally();
-    assertThatThrownBy(result::join)
-        .isInstanceOf(CompletionException.class)
-        .hasCause(failure);
-  }
-
-  @Test
-  @DisplayName("A throwing response cleanup before retry completes the result exceptionally")
-  void completesExceptionallyWhenRetryCleanupThrows() {
-    final CompletableFuture<String> attempt = new CompletableFuture<>();
-    final IllegalStateException failure = new IllegalStateException("Response cleanup failed");
-    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> attempt, ignored -> {
-      throw failure;
-    }, Duration.ZERO, new ExponentialBackoffIntervalCalculator(1, 3),
-        (value, throwable, interval) -> interval);
-
-    attempt.complete("Retryable response");
-
-    assertThat(result).isCompletedExceptionally();
-    assertThatThrownBy(result::join)
-        .isInstanceOf(CompletionException.class)
-        .hasCause(failure);
-  }
 
   @Test
   @DisplayName("withTimeout, future is cancelled when timeout is exceeded")
@@ -222,5 +153,116 @@ class AsyncUtilsTest {
     // Then
     assertThat(onCancel).isNotDone();
     assertThat(result).isDone().isCompletedWithValue(null);
+  }
+
+  @Test
+  @DisplayName("retryWithExponentialBackoff, with retry, should complete future exceptionally when the retried action throws")
+  void retryWithExponentialBackoff_retriedActionThrows() {
+    // Given
+    final AtomicInteger attempts = new AtomicInteger();
+    final IllegalStateException failure = new IllegalStateException("Token refresh failed");
+    final Supplier<CompletableFuture<Void>> actionSupplier = () -> {
+      if (attempts.incrementAndGet() == 1) {
+        return CompletableFuture.failedFuture(new IOException("Connection reset"));
+      }
+      throw failure;
+    };
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(1, 3);
+    final AsyncUtils.ShouldRetry<Void> shouldRetry = (v, t, retryInterval) -> t instanceof IOException ? retryInterval : -1;
+    // When
+    final CompletableFuture<Void> result = retryWithExponentialBackoff(actionSupplier, v -> {
+    }, Duration.ofMillis(100), retryIntervalCalculator, shouldRetry);
+    // Then
+    assertThatThrownBy(() -> result.get(5, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .hasCause(failure);
+    assertThat(attempts).hasValue(2);
+  }
+
+  @Test
+  @DisplayName("retryWithExponentialBackoff, should complete future exceptionally when the retry decision throws")
+  void retryWithExponentialBackoff_shouldRetryThrows() {
+    // Given
+    final CompletableFuture<String> action = new CompletableFuture<>();
+    final IllegalStateException failure = new IllegalStateException("Retry decision failed");
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(1, 3);
+    final AsyncUtils.ShouldRetry<String> shouldRetry = (v, t, retryInterval) -> {
+      throw failure;
+    };
+    // When
+    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> action, v -> {
+    }, Duration.ZERO, retryIntervalCalculator, shouldRetry);
+    action.complete("Response");
+    // Then
+    assertThat(result).isCompletedExceptionally();
+    assertThatThrownBy(result::join)
+        .isInstanceOf(CompletionException.class)
+        .hasCause(failure);
+    assertThat(failure.getSuppressed()).isEmpty();
+  }
+
+  @Test
+  @DisplayName("retryWithExponentialBackoff, should complete future with the retry decision failure, keeping the failed attempt's error as suppressed")
+  void retryWithExponentialBackoff_shouldRetryThrowsAfterFailedAttempt() {
+    // Given
+    final CompletableFuture<String> action = new CompletableFuture<>();
+    final IOException attemptFailure = new IOException("Connection refused");
+    final IllegalStateException failure = new IllegalStateException("Retry decision failed");
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(1, 3);
+    final AsyncUtils.ShouldRetry<String> shouldRetry = (v, t, retryInterval) -> {
+      throw failure;
+    };
+    // When
+    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> action, v -> {
+    }, Duration.ZERO, retryIntervalCalculator, shouldRetry);
+    action.completeExceptionally(attemptFailure);
+    // Then
+    assertThat(result).isCompletedExceptionally();
+    assertThatThrownBy(result::join)
+        .isInstanceOf(CompletionException.class)
+        .hasCause(failure);
+    assertThat(failure.getSuppressed()).containsExactly(attemptFailure);
+  }
+
+  @Test
+  @DisplayName("retryWithExponentialBackoff, should complete future with the failed attempt's error when the retry decision rethrows it")
+  void retryWithExponentialBackoff_shouldRetryRethrowsAttemptFailure() {
+    // Given
+    final CompletableFuture<String> action = new CompletableFuture<>();
+    final IllegalStateException attemptFailure = new IllegalStateException("Connection refused");
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(1, 3);
+    final AsyncUtils.ShouldRetry<String> shouldRetry = (v, t, retryInterval) -> {
+      throw (IllegalStateException) t;
+    };
+    // When
+    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> action, v -> {
+    }, Duration.ZERO, retryIntervalCalculator, shouldRetry);
+    action.completeExceptionally(attemptFailure);
+    // Then
+    assertThat(result).isCompletedExceptionally();
+    assertThatThrownBy(result::join)
+        .isInstanceOf(CompletionException.class)
+        .hasCause(attemptFailure);
+    assertThat(attemptFailure.getSuppressed()).isEmpty();
+  }
+
+  @Test
+  @DisplayName("retryWithExponentialBackoff, with retry, should complete future exceptionally when onCancel throws before retrying")
+  void retryWithExponentialBackoff_onCancelThrowsBeforeRetry() {
+    // Given
+    final CompletableFuture<String> action = new CompletableFuture<>();
+    final IllegalStateException failure = new IllegalStateException("Response cleanup failed");
+    final ExponentialBackoffIntervalCalculator retryIntervalCalculator = new ExponentialBackoffIntervalCalculator(1, 3);
+    final AsyncUtils.ShouldRetry<String> shouldRetry = (v, t, retryInterval) -> retryInterval;
+    // When
+    final CompletableFuture<String> result = retryWithExponentialBackoff(() -> action, v -> {
+      throw failure;
+    }, Duration.ZERO, retryIntervalCalculator, shouldRetry);
+    action.complete("Retryable response");
+    // Then
+    assertThat(result).isCompletedExceptionally();
+    assertThatThrownBy(result::join)
+        .isInstanceOf(CompletionException.class)
+        .hasCause(failure);
   }
 }
