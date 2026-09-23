@@ -42,6 +42,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "adminPasswordSecretRef",
     "clusterID",
     "infraID",
+    "metadataJSONSecretRef",
     "platform"
 })
 @ToString
@@ -77,6 +78,8 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     private String clusterID;
     @JsonProperty("infraID")
     private String infraID;
+    @JsonProperty("metadataJSONSecretRef")
+    private LocalObjectReference metadataJSONSecretRef;
     @JsonProperty("platform")
     private ClusterPlatformMetadata platform;
     @JsonIgnore
@@ -88,12 +91,13 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     public ClusterMetadata() {
     }
 
-    public ClusterMetadata(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, ClusterPlatformMetadata platform) {
+    public ClusterMetadata(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, LocalObjectReference metadataJSONSecretRef, ClusterPlatformMetadata platform) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
         this.clusterID = clusterID;
         this.infraID = infraID;
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
         this.platform = platform;
     }
 
@@ -159,6 +163,22 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
+    }
+
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public LocalObjectReference getMetadataJSONSecretRef() {
+        return metadataJSONSecretRef;
+    }
+
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public void setMetadataJSONSecretRef(LocalObjectReference metadataJSONSecretRef) {
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
     }
 
     /**

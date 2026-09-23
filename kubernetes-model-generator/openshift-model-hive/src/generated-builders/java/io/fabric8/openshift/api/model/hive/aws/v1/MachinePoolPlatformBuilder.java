@@ -25,7 +25,7 @@ public class MachinePoolPlatformBuilder extends MachinePoolPlatformFluent<Machin
   }
 
   public MachinePoolPlatform build() {
-    MachinePoolPlatform buildable = new MachinePoolPlatform(fluent.getAdditionalSecurityGroupIDs(), fluent.buildMetadataService(), fluent.buildRootVolume(), fluent.buildSpotMarketOptions(), fluent.getSubnets(), fluent.getType(), fluent.getUserTags(), fluent.getZones());
+    MachinePoolPlatform buildable = new MachinePoolPlatform(fluent.getAdditionalSecurityGroupIDs(), fluent.getAmiID(), fluent.buildMetadataService(), fluent.buildRootVolume(), fluent.buildSpotMarketOptions(), fluent.getSubnets(), fluent.getType(), fluent.getUserTags(), fluent.getZones());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

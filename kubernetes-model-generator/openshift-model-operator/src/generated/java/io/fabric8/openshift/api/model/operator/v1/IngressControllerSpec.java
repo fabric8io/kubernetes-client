@@ -45,6 +45,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "defaultCertificate",
     "domain",
     "endpointPublishingStrategy",
+    "haproxyVersion",
     "httpCompression",
     "httpEmptyRequestsPolicy",
     "httpErrorCodePages",
@@ -95,6 +96,8 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     private String domain;
     @JsonProperty("endpointPublishingStrategy")
     private EndpointPublishingStrategy endpointPublishingStrategy;
+    @JsonProperty("haproxyVersion")
+    private String haproxyVersion;
     @JsonProperty("httpCompression")
     private HTTPCompressionPolicy httpCompression;
     @JsonProperty("httpEmptyRequestsPolicy")
@@ -133,13 +136,14 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     public IngressControllerSpec() {
     }
 
-    public IngressControllerSpec(ClientTLS clientTLS, String closedClientConnectionPolicy, LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, String idleConnectionTerminationPolicy, IngressControllerLogging logging, LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
+    public IngressControllerSpec(ClientTLS clientTLS, String closedClientConnectionPolicy, LocalObjectReference defaultCertificate, String domain, EndpointPublishingStrategy endpointPublishingStrategy, String haproxyVersion, HTTPCompressionPolicy httpCompression, String httpEmptyRequestsPolicy, ConfigMapNameReference httpErrorCodePages, IngressControllerHTTPHeaders httpHeaders, String idleConnectionTerminationPolicy, IngressControllerLogging logging, LabelSelector namespaceSelector, NodePlacement nodePlacement, Integer replicas, RouteAdmissionPolicy routeAdmission, LabelSelector routeSelector, TLSSecurityProfile tlsSecurityProfile, IngressControllerTuningOptions tuningOptions, Object unsupportedConfigOverrides) {
         super();
         this.clientTLS = clientTLS;
         this.closedClientConnectionPolicy = closedClientConnectionPolicy;
         this.defaultCertificate = defaultCertificate;
         this.domain = domain;
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+        this.haproxyVersion = haproxyVersion;
         this.httpCompression = httpCompression;
         this.httpEmptyRequestsPolicy = httpEmptyRequestsPolicy;
         this.httpErrorCodePages = httpErrorCodePages;
@@ -205,7 +209,7 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     /**
-     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.
+     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.<br><p> <br><p> The domain value must be a valid DNS name. It must consist of lowercase alphanumeric characters, '-' or '.', and each label must start and end with an alphanumeric character and not exceed 63 characters. Maximum length of a valid DNS domain is 253 characters.<br><p> <br><p> The implementation may add a prefix such as "router-default." to the domain when constructing the router canonical hostname. To ensure the resulting hostname does not exceed the DNS maximum length of 253 characters, the domain length is additionally validated at the IngressController object level. For the maximum length of the domain value itself, the shortest possible variant of the prefix and the ingress controller name was considered for example "router-a."
      */
     @JsonProperty("domain")
     public String getDomain() {
@@ -213,7 +217,7 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     }
 
     /**
-     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.
+     * domain is a DNS name serviced by the ingress controller and is used to configure multiple features:<br><p> <br><p> &#42; For the LoadBalancerService endpoint publishing strategy, domain is<br><p>   used to configure DNS records. See endpointPublishingStrategy.<br><p> <br><p> &#42; When using a generated default certificate, the certificate will be valid<br><p>   for domain and its subdomains. See defaultCertificate.<br><p> <br><p> &#42; The value is published to individual Route statuses so that end-users<br><p>   know where to target external DNS records.<br><p> <br><p> domain must be unique among all IngressControllers, and cannot be updated.<br><p> <br><p> If empty, defaults to ingress.config.openshift.io/cluster .spec.domain.<br><p> <br><p> The domain value must be a valid DNS name. It must consist of lowercase alphanumeric characters, '-' or '.', and each label must start and end with an alphanumeric character and not exceed 63 characters. Maximum length of a valid DNS domain is 253 characters.<br><p> <br><p> The implementation may add a prefix such as "router-default." to the domain when constructing the router canonical hostname. To ensure the resulting hostname does not exceed the DNS maximum length of 253 characters, the domain length is additionally validated at the IngressController object level. For the maximum length of the domain value itself, the shortest possible variant of the prefix and the ingress controller name was considered for example "router-a."
      */
     @JsonProperty("domain")
     public void setDomain(String domain) {
@@ -234,6 +238,22 @@ public class IngressControllerSpec implements Editable<IngressControllerSpecBuil
     @JsonProperty("endpointPublishingStrategy")
     public void setEndpointPublishingStrategy(EndpointPublishingStrategy endpointPublishingStrategy) {
         this.endpointPublishingStrategy = endpointPublishingStrategy;
+    }
+
+    /**
+     * haproxyVersion specifies the HAProxy version to use for this IngressController.<br><p> <br><p> This field is available in OpenShift 4.22 as an API-only backport with no operator implementation. Setting this field on OpenShift 4.22 allows administrators to pin HAProxy 2.8 before upgrading to OpenShift 5.0, where the operator will honor this setting.<br><p> <br><p> Valid values for OpenShift 4.22: - Unset (default): Uses HAProxy 2.8 (the default for OpenShift 4.22) - "2.8": Explicitly pins HAProxy 2.8 for preservation during cluster<br><p>   upgrade to OpenShift 5.0<br><p> <br><p> On OpenShift 4.22, this field has no effect on the running IngressController. It only preserves the administrator's intent for the OpenShift 5.0 upgrade.
+     */
+    @JsonProperty("haproxyVersion")
+    public String getHaproxyVersion() {
+        return haproxyVersion;
+    }
+
+    /**
+     * haproxyVersion specifies the HAProxy version to use for this IngressController.<br><p> <br><p> This field is available in OpenShift 4.22 as an API-only backport with no operator implementation. Setting this field on OpenShift 4.22 allows administrators to pin HAProxy 2.8 before upgrading to OpenShift 5.0, where the operator will honor this setting.<br><p> <br><p> Valid values for OpenShift 4.22: - Unset (default): Uses HAProxy 2.8 (the default for OpenShift 4.22) - "2.8": Explicitly pins HAProxy 2.8 for preservation during cluster<br><p>   upgrade to OpenShift 5.0<br><p> <br><p> On OpenShift 4.22, this field has no effect on the running IngressController. It only preserves the administrator's intent for the OpenShift 5.0 upgrade.
+     */
+    @JsonProperty("haproxyVersion")
+    public void setHaproxyVersion(String haproxyVersion) {
+        this.haproxyVersion = haproxyVersion;
     }
 
     /**

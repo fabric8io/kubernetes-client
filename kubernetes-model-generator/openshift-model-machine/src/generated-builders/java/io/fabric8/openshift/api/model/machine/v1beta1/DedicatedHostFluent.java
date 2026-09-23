@@ -1,0 +1,241 @@
+package io.fabric8.openshift.api.model.machine.v1beta1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class DedicatedHostFluent<A extends io.fabric8.openshift.api.model.machine.v1beta1.DedicatedHostFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private String allocationStrategy;
+  private DynamicHostAllocationSpecBuilder dynamicHostAllocation;
+  private String id;
+
+  public DedicatedHostFluent() {
+  }
+  
+  public DedicatedHostFluent(DedicatedHost instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public DynamicHostAllocationSpec buildDynamicHostAllocation() {
+    return this.dynamicHostAllocation != null ? this.dynamicHostAllocation.build() : null;
+  }
+  
+  protected void copyInstance(DedicatedHost instance) {
+    instance = instance != null ? instance : new DedicatedHost();
+    if (instance != null) {
+        this.withAllocationStrategy(instance.getAllocationStrategy());
+        this.withDynamicHostAllocation(instance.getDynamicHostAllocation());
+        this.withId(instance.getId());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public DynamicHostAllocationNested<A> editDynamicHostAllocation() {
+    return this.withNewDynamicHostAllocationLike(Optional.ofNullable(this.buildDynamicHostAllocation()).orElse(null));
+  }
+  
+  public DynamicHostAllocationNested<A> editOrNewDynamicHostAllocation() {
+    return this.withNewDynamicHostAllocationLike(Optional.ofNullable(this.buildDynamicHostAllocation()).orElse(new DynamicHostAllocationSpecBuilder().build()));
+  }
+  
+  public DynamicHostAllocationNested<A> editOrNewDynamicHostAllocationLike(DynamicHostAllocationSpec item) {
+    return this.withNewDynamicHostAllocationLike(Optional.ofNullable(this.buildDynamicHostAllocation()).orElse(item));
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    DedicatedHostFluent that = (DedicatedHostFluent) o;
+    if (!(Objects.equals(allocationStrategy, that.allocationStrategy))) {
+      return false;
+    }
+    if (!(Objects.equals(dynamicHostAllocation, that.dynamicHostAllocation))) {
+      return false;
+    }
+    if (!(Objects.equals(id, that.id))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getAllocationStrategy() {
+    return this.allocationStrategy;
+  }
+  
+  public String getId() {
+    return this.id;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasAllocationStrategy() {
+    return this.allocationStrategy != null;
+  }
+  
+  public boolean hasDynamicHostAllocation() {
+    return this.dynamicHostAllocation != null;
+  }
+  
+  public boolean hasId() {
+    return this.id != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(allocationStrategy, dynamicHostAllocation, id, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(allocationStrategy == null)) {
+        sb.append("allocationStrategy:");
+        sb.append(allocationStrategy);
+        sb.append(",");
+    }
+    if (!(dynamicHostAllocation == null)) {
+        sb.append("dynamicHostAllocation:");
+        sb.append(dynamicHostAllocation);
+        sb.append(",");
+    }
+    if (!(id == null)) {
+        sb.append("id:");
+        sb.append(id);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withAllocationStrategy(String allocationStrategy) {
+    this.allocationStrategy = allocationStrategy;
+    return (A) this;
+  }
+  
+  public A withDynamicHostAllocation(DynamicHostAllocationSpec dynamicHostAllocation) {
+    this._visitables.remove("dynamicHostAllocation");
+    if (dynamicHostAllocation != null) {
+        this.dynamicHostAllocation = new DynamicHostAllocationSpecBuilder(dynamicHostAllocation);
+        this._visitables.get("dynamicHostAllocation").add(this.dynamicHostAllocation);
+    } else {
+        this.dynamicHostAllocation = null;
+        this._visitables.get("dynamicHostAllocation").remove(this.dynamicHostAllocation);
+    }
+    return (A) this;
+  }
+  
+  public A withId(String id) {
+    this.id = id;
+    return (A) this;
+  }
+  
+  public DynamicHostAllocationNested<A> withNewDynamicHostAllocation() {
+    return new DynamicHostAllocationNested(null);
+  }
+  
+  public DynamicHostAllocationNested<A> withNewDynamicHostAllocationLike(DynamicHostAllocationSpec item) {
+    return new DynamicHostAllocationNested(item);
+  }
+  public class DynamicHostAllocationNested<N> extends DynamicHostAllocationSpecFluent<DynamicHostAllocationNested<N>> implements Nested<N>{
+  
+    DynamicHostAllocationSpecBuilder builder;
+  
+    DynamicHostAllocationNested(DynamicHostAllocationSpec item) {
+      this.builder = new DynamicHostAllocationSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) DedicatedHostFluent.this.withDynamicHostAllocation(builder.build());
+    }
+    
+    public N endDynamicHostAllocation() {
+      return and();
+    }
+    
+  }
+}

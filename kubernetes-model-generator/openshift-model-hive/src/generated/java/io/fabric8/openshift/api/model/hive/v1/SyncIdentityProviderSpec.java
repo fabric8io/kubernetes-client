@@ -91,7 +91,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     /**
-     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
      */
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -100,7 +100,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     /**
-     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
      */
     @JsonProperty("clusterDeploymentRefs")
     public void setClusterDeploymentRefs(List<LocalObjectReference> clusterDeploymentRefs) {

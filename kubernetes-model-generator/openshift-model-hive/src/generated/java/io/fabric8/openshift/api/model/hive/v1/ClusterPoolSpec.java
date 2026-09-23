@@ -43,6 +43,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "annotations",
     "baseDomain",
     "claimLifetime",
+    "customizationRef",
     "hibernateAfter",
     "hibernationConfig",
     "imageSetRef",
@@ -91,6 +92,8 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
     private String baseDomain;
     @JsonProperty("claimLifetime")
     private ClusterPoolClaimLifetime claimLifetime;
+    @JsonProperty("customizationRef")
+    private LocalObjectReference customizationRef;
     @JsonProperty("hibernateAfter")
     private String hibernateAfter;
     @JsonProperty("hibernationConfig")
@@ -133,11 +136,12 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
     public ClusterPoolSpec() {
     }
 
-    public ClusterPoolSpec(Map<String, String> annotations, String baseDomain, ClusterPoolClaimLifetime claimLifetime, String hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, LocalObjectReference installConfigSecretTemplateRef, List<EnvVar> installerEnv, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
+    public ClusterPoolSpec(Map<String, String> annotations, String baseDomain, ClusterPoolClaimLifetime claimLifetime, LocalObjectReference customizationRef, String hibernateAfter, HibernationConfig hibernationConfig, ClusterImageSetReference imageSetRef, Integer installAttemptsLimit, LocalObjectReference installConfigSecretTemplateRef, List<EnvVar> installerEnv, List<InventoryEntry> inventory, Map<String, String> labels, Integer maxConcurrent, Integer maxSize, Platform platform, LocalObjectReference pullSecretRef, Integer runningCount, Integer size, Boolean skipMachinePools) {
         super();
         this.annotations = annotations;
         this.baseDomain = baseDomain;
         this.claimLifetime = claimLifetime;
+        this.customizationRef = customizationRef;
         this.hibernateAfter = hibernateAfter;
         this.hibernationConfig = hibernationConfig;
         this.imageSetRef = imageSetRef;
@@ -202,6 +206,22 @@ public class ClusterPoolSpec implements Editable<ClusterPoolSpecBuilder>, Kubern
     @JsonProperty("claimLifetime")
     public void setClaimLifetime(ClusterPoolClaimLifetime claimLifetime) {
         this.claimLifetime = claimLifetime;
+    }
+
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
+    @JsonProperty("customizationRef")
+    public LocalObjectReference getCustomizationRef() {
+        return customizationRef;
+    }
+
+    /**
+     * ClusterPoolSpec defines the desired state of the ClusterPool.
+     */
+    @JsonProperty("customizationRef")
+    public void setCustomizationRef(LocalObjectReference customizationRef) {
+        this.customizationRef = customizationRef;
     }
 
     /**

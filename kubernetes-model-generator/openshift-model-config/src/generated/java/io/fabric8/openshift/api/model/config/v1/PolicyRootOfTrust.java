@@ -68,13 +68,13 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
 {
 
     @JsonProperty("fulcioCAWithRekor")
-    private FulcioCAWithRekor fulcioCAWithRekor;
+    private ImagePolicyFulcioCAWithRekorRootOfTrust fulcioCAWithRekor;
     @JsonProperty("pki")
-    private PKI pki;
+    private ImagePolicyPKIRootOfTrust pki;
     @JsonProperty("policyType")
     private String policyType;
     @JsonProperty("publicKey")
-    private PublicKey publicKey;
+    private ImagePolicyPublicKeyRootOfTrust publicKey;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -84,7 +84,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
     public PolicyRootOfTrust() {
     }
 
-    public PolicyRootOfTrust(FulcioCAWithRekor fulcioCAWithRekor, PKI pki, String policyType, PublicKey publicKey) {
+    public PolicyRootOfTrust(ImagePolicyFulcioCAWithRekorRootOfTrust fulcioCAWithRekor, ImagePolicyPKIRootOfTrust pki, String policyType, ImagePolicyPublicKeyRootOfTrust publicKey) {
         super();
         this.fulcioCAWithRekor = fulcioCAWithRekor;
         this.pki = pki;
@@ -96,7 +96,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("fulcioCAWithRekor")
-    public FulcioCAWithRekor getFulcioCAWithRekor() {
+    public ImagePolicyFulcioCAWithRekorRootOfTrust getFulcioCAWithRekor() {
         return fulcioCAWithRekor;
     }
 
@@ -104,7 +104,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("fulcioCAWithRekor")
-    public void setFulcioCAWithRekor(FulcioCAWithRekor fulcioCAWithRekor) {
+    public void setFulcioCAWithRekor(ImagePolicyFulcioCAWithRekorRootOfTrust fulcioCAWithRekor) {
         this.fulcioCAWithRekor = fulcioCAWithRekor;
     }
 
@@ -112,7 +112,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("pki")
-    public PKI getPki() {
+    public ImagePolicyPKIRootOfTrust getPki() {
         return pki;
     }
 
@@ -120,12 +120,12 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("pki")
-    public void setPki(PKI pki) {
+    public void setPki(ImagePolicyPKIRootOfTrust pki) {
         this.pki = pki;
     }
 
     /**
-     * policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI). This value is enabled by turning on the SigstoreImageVerificationPKI feature gate.
+     * policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI).
      */
     @JsonProperty("policyType")
     public String getPolicyType() {
@@ -133,7 +133,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
     }
 
     /**
-     * policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI). This value is enabled by turning on the SigstoreImageVerificationPKI feature gate.
+     * policyType is a required field specifies the type of the policy for verification. This field must correspond to how the policy was generated. Allowed values are "PublicKey", "FulcioCAWithRekor", and "PKI". When set to "PublicKey", the policy relies on a sigstore publicKey and may optionally use a Rekor verification. When set to "FulcioCAWithRekor", the policy is based on the Fulcio certification and incorporates a Rekor verification. When set to "PKI", the policy is based on the certificates from Bring Your Own Public Key Infrastructure (BYOPKI).
      */
     @JsonProperty("policyType")
     public void setPolicyType(String policyType) {
@@ -144,7 +144,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("publicKey")
-    public PublicKey getPublicKey() {
+    public ImagePolicyPublicKeyRootOfTrust getPublicKey() {
         return publicKey;
     }
 
@@ -152,7 +152,7 @@ public class PolicyRootOfTrust implements Editable<PolicyRootOfTrustBuilder>, Ku
      * PolicyRootOfTrust defines the root of trust based on the selected policyType.
      */
     @JsonProperty("publicKey")
-    public void setPublicKey(PublicKey publicKey) {
+    public void setPublicKey(ImagePolicyPublicKeyRootOfTrust publicKey) {
         this.publicKey = publicKey;
     }
 

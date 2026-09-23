@@ -45,6 +45,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "defaultMachinePlatform",
     "hostedZone",
     "hostedZoneRole",
+    "ipFamily",
     "lbType",
     "preserveBootstrapIgnition",
     "propagateUserTags",
@@ -91,6 +92,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String hostedZone;
     @JsonProperty("hostedZoneRole")
     private String hostedZoneRole;
+    @JsonProperty("ipFamily")
+    private String ipFamily;
     @JsonProperty("lbType")
     private String lbType;
     @JsonProperty("preserveBootstrapIgnition")
@@ -123,13 +126,14 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, String hostedZone, String hostedZoneRole, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, String userProvisionedDNS, Map<String, String> userTags, VPC vpc) {
+    public Platform(String amiID, Boolean bestEffortDeleteIgnition, MachinePool defaultMachinePlatform, String hostedZone, String hostedZoneRole, String ipFamily, String lbType, Boolean preserveBootstrapIgnition, Boolean propagateUserTags, String publicIpv4Pool, String region, List<ServiceEndpoint> serviceEndpoints, List<String> subnets, String userProvisionedDNS, Map<String, String> userTags, VPC vpc) {
         super();
         this.amiID = amiID;
         this.bestEffortDeleteIgnition = bestEffortDeleteIgnition;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.hostedZone = hostedZone;
         this.hostedZoneRole = hostedZoneRole;
+        this.ipFamily = ipFamily;
         this.lbType = lbType;
         this.preserveBootstrapIgnition = preserveBootstrapIgnition;
         this.propagateUserTags = propagateUserTags;
@@ -223,7 +227,23 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * LBType is an optional field to specify a load balancer type. When this field is specified, all ingresscontrollers (including the default ingresscontroller) will be created using the specified load-balancer type by default.<br><p> <br><p> Following are the accepted values:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the transport layer (TCP/SSL). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb<br><p> <br><p> If this field is not set explicitly, it defaults to "Classic".  This default is subject to change over time.
+     * IPFamily specifies the IP address family for the cluster network. Use "IPv4" for IPv4-only networking, "DualStackIPv4Primary" for dual-stack networking with IPv4 as the primary address family, or "DualStackIPv6Primary" for dual-stack networking with IPv6 as the primary address family. When using dual-stack, the VPC and subnets must be configured with both IPv4 and IPv6 CIDR blocks.
+     */
+    @JsonProperty("ipFamily")
+    public String getIpFamily() {
+        return ipFamily;
+    }
+
+    /**
+     * IPFamily specifies the IP address family for the cluster network. Use "IPv4" for IPv4-only networking, "DualStackIPv4Primary" for dual-stack networking with IPv4 as the primary address family, or "DualStackIPv6Primary" for dual-stack networking with IPv6 as the primary address family. When using dual-stack, the VPC and subnets must be configured with both IPv4 and IPv6 CIDR blocks.
+     */
+    @JsonProperty("ipFamily")
+    public void setIpFamily(String ipFamily) {
+        this.ipFamily = ipFamily;
+    }
+
+    /**
+     * LBType is an optional field to specify a load balancer type. When this field is specified, all ingresscontrollers (including the default ingresscontroller) will be created using the specified load-balancer type by default.<br><p> <br><p> Following are the accepted values:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the transport layer (TCP/SSL). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb<br><p> <br><p> If this field is not set explicitly, the default value depends on the ipFamily field: &#42; "Classic" when ipFamily is not set or set to "IPv4" &#42; "NLB" when ipFamily is set to "DualStackIPv4Primary" or "DualStackIPv6Primary" This default is subject to change over time.
      */
     @JsonProperty("lbType")
     public String getLbType() {
@@ -231,7 +251,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * LBType is an optional field to specify a load balancer type. When this field is specified, all ingresscontrollers (including the default ingresscontroller) will be created using the specified load-balancer type by default.<br><p> <br><p> Following are the accepted values:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the transport layer (TCP/SSL). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb<br><p> <br><p> If this field is not set explicitly, it defaults to "Classic".  This default is subject to change over time.
+     * LBType is an optional field to specify a load balancer type. When this field is specified, all ingresscontrollers (including the default ingresscontroller) will be created using the specified load-balancer type by default.<br><p> <br><p> Following are the accepted values:<br><p> <br><p> &#42; "Classic": A Classic Load Balancer that makes routing decisions at either the transport layer (TCP/SSL) or the application layer (HTTP/HTTPS). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#clb<br><p> <br><p> &#42; "NLB": A Network Load Balancer that makes routing decisions at the transport layer (TCP/SSL). See the following for additional details: https://docs.aws.amazon.com/AmazonECS/latest/developerguide/load-balancer-types.html#nlb<br><p> <br><p> If this field is not set explicitly, the default value depends on the ipFamily field: &#42; "Classic" when ipFamily is not set or set to "IPv4" &#42; "NLB" when ipFamily is set to "DualStackIPv4Primary" or "DualStackIPv6Primary" This default is subject to change over time.
      */
     @JsonProperty("lbType")
     public void setLbType(String lbType) {

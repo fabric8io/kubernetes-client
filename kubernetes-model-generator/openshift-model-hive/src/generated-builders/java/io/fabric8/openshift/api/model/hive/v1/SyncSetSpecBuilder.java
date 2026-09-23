@@ -25,7 +25,7 @@ public class SyncSetSpecBuilder extends SyncSetSpecFluent<SyncSetSpecBuilder> im
   }
 
   public SyncSetSpec build() {
-    SyncSetSpec buildable = new SyncSetSpec(fluent.getApplyBehavior(), fluent.buildClusterDeploymentRefs(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
+    SyncSetSpec buildable = new SyncSetSpec(fluent.getApplyBehavior(), fluent.buildClusterDeploymentRefs(), fluent.getEnablePatchTemplates(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

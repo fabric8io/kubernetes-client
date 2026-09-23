@@ -49,6 +49,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "ami",
     "blockDevices",
     "capacityReservationId",
+    "cpuOptions",
     "credentialsSecret",
     "deviceIndex",
     "iamInstanceProfile",
@@ -104,6 +105,8 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     private List<BlockDeviceMappingSpec> blockDevices = new ArrayList<>();
     @JsonProperty("capacityReservationId")
     private String capacityReservationId;
+    @JsonProperty("cpuOptions")
+    private CPUOptions cpuOptions;
     @JsonProperty("credentialsSecret")
     private LocalObjectReference credentialsSecret;
     @JsonProperty("deviceIndex")
@@ -156,12 +159,13 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     public AWSMachineProviderConfig() {
     }
 
-    public AWSMachineProviderConfig(AWSResourceReference ami, String apiVersion, List<BlockDeviceMappingSpec> blockDevices, String capacityReservationId, LocalObjectReference credentialsSecret, Long deviceIndex, AWSResourceReference iamInstanceProfile, String instanceType, String keyName, String kind, List<LoadBalancerReference> loadBalancers, String marketType, ObjectMeta metadata, MetadataServiceOptions metadataServiceOptions, String networkInterfaceType, Placement placement, String placementGroupName, Integer placementGroupPartition, Boolean publicIp, List<AWSResourceReference> securityGroups, SpotMarketOptions spotMarketOptions, AWSResourceReference subnet, List<TagSpecification> tags, LocalObjectReference userDataSecret) {
+    public AWSMachineProviderConfig(AWSResourceReference ami, String apiVersion, List<BlockDeviceMappingSpec> blockDevices, String capacityReservationId, CPUOptions cpuOptions, LocalObjectReference credentialsSecret, Long deviceIndex, AWSResourceReference iamInstanceProfile, String instanceType, String keyName, String kind, List<LoadBalancerReference> loadBalancers, String marketType, ObjectMeta metadata, MetadataServiceOptions metadataServiceOptions, String networkInterfaceType, Placement placement, String placementGroupName, Integer placementGroupPartition, Boolean publicIp, List<AWSResourceReference> securityGroups, SpotMarketOptions spotMarketOptions, AWSResourceReference subnet, List<TagSpecification> tags, LocalObjectReference userDataSecret) {
         super();
         this.ami = ami;
         this.apiVersion = apiVersion;
         this.blockDevices = blockDevices;
         this.capacityReservationId = capacityReservationId;
+        this.cpuOptions = cpuOptions;
         this.credentialsSecret = credentialsSecret;
         this.deviceIndex = deviceIndex;
         this.iamInstanceProfile = iamInstanceProfile;
@@ -247,6 +251,22 @@ public class AWSMachineProviderConfig implements Editable<AWSMachineProviderConf
     @JsonProperty("capacityReservationId")
     public void setCapacityReservationId(String capacityReservationId) {
         this.capacityReservationId = capacityReservationId;
+    }
+
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
+    @JsonProperty("cpuOptions")
+    public CPUOptions getCpuOptions() {
+        return cpuOptions;
+    }
+
+    /**
+     * AWSMachineProviderConfig is the Schema for the awsmachineproviderconfigs API Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
+    @JsonProperty("cpuOptions")
+    public void setCpuOptions(CPUOptions cpuOptions) {
+        this.cpuOptions = cpuOptions;
     }
 
     /**

@@ -7,10 +7,14 @@ import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -19,6 +23,7 @@ import java.util.Optional;
 public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.openstack.v1.MachinePoolFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
   private String flavor;
   private RootVolumeBuilder rootVolume;
 
@@ -29,6 +34,16 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
     this.copyInstance(instance);
   }
 
+  public A addAllToAdditionalSecurityGroupIDs(Collection<String> items) {
+    if (this.additionalSecurityGroupIDs == null) {
+      this.additionalSecurityGroupIDs = new ArrayList();
+    }
+    for (String item : items) {
+      this.additionalSecurityGroupIDs.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -49,6 +64,24 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
     return (A) this;
   }
   
+  public A addToAdditionalSecurityGroupIDs(String... items) {
+    if (this.additionalSecurityGroupIDs == null) {
+      this.additionalSecurityGroupIDs = new ArrayList();
+    }
+    for (String item : items) {
+      this.additionalSecurityGroupIDs.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalSecurityGroupIDs(int index,String item) {
+    if (this.additionalSecurityGroupIDs == null) {
+      this.additionalSecurityGroupIDs = new ArrayList();
+    }
+    this.additionalSecurityGroupIDs.add(index, item);
+    return (A) this;
+  }
+  
   public RootVolume buildRootVolume() {
     return this.rootVolume != null ? this.rootVolume.build() : null;
   }
@@ -56,6 +89,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
   protected void copyInstance(MachinePool instance) {
     instance = instance != null ? instance : new MachinePool();
     if (instance != null) {
+        this.withAdditionalSecurityGroupIDs(instance.getAdditionalSecurityGroupIDs());
         this.withFlavor(instance.getFlavor());
         this.withRootVolume(instance.getRootVolume());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -85,6 +119,9 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
       return false;
     }
     MachinePoolFluent that = (MachinePoolFluent) o;
+    if (!(Objects.equals(additionalSecurityGroupIDs, that.additionalSecurityGroupIDs))) {
+      return false;
+    }
     if (!(Objects.equals(flavor, that.flavor))) {
       return false;
     }
@@ -101,16 +138,54 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
     return this.additionalProperties;
   }
   
+  public String getAdditionalSecurityGroupID(int index) {
+    return this.additionalSecurityGroupIDs.get(index);
+  }
+  
+  public List<String> getAdditionalSecurityGroupIDs() {
+    return this.additionalSecurityGroupIDs;
+  }
+  
+  public String getFirstAdditionalSecurityGroupID() {
+    return this.additionalSecurityGroupIDs.get(0);
+  }
+  
   public String getFlavor() {
     return this.flavor;
+  }
+  
+  public String getLastAdditionalSecurityGroupID() {
+    return this.additionalSecurityGroupIDs.get(additionalSecurityGroupIDs.size() - 1);
+  }
+  
+  public String getMatchingAdditionalSecurityGroupID(Predicate<String> predicate) {
+      for (String item : additionalSecurityGroupIDs) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
   
+  public boolean hasAdditionalSecurityGroupIDs() {
+    return this.additionalSecurityGroupIDs != null && !(this.additionalSecurityGroupIDs.isEmpty());
+  }
+  
   public boolean hasFlavor() {
     return this.flavor != null;
+  }
+  
+  public boolean hasMatchingAdditionalSecurityGroupID(Predicate<String> predicate) {
+      for (String item : additionalSecurityGroupIDs) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasRootVolume() {
@@ -118,7 +193,17 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
   }
   
   public int hashCode() {
-    return Objects.hash(flavor, rootVolume, additionalProperties);
+    return Objects.hash(additionalSecurityGroupIDs, flavor, rootVolume, additionalProperties);
+  }
+  
+  public A removeAllFromAdditionalSecurityGroupIDs(Collection<String> items) {
+    if (this.additionalSecurityGroupIDs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.additionalSecurityGroupIDs.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -145,9 +230,32 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
     return (A) this;
   }
   
+  public A removeFromAdditionalSecurityGroupIDs(String... items) {
+    if (this.additionalSecurityGroupIDs == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.additionalSecurityGroupIDs.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A setToAdditionalSecurityGroupIDs(int index,String item) {
+    if (this.additionalSecurityGroupIDs == null) {
+      this.additionalSecurityGroupIDs = new ArrayList();
+    }
+    this.additionalSecurityGroupIDs.set(index, item);
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(additionalSecurityGroupIDs == null) && !(additionalSecurityGroupIDs.isEmpty())) {
+        sb.append("additionalSecurityGroupIDs:");
+        sb.append(additionalSecurityGroupIDs);
+        sb.append(",");
+    }
     if (!(flavor == null)) {
         sb.append("flavor:");
         sb.append(flavor);
@@ -171,6 +279,31 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.ope
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
+    if (additionalSecurityGroupIDs != null) {
+        this.additionalSecurityGroupIDs = new ArrayList();
+        for (String item : additionalSecurityGroupIDs) {
+          this.addToAdditionalSecurityGroupIDs(item);
+        }
+    } else {
+      this.additionalSecurityGroupIDs = null;
+    }
+    return (A) this;
+  }
+  
+  public A withAdditionalSecurityGroupIDs(String... additionalSecurityGroupIDs) {
+    if (this.additionalSecurityGroupIDs != null) {
+        this.additionalSecurityGroupIDs.clear();
+        _visitables.remove("additionalSecurityGroupIDs");
+    }
+    if (additionalSecurityGroupIDs != null) {
+      for (String item : additionalSecurityGroupIDs) {
+        this.addToAdditionalSecurityGroupIDs(item);
+      }
     }
     return (A) this;
   }

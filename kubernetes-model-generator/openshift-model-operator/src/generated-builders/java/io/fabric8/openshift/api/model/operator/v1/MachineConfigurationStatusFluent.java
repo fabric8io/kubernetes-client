@@ -24,6 +24,7 @@ import java.util.function.Predicate;
 public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api.model.operator.v1.MachineConfigurationStatusFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private BootImageSkewEnforcementStatusBuilder bootImageSkewEnforcementStatus;
   private List<Condition> conditions = new ArrayList<Condition>();
   private ManagedBootImagesBuilder managedBootImagesStatus;
   private NodeDisruptionPolicyStatusBuilder nodeDisruptionPolicyStatus;
@@ -84,6 +85,10 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
     return (A) this;
   }
   
+  public BootImageSkewEnforcementStatus buildBootImageSkewEnforcementStatus() {
+    return this.bootImageSkewEnforcementStatus != null ? this.bootImageSkewEnforcementStatus.build() : null;
+  }
+  
   public ManagedBootImages buildManagedBootImagesStatus() {
     return this.managedBootImagesStatus != null ? this.managedBootImagesStatus.build() : null;
   }
@@ -95,6 +100,7 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
   protected void copyInstance(MachineConfigurationStatus instance) {
     instance = instance != null ? instance : new MachineConfigurationStatus();
     if (instance != null) {
+        this.withBootImageSkewEnforcementStatus(instance.getBootImageSkewEnforcementStatus());
         this.withConditions(instance.getConditions());
         this.withManagedBootImagesStatus(instance.getManagedBootImagesStatus());
         this.withNodeDisruptionPolicyStatus(instance.getNodeDisruptionPolicyStatus());
@@ -103,12 +109,24 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
     }
   }
   
+  public BootImageSkewEnforcementStatusNested<A> editBootImageSkewEnforcementStatus() {
+    return this.withNewBootImageSkewEnforcementStatusLike(Optional.ofNullable(this.buildBootImageSkewEnforcementStatus()).orElse(null));
+  }
+  
   public ManagedBootImagesStatusNested<A> editManagedBootImagesStatus() {
     return this.withNewManagedBootImagesStatusLike(Optional.ofNullable(this.buildManagedBootImagesStatus()).orElse(null));
   }
   
   public NodeDisruptionPolicyStatusNested<A> editNodeDisruptionPolicyStatus() {
     return this.withNewNodeDisruptionPolicyStatusLike(Optional.ofNullable(this.buildNodeDisruptionPolicyStatus()).orElse(null));
+  }
+  
+  public BootImageSkewEnforcementStatusNested<A> editOrNewBootImageSkewEnforcementStatus() {
+    return this.withNewBootImageSkewEnforcementStatusLike(Optional.ofNullable(this.buildBootImageSkewEnforcementStatus()).orElse(new BootImageSkewEnforcementStatusBuilder().build()));
+  }
+  
+  public BootImageSkewEnforcementStatusNested<A> editOrNewBootImageSkewEnforcementStatusLike(BootImageSkewEnforcementStatus item) {
+    return this.withNewBootImageSkewEnforcementStatusLike(Optional.ofNullable(this.buildBootImageSkewEnforcementStatus()).orElse(item));
   }
   
   public ManagedBootImagesStatusNested<A> editOrNewManagedBootImagesStatus() {
@@ -138,6 +156,9 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
       return false;
     }
     MachineConfigurationStatusFluent that = (MachineConfigurationStatusFluent) o;
+    if (!(Objects.equals(bootImageSkewEnforcementStatus, that.bootImageSkewEnforcementStatus))) {
+      return false;
+    }
     if (!(Objects.equals(conditions, that.conditions))) {
       return false;
     }
@@ -193,6 +214,10 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
     return this.additionalProperties != null;
   }
   
+  public boolean hasBootImageSkewEnforcementStatus() {
+    return this.bootImageSkewEnforcementStatus != null;
+  }
+  
   public boolean hasConditions() {
     return this.conditions != null && !(this.conditions.isEmpty());
   }
@@ -219,7 +244,7 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
   }
   
   public int hashCode() {
-    return Objects.hash(conditions, managedBootImagesStatus, nodeDisruptionPolicyStatus, observedGeneration, additionalProperties);
+    return Objects.hash(bootImageSkewEnforcementStatus, conditions, managedBootImagesStatus, nodeDisruptionPolicyStatus, observedGeneration, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -277,6 +302,11 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(bootImageSkewEnforcementStatus == null)) {
+        sb.append("bootImageSkewEnforcementStatus:");
+        sb.append(bootImageSkewEnforcementStatus);
+        sb.append(",");
+    }
     if (!(conditions == null) && !(conditions.isEmpty())) {
         sb.append("conditions:");
         sb.append(conditions);
@@ -310,6 +340,18 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withBootImageSkewEnforcementStatus(BootImageSkewEnforcementStatus bootImageSkewEnforcementStatus) {
+    this._visitables.remove("bootImageSkewEnforcementStatus");
+    if (bootImageSkewEnforcementStatus != null) {
+        this.bootImageSkewEnforcementStatus = new BootImageSkewEnforcementStatusBuilder(bootImageSkewEnforcementStatus);
+        this._visitables.get("bootImageSkewEnforcementStatus").add(this.bootImageSkewEnforcementStatus);
+    } else {
+        this.bootImageSkewEnforcementStatus = null;
+        this._visitables.get("bootImageSkewEnforcementStatus").remove(this.bootImageSkewEnforcementStatus);
     }
     return (A) this;
   }
@@ -351,6 +393,14 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
     return (A) this;
   }
   
+  public BootImageSkewEnforcementStatusNested<A> withNewBootImageSkewEnforcementStatus() {
+    return new BootImageSkewEnforcementStatusNested(null);
+  }
+  
+  public BootImageSkewEnforcementStatusNested<A> withNewBootImageSkewEnforcementStatusLike(BootImageSkewEnforcementStatus item) {
+    return new BootImageSkewEnforcementStatusNested(item);
+  }
+  
   public ManagedBootImagesStatusNested<A> withNewManagedBootImagesStatus() {
     return new ManagedBootImagesStatusNested(null);
   }
@@ -382,6 +432,23 @@ public class MachineConfigurationStatusFluent<A extends io.fabric8.openshift.api
   public A withObservedGeneration(Long observedGeneration) {
     this.observedGeneration = observedGeneration;
     return (A) this;
+  }
+  public class BootImageSkewEnforcementStatusNested<N> extends BootImageSkewEnforcementStatusFluent<BootImageSkewEnforcementStatusNested<N>> implements Nested<N>{
+  
+    BootImageSkewEnforcementStatusBuilder builder;
+  
+    BootImageSkewEnforcementStatusNested(BootImageSkewEnforcementStatus item) {
+      this.builder = new BootImageSkewEnforcementStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigurationStatusFluent.this.withBootImageSkewEnforcementStatus(builder.build());
+    }
+    
+    public N endBootImageSkewEnforcementStatus() {
+      return and();
+    }
+    
   }
   public class ManagedBootImagesStatusNested<N> extends ManagedBootImagesFluent<ManagedBootImagesStatusNested<N>> implements Nested<N>{
   

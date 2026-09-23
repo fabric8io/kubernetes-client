@@ -25,7 +25,7 @@ public class UsernameClaimMappingBuilder extends UsernameClaimMappingFluent<User
   }
 
   public UsernameClaimMapping build() {
-    UsernameClaimMapping buildable = new UsernameClaimMapping(fluent.getClaim(), fluent.buildPrefix(), fluent.getPrefixPolicy());
+    UsernameClaimMapping buildable = new UsernameClaimMapping(fluent.getClaim(), fluent.getExpression(), fluent.buildPrefix(), fluent.getPrefixPolicy());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

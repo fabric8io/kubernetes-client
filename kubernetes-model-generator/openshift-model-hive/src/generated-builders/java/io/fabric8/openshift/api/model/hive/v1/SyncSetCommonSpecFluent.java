@@ -25,6 +25,7 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
 
   private Map<String,Object> additionalProperties;
   private String applyBehavior;
+  private Boolean enablePatchTemplates;
   private Boolean enableResourceTemplates;
   private ArrayList<SyncObjectPatchBuilder> patches = new ArrayList<SyncObjectPatchBuilder>();
   private String resourceApplyMode;
@@ -234,6 +235,7 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
     instance = instance != null ? instance : new SyncSetCommonSpec();
     if (instance != null) {
         this.withApplyBehavior(instance.getApplyBehavior());
+        this.withEnablePatchTemplates(instance.getEnablePatchTemplates());
         this.withEnableResourceTemplates(instance.getEnableResourceTemplates());
         this.withPatches(instance.getPatches());
         this.withResourceApplyMode(instance.getResourceApplyMode());
@@ -329,6 +331,9 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
     if (!(Objects.equals(applyBehavior, that.applyBehavior))) {
       return false;
     }
+    if (!(Objects.equals(enablePatchTemplates, that.enablePatchTemplates))) {
+      return false;
+    }
     if (!(Objects.equals(enableResourceTemplates, that.enableResourceTemplates))) {
       return false;
     }
@@ -356,6 +361,10 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
   
   public String getApplyBehavior() {
     return this.applyBehavior;
+  }
+  
+  public Boolean getEnablePatchTemplates() {
+    return this.enablePatchTemplates;
   }
   
   public Boolean getEnableResourceTemplates() {
@@ -397,6 +406,10 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
   
   public boolean hasApplyBehavior() {
     return this.applyBehavior != null;
+  }
+  
+  public boolean hasEnablePatchTemplates() {
+    return this.enablePatchTemplates != null;
   }
   
   public boolean hasEnableResourceTemplates() {
@@ -447,7 +460,7 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
   }
   
   public int hashCode() {
-    return Objects.hash(applyBehavior, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
+    return Objects.hash(applyBehavior, enablePatchTemplates, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
   }
   
   public A removeAllFromPatches(Collection<SyncObjectPatch> items) {
@@ -628,6 +641,11 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
         sb.append(applyBehavior);
         sb.append(",");
     }
+    if (!(enablePatchTemplates == null)) {
+        sb.append("enablePatchTemplates:");
+        sb.append(enablePatchTemplates);
+        sb.append(",");
+    }
     if (!(enableResourceTemplates == null)) {
         sb.append("enableResourceTemplates:");
         sb.append(enableResourceTemplates);
@@ -672,6 +690,15 @@ public class SyncSetCommonSpecFluent<A extends io.fabric8.openshift.api.model.hi
   
   public A withApplyBehavior(String applyBehavior) {
     this.applyBehavior = applyBehavior;
+    return (A) this;
+  }
+  
+  public A withEnablePatchTemplates() {
+    return withEnablePatchTemplates(true);
+  }
+  
+  public A withEnablePatchTemplates(Boolean enablePatchTemplates) {
+    this.enablePatchTemplates = enablePatchTemplates;
     return (A) this;
   }
   

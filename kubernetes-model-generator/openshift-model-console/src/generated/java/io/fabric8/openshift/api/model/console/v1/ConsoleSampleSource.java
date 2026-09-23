@@ -122,7 +122,7 @@ public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>
     }
 
     /**
-     * type of the sample, currently supported: "GitImport";"ContainerImport"
+     * type of the sample, currently supported: "GitImport";"ContainerImport"<br><p> <br><p> Possible enum values:<br><p>  - `"ContainerImport"` A sample that let the user import a container image.<br><p>  - `"GitImport"` A sample that let the user import code from a git repository.
      */
     @JsonProperty("type")
     public String getType() {
@@ -130,7 +130,7 @@ public class ConsoleSampleSource implements Editable<ConsoleSampleSourceBuilder>
     }
 
     /**
-     * type of the sample, currently supported: "GitImport";"ContainerImport"
+     * type of the sample, currently supported: "GitImport";"ContainerImport"<br><p> <br><p> Possible enum values:<br><p>  - `"ContainerImport"` A sample that let the user import a container image.<br><p>  - `"GitImport"` A sample that let the user import code from a git repository.
      */
     @JsonProperty("type")
     public void setType(String type) {

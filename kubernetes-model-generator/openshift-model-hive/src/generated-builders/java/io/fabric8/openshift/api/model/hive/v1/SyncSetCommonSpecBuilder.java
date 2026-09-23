@@ -25,7 +25,7 @@ public class SyncSetCommonSpecBuilder extends SyncSetCommonSpecFluent<SyncSetCom
   }
 
   public SyncSetCommonSpec build() {
-    SyncSetCommonSpec buildable = new SyncSetCommonSpec(fluent.getApplyBehavior(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
+    SyncSetCommonSpec buildable = new SyncSetCommonSpec(fluent.getApplyBehavior(), fluent.getEnablePatchTemplates(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

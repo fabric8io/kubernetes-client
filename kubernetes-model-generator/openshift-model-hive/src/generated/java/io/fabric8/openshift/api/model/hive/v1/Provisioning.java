@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "customizationRef",
     "imageSetRef",
     "installConfigSecretRef",
     "installerEnv",
@@ -75,6 +76,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesResource
 {
 
+    @JsonProperty("customizationRef")
+    private LocalObjectReference customizationRef;
     @JsonProperty("imageSetRef")
     private ClusterImageSetReference imageSetRef;
     @JsonProperty("installConfigSecretRef")
@@ -104,8 +107,9 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
     public Provisioning() {
     }
 
-    public Provisioning(ClusterImageSetReference imageSetRef, LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, LocalObjectReference manifestsConfigMapRef, LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, LocalObjectReference sshPrivateKeySecretRef) {
+    public Provisioning(LocalObjectReference customizationRef, ClusterImageSetReference imageSetRef, LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, LocalObjectReference manifestsConfigMapRef, LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, LocalObjectReference sshPrivateKeySecretRef) {
         super();
+        this.customizationRef = customizationRef;
         this.imageSetRef = imageSetRef;
         this.installConfigSecretRef = installConfigSecretRef;
         this.installerEnv = installerEnv;
@@ -115,6 +119,22 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
         this.releaseImage = releaseImage;
         this.sshKnownHosts = sshKnownHosts;
         this.sshPrivateKeySecretRef = sshPrivateKeySecretRef;
+    }
+
+    /**
+     * Provisioning contains settings used only for initial cluster provisioning.
+     */
+    @JsonProperty("customizationRef")
+    public LocalObjectReference getCustomizationRef() {
+        return customizationRef;
+    }
+
+    /**
+     * Provisioning contains settings used only for initial cluster provisioning.
+     */
+    @JsonProperty("customizationRef")
+    public void setCustomizationRef(LocalObjectReference customizationRef) {
+        this.customizationRef = customizationRef;
     }
 
     /**

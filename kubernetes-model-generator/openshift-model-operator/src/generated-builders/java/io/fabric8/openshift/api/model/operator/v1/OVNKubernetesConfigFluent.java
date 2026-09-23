@@ -20,6 +20,7 @@ import java.util.Optional;
 public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.operator.v1.OVNKubernetesConfigFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private BGPManagedConfigBuilder bgpManagedConfig;
   private EgressIPConfigBuilder egressIPConfig;
   private GatewayConfigBuilder gatewayConfig;
   private Long genevePort;
@@ -28,8 +29,10 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   private IPv4OVNKubernetesConfigBuilder ipv4;
   private IPv6OVNKubernetesConfigBuilder ipv6;
   private Long mtu;
+  private NoOverlayConfigBuilder noOverlayConfig;
   private PolicyAuditConfigBuilder policyAuditConfig;
   private String routeAdvertisements;
+  private String transport;
   private String v4InternalSubnet;
   private String v6InternalSubnet;
 
@@ -60,6 +63,10 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return (A) this;
   }
   
+  public BGPManagedConfig buildBgpManagedConfig() {
+    return this.bgpManagedConfig != null ? this.bgpManagedConfig.build() : null;
+  }
+  
   public EgressIPConfig buildEgressIPConfig() {
     return this.egressIPConfig != null ? this.egressIPConfig.build() : null;
   }
@@ -84,6 +91,10 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return this.ipv6 != null ? this.ipv6.build() : null;
   }
   
+  public NoOverlayConfig buildNoOverlayConfig() {
+    return this.noOverlayConfig != null ? this.noOverlayConfig.build() : null;
+  }
+  
   public PolicyAuditConfig buildPolicyAuditConfig() {
     return this.policyAuditConfig != null ? this.policyAuditConfig.build() : null;
   }
@@ -91,6 +102,7 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   protected void copyInstance(OVNKubernetesConfig instance) {
     instance = instance != null ? instance : new OVNKubernetesConfig();
     if (instance != null) {
+        this.withBgpManagedConfig(instance.getBgpManagedConfig());
         this.withEgressIPConfig(instance.getEgressIPConfig());
         this.withGatewayConfig(instance.getGatewayConfig());
         this.withGenevePort(instance.getGenevePort());
@@ -99,12 +111,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
         this.withIpv4(instance.getIpv4());
         this.withIpv6(instance.getIpv6());
         this.withMtu(instance.getMtu());
+        this.withNoOverlayConfig(instance.getNoOverlayConfig());
         this.withPolicyAuditConfig(instance.getPolicyAuditConfig());
         this.withRouteAdvertisements(instance.getRouteAdvertisements());
+        this.withTransport(instance.getTransport());
         this.withV4InternalSubnet(instance.getV4InternalSubnet());
         this.withV6InternalSubnet(instance.getV6InternalSubnet());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public BgpManagedConfigNested<A> editBgpManagedConfig() {
+    return this.withNewBgpManagedConfigLike(Optional.ofNullable(this.buildBgpManagedConfig()).orElse(null));
   }
   
   public EgressIPConfigNested<A> editEgressIPConfig() {
@@ -129,6 +147,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   
   public Ipv6Nested<A> editIpv6() {
     return this.withNewIpv6Like(Optional.ofNullable(this.buildIpv6()).orElse(null));
+  }
+  
+  public NoOverlayConfigNested<A> editNoOverlayConfig() {
+    return this.withNewNoOverlayConfigLike(Optional.ofNullable(this.buildNoOverlayConfig()).orElse(null));
+  }
+  
+  public BgpManagedConfigNested<A> editOrNewBgpManagedConfig() {
+    return this.withNewBgpManagedConfigLike(Optional.ofNullable(this.buildBgpManagedConfig()).orElse(new BGPManagedConfigBuilder().build()));
+  }
+  
+  public BgpManagedConfigNested<A> editOrNewBgpManagedConfigLike(BGPManagedConfig item) {
+    return this.withNewBgpManagedConfigLike(Optional.ofNullable(this.buildBgpManagedConfig()).orElse(item));
   }
   
   public EgressIPConfigNested<A> editOrNewEgressIPConfig() {
@@ -179,6 +209,14 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return this.withNewIpv6Like(Optional.ofNullable(this.buildIpv6()).orElse(item));
   }
   
+  public NoOverlayConfigNested<A> editOrNewNoOverlayConfig() {
+    return this.withNewNoOverlayConfigLike(Optional.ofNullable(this.buildNoOverlayConfig()).orElse(new NoOverlayConfigBuilder().build()));
+  }
+  
+  public NoOverlayConfigNested<A> editOrNewNoOverlayConfigLike(NoOverlayConfig item) {
+    return this.withNewNoOverlayConfigLike(Optional.ofNullable(this.buildNoOverlayConfig()).orElse(item));
+  }
+  
   public PolicyAuditConfigNested<A> editOrNewPolicyAuditConfig() {
     return this.withNewPolicyAuditConfigLike(Optional.ofNullable(this.buildPolicyAuditConfig()).orElse(new PolicyAuditConfigBuilder().build()));
   }
@@ -202,6 +240,9 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
       return false;
     }
     OVNKubernetesConfigFluent that = (OVNKubernetesConfigFluent) o;
+    if (!(Objects.equals(bgpManagedConfig, that.bgpManagedConfig))) {
+      return false;
+    }
     if (!(Objects.equals(egressIPConfig, that.egressIPConfig))) {
       return false;
     }
@@ -226,10 +267,16 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(mtu, that.mtu))) {
       return false;
     }
+    if (!(Objects.equals(noOverlayConfig, that.noOverlayConfig))) {
+      return false;
+    }
     if (!(Objects.equals(policyAuditConfig, that.policyAuditConfig))) {
       return false;
     }
     if (!(Objects.equals(routeAdvertisements, that.routeAdvertisements))) {
+      return false;
+    }
+    if (!(Objects.equals(transport, that.transport))) {
       return false;
     }
     if (!(Objects.equals(v4InternalSubnet, that.v4InternalSubnet))) {
@@ -260,6 +307,10 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return this.routeAdvertisements;
   }
   
+  public String getTransport() {
+    return this.transport;
+  }
+  
   public String getV4InternalSubnet() {
     return this.v4InternalSubnet;
   }
@@ -270,6 +321,10 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasBgpManagedConfig() {
+    return this.bgpManagedConfig != null;
   }
   
   public boolean hasEgressIPConfig() {
@@ -304,12 +359,20 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return this.mtu != null;
   }
   
+  public boolean hasNoOverlayConfig() {
+    return this.noOverlayConfig != null;
+  }
+  
   public boolean hasPolicyAuditConfig() {
     return this.policyAuditConfig != null;
   }
   
   public boolean hasRouteAdvertisements() {
     return this.routeAdvertisements != null;
+  }
+  
+  public boolean hasTransport() {
+    return this.transport != null;
   }
   
   public boolean hasV4InternalSubnet() {
@@ -321,7 +384,7 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(egressIPConfig, gatewayConfig, genevePort, hybridOverlayConfig, ipsecConfig, ipv4, ipv6, mtu, policyAuditConfig, routeAdvertisements, v4InternalSubnet, v6InternalSubnet, additionalProperties);
+    return Objects.hash(bgpManagedConfig, egressIPConfig, gatewayConfig, genevePort, hybridOverlayConfig, ipsecConfig, ipv4, ipv6, mtu, noOverlayConfig, policyAuditConfig, routeAdvertisements, transport, v4InternalSubnet, v6InternalSubnet, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -351,6 +414,11 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(bgpManagedConfig == null)) {
+        sb.append("bgpManagedConfig:");
+        sb.append(bgpManagedConfig);
+        sb.append(",");
+    }
     if (!(egressIPConfig == null)) {
         sb.append("egressIPConfig:");
         sb.append(egressIPConfig);
@@ -391,6 +459,11 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
         sb.append(mtu);
         sb.append(",");
     }
+    if (!(noOverlayConfig == null)) {
+        sb.append("noOverlayConfig:");
+        sb.append(noOverlayConfig);
+        sb.append(",");
+    }
     if (!(policyAuditConfig == null)) {
         sb.append("policyAuditConfig:");
         sb.append(policyAuditConfig);
@@ -399,6 +472,11 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     if (!(routeAdvertisements == null)) {
         sb.append("routeAdvertisements:");
         sb.append(routeAdvertisements);
+        sb.append(",");
+    }
+    if (!(transport == null)) {
+        sb.append("transport:");
+        sb.append(transport);
         sb.append(",");
     }
     if (!(v4InternalSubnet == null)) {
@@ -424,6 +502,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withBgpManagedConfig(BGPManagedConfig bgpManagedConfig) {
+    this._visitables.remove("bgpManagedConfig");
+    if (bgpManagedConfig != null) {
+        this.bgpManagedConfig = new BGPManagedConfigBuilder(bgpManagedConfig);
+        this._visitables.get("bgpManagedConfig").add(this.bgpManagedConfig);
+    } else {
+        this.bgpManagedConfig = null;
+        this._visitables.get("bgpManagedConfig").remove(this.bgpManagedConfig);
     }
     return (A) this;
   }
@@ -510,6 +600,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return (A) this;
   }
   
+  public BgpManagedConfigNested<A> withNewBgpManagedConfig() {
+    return new BgpManagedConfigNested(null);
+  }
+  
+  public A withNewBgpManagedConfig(Long asNumber,String bgpTopology) {
+    return (A) this.withBgpManagedConfig(new BGPManagedConfig(asNumber, bgpTopology));
+  }
+  
+  public BgpManagedConfigNested<A> withNewBgpManagedConfigLike(BGPManagedConfig item) {
+    return new BgpManagedConfigNested(item);
+  }
+  
   public EgressIPConfigNested<A> withNewEgressIPConfig() {
     return new EgressIPConfigNested(null);
   }
@@ -570,6 +672,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return new Ipv6Nested(item);
   }
   
+  public NoOverlayConfigNested<A> withNewNoOverlayConfig() {
+    return new NoOverlayConfigNested(null);
+  }
+  
+  public A withNewNoOverlayConfig(String outboundSNAT,String routing) {
+    return (A) this.withNoOverlayConfig(new NoOverlayConfig(outboundSNAT, routing));
+  }
+  
+  public NoOverlayConfigNested<A> withNewNoOverlayConfigLike(NoOverlayConfig item) {
+    return new NoOverlayConfigNested(item);
+  }
+  
   public PolicyAuditConfigNested<A> withNewPolicyAuditConfig() {
     return new PolicyAuditConfigNested(null);
   }
@@ -580,6 +694,18 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   
   public PolicyAuditConfigNested<A> withNewPolicyAuditConfigLike(PolicyAuditConfig item) {
     return new PolicyAuditConfigNested(item);
+  }
+  
+  public A withNoOverlayConfig(NoOverlayConfig noOverlayConfig) {
+    this._visitables.remove("noOverlayConfig");
+    if (noOverlayConfig != null) {
+        this.noOverlayConfig = new NoOverlayConfigBuilder(noOverlayConfig);
+        this._visitables.get("noOverlayConfig").add(this.noOverlayConfig);
+    } else {
+        this.noOverlayConfig = null;
+        this._visitables.get("noOverlayConfig").remove(this.noOverlayConfig);
+    }
+    return (A) this;
   }
   
   public A withPolicyAuditConfig(PolicyAuditConfig policyAuditConfig) {
@@ -599,6 +725,11 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     return (A) this;
   }
   
+  public A withTransport(String transport) {
+    this.transport = transport;
+    return (A) this;
+  }
+  
   public A withV4InternalSubnet(String v4InternalSubnet) {
     this.v4InternalSubnet = v4InternalSubnet;
     return (A) this;
@@ -607,6 +738,23 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
   public A withV6InternalSubnet(String v6InternalSubnet) {
     this.v6InternalSubnet = v6InternalSubnet;
     return (A) this;
+  }
+  public class BgpManagedConfigNested<N> extends BGPManagedConfigFluent<BgpManagedConfigNested<N>> implements Nested<N>{
+  
+    BGPManagedConfigBuilder builder;
+  
+    BgpManagedConfigNested(BGPManagedConfig item) {
+      this.builder = new BGPManagedConfigBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) OVNKubernetesConfigFluent.this.withBgpManagedConfig(builder.build());
+    }
+    
+    public N endBgpManagedConfig() {
+      return and();
+    }
+    
   }
   public class EgressIPConfigNested<N> extends EgressIPConfigFluent<EgressIPConfigNested<N>> implements Nested<N>{
   
@@ -706,6 +854,23 @@ public class OVNKubernetesConfigFluent<A extends io.fabric8.openshift.api.model.
     }
     
     public N endIpv6() {
+      return and();
+    }
+    
+  }
+  public class NoOverlayConfigNested<N> extends NoOverlayConfigFluent<NoOverlayConfigNested<N>> implements Nested<N>{
+  
+    NoOverlayConfigBuilder builder;
+  
+    NoOverlayConfigNested(NoOverlayConfig item) {
+      this.builder = new NoOverlayConfigBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) OVNKubernetesConfigFluent.this.withNoOverlayConfig(builder.build());
+    }
+    
+    public N endNoOverlayConfig() {
       return and();
     }
     

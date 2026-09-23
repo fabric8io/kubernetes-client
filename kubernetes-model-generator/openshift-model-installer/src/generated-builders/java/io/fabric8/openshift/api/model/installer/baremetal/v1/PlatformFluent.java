@@ -38,6 +38,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
   private String clusterOSImage;
   private String clusterProvisioningIP;
   private MachinePoolBuilder defaultMachinePlatform;
+  private String dnsRecordsType;
   private String externalBridge;
   private String externalMACAddress;
   private ArrayList<HostBuilder> hosts = new ArrayList<HostBuilder>();
@@ -256,6 +257,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
         this.withClusterOSImage(instance.getClusterOSImage());
         this.withClusterProvisioningIP(instance.getClusterProvisioningIP());
         this.withDefaultMachinePlatform(instance.getDefaultMachinePlatform());
+        this.withDnsRecordsType(instance.getDnsRecordsType());
         this.withExternalBridge(instance.getExternalBridge());
         this.withExternalMACAddress(instance.getExternalMACAddress());
         this.withHosts(instance.getHosts());
@@ -370,6 +372,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
     if (!(Objects.equals(defaultMachinePlatform, that.defaultMachinePlatform))) {
       return false;
     }
+    if (!(Objects.equals(dnsRecordsType, that.dnsRecordsType))) {
+      return false;
+    }
     if (!(Objects.equals(externalBridge, that.externalBridge))) {
       return false;
     }
@@ -475,6 +480,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
   
   public String getClusterProvisioningIP() {
     return this.clusterProvisioningIP;
+  }
+  
+  public String getDnsRecordsType() {
+    return this.dnsRecordsType;
   }
   
   public String getExternalBridge() {
@@ -640,6 +649,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
     return this.defaultMachinePlatform != null;
   }
   
+  public boolean hasDnsRecordsType() {
+    return this.dnsRecordsType != null;
+  }
+  
   public boolean hasExternalBridge() {
     return this.externalBridge != null;
   }
@@ -737,7 +750,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
   }
   
   public int hashCode() {
-    return Objects.hash(additionalNTPServers, apiVIP, apiVIPs, bmcVerifyCA, bootstrapExternalStaticDNS, bootstrapExternalStaticGateway, bootstrapExternalStaticIP, bootstrapOSImage, bootstrapProvisioningIP, clusterOSImage, clusterProvisioningIP, defaultMachinePlatform, externalBridge, externalMACAddress, hosts, ingressVIP, ingressVIPs, libvirtURI, loadBalancer, provisioningBridge, provisioningDHCPExternal, provisioningDHCPRange, provisioningHostIP, provisioningMACAddress, provisioningNetwork, provisioningNetworkCIDR, provisioningNetworkInterface, additionalProperties);
+    return Objects.hash(additionalNTPServers, apiVIP, apiVIPs, bmcVerifyCA, bootstrapExternalStaticDNS, bootstrapExternalStaticGateway, bootstrapExternalStaticIP, bootstrapOSImage, bootstrapProvisioningIP, clusterOSImage, clusterProvisioningIP, defaultMachinePlatform, dnsRecordsType, externalBridge, externalMACAddress, hosts, ingressVIP, ingressVIPs, libvirtURI, loadBalancer, provisioningBridge, provisioningDHCPExternal, provisioningDHCPRange, provisioningHostIP, provisioningMACAddress, provisioningNetwork, provisioningNetworkCIDR, provisioningNetworkInterface, additionalProperties);
   }
   
   public A removeAllFromAdditionalNTPServers(Collection<String> items) {
@@ -970,6 +983,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
         sb.append(defaultMachinePlatform);
         sb.append(",");
     }
+    if (!(dnsRecordsType == null)) {
+        sb.append("dnsRecordsType:");
+        sb.append(dnsRecordsType);
+        sb.append(",");
+    }
     if (!(externalBridge == null)) {
         sb.append("externalBridge:");
         sb.append(externalBridge);
@@ -1166,6 +1184,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.b
         this.defaultMachinePlatform = null;
         this._visitables.get("defaultMachinePlatform").remove(this.defaultMachinePlatform);
     }
+    return (A) this;
+  }
+  
+  public A withDnsRecordsType(String dnsRecordsType) {
+    this.dnsRecordsType = dnsRecordsType;
     return (A) this;
   }
   

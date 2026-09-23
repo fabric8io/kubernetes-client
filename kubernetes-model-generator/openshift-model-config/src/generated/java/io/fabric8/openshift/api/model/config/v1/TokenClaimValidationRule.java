@@ -31,9 +31,13 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
+/**
+ * TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
+ */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "cel",
     "requiredClaim",
     "type"
 })
@@ -62,6 +66,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class TokenClaimValidationRule implements Editable<TokenClaimValidationRuleBuilder>, KubernetesResource
 {
 
+    @JsonProperty("cel")
+    private TokenClaimValidationCELRule cel;
     @JsonProperty("requiredClaim")
     private TokenRequiredClaim requiredClaim;
     @JsonProperty("type")
@@ -75,24 +81,47 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     public TokenClaimValidationRule() {
     }
 
-    public TokenClaimValidationRule(TokenRequiredClaim requiredClaim, String type) {
+    public TokenClaimValidationRule(TokenClaimValidationCELRule cel, TokenRequiredClaim requiredClaim, String type) {
         super();
+        this.cel = cel;
         this.requiredClaim = requiredClaim;
         this.type = type;
     }
 
+    /**
+     * TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
+     */
+    @JsonProperty("cel")
+    public TokenClaimValidationCELRule getCel() {
+        return cel;
+    }
+
+    /**
+     * TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
+     */
+    @JsonProperty("cel")
+    public void setCel(TokenClaimValidationCELRule cel) {
+        this.cel = cel;
+    }
+
+    /**
+     * TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
+     */
     @JsonProperty("requiredClaim")
     public TokenRequiredClaim getRequiredClaim() {
         return requiredClaim;
     }
 
+    /**
+     * TokenClaimValidationRule represents a validation rule based on token claims. If type is RequiredClaim, requiredClaim must be set. If Type is CEL, CEL must be set and RequiredClaim must be omitted.
+     */
     @JsonProperty("requiredClaim")
     public void setRequiredClaim(TokenRequiredClaim requiredClaim) {
         this.requiredClaim = requiredClaim;
     }
 
     /**
-     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are 'RequiredClaim' and omitted (not provided or an empty string).<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> Defaults to 'RequiredClaim'.
+     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are "RequiredClaim" and "CEL".<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> When set to 'CEL', the Kubernetes API server will be configured to validate the incoming JWT against the configured CEL expression.<br><p> <br><p> Possible enum values:<br><p>  - `"CEL"` indicates that the token validation is defined via a CEL expression. Used as a value for TokenValidationRuleType.<br><p>  - `"RequiredClaim"` indicates that the token must contain a specific claim. Used as a value for TokenValidationRuleType.
      */
     @JsonProperty("type")
     public String getType() {
@@ -100,7 +129,7 @@ public class TokenClaimValidationRule implements Editable<TokenClaimValidationRu
     }
 
     /**
-     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are 'RequiredClaim' and omitted (not provided or an empty string).<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> Defaults to 'RequiredClaim'.
+     * type is an optional field that configures the type of the validation rule.<br><p> <br><p> Allowed values are "RequiredClaim" and "CEL".<br><p> <br><p> When set to 'RequiredClaim', the Kubernetes API server will be configured to validate that the incoming JWT contains the required claim and that its value matches the required value.<br><p> <br><p> When set to 'CEL', the Kubernetes API server will be configured to validate the incoming JWT against the configured CEL expression.<br><p> <br><p> Possible enum values:<br><p>  - `"CEL"` indicates that the token validation is defined via a CEL expression. Used as a value for TokenValidationRuleType.<br><p>  - `"RequiredClaim"` indicates that the token must contain a specific claim. Used as a value for TokenValidationRuleType.
      */
     @JsonProperty("type")
     public void setType(String type) {

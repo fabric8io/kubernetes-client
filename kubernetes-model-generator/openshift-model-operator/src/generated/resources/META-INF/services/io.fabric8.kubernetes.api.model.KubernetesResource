@@ -57,6 +57,8 @@ io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManager
 io.fabric8.openshift.api.model.operator.v1.ServiceCatalogControllerManagerList
 io.fabric8.openshift.api.model.operator.v1.Storage
 io.fabric8.openshift.api.model.operator.v1.StorageList
+io.fabric8.openshift.api.model.operator.v1alpha1.ClusterAPI
+io.fabric8.openshift.api.model.operator.v1alpha1.ClusterAPIList
 io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperator
 io.fabric8.openshift.api.model.operator.v1alpha1.ClusterVersionOperatorList
 io.fabric8.openshift.api.model.operator.v1alpha1.EtcdBackup

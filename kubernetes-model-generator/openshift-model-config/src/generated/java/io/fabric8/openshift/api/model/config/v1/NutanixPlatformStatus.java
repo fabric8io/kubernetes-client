@@ -41,6 +41,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "apiServerInternalIP",
     "apiServerInternalIPs",
+    "dnsRecordsType",
     "ingressIP",
     "ingressIPs",
     "loadBalancer"
@@ -75,6 +76,8 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     @JsonProperty("apiServerInternalIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> apiServerInternalIPs = new ArrayList<>();
+    @JsonProperty("dnsRecordsType")
+    private String dnsRecordsType;
     @JsonProperty("ingressIP")
     private String ingressIP;
     @JsonProperty("ingressIPs")
@@ -91,10 +94,11 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     public NutanixPlatformStatus() {
     }
 
-    public NutanixPlatformStatus(String apiServerInternalIP, List<String> apiServerInternalIPs, String ingressIP, List<String> ingressIPs, NutanixPlatformLoadBalancer loadBalancer) {
+    public NutanixPlatformStatus(String apiServerInternalIP, List<String> apiServerInternalIPs, String dnsRecordsType, String ingressIP, List<String> ingressIPs, NutanixPlatformLoadBalancer loadBalancer) {
         super();
         this.apiServerInternalIP = apiServerInternalIP;
         this.apiServerInternalIPs = apiServerInternalIPs;
+        this.dnsRecordsType = dnsRecordsType;
         this.ingressIP = ingressIP;
         this.ingressIPs = ingressIPs;
         this.loadBalancer = loadBalancer;
@@ -131,6 +135,22 @@ public class NutanixPlatformStatus implements Editable<NutanixPlatformStatusBuil
     @JsonProperty("apiServerInternalIPs")
     public void setApiServerInternalIPs(List<String> apiServerInternalIPs) {
         this.apiServerInternalIPs = apiServerInternalIPs;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public String getDnsRecordsType() {
+        return dnsRecordsType;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public void setDnsRecordsType(String dnsRecordsType) {
+        this.dnsRecordsType = dnsRecordsType;
     }
 
     /**

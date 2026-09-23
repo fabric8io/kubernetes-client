@@ -17,6 +17,7 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
 
   private Map<String,Object> additionalProperties;
   private String claim;
+  private String expression;
 
   public TokenClaimMappingFluent() {
   }
@@ -49,6 +50,7 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
     instance = instance != null ? instance : new TokenClaimMapping();
     if (instance != null) {
         this.withClaim(instance.getClaim());
+        this.withExpression(instance.getExpression());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -67,6 +69,9 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
     if (!(Objects.equals(claim, that.claim))) {
       return false;
     }
+    if (!(Objects.equals(expression, that.expression))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -81,6 +86,10 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
     return this.claim;
   }
   
+  public String getExpression() {
+    return this.expression;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -89,8 +98,12 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
     return this.claim != null;
   }
   
+  public boolean hasExpression() {
+    return this.expression != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(claim, additionalProperties);
+    return Objects.hash(claim, expression, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -125,6 +138,11 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
         sb.append(claim);
         sb.append(",");
     }
+    if (!(expression == null)) {
+        sb.append("expression:");
+        sb.append(expression);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -144,6 +162,11 @@ public class TokenClaimMappingFluent<A extends io.fabric8.openshift.api.model.co
   
   public A withClaim(String claim) {
     this.claim = claim;
+    return (A) this;
+  }
+  
+  public A withExpression(String expression) {
+    this.expression = expression;
     return (A) this;
   }
   

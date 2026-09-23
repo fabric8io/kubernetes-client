@@ -25,7 +25,7 @@ public class TokenIssuerBuilder extends TokenIssuerFluent<TokenIssuerBuilder> im
   }
 
   public TokenIssuer build() {
-    TokenIssuer buildable = new TokenIssuer(fluent.getAudiences(), fluent.buildIssuerCertificateAuthority(), fluent.getIssuerURL());
+    TokenIssuer buildable = new TokenIssuer(fluent.getAudiences(), fluent.getDiscoveryURL(), fluent.buildIssuerCertificateAuthority(), fluent.getIssuerURL());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

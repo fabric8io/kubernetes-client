@@ -25,7 +25,7 @@ public class GCPMachineProviderSpecBuilder extends GCPMachineProviderSpecFluent<
   }
 
   public GCPMachineProviderSpec build() {
-    GCPMachineProviderSpec buildable = new GCPMachineProviderSpec(fluent.getApiVersion(), fluent.getCanIPForward(), fluent.getConfidentialCompute(), fluent.buildCredentialsSecret(), fluent.getDeletionProtection(), fluent.buildDisks(), fluent.buildGcpMetadata(), fluent.buildGpus(), fluent.getKind(), fluent.getLabels(), fluent.getMachineType(), fluent.buildMetadata(), fluent.buildNetworkInterfaces(), fluent.getOnHostMaintenance(), fluent.getPreemptible(), fluent.getProjectID(), fluent.getRegion(), fluent.buildResourceManagerTags(), fluent.getRestartPolicy(), fluent.buildServiceAccounts(), fluent.buildShieldedInstanceConfig(), fluent.getTags(), fluent.getTargetPools(), fluent.buildUserDataSecret(), fluent.getZone());
+    GCPMachineProviderSpec buildable = new GCPMachineProviderSpec(fluent.getApiVersion(), fluent.getCanIPForward(), fluent.getConfidentialCompute(), fluent.buildCredentialsSecret(), fluent.getDeletionProtection(), fluent.buildDisks(), fluent.buildGcpMetadata(), fluent.buildGpus(), fluent.getKind(), fluent.getLabels(), fluent.getMachineType(), fluent.buildMetadata(), fluent.buildNetworkInterfaces(), fluent.getOnHostMaintenance(), fluent.getPreemptible(), fluent.getProjectID(), fluent.getProvisioningModel(), fluent.getRegion(), fluent.buildResourceManagerTags(), fluent.getRestartPolicy(), fluent.buildServiceAccounts(), fluent.buildShieldedInstanceConfig(), fluent.getTags(), fluent.getTargetPools(), fluent.buildUserDataSecret(), fluent.getZone());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

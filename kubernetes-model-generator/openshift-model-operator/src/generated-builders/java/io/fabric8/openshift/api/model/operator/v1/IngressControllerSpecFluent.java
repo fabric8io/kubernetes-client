@@ -32,6 +32,7 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
   private LocalObjectReferenceBuilder defaultCertificate;
   private String domain;
   private EndpointPublishingStrategyBuilder endpointPublishingStrategy;
+  private String haproxyVersion;
   private HTTPCompressionPolicyBuilder httpCompression;
   private String httpEmptyRequestsPolicy;
   private ConfigMapNameReference httpErrorCodePages;
@@ -126,6 +127,7 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
         this.withDefaultCertificate(instance.getDefaultCertificate());
         this.withDomain(instance.getDomain());
         this.withEndpointPublishingStrategy(instance.getEndpointPublishingStrategy());
+        this.withHaproxyVersion(instance.getHaproxyVersion());
         this.withHttpCompression(instance.getHttpCompression());
         this.withHttpEmptyRequestsPolicy(instance.getHttpEmptyRequestsPolicy());
         this.withHttpErrorCodePages(instance.getHttpErrorCodePages());
@@ -302,6 +304,9 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
     if (!(Objects.equals(endpointPublishingStrategy, that.endpointPublishingStrategy))) {
       return false;
     }
+    if (!(Objects.equals(haproxyVersion, that.haproxyVersion))) {
+      return false;
+    }
     if (!(Objects.equals(httpCompression, that.httpCompression))) {
       return false;
     }
@@ -362,6 +367,10 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
     return this.domain;
   }
   
+  public String getHaproxyVersion() {
+    return this.haproxyVersion;
+  }
+  
   public String getHttpEmptyRequestsPolicy() {
     return this.httpEmptyRequestsPolicy;
   }
@@ -408,6 +417,10 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
   
   public boolean hasEndpointPublishingStrategy() {
     return this.endpointPublishingStrategy != null;
+  }
+  
+  public boolean hasHaproxyVersion() {
+    return this.haproxyVersion != null;
   }
   
   public boolean hasHttpCompression() {
@@ -467,7 +480,7 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(clientTLS, closedClientConnectionPolicy, defaultCertificate, domain, endpointPublishingStrategy, httpCompression, httpEmptyRequestsPolicy, httpErrorCodePages, httpHeaders, idleConnectionTerminationPolicy, logging, namespaceSelector, nodePlacement, replicas, routeAdmission, routeSelector, tlsSecurityProfile, tuningOptions, unsupportedConfigOverrides, additionalProperties);
+    return Objects.hash(clientTLS, closedClientConnectionPolicy, defaultCertificate, domain, endpointPublishingStrategy, haproxyVersion, httpCompression, httpEmptyRequestsPolicy, httpErrorCodePages, httpHeaders, idleConnectionTerminationPolicy, logging, namespaceSelector, nodePlacement, replicas, routeAdmission, routeSelector, tlsSecurityProfile, tuningOptions, unsupportedConfigOverrides, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -520,6 +533,11 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
     if (!(endpointPublishingStrategy == null)) {
         sb.append("endpointPublishingStrategy:");
         sb.append(endpointPublishingStrategy);
+        sb.append(",");
+    }
+    if (!(haproxyVersion == null)) {
+        sb.append("haproxyVersion:");
+        sb.append(haproxyVersion);
         sb.append(",");
     }
     if (!(httpCompression == null)) {
@@ -652,6 +670,11 @@ public class IngressControllerSpecFluent<A extends io.fabric8.openshift.api.mode
         this.endpointPublishingStrategy = null;
         this._visitables.get("endpointPublishingStrategy").remove(this.endpointPublishingStrategy);
     }
+    return (A) this;
+  }
+  
+  public A withHaproxyVersion(String haproxyVersion) {
+    this.haproxyVersion = haproxyVersion;
     return (A) this;
   }
   

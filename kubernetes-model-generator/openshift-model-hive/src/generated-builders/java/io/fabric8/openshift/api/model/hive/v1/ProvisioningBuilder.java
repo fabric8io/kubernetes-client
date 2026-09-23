@@ -25,7 +25,7 @@ public class ProvisioningBuilder extends ProvisioningFluent<ProvisioningBuilder>
   }
 
   public Provisioning build() {
-    Provisioning buildable = new Provisioning(fluent.buildImageSetRef(), fluent.buildInstallConfigSecretRef(), fluent.buildInstallerEnv(), fluent.getInstallerImageOverride(), fluent.buildManifestsConfigMapRef(), fluent.buildManifestsSecretRef(), fluent.getReleaseImage(), fluent.getSshKnownHosts(), fluent.buildSshPrivateKeySecretRef());
+    Provisioning buildable = new Provisioning(fluent.buildCustomizationRef(), fluent.buildImageSetRef(), fluent.buildInstallConfigSecretRef(), fluent.buildInstallerEnv(), fluent.getInstallerImageOverride(), fluent.buildManifestsConfigMapRef(), fluent.buildManifestsSecretRef(), fluent.getReleaseImage(), fluent.getSshKnownHosts(), fluent.buildSshPrivateKeySecretRef());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

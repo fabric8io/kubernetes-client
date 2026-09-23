@@ -25,7 +25,7 @@ public class MachinePoolBuilder extends MachinePoolFluent<MachinePoolBuilder> im
   }
 
   public MachinePool build() {
-    MachinePool buildable = new MachinePool(fluent.getComputeSubnet(), fluent.getNetworkResourceGroupName(), fluent.buildOsDisk(), fluent.buildOsImage(), fluent.getType(), fluent.getVirtualNetwork(), fluent.getVmNetworkingType(), fluent.getZones());
+    MachinePool buildable = new MachinePool(fluent.getComputeSubnet(), fluent.getNetworkResourceGroupName(), fluent.buildOsDisk(), fluent.buildOsImage(), fluent.getOsImageID(), fluent.getOutboundType(), fluent.getType(), fluent.getVirtualNetwork(), fluent.getVmNetworkingType(), fluent.getZones());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

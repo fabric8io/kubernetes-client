@@ -25,7 +25,7 @@ public class KubeAPIServerSpecBuilder extends KubeAPIServerSpecFluent<KubeAPISer
   }
 
   public KubeAPIServerSpec build() {
-    KubeAPIServerSpec buildable = new KubeAPIServerSpec(fluent.getFailedRevisionLimit(), fluent.getForceRedeploymentReason(), fluent.getLogLevel(), fluent.getManagementState(), fluent.getObservedConfig(), fluent.getOperatorLogLevel(), fluent.getSucceededRevisionLimit(), fluent.getUnsupportedConfigOverrides());
+    KubeAPIServerSpec buildable = new KubeAPIServerSpec(fluent.getEventTTLMinutes(), fluent.getFailedRevisionLimit(), fluent.getForceRedeploymentReason(), fluent.getLogLevel(), fluent.getManagementState(), fluent.getObservedConfig(), fluent.getOperatorLogLevel(), fluent.getSucceededRevisionLimit(), fluent.getUnsupportedConfigOverrides());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

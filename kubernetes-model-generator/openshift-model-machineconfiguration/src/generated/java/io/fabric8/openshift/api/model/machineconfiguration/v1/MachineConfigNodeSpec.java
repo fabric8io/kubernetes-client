@@ -37,6 +37,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "configImage",
     "configVersion",
     "node",
     "pool"
@@ -66,6 +67,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("configImage")
+    private MachineConfigNodeSpecConfigImage configImage;
     @JsonProperty("configVersion")
     private MachineConfigNodeSpecMachineConfigVersion configVersion;
     @JsonProperty("node")
@@ -81,11 +84,28 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
     public MachineConfigNodeSpec() {
     }
 
-    public MachineConfigNodeSpec(MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, MCOObjectReference pool) {
+    public MachineConfigNodeSpec(MachineConfigNodeSpecConfigImage configImage, MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, MCOObjectReference pool) {
         super();
+        this.configImage = configImage;
         this.configVersion = configVersion;
         this.node = node;
         this.pool = pool;
+    }
+
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
+    @JsonProperty("configImage")
+    public MachineConfigNodeSpecConfigImage getConfigImage() {
+        return configImage;
+    }
+
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
+    @JsonProperty("configImage")
+    public void setConfigImage(MachineConfigNodeSpecConfigImage configImage) {
+        this.configImage = configImage;
     }
 
     /**

@@ -88,7 +88,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
     }
 
     /**
-     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake.  Operators may remove entries their operands do not support.  For example, to use DES-CBC3-SHA  (yaml):<br><p> <br><p>   ciphers:<br><p>     - DES-CBC3-SHA
+     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake. Operators may remove entries that their operands do not support. For example, to use only ECDHE-RSA-AES128-GCM-SHA256 (yaml):<br><p> <br><p>   ciphers:<br><p>     - ECDHE-RSA-AES128-GCM-SHA256<br><p> <br><p> TLS 1.3 cipher suites (e.g. TLS_AES_128_GCM_SHA256) are not configurable and are always enabled when TLS 1.3 is negotiated.
      */
     @JsonProperty("ciphers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -97,7 +97,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
     }
 
     /**
-     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake.  Operators may remove entries their operands do not support.  For example, to use DES-CBC3-SHA  (yaml):<br><p> <br><p>   ciphers:<br><p>     - DES-CBC3-SHA
+     * ciphers is used to specify the cipher algorithms that are negotiated during the TLS handshake. Operators may remove entries that their operands do not support. For example, to use only ECDHE-RSA-AES128-GCM-SHA256 (yaml):<br><p> <br><p>   ciphers:<br><p>     - ECDHE-RSA-AES128-GCM-SHA256<br><p> <br><p> TLS 1.3 cipher suites (e.g. TLS_AES_128_GCM_SHA256) are not configurable and are always enabled when TLS 1.3 is negotiated.
      */
     @JsonProperty("ciphers")
     public void setCiphers(List<String> ciphers) {
@@ -105,7 +105,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
     }
 
     /**
-     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11<br><p> <br><p> NOTE: currently the highest minTLSVersion allowed is VersionTLS12
+     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11
      */
     @JsonProperty("minTLSVersion")
     public String getMinTLSVersion() {
@@ -113,7 +113,7 @@ public class TLSProfileSpec implements Editable<TLSProfileSpecBuilder>, Kubernet
     }
 
     /**
-     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11<br><p> <br><p> NOTE: currently the highest minTLSVersion allowed is VersionTLS12
+     * minTLSVersion is used to specify the minimal version of the TLS protocol that is negotiated during the TLS handshake. For example, to use TLS versions 1.1, 1.2 and 1.3 (yaml):<br><p> <br><p>   minTLSVersion: VersionTLS11
      */
     @JsonProperty("minTLSVersion")
     public void setMinTLSVersion(String minTLSVersion) {

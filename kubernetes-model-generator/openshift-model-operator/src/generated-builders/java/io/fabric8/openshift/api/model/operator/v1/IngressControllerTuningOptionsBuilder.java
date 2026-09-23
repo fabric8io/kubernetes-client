@@ -25,7 +25,7 @@ public class IngressControllerTuningOptionsBuilder extends IngressControllerTuni
   }
 
   public IngressControllerTuningOptions build() {
-    IngressControllerTuningOptions buildable = new IngressControllerTuningOptions(fluent.getClientFinTimeout(), fluent.getClientTimeout(), fluent.getConnectTimeout(), fluent.getHeaderBufferBytes(), fluent.getHeaderBufferMaxRewriteBytes(), fluent.getHealthCheckInterval(), fluent.getHttpKeepAliveTimeout(), fluent.getMaxConnections(), fluent.getReloadInterval(), fluent.getServerFinTimeout(), fluent.getServerTimeout(), fluent.getThreadCount(), fluent.getTlsInspectDelay(), fluent.getTunnelTimeout());
+    IngressControllerTuningOptions buildable = new IngressControllerTuningOptions(fluent.getClientFinTimeout(), fluent.getClientTimeout(), fluent.getConfigurationManagement(), fluent.getConnectTimeout(), fluent.getHeaderBufferBytes(), fluent.getHeaderBufferMaxRewriteBytes(), fluent.getHealthCheckInterval(), fluent.getHttpKeepAliveTimeout(), fluent.getMaxConnections(), fluent.getReloadInterval(), fluent.getServerFinTimeout(), fluent.getServerTimeout(), fluent.getThreadCount(), fluent.getTlsInspectDelay(), fluent.getTunnelTimeout());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

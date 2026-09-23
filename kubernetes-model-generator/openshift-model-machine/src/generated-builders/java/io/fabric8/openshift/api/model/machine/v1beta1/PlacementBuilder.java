@@ -25,7 +25,7 @@ public class PlacementBuilder extends PlacementFluent<PlacementBuilder> implemen
   }
 
   public Placement build() {
-    Placement buildable = new Placement(fluent.getAvailabilityZone(), fluent.getRegion(), fluent.getTenancy());
+    Placement buildable = new Placement(fluent.getAvailabilityZone(), fluent.buildHost(), fluent.getRegion(), fluent.getTenancy());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

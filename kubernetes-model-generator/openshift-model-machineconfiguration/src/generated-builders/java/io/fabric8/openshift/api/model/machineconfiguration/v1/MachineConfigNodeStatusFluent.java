@@ -28,7 +28,9 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
 
   private Map<String,Object> additionalProperties;
   private List<Condition> conditions = new ArrayList<Condition>();
+  private MachineConfigNodeStatusConfigImageBuilder configImage;
   private MachineConfigNodeStatusMachineConfigVersionBuilder configVersion;
+  private MachineConfigNodeStatusInternalReleaseImageBuilder internalReleaseImage;
   private ArrayList<IrreconcilableChangeDiffBuilder> irreconcilableChanges = new ArrayList<IrreconcilableChangeDiffBuilder>();
   private Long observedGeneration;
   private ArrayList<MachineConfigNodeStatusPinnedImageSetBuilder> pinnedImageSets = new ArrayList<MachineConfigNodeStatusPinnedImageSetBuilder>();
@@ -190,6 +192,10 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     return (A) this;
   }
   
+  public MachineConfigNodeStatusConfigImage buildConfigImage() {
+    return this.configImage != null ? this.configImage.build() : null;
+  }
+  
   public MachineConfigNodeStatusMachineConfigVersion buildConfigVersion() {
     return this.configVersion != null ? this.configVersion.build() : null;
   }
@@ -200,6 +206,10 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
   
   public MachineConfigNodeStatusPinnedImageSet buildFirstPinnedImageSet() {
     return this.pinnedImageSets.get(0).build();
+  }
+  
+  public MachineConfigNodeStatusInternalReleaseImage buildInternalReleaseImage() {
+    return this.internalReleaseImage != null ? this.internalReleaseImage.build() : null;
   }
   
   public IrreconcilableChangeDiff buildIrreconcilableChange(int index) {
@@ -248,12 +258,18 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     instance = instance != null ? instance : new MachineConfigNodeStatus();
     if (instance != null) {
         this.withConditions(instance.getConditions());
+        this.withConfigImage(instance.getConfigImage());
         this.withConfigVersion(instance.getConfigVersion());
+        this.withInternalReleaseImage(instance.getInternalReleaseImage());
         this.withIrreconcilableChanges(instance.getIrreconcilableChanges());
         this.withObservedGeneration(instance.getObservedGeneration());
         this.withPinnedImageSets(instance.getPinnedImageSets());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public ConfigImageNested<A> editConfigImage() {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(null));
   }
   
   public ConfigVersionNested<A> editConfigVersion() {
@@ -272,6 +288,10 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "pinnedImageSets"));
     }
     return this.setNewPinnedImageSetLike(0, this.buildPinnedImageSet(0));
+  }
+  
+  public InternalReleaseImageNested<A> editInternalReleaseImage() {
+    return this.withNewInternalReleaseImageLike(Optional.ofNullable(this.buildInternalReleaseImage()).orElse(null));
   }
   
   public IrreconcilableChangesNested<A> editIrreconcilableChange(int index) {
@@ -325,12 +345,28 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     return this.setNewPinnedImageSetLike(index, this.buildPinnedImageSet(index));
   }
   
+  public ConfigImageNested<A> editOrNewConfigImage() {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(new MachineConfigNodeStatusConfigImageBuilder().build()));
+  }
+  
+  public ConfigImageNested<A> editOrNewConfigImageLike(MachineConfigNodeStatusConfigImage item) {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(item));
+  }
+  
   public ConfigVersionNested<A> editOrNewConfigVersion() {
     return this.withNewConfigVersionLike(Optional.ofNullable(this.buildConfigVersion()).orElse(new MachineConfigNodeStatusMachineConfigVersionBuilder().build()));
   }
   
   public ConfigVersionNested<A> editOrNewConfigVersionLike(MachineConfigNodeStatusMachineConfigVersion item) {
     return this.withNewConfigVersionLike(Optional.ofNullable(this.buildConfigVersion()).orElse(item));
+  }
+  
+  public InternalReleaseImageNested<A> editOrNewInternalReleaseImage() {
+    return this.withNewInternalReleaseImageLike(Optional.ofNullable(this.buildInternalReleaseImage()).orElse(new MachineConfigNodeStatusInternalReleaseImageBuilder().build()));
+  }
+  
+  public InternalReleaseImageNested<A> editOrNewInternalReleaseImageLike(MachineConfigNodeStatusInternalReleaseImage item) {
+    return this.withNewInternalReleaseImageLike(Optional.ofNullable(this.buildInternalReleaseImage()).orElse(item));
   }
   
   public PinnedImageSetsNested<A> editPinnedImageSet(int index) {
@@ -354,7 +390,13 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     if (!(Objects.equals(conditions, that.conditions))) {
       return false;
     }
+    if (!(Objects.equals(configImage, that.configImage))) {
+      return false;
+    }
     if (!(Objects.equals(configVersion, that.configVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(internalReleaseImage, that.internalReleaseImage))) {
       return false;
     }
     if (!(Objects.equals(irreconcilableChanges, that.irreconcilableChanges))) {
@@ -413,8 +455,16 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     return this.conditions != null && !(this.conditions.isEmpty());
   }
   
+  public boolean hasConfigImage() {
+    return this.configImage != null;
+  }
+  
   public boolean hasConfigVersion() {
     return this.configVersion != null;
+  }
+  
+  public boolean hasInternalReleaseImage() {
+    return this.internalReleaseImage != null;
   }
   
   public boolean hasIrreconcilableChanges() {
@@ -457,7 +507,7 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(conditions, configVersion, irreconcilableChanges, observedGeneration, pinnedImageSets, additionalProperties);
+    return Objects.hash(conditions, configImage, configVersion, internalReleaseImage, irreconcilableChanges, observedGeneration, pinnedImageSets, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -638,9 +688,19 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
         sb.append(conditions);
         sb.append(",");
     }
+    if (!(configImage == null)) {
+        sb.append("configImage:");
+        sb.append(configImage);
+        sb.append(",");
+    }
     if (!(configVersion == null)) {
         sb.append("configVersion:");
         sb.append(configVersion);
+        sb.append(",");
+    }
+    if (!(internalReleaseImage == null)) {
+        sb.append("internalReleaseImage:");
+        sb.append(internalReleaseImage);
         sb.append(",");
     }
     if (!(irreconcilableChanges == null) && !(irreconcilableChanges.isEmpty())) {
@@ -700,6 +760,18 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     return (A) this;
   }
   
+  public A withConfigImage(MachineConfigNodeStatusConfigImage configImage) {
+    this._visitables.remove("configImage");
+    if (configImage != null) {
+        this.configImage = new MachineConfigNodeStatusConfigImageBuilder(configImage);
+        this._visitables.get("configImage").add(this.configImage);
+    } else {
+        this.configImage = null;
+        this._visitables.get("configImage").remove(this.configImage);
+    }
+    return (A) this;
+  }
+  
   public A withConfigVersion(MachineConfigNodeStatusMachineConfigVersion configVersion) {
     this._visitables.remove("configVersion");
     if (configVersion != null) {
@@ -708,6 +780,18 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     } else {
         this.configVersion = null;
         this._visitables.get("configVersion").remove(this.configVersion);
+    }
+    return (A) this;
+  }
+  
+  public A withInternalReleaseImage(MachineConfigNodeStatusInternalReleaseImage internalReleaseImage) {
+    this._visitables.remove("internalReleaseImage");
+    if (internalReleaseImage != null) {
+        this.internalReleaseImage = new MachineConfigNodeStatusInternalReleaseImageBuilder(internalReleaseImage);
+        this._visitables.get("internalReleaseImage").add(this.internalReleaseImage);
+    } else {
+        this.internalReleaseImage = null;
+        this._visitables.get("internalReleaseImage").remove(this.internalReleaseImage);
     }
     return (A) this;
   }
@@ -740,6 +824,18 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     return (A) this;
   }
   
+  public ConfigImageNested<A> withNewConfigImage() {
+    return new ConfigImageNested(null);
+  }
+  
+  public A withNewConfigImage(String currentImage,String desiredImage) {
+    return (A) this.withConfigImage(new MachineConfigNodeStatusConfigImage(currentImage, desiredImage));
+  }
+  
+  public ConfigImageNested<A> withNewConfigImageLike(MachineConfigNodeStatusConfigImage item) {
+    return new ConfigImageNested(item);
+  }
+  
   public ConfigVersionNested<A> withNewConfigVersion() {
     return new ConfigVersionNested(null);
   }
@@ -750,6 +846,14 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
   
   public ConfigVersionNested<A> withNewConfigVersionLike(MachineConfigNodeStatusMachineConfigVersion item) {
     return new ConfigVersionNested(item);
+  }
+  
+  public InternalReleaseImageNested<A> withNewInternalReleaseImage() {
+    return new InternalReleaseImageNested(null);
+  }
+  
+  public InternalReleaseImageNested<A> withNewInternalReleaseImageLike(MachineConfigNodeStatusInternalReleaseImage item) {
+    return new InternalReleaseImageNested(item);
   }
   
   public A withObservedGeneration(Long observedGeneration) {
@@ -784,6 +888,23 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     }
     return (A) this;
   }
+  public class ConfigImageNested<N> extends MachineConfigNodeStatusConfigImageFluent<ConfigImageNested<N>> implements Nested<N>{
+  
+    MachineConfigNodeStatusConfigImageBuilder builder;
+  
+    ConfigImageNested(MachineConfigNodeStatusConfigImage item) {
+      this.builder = new MachineConfigNodeStatusConfigImageBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigNodeStatusFluent.this.withConfigImage(builder.build());
+    }
+    
+    public N endConfigImage() {
+      return and();
+    }
+    
+  }
   public class ConfigVersionNested<N> extends MachineConfigNodeStatusMachineConfigVersionFluent<ConfigVersionNested<N>> implements Nested<N>{
   
     MachineConfigNodeStatusMachineConfigVersionBuilder builder;
@@ -797,6 +918,23 @@ public class MachineConfigNodeStatusFluent<A extends io.fabric8.openshift.api.mo
     }
     
     public N endConfigVersion() {
+      return and();
+    }
+    
+  }
+  public class InternalReleaseImageNested<N> extends MachineConfigNodeStatusInternalReleaseImageFluent<InternalReleaseImageNested<N>> implements Nested<N>{
+  
+    MachineConfigNodeStatusInternalReleaseImageBuilder builder;
+  
+    InternalReleaseImageNested(MachineConfigNodeStatusInternalReleaseImage item) {
+      this.builder = new MachineConfigNodeStatusInternalReleaseImageBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigNodeStatusFluent.this.withInternalReleaseImage(builder.build());
+    }
+    
+    public N endInternalReleaseImage() {
       return and();
     }
     

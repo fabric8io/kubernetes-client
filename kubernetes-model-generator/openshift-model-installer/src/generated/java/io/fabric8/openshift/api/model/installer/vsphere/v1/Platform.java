@@ -50,6 +50,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "defaultDatastore",
     "defaultMachinePlatform",
     "diskType",
+    "dnsRecordsType",
     "failureDomains",
     "folder",
     "hosts",
@@ -106,6 +107,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private MachinePool defaultMachinePlatform;
     @JsonProperty("diskType")
     private String diskType;
+    @JsonProperty("dnsRecordsType")
+    private String dnsRecordsType;
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FailureDomain> failureDomains = new ArrayList<>();
@@ -145,7 +148,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, List<FailureDomain> failureDomains, String folder, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, VSpherePlatformNodeNetworking nodeNetworking, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
+    public Platform(String apiVIP, List<String> apiVIPs, String cluster, String clusterOSImage, String datacenter, String defaultDatastore, MachinePool defaultMachinePlatform, String diskType, String dnsRecordsType, List<FailureDomain> failureDomains, String folder, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, VSpherePlatformLoadBalancer loadBalancer, String network, VSpherePlatformNodeNetworking nodeNetworking, String password, String resourcePool, String username, String vCenter, List<VCenter> vcenters) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
@@ -155,6 +158,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.defaultDatastore = defaultDatastore;
         this.defaultMachinePlatform = defaultMachinePlatform;
         this.diskType = diskType;
+        this.dnsRecordsType = dnsRecordsType;
         this.failureDomains = failureDomains;
         this.folder = folder;
         this.hosts = hosts;
@@ -297,6 +301,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("diskType")
     public void setDiskType(String diskType) {
         this.diskType = diskType;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public String getDnsRecordsType() {
+        return dnsRecordsType;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public void setDnsRecordsType(String dnsRecordsType) {
+        this.dnsRecordsType = dnsRecordsType;
     }
 
     /**

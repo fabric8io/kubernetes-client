@@ -22,8 +22,8 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
   private AzureClusterDeprovisionBuilder azure;
   private GCPClusterDeprovisionBuilder gcp;
   private IBMClusterDeprovisionBuilder ibmcloud;
+  private NutanixClusterDeprovisionBuilder nutanix;
   private OpenStackClusterDeprovisionBuilder openstack;
-  private OvirtClusterDeprovisionBuilder ovirt;
   private VSphereClusterDeprovisionBuilder vsphere;
 
   public ClusterDeprovisionPlatformFluent() {
@@ -69,12 +69,12 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return this.ibmcloud != null ? this.ibmcloud.build() : null;
   }
   
-  public OpenStackClusterDeprovision buildOpenstack() {
-    return this.openstack != null ? this.openstack.build() : null;
+  public NutanixClusterDeprovision buildNutanix() {
+    return this.nutanix != null ? this.nutanix.build() : null;
   }
   
-  public OvirtClusterDeprovision buildOvirt() {
-    return this.ovirt != null ? this.ovirt.build() : null;
+  public OpenStackClusterDeprovision buildOpenstack() {
+    return this.openstack != null ? this.openstack.build() : null;
   }
   
   public VSphereClusterDeprovision buildVsphere() {
@@ -88,8 +88,8 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
         this.withAzure(instance.getAzure());
         this.withGcp(instance.getGcp());
         this.withIbmcloud(instance.getIbmcloud());
+        this.withNutanix(instance.getNutanix());
         this.withOpenstack(instance.getOpenstack());
-        this.withOvirt(instance.getOvirt());
         this.withVsphere(instance.getVsphere());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -109,6 +109,10 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
   
   public IbmcloudNested<A> editIbmcloud() {
     return this.withNewIbmcloudLike(Optional.ofNullable(this.buildIbmcloud()).orElse(null));
+  }
+  
+  public NutanixNested<A> editNutanix() {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(null));
   }
   
   public OpenstackNested<A> editOpenstack() {
@@ -147,6 +151,14 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return this.withNewIbmcloudLike(Optional.ofNullable(this.buildIbmcloud()).orElse(item));
   }
   
+  public NutanixNested<A> editOrNewNutanix() {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(new NutanixClusterDeprovisionBuilder().build()));
+  }
+  
+  public NutanixNested<A> editOrNewNutanixLike(NutanixClusterDeprovision item) {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(item));
+  }
+  
   public OpenstackNested<A> editOrNewOpenstack() {
     return this.withNewOpenstackLike(Optional.ofNullable(this.buildOpenstack()).orElse(new OpenStackClusterDeprovisionBuilder().build()));
   }
@@ -155,24 +167,12 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return this.withNewOpenstackLike(Optional.ofNullable(this.buildOpenstack()).orElse(item));
   }
   
-  public OvirtNested<A> editOrNewOvirt() {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(new OvirtClusterDeprovisionBuilder().build()));
-  }
-  
-  public OvirtNested<A> editOrNewOvirtLike(OvirtClusterDeprovision item) {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(item));
-  }
-  
   public VsphereNested<A> editOrNewVsphere() {
     return this.withNewVsphereLike(Optional.ofNullable(this.buildVsphere()).orElse(new VSphereClusterDeprovisionBuilder().build()));
   }
   
   public VsphereNested<A> editOrNewVsphereLike(VSphereClusterDeprovision item) {
     return this.withNewVsphereLike(Optional.ofNullable(this.buildVsphere()).orElse(item));
-  }
-  
-  public OvirtNested<A> editOvirt() {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(null));
   }
   
   public VsphereNested<A> editVsphere() {
@@ -202,10 +202,10 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     if (!(Objects.equals(ibmcloud, that.ibmcloud))) {
       return false;
     }
-    if (!(Objects.equals(openstack, that.openstack))) {
+    if (!(Objects.equals(nutanix, that.nutanix))) {
       return false;
     }
-    if (!(Objects.equals(ovirt, that.ovirt))) {
+    if (!(Objects.equals(openstack, that.openstack))) {
       return false;
     }
     if (!(Objects.equals(vsphere, that.vsphere))) {
@@ -241,12 +241,12 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return this.ibmcloud != null;
   }
   
-  public boolean hasOpenstack() {
-    return this.openstack != null;
+  public boolean hasNutanix() {
+    return this.nutanix != null;
   }
   
-  public boolean hasOvirt() {
-    return this.ovirt != null;
+  public boolean hasOpenstack() {
+    return this.openstack != null;
   }
   
   public boolean hasVsphere() {
@@ -254,7 +254,7 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
   }
   
   public int hashCode() {
-    return Objects.hash(aws, azure, gcp, ibmcloud, openstack, ovirt, vsphere, additionalProperties);
+    return Objects.hash(aws, azure, gcp, ibmcloud, nutanix, openstack, vsphere, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -304,14 +304,14 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
         sb.append(ibmcloud);
         sb.append(",");
     }
+    if (!(nutanix == null)) {
+        sb.append("nutanix:");
+        sb.append(nutanix);
+        sb.append(",");
+    }
     if (!(openstack == null)) {
         sb.append("openstack:");
         sb.append(openstack);
-        sb.append(",");
-    }
-    if (!(ovirt == null)) {
-        sb.append("ovirt:");
-        sb.append(ovirt);
         sb.append(",");
     }
     if (!(vsphere == null)) {
@@ -416,20 +416,20 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return new IbmcloudNested(item);
   }
   
+  public NutanixNested<A> withNewNutanix() {
+    return new NutanixNested(null);
+  }
+  
+  public NutanixNested<A> withNewNutanixLike(NutanixClusterDeprovision item) {
+    return new NutanixNested(item);
+  }
+  
   public OpenstackNested<A> withNewOpenstack() {
     return new OpenstackNested(null);
   }
   
   public OpenstackNested<A> withNewOpenstackLike(OpenStackClusterDeprovision item) {
     return new OpenstackNested(item);
-  }
-  
-  public OvirtNested<A> withNewOvirt() {
-    return new OvirtNested(null);
-  }
-  
-  public OvirtNested<A> withNewOvirtLike(OvirtClusterDeprovision item) {
-    return new OvirtNested(item);
   }
   
   public VsphereNested<A> withNewVsphere() {
@@ -440,6 +440,18 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     return new VsphereNested(item);
   }
   
+  public A withNutanix(NutanixClusterDeprovision nutanix) {
+    this._visitables.remove("nutanix");
+    if (nutanix != null) {
+        this.nutanix = new NutanixClusterDeprovisionBuilder(nutanix);
+        this._visitables.get("nutanix").add(this.nutanix);
+    } else {
+        this.nutanix = null;
+        this._visitables.get("nutanix").remove(this.nutanix);
+    }
+    return (A) this;
+  }
+  
   public A withOpenstack(OpenStackClusterDeprovision openstack) {
     this._visitables.remove("openstack");
     if (openstack != null) {
@@ -448,18 +460,6 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     } else {
         this.openstack = null;
         this._visitables.get("openstack").remove(this.openstack);
-    }
-    return (A) this;
-  }
-  
-  public A withOvirt(OvirtClusterDeprovision ovirt) {
-    this._visitables.remove("ovirt");
-    if (ovirt != null) {
-        this.ovirt = new OvirtClusterDeprovisionBuilder(ovirt);
-        this._visitables.get("ovirt").add(this.ovirt);
-    } else {
-        this.ovirt = null;
-        this._visitables.get("ovirt").remove(this.ovirt);
     }
     return (A) this;
   }
@@ -543,6 +543,23 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     }
     
   }
+  public class NutanixNested<N> extends NutanixClusterDeprovisionFluent<NutanixNested<N>> implements Nested<N>{
+  
+    NutanixClusterDeprovisionBuilder builder;
+  
+    NutanixNested(NutanixClusterDeprovision item) {
+      this.builder = new NutanixClusterDeprovisionBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterDeprovisionPlatformFluent.this.withNutanix(builder.build());
+    }
+    
+    public N endNutanix() {
+      return and();
+    }
+    
+  }
   public class OpenstackNested<N> extends OpenStackClusterDeprovisionFluent<OpenstackNested<N>> implements Nested<N>{
   
     OpenStackClusterDeprovisionBuilder builder;
@@ -556,23 +573,6 @@ public class ClusterDeprovisionPlatformFluent<A extends io.fabric8.openshift.api
     }
     
     public N endOpenstack() {
-      return and();
-    }
-    
-  }
-  public class OvirtNested<N> extends OvirtClusterDeprovisionFluent<OvirtNested<N>> implements Nested<N>{
-  
-    OvirtClusterDeprovisionBuilder builder;
-  
-    OvirtNested(OvirtClusterDeprovision item) {
-      this.builder = new OvirtClusterDeprovisionBuilder(this, item);
-    }
-  
-    public N and() {
-      return (N) ClusterDeprovisionPlatformFluent.this.withOvirt(builder.build());
-    }
-    
-    public N endOvirt() {
       return and();
     }
     

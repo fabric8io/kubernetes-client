@@ -19,8 +19,10 @@ import java.util.Optional;
 public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.model.config.v1.GenericControllerConfigFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String apiVersion;
   private DelegatedAuthenticationBuilder authentication;
   private DelegatedAuthorizationBuilder authorization;
+  private String kind;
   private LeaderElectionBuilder leaderElection;
   private HTTPServingInfoBuilder servingInfo;
 
@@ -70,8 +72,10 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
   protected void copyInstance(GenericControllerConfig instance) {
     instance = instance != null ? instance : new GenericControllerConfig();
     if (instance != null) {
+        this.withApiVersion(instance.getApiVersion());
         this.withAuthentication(instance.getAuthentication());
         this.withAuthorization(instance.getAuthorization());
+        this.withKind(instance.getKind());
         this.withLeaderElection(instance.getLeaderElection());
         this.withServingInfo(instance.getServingInfo());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -137,10 +141,16 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
       return false;
     }
     GenericControllerConfigFluent that = (GenericControllerConfigFluent) o;
+    if (!(Objects.equals(apiVersion, that.apiVersion))) {
+      return false;
+    }
     if (!(Objects.equals(authentication, that.authentication))) {
       return false;
     }
     if (!(Objects.equals(authorization, that.authorization))) {
+      return false;
+    }
+    if (!(Objects.equals(kind, that.kind))) {
       return false;
     }
     if (!(Objects.equals(leaderElection, that.leaderElection))) {
@@ -159,8 +169,20 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
     return this.additionalProperties;
   }
   
+  public String getApiVersion() {
+    return this.apiVersion;
+  }
+  
+  public String getKind() {
+    return this.kind;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasApiVersion() {
+    return this.apiVersion != null;
   }
   
   public boolean hasAuthentication() {
@@ -169,6 +191,10 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
   
   public boolean hasAuthorization() {
     return this.authorization != null;
+  }
+  
+  public boolean hasKind() {
+    return this.kind != null;
   }
   
   public boolean hasLeaderElection() {
@@ -180,7 +206,7 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(authentication, authorization, leaderElection, servingInfo, additionalProperties);
+    return Objects.hash(apiVersion, authentication, authorization, kind, leaderElection, servingInfo, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -210,6 +236,11 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(apiVersion == null)) {
+        sb.append("apiVersion:");
+        sb.append(apiVersion);
+        sb.append(",");
+    }
     if (!(authentication == null)) {
         sb.append("authentication:");
         sb.append(authentication);
@@ -218,6 +249,11 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
     if (!(authorization == null)) {
         sb.append("authorization:");
         sb.append(authorization);
+        sb.append(",");
+    }
+    if (!(kind == null)) {
+        sb.append("kind:");
+        sb.append(kind);
         sb.append(",");
     }
     if (!(leaderElection == null)) {
@@ -247,6 +283,11 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
     return (A) this;
   }
   
+  public A withApiVersion(String apiVersion) {
+    this.apiVersion = apiVersion;
+    return (A) this;
+  }
+  
   public A withAuthentication(DelegatedAuthentication authentication) {
     this._visitables.remove("authentication");
     if (authentication != null) {
@@ -268,6 +309,11 @@ public class GenericControllerConfigFluent<A extends io.fabric8.openshift.api.mo
         this.authorization = null;
         this._visitables.get("authorization").remove(this.authorization);
     }
+    return (A) this;
+  }
+  
+  public A withKind(String kind) {
+    this.kind = kind;
     return (A) this;
   }
   

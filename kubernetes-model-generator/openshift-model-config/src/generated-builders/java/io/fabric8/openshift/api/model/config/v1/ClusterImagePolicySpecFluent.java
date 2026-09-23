@@ -22,7 +22,7 @@ import java.util.function.Predicate;
 public class ClusterImagePolicySpecFluent<A extends io.fabric8.openshift.api.model.config.v1.ClusterImagePolicySpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
-  private PolicyBuilder policy;
+  private ImageSigstoreVerificationPolicyBuilder policy;
   private List<String> scopes = new ArrayList<String>();
 
   public ClusterImagePolicySpecFluent() {
@@ -80,7 +80,7 @@ public class ClusterImagePolicySpecFluent<A extends io.fabric8.openshift.api.mod
     return (A) this;
   }
   
-  public Policy buildPolicy() {
+  public ImageSigstoreVerificationPolicy buildPolicy() {
     return this.policy != null ? this.policy.build() : null;
   }
   
@@ -94,10 +94,10 @@ public class ClusterImagePolicySpecFluent<A extends io.fabric8.openshift.api.mod
   }
   
   public PolicyNested<A> editOrNewPolicy() {
-    return this.withNewPolicyLike(Optional.ofNullable(this.buildPolicy()).orElse(new PolicyBuilder().build()));
+    return this.withNewPolicyLike(Optional.ofNullable(this.buildPolicy()).orElse(new ImageSigstoreVerificationPolicyBuilder().build()));
   }
   
-  public PolicyNested<A> editOrNewPolicyLike(Policy item) {
+  public PolicyNested<A> editOrNewPolicyLike(ImageSigstoreVerificationPolicy item) {
     return this.withNewPolicyLike(Optional.ofNullable(this.buildPolicy()).orElse(item));
   }
   
@@ -268,14 +268,14 @@ public class ClusterImagePolicySpecFluent<A extends io.fabric8.openshift.api.mod
     return new PolicyNested(null);
   }
   
-  public PolicyNested<A> withNewPolicyLike(Policy item) {
+  public PolicyNested<A> withNewPolicyLike(ImageSigstoreVerificationPolicy item) {
     return new PolicyNested(item);
   }
   
-  public A withPolicy(Policy policy) {
+  public A withPolicy(ImageSigstoreVerificationPolicy policy) {
     this._visitables.remove("policy");
     if (policy != null) {
-        this.policy = new PolicyBuilder(policy);
+        this.policy = new ImageSigstoreVerificationPolicyBuilder(policy);
         this._visitables.get("policy").add(this.policy);
     } else {
         this.policy = null;
@@ -308,12 +308,12 @@ public class ClusterImagePolicySpecFluent<A extends io.fabric8.openshift.api.mod
     }
     return (A) this;
   }
-  public class PolicyNested<N> extends PolicyFluent<PolicyNested<N>> implements Nested<N>{
+  public class PolicyNested<N> extends ImageSigstoreVerificationPolicyFluent<PolicyNested<N>> implements Nested<N>{
   
-    PolicyBuilder builder;
+    ImageSigstoreVerificationPolicyBuilder builder;
   
-    PolicyNested(Policy item) {
-      this.builder = new PolicyBuilder(this, item);
+    PolicyNested(ImageSigstoreVerificationPolicy item) {
+      this.builder = new ImageSigstoreVerificationPolicyBuilder(this, item);
     }
   
     public N and() {

@@ -39,6 +39,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "offer",
+    "plan",
     "publisher",
     "sku",
     "version"
@@ -70,6 +71,8 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
 
     @JsonProperty("offer")
     private String offer;
+    @JsonProperty("plan")
+    private String plan;
     @JsonProperty("publisher")
     private String publisher;
     @JsonProperty("sku")
@@ -85,9 +88,10 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
     public OSImage() {
     }
 
-    public OSImage(String offer, String publisher, String sku, String version) {
+    public OSImage(String offer, String plan, String publisher, String sku, String version) {
         super();
         this.offer = offer;
+        this.plan = plan;
         this.publisher = publisher;
         this.sku = sku;
         this.version = version;
@@ -107,6 +111,22 @@ public class OSImage implements Editable<OSImageBuilder>, KubernetesResource
     @JsonProperty("offer")
     public void setOffer(String offer) {
         this.offer = offer;
+    }
+
+    /**
+     * Plan is the purchase plan of the image. If omitted, it defaults to "WithPurchasePlan".
+     */
+    @JsonProperty("plan")
+    public String getPlan() {
+        return plan;
+    }
+
+    /**
+     * Plan is the purchase plan of the image. If omitted, it defaults to "WithPurchasePlan".
+     */
+    @JsonProperty("plan")
+    public void setPlan(String plan) {
+        this.plan = plan;
     }
 
     /**

@@ -160,7 +160,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton and GettingStartedBanner. Each of the available capabilities may appear only once in the list.
+     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour. Each of the available capabilities may appear only once in the list.
      */
     @JsonProperty("capabilities")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -169,7 +169,7 @@ public class ConsoleCustomization implements Editable<ConsoleCustomizationBuilde
     }
 
     /**
-     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton and GettingStartedBanner. Each of the available capabilities may appear only once in the list.
+     * capabilities defines an array of capabilities that can be interacted with in the console UI. Each capability defines a visual state that can be interacted with the console to render in the UI. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour. Each of the available capabilities may appear only once in the list.
      */
     @JsonProperty("capabilities")
     public void setCapabilities(List<Capability> capabilities) {

@@ -19,6 +19,7 @@ import java.util.Optional;
 public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.model.operator.v1.MachineConfigurationSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private BootImageSkewEnforcementConfigBuilder bootImageSkewEnforcement;
   private Integer failedRevisionLimit;
   private String forceRedeploymentReason;
   private IrreconcilableValidationOverridesBuilder irreconcilableValidationOverrides;
@@ -58,6 +59,10 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public BootImageSkewEnforcementConfig buildBootImageSkewEnforcement() {
+    return this.bootImageSkewEnforcement != null ? this.bootImageSkewEnforcement.build() : null;
+  }
+  
   public IrreconcilableValidationOverrides buildIrreconcilableValidationOverrides() {
     return this.irreconcilableValidationOverrides != null ? this.irreconcilableValidationOverrides.build() : null;
   }
@@ -73,6 +78,7 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   protected void copyInstance(MachineConfigurationSpec instance) {
     instance = instance != null ? instance : new MachineConfigurationSpec();
     if (instance != null) {
+        this.withBootImageSkewEnforcement(instance.getBootImageSkewEnforcement());
         this.withFailedRevisionLimit(instance.getFailedRevisionLimit());
         this.withForceRedeploymentReason(instance.getForceRedeploymentReason());
         this.withIrreconcilableValidationOverrides(instance.getIrreconcilableValidationOverrides());
@@ -88,6 +94,10 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
     }
   }
   
+  public BootImageSkewEnforcementNested<A> editBootImageSkewEnforcement() {
+    return this.withNewBootImageSkewEnforcementLike(Optional.ofNullable(this.buildBootImageSkewEnforcement()).orElse(null));
+  }
+  
   public IrreconcilableValidationOverridesNested<A> editIrreconcilableValidationOverrides() {
     return this.withNewIrreconcilableValidationOverridesLike(Optional.ofNullable(this.buildIrreconcilableValidationOverrides()).orElse(null));
   }
@@ -98,6 +108,14 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   
   public NodeDisruptionPolicyNested<A> editNodeDisruptionPolicy() {
     return this.withNewNodeDisruptionPolicyLike(Optional.ofNullable(this.buildNodeDisruptionPolicy()).orElse(null));
+  }
+  
+  public BootImageSkewEnforcementNested<A> editOrNewBootImageSkewEnforcement() {
+    return this.withNewBootImageSkewEnforcementLike(Optional.ofNullable(this.buildBootImageSkewEnforcement()).orElse(new BootImageSkewEnforcementConfigBuilder().build()));
+  }
+  
+  public BootImageSkewEnforcementNested<A> editOrNewBootImageSkewEnforcementLike(BootImageSkewEnforcementConfig item) {
+    return this.withNewBootImageSkewEnforcementLike(Optional.ofNullable(this.buildBootImageSkewEnforcement()).orElse(item));
   }
   
   public IrreconcilableValidationOverridesNested<A> editOrNewIrreconcilableValidationOverrides() {
@@ -135,6 +153,9 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
       return false;
     }
     MachineConfigurationSpecFluent that = (MachineConfigurationSpecFluent) o;
+    if (!(Objects.equals(bootImageSkewEnforcement, that.bootImageSkewEnforcement))) {
+      return false;
+    }
     if (!(Objects.equals(failedRevisionLimit, that.failedRevisionLimit))) {
       return false;
     }
@@ -214,6 +235,10 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
     return this.additionalProperties != null;
   }
   
+  public boolean hasBootImageSkewEnforcement() {
+    return this.bootImageSkewEnforcement != null;
+  }
+  
   public boolean hasFailedRevisionLimit() {
     return this.failedRevisionLimit != null;
   }
@@ -259,7 +284,7 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   }
   
   public int hashCode() {
-    return Objects.hash(failedRevisionLimit, forceRedeploymentReason, irreconcilableValidationOverrides, logLevel, managedBootImages, managementState, nodeDisruptionPolicy, observedConfig, operatorLogLevel, succeededRevisionLimit, unsupportedConfigOverrides, additionalProperties);
+    return Objects.hash(bootImageSkewEnforcement, failedRevisionLimit, forceRedeploymentReason, irreconcilableValidationOverrides, logLevel, managedBootImages, managementState, nodeDisruptionPolicy, observedConfig, operatorLogLevel, succeededRevisionLimit, unsupportedConfigOverrides, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -289,6 +314,11 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(bootImageSkewEnforcement == null)) {
+        sb.append("bootImageSkewEnforcement:");
+        sb.append(bootImageSkewEnforcement);
+        sb.append(",");
+    }
     if (!(failedRevisionLimit == null)) {
         sb.append("failedRevisionLimit:");
         sb.append(failedRevisionLimit);
@@ -361,6 +391,18 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public A withBootImageSkewEnforcement(BootImageSkewEnforcementConfig bootImageSkewEnforcement) {
+    this._visitables.remove("bootImageSkewEnforcement");
+    if (bootImageSkewEnforcement != null) {
+        this.bootImageSkewEnforcement = new BootImageSkewEnforcementConfigBuilder(bootImageSkewEnforcement);
+        this._visitables.get("bootImageSkewEnforcement").add(this.bootImageSkewEnforcement);
+    } else {
+        this.bootImageSkewEnforcement = null;
+        this._visitables.get("bootImageSkewEnforcement").remove(this.bootImageSkewEnforcement);
+    }
+    return (A) this;
+  }
+  
   public A withFailedRevisionLimit(Integer failedRevisionLimit) {
     this.failedRevisionLimit = failedRevisionLimit;
     return (A) this;
@@ -403,6 +445,14 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   public A withManagementState(String managementState) {
     this.managementState = managementState;
     return (A) this;
+  }
+  
+  public BootImageSkewEnforcementNested<A> withNewBootImageSkewEnforcement() {
+    return new BootImageSkewEnforcementNested(null);
+  }
+  
+  public BootImageSkewEnforcementNested<A> withNewBootImageSkewEnforcementLike(BootImageSkewEnforcementConfig item) {
+    return new BootImageSkewEnforcementNested(item);
   }
   
   public IrreconcilableValidationOverridesNested<A> withNewIrreconcilableValidationOverrides() {
@@ -459,6 +509,23 @@ public class MachineConfigurationSpecFluent<A extends io.fabric8.openshift.api.m
   public A withUnsupportedConfigOverrides(Object unsupportedConfigOverrides) {
     this.unsupportedConfigOverrides = unsupportedConfigOverrides;
     return (A) this;
+  }
+  public class BootImageSkewEnforcementNested<N> extends BootImageSkewEnforcementConfigFluent<BootImageSkewEnforcementNested<N>> implements Nested<N>{
+  
+    BootImageSkewEnforcementConfigBuilder builder;
+  
+    BootImageSkewEnforcementNested(BootImageSkewEnforcementConfig item) {
+      this.builder = new BootImageSkewEnforcementConfigBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigurationSpecFluent.this.withBootImageSkewEnforcement(builder.build());
+    }
+    
+    public N endBootImageSkewEnforcement() {
+      return and();
+    }
+    
   }
   public class IrreconcilableValidationOverridesNested<N> extends IrreconcilableValidationOverridesFluent<IrreconcilableValidationOverridesNested<N>> implements Nested<N>{
   

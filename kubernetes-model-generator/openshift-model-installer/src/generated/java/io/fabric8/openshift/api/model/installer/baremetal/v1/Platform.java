@@ -53,6 +53,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "clusterOSImage",
     "clusterProvisioningIP",
     "defaultMachinePlatform",
+    "dnsRecordsType",
     "externalBridge",
     "externalMACAddress",
     "hosts",
@@ -120,6 +121,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String clusterProvisioningIP;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
+    @JsonProperty("dnsRecordsType")
+    private String dnsRecordsType;
     @JsonProperty("externalBridge")
     private String externalBridge;
     @JsonProperty("externalMACAddress")
@@ -161,7 +164,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(List<String> additionalNTPServers, String apiVIP, List<String> apiVIPs, String bmcVerifyCA, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
+    public Platform(List<String> additionalNTPServers, String apiVIP, List<String> apiVIPs, String bmcVerifyCA, String bootstrapExternalStaticDNS, String bootstrapExternalStaticGateway, String bootstrapExternalStaticIP, String bootstrapOSImage, String bootstrapProvisioningIP, String clusterOSImage, String clusterProvisioningIP, MachinePool defaultMachinePlatform, String dnsRecordsType, String externalBridge, String externalMACAddress, List<Host> hosts, String ingressVIP, List<String> ingressVIPs, String libvirtURI, BareMetalPlatformLoadBalancer loadBalancer, String provisioningBridge, Boolean provisioningDHCPExternal, String provisioningDHCPRange, String provisioningHostIP, String provisioningMACAddress, String provisioningNetwork, String provisioningNetworkCIDR, String provisioningNetworkInterface) {
         super();
         this.additionalNTPServers = additionalNTPServers;
         this.apiVIP = apiVIP;
@@ -175,6 +178,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
         this.clusterOSImage = clusterOSImage;
         this.clusterProvisioningIP = clusterProvisioningIP;
         this.defaultMachinePlatform = defaultMachinePlatform;
+        this.dnsRecordsType = dnsRecordsType;
         this.externalBridge = externalBridge;
         this.externalMACAddress = externalMACAddress;
         this.hosts = hosts;
@@ -307,7 +311,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd...
+     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd... Deprecated: This is no longer used.
      */
     @JsonProperty("bootstrapOSImage")
     public String getBootstrapOSImage() {
@@ -315,7 +319,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd...
+     * BootstrapOSImage is a URL to override the default OS image for the bootstrap node. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/qemu.qcow2.gz?sha256=a07bd... Deprecated: This is no longer used.
      */
     @JsonProperty("bootstrapOSImage")
     public void setBootstrapOSImage(String bootstrapOSImage) {
@@ -339,7 +343,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8...
+     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8... Deprecated: This is no longer required, the OS image is now part of the OpenShift release.
      */
     @JsonProperty("clusterOSImage")
     public String getClusterOSImage() {
@@ -347,7 +351,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8...
+     * ClusterOSImage is a URL to override the default OS image for cluster nodes. The URL must contain a sha256 hash of the image e.g https://mirror.example.com/images/metal.qcow2.gz?sha256=3b5a8... Deprecated: This is no longer required, the OS image is now part of the OpenShift release.
      */
     @JsonProperty("clusterOSImage")
     public void setClusterOSImage(String clusterOSImage) {
@@ -384,6 +388,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public String getDnsRecordsType() {
+        return dnsRecordsType;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public void setDnsRecordsType(String dnsRecordsType) {
+        this.dnsRecordsType = dnsRecordsType;
     }
 
     /**

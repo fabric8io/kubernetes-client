@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "bgpManagedConfig",
     "egressIPConfig",
     "gatewayConfig",
     "genevePort",
@@ -46,8 +47,10 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "ipv4",
     "ipv6",
     "mtu",
+    "noOverlayConfig",
     "policyAuditConfig",
     "routeAdvertisements",
+    "transport",
     "v4InternalSubnet",
     "v6InternalSubnet"
 })
@@ -76,6 +79,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>, KubernetesResource
 {
 
+    @JsonProperty("bgpManagedConfig")
+    private BGPManagedConfig bgpManagedConfig;
     @JsonProperty("egressIPConfig")
     private EgressIPConfig egressIPConfig;
     @JsonProperty("gatewayConfig")
@@ -92,10 +97,14 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     private IPv6OVNKubernetesConfig ipv6;
     @JsonProperty("mtu")
     private Long mtu;
+    @JsonProperty("noOverlayConfig")
+    private NoOverlayConfig noOverlayConfig;
     @JsonProperty("policyAuditConfig")
     private PolicyAuditConfig policyAuditConfig;
     @JsonProperty("routeAdvertisements")
     private String routeAdvertisements;
+    @JsonProperty("transport")
+    private String transport;
     @JsonProperty("v4InternalSubnet")
     private String v4InternalSubnet;
     @JsonProperty("v6InternalSubnet")
@@ -109,8 +118,9 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     public OVNKubernetesConfig() {
     }
 
-    public OVNKubernetesConfig(EgressIPConfig egressIPConfig, GatewayConfig gatewayConfig, Long genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, IPv4OVNKubernetesConfig ipv4, IPv6OVNKubernetesConfig ipv6, Long mtu, PolicyAuditConfig policyAuditConfig, String routeAdvertisements, String v4InternalSubnet, String v6InternalSubnet) {
+    public OVNKubernetesConfig(BGPManagedConfig bgpManagedConfig, EgressIPConfig egressIPConfig, GatewayConfig gatewayConfig, Long genevePort, HybridOverlayConfig hybridOverlayConfig, IPsecConfig ipsecConfig, IPv4OVNKubernetesConfig ipv4, IPv6OVNKubernetesConfig ipv6, Long mtu, NoOverlayConfig noOverlayConfig, PolicyAuditConfig policyAuditConfig, String routeAdvertisements, String transport, String v4InternalSubnet, String v6InternalSubnet) {
         super();
+        this.bgpManagedConfig = bgpManagedConfig;
         this.egressIPConfig = egressIPConfig;
         this.gatewayConfig = gatewayConfig;
         this.genevePort = genevePort;
@@ -119,10 +129,28 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
         this.ipv4 = ipv4;
         this.ipv6 = ipv6;
         this.mtu = mtu;
+        this.noOverlayConfig = noOverlayConfig;
         this.policyAuditConfig = policyAuditConfig;
         this.routeAdvertisements = routeAdvertisements;
+        this.transport = transport;
         this.v4InternalSubnet = v4InternalSubnet;
         this.v6InternalSubnet = v6InternalSubnet;
+    }
+
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
+    @JsonProperty("bgpManagedConfig")
+    public BGPManagedConfig getBgpManagedConfig() {
+        return bgpManagedConfig;
+    }
+
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
+    @JsonProperty("bgpManagedConfig")
+    public void setBgpManagedConfig(BGPManagedConfig bgpManagedConfig) {
+        this.bgpManagedConfig = bgpManagedConfig;
     }
 
     /**
@@ -256,6 +284,22 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     /**
      * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
      */
+    @JsonProperty("noOverlayConfig")
+    public NoOverlayConfig getNoOverlayConfig() {
+        return noOverlayConfig;
+    }
+
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
+    @JsonProperty("noOverlayConfig")
+    public void setNoOverlayConfig(NoOverlayConfig noOverlayConfig) {
+        this.noOverlayConfig = noOverlayConfig;
+    }
+
+    /**
+     * ovnKubernetesConfig contains the configuration parameters for networks using the ovn-kubernetes network project
+     */
     @JsonProperty("policyAuditConfig")
     public PolicyAuditConfig getPolicyAuditConfig() {
         return policyAuditConfig;
@@ -283,6 +327,22 @@ public class OVNKubernetesConfig implements Editable<OVNKubernetesConfigBuilder>
     @JsonProperty("routeAdvertisements")
     public void setRouteAdvertisements(String routeAdvertisements) {
         this.routeAdvertisements = routeAdvertisements;
+    }
+
+    /**
+     * transport sets the transport mode for pods on the default network. Allowed values are "NoOverlay" and "Geneve". "NoOverlay" avoids tunnel encapsulation, routing pod traffic directly between nodes. "Geneve" encapsulates pod traffic using Geneve tunnels between nodes. When omitted, this means the user has no opinion and the platform chooses a reasonable default which is subject to change over time. The current default is "Geneve". "NoOverlay" can only be set at installation time and cannot be changed afterwards. "Geneve" may be set explicitly at any time to lock in the current default.
+     */
+    @JsonProperty("transport")
+    public String getTransport() {
+        return transport;
+    }
+
+    /**
+     * transport sets the transport mode for pods on the default network. Allowed values are "NoOverlay" and "Geneve". "NoOverlay" avoids tunnel encapsulation, routing pod traffic directly between nodes. "Geneve" encapsulates pod traffic using Geneve tunnels between nodes. When omitted, this means the user has no opinion and the platform chooses a reasonable default which is subject to change over time. The current default is "Geneve". "NoOverlay" can only be set at installation time and cannot be changed afterwards. "Geneve" may be set explicitly at any time to lock in the current default.
+     */
+    @JsonProperty("transport")
+    public void setTransport(String transport) {
+        this.transport = transport;
     }
 
     /**

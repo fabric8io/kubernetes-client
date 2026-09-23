@@ -17,6 +17,7 @@ import java.util.Objects;
 public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.operator.v1.KubeAPIServerSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private Integer eventTTLMinutes;
   private Integer failedRevisionLimit;
   private String forceRedeploymentReason;
   private String logLevel;
@@ -56,6 +57,7 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
   protected void copyInstance(KubeAPIServerSpec instance) {
     instance = instance != null ? instance : new KubeAPIServerSpec();
     if (instance != null) {
+        this.withEventTTLMinutes(instance.getEventTTLMinutes());
         this.withFailedRevisionLimit(instance.getFailedRevisionLimit());
         this.withForceRedeploymentReason(instance.getForceRedeploymentReason());
         this.withLogLevel(instance.getLogLevel());
@@ -79,6 +81,9 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
       return false;
     }
     KubeAPIServerSpecFluent that = (KubeAPIServerSpecFluent) o;
+    if (!(Objects.equals(eventTTLMinutes, that.eventTTLMinutes))) {
+      return false;
+    }
     if (!(Objects.equals(failedRevisionLimit, that.failedRevisionLimit))) {
       return false;
     }
@@ -111,6 +116,10 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
   
   public Map<String,Object> getAdditionalProperties() {
     return this.additionalProperties;
+  }
+  
+  public Integer getEventTTLMinutes() {
+    return this.eventTTLMinutes;
   }
   
   public Integer getFailedRevisionLimit() {
@@ -149,6 +158,10 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
     return this.additionalProperties != null;
   }
   
+  public boolean hasEventTTLMinutes() {
+    return this.eventTTLMinutes != null;
+  }
+  
   public boolean hasFailedRevisionLimit() {
     return this.failedRevisionLimit != null;
   }
@@ -182,7 +195,7 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
   }
   
   public int hashCode() {
-    return Objects.hash(failedRevisionLimit, forceRedeploymentReason, logLevel, managementState, observedConfig, operatorLogLevel, succeededRevisionLimit, unsupportedConfigOverrides, additionalProperties);
+    return Objects.hash(eventTTLMinutes, failedRevisionLimit, forceRedeploymentReason, logLevel, managementState, observedConfig, operatorLogLevel, succeededRevisionLimit, unsupportedConfigOverrides, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -212,6 +225,11 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(eventTTLMinutes == null)) {
+        sb.append("eventTTLMinutes:");
+        sb.append(eventTTLMinutes);
+        sb.append(",");
+    }
     if (!(failedRevisionLimit == null)) {
         sb.append("failedRevisionLimit:");
         sb.append(failedRevisionLimit);
@@ -266,6 +284,11 @@ public class KubeAPIServerSpecFluent<A extends io.fabric8.openshift.api.model.op
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withEventTTLMinutes(Integer eventTTLMinutes) {
+    this.eventTTLMinutes = eventTTLMinutes;
     return (A) this;
   }
   

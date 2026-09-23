@@ -149,7 +149,7 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
     }
 
     /**
-     * recordType is the DNS record type. For example, "A" or "CNAME".
+     * recordType is the DNS record type. For example, "A", "AAAA", or "CNAME".
      */
     @JsonProperty("recordType")
     public String getRecordType() {
@@ -157,7 +157,7 @@ public class DNSRecordSpec implements Editable<DNSRecordSpecBuilder>, Kubernetes
     }
 
     /**
-     * recordType is the DNS record type. For example, "A" or "CNAME".
+     * recordType is the DNS record type. For example, "A", "AAAA", or "CNAME".
      */
     @JsonProperty("recordType")
     public void setRecordType(String recordType) {

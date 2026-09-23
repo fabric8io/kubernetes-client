@@ -32,7 +32,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * IdentityProviderStatus defines the observed state of SyncSet
+ * IdentityProviderStatus defines the observed state of the SyncIdentityProvider
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)

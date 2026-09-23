@@ -9,10 +9,14 @@ import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -24,6 +28,7 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
   private LocalObjectReferenceBuilder certificatesSecretRef;
   private LocalObjectReferenceBuilder credentialsSecretRef;
   private String vCenter;
+  private List<String> vCenters = new ArrayList<String>();
 
   public VSphereClusterDeprovisionFluent() {
   }
@@ -32,6 +37,16 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     this.copyInstance(instance);
   }
 
+  public A addAllToVCenters(Collection<String> items) {
+    if (this.vCenters == null) {
+      this.vCenters = new ArrayList();
+    }
+    for (String item : items) {
+      this.vCenters.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -52,6 +67,24 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     return (A) this;
   }
   
+  public A addToVCenters(String... items) {
+    if (this.vCenters == null) {
+      this.vCenters = new ArrayList();
+    }
+    for (String item : items) {
+      this.vCenters.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToVCenters(int index,String item) {
+    if (this.vCenters == null) {
+      this.vCenters = new ArrayList();
+    }
+    this.vCenters.add(index, item);
+    return (A) this;
+  }
+  
   public LocalObjectReference buildCertificatesSecretRef() {
     return this.certificatesSecretRef != null ? this.certificatesSecretRef.build() : null;
   }
@@ -66,6 +99,7 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
         this.withCertificatesSecretRef(instance.getCertificatesSecretRef());
         this.withCredentialsSecretRef(instance.getCredentialsSecretRef());
         this.withVCenter(instance.getVCenter());
+        this.withVCenters(instance.getVCenters());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -114,6 +148,9 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     if (!(Objects.equals(vCenter, that.vCenter))) {
       return false;
     }
+    if (!(Objects.equals(vCenters, that.vCenters))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -124,8 +161,33 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     return this.additionalProperties;
   }
   
+  public String getFirstVCenter() {
+    return this.vCenters.get(0);
+  }
+  
+  public String getLastVCenter() {
+    return this.vCenters.get(vCenters.size() - 1);
+  }
+  
+  public String getMatchingVCenter(Predicate<String> predicate) {
+      for (String item : vCenters) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
   public String getVCenter() {
     return this.vCenter;
+  }
+  
+  public String getVCenter(int index) {
+    return this.vCenters.get(index);
+  }
+  
+  public List<String> getVCenters() {
+    return this.vCenters;
   }
   
   public boolean hasAdditionalProperties() {
@@ -140,12 +202,35 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     return this.credentialsSecretRef != null;
   }
   
+  public boolean hasMatchingVCenter(Predicate<String> predicate) {
+      for (String item : vCenters) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasVCenter() {
     return this.vCenter != null;
   }
   
+  public boolean hasVCenters() {
+    return this.vCenters != null && !(this.vCenters.isEmpty());
+  }
+  
   public int hashCode() {
-    return Objects.hash(certificatesSecretRef, credentialsSecretRef, vCenter, additionalProperties);
+    return Objects.hash(certificatesSecretRef, credentialsSecretRef, vCenter, vCenters, additionalProperties);
+  }
+  
+  public A removeAllFromVCenters(Collection<String> items) {
+    if (this.vCenters == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.vCenters.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -172,6 +257,24 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     return (A) this;
   }
   
+  public A removeFromVCenters(String... items) {
+    if (this.vCenters == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.vCenters.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A setToVCenters(int index,String item) {
+    if (this.vCenters == null) {
+      this.vCenters = new ArrayList();
+    }
+    this.vCenters.set(index, item);
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -188,6 +291,11 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
     if (!(vCenter == null)) {
         sb.append("vCenter:");
         sb.append(vCenter);
+        sb.append(",");
+    }
+    if (!(vCenters == null) && !(vCenters.isEmpty())) {
+        sb.append("vCenters:");
+        sb.append(vCenters);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -257,6 +365,31 @@ public class VSphereClusterDeprovisionFluent<A extends io.fabric8.openshift.api.
   
   public A withVCenter(String vCenter) {
     this.vCenter = vCenter;
+    return (A) this;
+  }
+  
+  public A withVCenters(List<String> vCenters) {
+    if (vCenters != null) {
+        this.vCenters = new ArrayList();
+        for (String item : vCenters) {
+          this.addToVCenters(item);
+        }
+    } else {
+      this.vCenters = null;
+    }
+    return (A) this;
+  }
+  
+  public A withVCenters(String... vCenters) {
+    if (this.vCenters != null) {
+        this.vCenters.clear();
+        _visitables.remove("vCenters");
+    }
+    if (vCenters != null) {
+      for (String item : vCenters) {
+        this.addToVCenters(item);
+      }
+    }
     return (A) this;
   }
   public class CertificatesSecretRefNested<N> extends LocalObjectReferenceFluent<CertificatesSecretRefNested<N>> implements Nested<N>{

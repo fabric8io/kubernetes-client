@@ -2,10 +2,10 @@ package io.fabric8.openshift.api.model.hive.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceFluent;
-import io.fabric8.openshift.api.model.customresourcestatus.conditions.v1.Condition;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;

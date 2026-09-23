@@ -25,6 +25,7 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
   private LocalObjectReferenceBuilder adminPasswordSecretRef;
   private String clusterID;
   private String infraID;
+  private LocalObjectReferenceBuilder metadataJSONSecretRef;
   private ClusterPlatformMetadataBuilder platform;
 
   public ClusterMetadataFluent() {
@@ -62,6 +63,10 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
     return this.adminPasswordSecretRef != null ? this.adminPasswordSecretRef.build() : null;
   }
   
+  public LocalObjectReference buildMetadataJSONSecretRef() {
+    return this.metadataJSONSecretRef != null ? this.metadataJSONSecretRef.build() : null;
+  }
+  
   public ClusterPlatformMetadata buildPlatform() {
     return this.platform != null ? this.platform.build() : null;
   }
@@ -73,6 +78,7 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
         this.withAdminPasswordSecretRef(instance.getAdminPasswordSecretRef());
         this.withClusterID(instance.getClusterID());
         this.withInfraID(instance.getInfraID());
+        this.withMetadataJSONSecretRef(instance.getMetadataJSONSecretRef());
         this.withPlatform(instance.getPlatform());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -84,6 +90,10 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
   
   public AdminPasswordSecretRefNested<A> editAdminPasswordSecretRef() {
     return this.withNewAdminPasswordSecretRefLike(Optional.ofNullable(this.buildAdminPasswordSecretRef()).orElse(null));
+  }
+  
+  public MetadataJSONSecretRefNested<A> editMetadataJSONSecretRef() {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(null));
   }
   
   public AdminKubeconfigSecretRefNested<A> editOrNewAdminKubeconfigSecretRef() {
@@ -100,6 +110,14 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
   
   public AdminPasswordSecretRefNested<A> editOrNewAdminPasswordSecretRefLike(LocalObjectReference item) {
     return this.withNewAdminPasswordSecretRefLike(Optional.ofNullable(this.buildAdminPasswordSecretRef()).orElse(item));
+  }
+  
+  public MetadataJSONSecretRefNested<A> editOrNewMetadataJSONSecretRef() {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(new LocalObjectReferenceBuilder().build()));
+  }
+  
+  public MetadataJSONSecretRefNested<A> editOrNewMetadataJSONSecretRefLike(LocalObjectReference item) {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(item));
   }
   
   public PlatformNested<A> editOrNewPlatform() {
@@ -135,6 +153,9 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
       return false;
     }
     if (!(Objects.equals(infraID, that.infraID))) {
+      return false;
+    }
+    if (!(Objects.equals(metadataJSONSecretRef, that.metadataJSONSecretRef))) {
       return false;
     }
     if (!(Objects.equals(platform, that.platform))) {
@@ -178,12 +199,16 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
     return this.infraID != null;
   }
   
+  public boolean hasMetadataJSONSecretRef() {
+    return this.metadataJSONSecretRef != null;
+  }
+  
   public boolean hasPlatform() {
     return this.platform != null;
   }
   
   public int hashCode() {
-    return Objects.hash(adminKubeconfigSecretRef, adminPasswordSecretRef, clusterID, infraID, platform, additionalProperties);
+    return Objects.hash(adminKubeconfigSecretRef, adminPasswordSecretRef, clusterID, infraID, metadataJSONSecretRef, platform, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -231,6 +256,11 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
     if (!(infraID == null)) {
         sb.append("infraID:");
         sb.append(infraID);
+        sb.append(",");
+    }
+    if (!(metadataJSONSecretRef == null)) {
+        sb.append("metadataJSONSecretRef:");
+        sb.append(metadataJSONSecretRef);
         sb.append(",");
     }
     if (!(platform == null)) {
@@ -289,6 +319,18 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
     return (A) this;
   }
   
+  public A withMetadataJSONSecretRef(LocalObjectReference metadataJSONSecretRef) {
+    this._visitables.remove("metadataJSONSecretRef");
+    if (metadataJSONSecretRef != null) {
+        this.metadataJSONSecretRef = new LocalObjectReferenceBuilder(metadataJSONSecretRef);
+        this._visitables.get("metadataJSONSecretRef").add(this.metadataJSONSecretRef);
+    } else {
+        this.metadataJSONSecretRef = null;
+        this._visitables.get("metadataJSONSecretRef").remove(this.metadataJSONSecretRef);
+    }
+    return (A) this;
+  }
+  
   public AdminKubeconfigSecretRefNested<A> withNewAdminKubeconfigSecretRef() {
     return new AdminKubeconfigSecretRefNested(null);
   }
@@ -311,6 +353,18 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
   
   public AdminPasswordSecretRefNested<A> withNewAdminPasswordSecretRefLike(LocalObjectReference item) {
     return new AdminPasswordSecretRefNested(item);
+  }
+  
+  public MetadataJSONSecretRefNested<A> withNewMetadataJSONSecretRef() {
+    return new MetadataJSONSecretRefNested(null);
+  }
+  
+  public A withNewMetadataJSONSecretRef(String name) {
+    return (A) this.withMetadataJSONSecretRef(new LocalObjectReference(name));
+  }
+  
+  public MetadataJSONSecretRefNested<A> withNewMetadataJSONSecretRefLike(LocalObjectReference item) {
+    return new MetadataJSONSecretRefNested(item);
   }
   
   public PlatformNested<A> withNewPlatform() {
@@ -362,6 +416,23 @@ public class ClusterMetadataFluent<A extends io.fabric8.openshift.api.model.hive
     }
     
     public N endAdminPasswordSecretRef() {
+      return and();
+    }
+    
+  }
+  public class MetadataJSONSecretRefNested<N> extends LocalObjectReferenceFluent<MetadataJSONSecretRefNested<N>> implements Nested<N>{
+  
+    LocalObjectReferenceBuilder builder;
+  
+    MetadataJSONSecretRefNested(LocalObjectReference item) {
+      this.builder = new LocalObjectReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterMetadataFluent.this.withMetadataJSONSecretRef(builder.build());
+    }
+    
+    public N endMetadataJSONSecretRef() {
       return and();
     }
     

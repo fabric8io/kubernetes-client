@@ -25,7 +25,7 @@ public class PatchEntityBuilder extends PatchEntityFluent<PatchEntityBuilder> im
   }
 
   public PatchEntity build() {
-    PatchEntity buildable = new PatchEntity(fluent.getFrom(), fluent.getOp(), fluent.getPath(), fluent.getValue());
+    PatchEntity buildable = new PatchEntity(fluent.getFrom(), fluent.getOp(), fluent.getPath(), fluent.getValue(), fluent.getValueJSON());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

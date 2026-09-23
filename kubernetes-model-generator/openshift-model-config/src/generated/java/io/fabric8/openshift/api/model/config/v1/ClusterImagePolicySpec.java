@@ -68,7 +68,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
 {
 
     @JsonProperty("policy")
-    private Policy policy;
+    private ImageSigstoreVerificationPolicy policy;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
     public ClusterImagePolicySpec() {
     }
 
-    public ClusterImagePolicySpec(Policy policy, List<String> scopes) {
+    public ClusterImagePolicySpec(ImageSigstoreVerificationPolicy policy, List<String> scopes) {
         super();
         this.policy = policy;
         this.scopes = scopes;
@@ -91,7 +91,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
      * CLusterImagePolicySpec is the specification of the ClusterImagePolicy custom resource.
      */
     @JsonProperty("policy")
-    public Policy getPolicy() {
+    public ImageSigstoreVerificationPolicy getPolicy() {
         return policy;
     }
 
@@ -99,7 +99,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
      * CLusterImagePolicySpec is the specification of the ClusterImagePolicy custom resource.
      */
     @JsonProperty("policy")
-    public void setPolicy(Policy policy) {
+    public void setPolicy(ImageSigstoreVerificationPolicy policy) {
         this.policy = policy;
     }
 

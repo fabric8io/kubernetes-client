@@ -41,7 +41,9 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
+    "configImage",
     "configVersion",
+    "internalReleaseImage",
     "irreconcilableChanges",
     "observedGeneration",
     "pinnedImageSets"
@@ -74,8 +76,12 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("configImage")
+    private MachineConfigNodeStatusConfigImage configImage;
     @JsonProperty("configVersion")
     private MachineConfigNodeStatusMachineConfigVersion configVersion;
+    @JsonProperty("internalReleaseImage")
+    private MachineConfigNodeStatusInternalReleaseImage internalReleaseImage;
     @JsonProperty("irreconcilableChanges")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<IrreconcilableChangeDiff> irreconcilableChanges = new ArrayList<>();
@@ -93,17 +99,19 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     public MachineConfigNodeStatus() {
     }
 
-    public MachineConfigNodeStatus(List<Condition> conditions, MachineConfigNodeStatusMachineConfigVersion configVersion, List<IrreconcilableChangeDiff> irreconcilableChanges, Long observedGeneration, List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {
+    public MachineConfigNodeStatus(List<Condition> conditions, MachineConfigNodeStatusConfigImage configImage, MachineConfigNodeStatusMachineConfigVersion configVersion, MachineConfigNodeStatusInternalReleaseImage internalReleaseImage, List<IrreconcilableChangeDiff> irreconcilableChanges, Long observedGeneration, List<MachineConfigNodeStatusPinnedImageSet> pinnedImageSets) {
         super();
         this.conditions = conditions;
+        this.configImage = configImage;
         this.configVersion = configVersion;
+        this.internalReleaseImage = internalReleaseImage;
         this.irreconcilableChanges = irreconcilableChanges;
         this.observedGeneration = observedGeneration;
         this.pinnedImageSets = pinnedImageSets;
     }
 
     /**
-     * conditions represent the observations of a machine config node's current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded.
+     * conditions represent the observations of a machine config node's current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded. The following types are only available when the ImageModeStatusReporting feature gate is enabled: ImagePulledFromRegistry, AppliedOSImage, AppliedFiles The following types are only available when the NoRegistryClusterInstall feature gate is enabled: InternalReleaseImageDegraded
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -112,11 +120,27 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     }
 
     /**
-     * conditions represent the observations of a machine config node's current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded.
+     * conditions represent the observations of a machine config node's current state. Valid types are: UpdatePrepared, UpdateExecuted, UpdatePostActionComplete, UpdateComplete, Updated, Resumed, Drained, AppliedFilesAndOS, Cordoned, Uncordoned, RebootedNode, NodeDegraded, PinnedImageSetsProgressing, and PinnedImageSetsDegraded. The following types are only available when the ImageModeStatusReporting feature gate is enabled: ImagePulledFromRegistry, AppliedOSImage, AppliedFiles The following types are only available when the NoRegistryClusterInstall feature gate is enabled: InternalReleaseImageDegraded
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
+    @JsonProperty("configImage")
+    public MachineConfigNodeStatusConfigImage getConfigImage() {
+        return configImage;
+    }
+
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
+    @JsonProperty("configImage")
+    public void setConfigImage(MachineConfigNodeStatusConfigImage configImage) {
+        this.configImage = configImage;
     }
 
     /**
@@ -133,6 +157,22 @@ public class MachineConfigNodeStatus implements Editable<MachineConfigNodeStatus
     @JsonProperty("configVersion")
     public void setConfigVersion(MachineConfigNodeStatusMachineConfigVersion configVersion) {
         this.configVersion = configVersion;
+    }
+
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
+    @JsonProperty("internalReleaseImage")
+    public MachineConfigNodeStatusInternalReleaseImage getInternalReleaseImage() {
+        return internalReleaseImage;
+    }
+
+    /**
+     * MachineConfigNodeStatus holds the reported information on a particular machine config node.
+     */
+    @JsonProperty("internalReleaseImage")
+    public void setInternalReleaseImage(MachineConfigNodeStatusInternalReleaseImage internalReleaseImage) {
+        this.internalReleaseImage = internalReleaseImage;
     }
 
     /**

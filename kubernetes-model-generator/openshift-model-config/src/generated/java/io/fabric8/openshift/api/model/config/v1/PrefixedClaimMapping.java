@@ -38,6 +38,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "claim",
+    "expression",
     "prefix"
 })
 @ToString
@@ -67,6 +68,8 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
 
     @JsonProperty("claim")
     private String claim;
+    @JsonProperty("expression")
+    private String expression;
     @JsonProperty("prefix")
     private String prefix;
     @JsonIgnore
@@ -78,14 +81,15 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
     public PrefixedClaimMapping() {
     }
 
-    public PrefixedClaimMapping(String claim, String prefix) {
+    public PrefixedClaimMapping(String claim, String expression, String prefix) {
         super();
         this.claim = claim;
+        this.expression = expression;
         this.prefix = prefix;
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
+     * claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string `""`, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -93,7 +97,7 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
+     * claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string `""`, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
@@ -101,7 +105,23 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
     }
 
     /**
-     * prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> When omitted (""), no prefix is applied to the cluster identity attribute.<br><p> <br><p> Example: if `prefix` is set to "myoidc:" and the `claim` in JWT contains an array of strings "a", "b" and  "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
+     * expression is an optional CEL expression used to derive group values from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length .<br><p> <br><p> When specified, claim must not be set or be explicitly set to the empty string (`""`).
+     */
+    @JsonProperty("expression")
+    public String getExpression() {
+        return expression;
+    }
+
+    /**
+     * expression is an optional CEL expression used to derive group values from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length .<br><p> <br><p> When specified, claim must not be set or be explicitly set to the empty string (`""`).
+     */
+    @JsonProperty("expression")
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
+
+    /**
+     * prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> When omitted or set to an empty string (""), no prefix is applied to the cluster identity attribute. Must not be set to a non-empty value when expression is set.<br><p> <br><p> Example: if `prefix` is set to "myoidc:" and the `claim` in JWT contains an array of strings "a", "b" and "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
      */
     @JsonProperty("prefix")
     public String getPrefix() {
@@ -109,7 +129,7 @@ public class PrefixedClaimMapping implements Editable<PrefixedClaimMappingBuilde
     }
 
     /**
-     * prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> When omitted (""), no prefix is applied to the cluster identity attribute.<br><p> <br><p> Example: if `prefix` is set to "myoidc:" and the `claim` in JWT contains an array of strings "a", "b" and  "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
+     * prefix is an optional field that configures the prefix that will be applied to the cluster identity attribute during the process of mapping JWT claims to cluster identity attributes.<br><p> <br><p> When omitted or set to an empty string (""), no prefix is applied to the cluster identity attribute. Must not be set to a non-empty value when expression is set.<br><p> <br><p> Example: if `prefix` is set to "myoidc:" and the `claim` in JWT contains an array of strings "a", "b" and "c", the mapping will result in an array of string "myoidc:a", "myoidc:b" and "myoidc:c".
      */
     @JsonProperty("prefix")
     public void setPrefix(String prefix) {

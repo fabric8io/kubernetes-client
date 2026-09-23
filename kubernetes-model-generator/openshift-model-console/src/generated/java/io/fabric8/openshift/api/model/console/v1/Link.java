@@ -86,7 +86,7 @@ public class Link implements Editable<LinkBuilder>, KubernetesResource
     }
 
     /**
-     * href is the absolute secure URL for the link (must use https)
+     * href is the absolute URL for the link. Must use https:// for web URLs or mailto: for email links.
      */
     @JsonProperty("href")
     public String getHref() {
@@ -94,7 +94,7 @@ public class Link implements Editable<LinkBuilder>, KubernetesResource
     }
 
     /**
-     * href is the absolute secure URL for the link (must use https)
+     * href is the absolute URL for the link. Must use https:// for web URLs or mailto: for email links.
      */
     @JsonProperty("href")
     public void setHref(String href) {

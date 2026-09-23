@@ -55,6 +55,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "failedProvisionConfig",
     "featureGates",
     "globalPullSecretRef",
+    "hiveImagePullSecretRef",
     "logLevel",
     "machinePoolPollInterval",
     "maintenanceMode",
@@ -122,6 +123,8 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     private FeatureGateSelection featureGates;
     @JsonProperty("globalPullSecretRef")
     private LocalObjectReference globalPullSecretRef;
+    @JsonProperty("hiveImagePullSecretRef")
+    private LocalObjectReference hiveImagePullSecretRef;
     @JsonProperty("logLevel")
     private String logLevel;
     @JsonProperty("machinePoolPollInterval")
@@ -152,7 +155,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     public HiveConfigSpec() {
     }
 
-    public HiveConfigSpec(List<LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, String clusterVersionPollInterval, ControllersConfig controllersConfig, String deleteProtection, List<DeploymentConfig> deploymentConfig, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, LocalObjectReference globalPullSecretRef, String logLevel, String machinePoolPollInterval, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, MetricsConfig metricsConfig, PrivateLinkConfig privateLink, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
+    public HiveConfigSpec(List<LocalObjectReference> additionalCertificateAuthoritiesSecretRef, ArgoCDConfig argoCDConfig, AWSPrivateLinkConfig awsPrivateLink, BackupConfig backup, String clusterVersionPollInterval, ControllersConfig controllersConfig, String deleteProtection, List<DeploymentConfig> deploymentConfig, Boolean deprovisionsDisabled, List<String> disabledControllers, Boolean exportMetrics, FailedProvisionConfig failedProvisionConfig, FeatureGateSelection featureGates, LocalObjectReference globalPullSecretRef, LocalObjectReference hiveImagePullSecretRef, String logLevel, String machinePoolPollInterval, Boolean maintenanceMode, List<ManageDNSConfig> managedDomains, MetricsConfig metricsConfig, PrivateLinkConfig privateLink, ReleaseImageVerificationConfigMapReference releaseImageVerificationConfigMapRef, ServiceProviderCredentials serviceProviderCredentialsConfig, String syncSetReapplyInterval, String targetNamespace) {
         super();
         this.additionalCertificateAuthoritiesSecretRef = additionalCertificateAuthoritiesSecretRef;
         this.argoCDConfig = argoCDConfig;
@@ -168,6 +171,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
         this.failedProvisionConfig = failedProvisionConfig;
         this.featureGates = featureGates;
         this.globalPullSecretRef = globalPullSecretRef;
+        this.hiveImagePullSecretRef = hiveImagePullSecretRef;
         this.logLevel = logLevel;
         this.machinePoolPollInterval = machinePoolPollInterval;
         this.maintenanceMode = maintenanceMode;
@@ -246,7 +250,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * ClusterVersionPollInterval is a string duration indicating how much time must pass before checking whether we need to update the hive.openshift.io/version&#42; labels on ClusterDeployment. If zero or unset, we'll only reconcile when the ClusterDeployment changes.
+     * ClusterVersionPollInterval is a string duration indicating how much time must pass before checking whether we need to update the hive.openshift.io/version&#42; labels on ClusterDeployment. If zero or unset, we'll only reconcile when the ClusterDeployment changes. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("clusterVersionPollInterval")
     public String getClusterVersionPollInterval() {
@@ -254,7 +258,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * ClusterVersionPollInterval is a string duration indicating how much time must pass before checking whether we need to update the hive.openshift.io/version&#42; labels on ClusterDeployment. If zero or unset, we'll only reconcile when the ClusterDeployment changes.
+     * ClusterVersionPollInterval is a string duration indicating how much time must pass before checking whether we need to update the hive.openshift.io/version&#42; labels on ClusterDeployment. If zero or unset, we'll only reconcile when the ClusterDeployment changes. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("clusterVersionPollInterval")
     public void setClusterVersionPollInterval(String clusterVersionPollInterval) {
@@ -408,6 +412,22 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
+     * HiveConfigSpec defines the desired state of Hive
+     */
+    @JsonProperty("hiveImagePullSecretRef")
+    public LocalObjectReference getHiveImagePullSecretRef() {
+        return hiveImagePullSecretRef;
+    }
+
+    /**
+     * HiveConfigSpec defines the desired state of Hive
+     */
+    @JsonProperty("hiveImagePullSecretRef")
+    public void setHiveImagePullSecretRef(LocalObjectReference hiveImagePullSecretRef) {
+        this.hiveImagePullSecretRef = hiveImagePullSecretRef;
+    }
+
+    /**
      * LogLevel is the level of logging to use for the Hive controllers. Acceptable levels, from coarsest to finest, are panic, fatal, error, warn, info, debug, and trace. The default level is info.
      */
     @JsonProperty("logLevel")
@@ -424,7 +444,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * MachinePoolPollInterval is a string duration indicating how much time must pass before checking whether remote resources related to MachinePools need to be reapplied. Set to zero to disable polling -- we'll only reconcile when hub objects change. The default interval is 30m.
+     * MachinePoolPollInterval is a string duration indicating how much time must pass before checking whether remote resources related to MachinePools need to be reapplied. Set to zero to disable polling -- we'll only reconcile when hub objects change. The default interval is 30m. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("machinePoolPollInterval")
     public String getMachinePoolPollInterval() {
@@ -432,7 +452,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * MachinePoolPollInterval is a string duration indicating how much time must pass before checking whether remote resources related to MachinePools need to be reapplied. Set to zero to disable polling -- we'll only reconcile when hub objects change. The default interval is 30m.
+     * MachinePoolPollInterval is a string duration indicating how much time must pass before checking whether remote resources related to MachinePools need to be reapplied. Set to zero to disable polling -- we'll only reconcile when hub objects change. The default interval is 30m. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("machinePoolPollInterval")
     public void setMachinePoolPollInterval(String machinePoolPollInterval) {
@@ -537,7 +557,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * SyncSetReapplyInterval is a string duration indicating how much time must pass before SyncSet resources will be reapplied. The default reapply interval is two hours.
+     * SyncSetReapplyInterval is a string duration indicating how much time must pass before SyncSet resources will be reapplied. The default reapply interval is two hours. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("syncSetReapplyInterval")
     public String getSyncSetReapplyInterval() {
@@ -545,7 +565,7 @@ public class HiveConfigSpec implements Editable<HiveConfigSpecBuilder>, Kubernet
     }
 
     /**
-     * SyncSetReapplyInterval is a string duration indicating how much time must pass before SyncSet resources will be reapplied. The default reapply interval is two hours.
+     * SyncSetReapplyInterval is a string duration indicating how much time must pass before SyncSet resources will be reapplied. The default reapply interval is two hours. This is a Duration value; see https://pkg.go.dev/time#ParseDuration for accepted formats. Note: due to discrepancies in validation vs parsing, we use a Pattern instead of `Format=duration`. See https://bugzilla.redhat.com/show_bug.cgi?id=2050332 https://github.com/kubernetes/apimachinery/issues/131 https://github.com/kubernetes/apiextensions-apiserver/issues/56
      */
     @JsonProperty("syncSetReapplyInterval")
     public void setSyncSetReapplyInterval(String syncSetReapplyInterval) {

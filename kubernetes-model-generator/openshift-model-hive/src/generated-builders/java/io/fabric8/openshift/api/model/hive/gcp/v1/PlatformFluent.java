@@ -5,6 +5,7 @@ import io.fabric8.kubernetes.api.builder.Nested;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceFluent;
+import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -22,6 +23,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
 
   private Map<String,Object> additionalProperties;
   private LocalObjectReferenceBuilder credentialsSecretRef;
+  private Boolean discardLocalSsdOnHibernate;
   private PrivateServiceConnectBuilder privateServiceConnect;
   private String region;
 
@@ -64,6 +66,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
     instance = instance != null ? instance : new Platform();
     if (instance != null) {
         this.withCredentialsSecretRef(instance.getCredentialsSecretRef());
+        this.withDiscardLocalSsdOnHibernate(instance.getDiscardLocalSsdOnHibernate());
         this.withPrivateServiceConnect(instance.getPrivateServiceConnect());
         this.withRegion(instance.getRegion());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -108,6 +111,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
     if (!(Objects.equals(credentialsSecretRef, that.credentialsSecretRef))) {
       return false;
     }
+    if (!(Objects.equals(discardLocalSsdOnHibernate, that.discardLocalSsdOnHibernate))) {
+      return false;
+    }
     if (!(Objects.equals(privateServiceConnect, that.privateServiceConnect))) {
       return false;
     }
@@ -124,6 +130,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
     return this.additionalProperties;
   }
   
+  public Boolean getDiscardLocalSsdOnHibernate() {
+    return this.discardLocalSsdOnHibernate;
+  }
+  
   public String getRegion() {
     return this.region;
   }
@@ -136,6 +146,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
     return this.credentialsSecretRef != null;
   }
   
+  public boolean hasDiscardLocalSsdOnHibernate() {
+    return this.discardLocalSsdOnHibernate != null;
+  }
+  
   public boolean hasPrivateServiceConnect() {
     return this.privateServiceConnect != null;
   }
@@ -145,7 +159,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
   }
   
   public int hashCode() {
-    return Objects.hash(credentialsSecretRef, privateServiceConnect, region, additionalProperties);
+    return Objects.hash(credentialsSecretRef, discardLocalSsdOnHibernate, privateServiceConnect, region, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -178,6 +192,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
     if (!(credentialsSecretRef == null)) {
         sb.append("credentialsSecretRef:");
         sb.append(credentialsSecretRef);
+        sb.append(",");
+    }
+    if (!(discardLocalSsdOnHibernate == null)) {
+        sb.append("discardLocalSsdOnHibernate:");
+        sb.append(discardLocalSsdOnHibernate);
         sb.append(",");
     }
     if (!(privateServiceConnect == null)) {
@@ -216,6 +235,15 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.gcp.v1
         this.credentialsSecretRef = null;
         this._visitables.get("credentialsSecretRef").remove(this.credentialsSecretRef);
     }
+    return (A) this;
+  }
+  
+  public A withDiscardLocalSsdOnHibernate() {
+    return withDiscardLocalSsdOnHibernate(true);
+  }
+  
+  public A withDiscardLocalSsdOnHibernate(Boolean discardLocalSsdOnHibernate) {
+    this.discardLocalSsdOnHibernate = discardLocalSsdOnHibernate;
     return (A) this;
   }
   

@@ -25,7 +25,7 @@ public class OSImageBuilder extends OSImageFluent<OSImageBuilder> implements Vis
   }
 
   public OSImage build() {
-    OSImage buildable = new OSImage(fluent.getOffer(), fluent.getPublisher(), fluent.getSku(), fluent.getVersion());
+    OSImage buildable = new OSImage(fluent.getOffer(), fluent.getPlan(), fluent.getPublisher(), fluent.getSku(), fluent.getVersion());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

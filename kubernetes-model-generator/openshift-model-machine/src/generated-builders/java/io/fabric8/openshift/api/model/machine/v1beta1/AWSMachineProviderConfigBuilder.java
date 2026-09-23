@@ -25,7 +25,7 @@ public class AWSMachineProviderConfigBuilder extends AWSMachineProviderConfigFlu
   }
 
   public AWSMachineProviderConfig build() {
-    AWSMachineProviderConfig buildable = new AWSMachineProviderConfig(fluent.buildAmi(), fluent.getApiVersion(), fluent.buildBlockDevices(), fluent.getCapacityReservationId(), fluent.buildCredentialsSecret(), fluent.getDeviceIndex(), fluent.buildIamInstanceProfile(), fluent.getInstanceType(), fluent.getKeyName(), fluent.getKind(), fluent.buildLoadBalancers(), fluent.getMarketType(), fluent.buildMetadata(), fluent.buildMetadataServiceOptions(), fluent.getNetworkInterfaceType(), fluent.buildPlacement(), fluent.getPlacementGroupName(), fluent.getPlacementGroupPartition(), fluent.getPublicIp(), fluent.buildSecurityGroups(), fluent.buildSpotMarketOptions(), fluent.buildSubnet(), fluent.buildTags(), fluent.buildUserDataSecret());
+    AWSMachineProviderConfig buildable = new AWSMachineProviderConfig(fluent.buildAmi(), fluent.getApiVersion(), fluent.buildBlockDevices(), fluent.getCapacityReservationId(), fluent.buildCpuOptions(), fluent.buildCredentialsSecret(), fluent.getDeviceIndex(), fluent.buildIamInstanceProfile(), fluent.getInstanceType(), fluent.getKeyName(), fluent.getKind(), fluent.buildLoadBalancers(), fluent.getMarketType(), fluent.buildMetadata(), fluent.buildMetadataServiceOptions(), fluent.getNetworkInterfaceType(), fluent.buildPlacement(), fluent.getPlacementGroupName(), fluent.getPlacementGroupPartition(), fluent.getPublicIp(), fluent.buildSecurityGroups(), fluent.buildSpotMarketOptions(), fluent.buildSubnet(), fluent.buildTags(), fluent.buildUserDataSecret());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

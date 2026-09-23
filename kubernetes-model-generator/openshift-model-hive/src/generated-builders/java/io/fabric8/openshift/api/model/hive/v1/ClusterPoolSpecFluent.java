@@ -35,6 +35,7 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
   private Map<String,String> annotations;
   private String baseDomain;
   private ClusterPoolClaimLifetimeBuilder claimLifetime;
+  private LocalObjectReferenceBuilder customizationRef;
   private String hibernateAfter;
   private HibernationConfigBuilder hibernationConfig;
   private ClusterImageSetReferenceBuilder imageSetRef;
@@ -220,6 +221,10 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     return this.claimLifetime != null ? this.claimLifetime.build() : null;
   }
   
+  public LocalObjectReference buildCustomizationRef() {
+    return this.customizationRef != null ? this.customizationRef.build() : null;
+  }
+  
   public EnvVar buildFirstInstallerEnv() {
     return this.installerEnv.get(0).build();
   }
@@ -296,6 +301,7 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
         this.withAnnotations(instance.getAnnotations());
         this.withBaseDomain(instance.getBaseDomain());
         this.withClaimLifetime(instance.getClaimLifetime());
+        this.withCustomizationRef(instance.getCustomizationRef());
         this.withHibernateAfter(instance.getHibernateAfter());
         this.withHibernationConfig(instance.getHibernationConfig());
         this.withImageSetRef(instance.getImageSetRef());
@@ -317,6 +323,10 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
   
   public ClaimLifetimeNested<A> editClaimLifetime() {
     return this.withNewClaimLifetimeLike(Optional.ofNullable(this.buildClaimLifetime()).orElse(null));
+  }
+  
+  public CustomizationRefNested<A> editCustomizationRef() {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(null));
   }
   
   public InstallerEnvNested<A> editFirstInstallerEnv() {
@@ -411,6 +421,14 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     return this.withNewClaimLifetimeLike(Optional.ofNullable(this.buildClaimLifetime()).orElse(item));
   }
   
+  public CustomizationRefNested<A> editOrNewCustomizationRef() {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(new LocalObjectReferenceBuilder().build()));
+  }
+  
+  public CustomizationRefNested<A> editOrNewCustomizationRefLike(LocalObjectReference item) {
+    return this.withNewCustomizationRefLike(Optional.ofNullable(this.buildCustomizationRef()).orElse(item));
+  }
+  
   public HibernationConfigNested<A> editOrNewHibernationConfig() {
     return this.withNewHibernationConfigLike(Optional.ofNullable(this.buildHibernationConfig()).orElse(new HibernationConfigBuilder().build()));
   }
@@ -477,6 +495,9 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
       return false;
     }
     if (!(Objects.equals(claimLifetime, that.claimLifetime))) {
+      return false;
+    }
+    if (!(Objects.equals(customizationRef, that.customizationRef))) {
       return false;
     }
     if (!(Objects.equals(hibernateAfter, that.hibernateAfter))) {
@@ -590,6 +611,10 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     return this.claimLifetime != null;
   }
   
+  public boolean hasCustomizationRef() {
+    return this.customizationRef != null;
+  }
+  
   public boolean hasHibernateAfter() {
     return this.hibernateAfter != null;
   }
@@ -669,7 +694,7 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
   }
   
   public int hashCode() {
-    return Objects.hash(annotations, baseDomain, claimLifetime, hibernateAfter, hibernationConfig, imageSetRef, installAttemptsLimit, installConfigSecretTemplateRef, installerEnv, inventory, labels, maxConcurrent, maxSize, platform, pullSecretRef, runningCount, size, skipMachinePools, additionalProperties);
+    return Objects.hash(annotations, baseDomain, claimLifetime, customizationRef, hibernateAfter, hibernationConfig, imageSetRef, installAttemptsLimit, installConfigSecretTemplateRef, installerEnv, inventory, labels, maxConcurrent, maxSize, platform, pullSecretRef, runningCount, size, skipMachinePools, additionalProperties);
   }
   
   public A removeAllFromInstallerEnv(Collection<EnvVar> items) {
@@ -880,6 +905,11 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
         sb.append(claimLifetime);
         sb.append(",");
     }
+    if (!(customizationRef == null)) {
+        sb.append("customizationRef:");
+        sb.append(customizationRef);
+        sb.append(",");
+    }
     if (!(hibernateAfter == null)) {
         sb.append("hibernateAfter:");
         sb.append(hibernateAfter);
@@ -994,6 +1024,18 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     } else {
         this.claimLifetime = null;
         this._visitables.get("claimLifetime").remove(this.claimLifetime);
+    }
+    return (A) this;
+  }
+  
+  public A withCustomizationRef(LocalObjectReference customizationRef) {
+    this._visitables.remove("customizationRef");
+    if (customizationRef != null) {
+        this.customizationRef = new LocalObjectReferenceBuilder(customizationRef);
+        this._visitables.get("customizationRef").add(this.customizationRef);
+    } else {
+        this.customizationRef = null;
+        this._visitables.get("customizationRef").remove(this.customizationRef);
     }
     return (A) this;
   }
@@ -1131,6 +1173,18 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     return new ClaimLifetimeNested(item);
   }
   
+  public CustomizationRefNested<A> withNewCustomizationRef() {
+    return new CustomizationRefNested(null);
+  }
+  
+  public A withNewCustomizationRef(String name) {
+    return (A) this.withCustomizationRef(new LocalObjectReference(name));
+  }
+  
+  public CustomizationRefNested<A> withNewCustomizationRefLike(LocalObjectReference item) {
+    return new CustomizationRefNested(item);
+  }
+  
   public HibernationConfigNested<A> withNewHibernationConfig() {
     return new HibernationConfigNested(null);
   }
@@ -1242,6 +1296,23 @@ public class ClusterPoolSpecFluent<A extends io.fabric8.openshift.api.model.hive
     }
     
     public N endClaimLifetime() {
+      return and();
+    }
+    
+  }
+  public class CustomizationRefNested<N> extends LocalObjectReferenceFluent<CustomizationRefNested<N>> implements Nested<N>{
+  
+    LocalObjectReferenceBuilder builder;
+  
+    CustomizationRefNested(LocalObjectReference item) {
+      this.builder = new LocalObjectReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterPoolSpecFluent.this.withCustomizationRef(builder.build());
+    }
+    
+    public N endCustomizationRef() {
       return and();
     }
     

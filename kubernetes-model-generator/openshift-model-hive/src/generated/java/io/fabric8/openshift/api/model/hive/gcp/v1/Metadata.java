@@ -82,7 +82,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * NetworkProjectID is used for shared VPC setups
+     * NetworkProjectID is used for shared VPC setups Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
@@ -90,7 +90,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * NetworkProjectID is used for shared VPC setups
+     * NetworkProjectID is used for shared VPC setups Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {

@@ -81,7 +81,7 @@ public class AWSDNSSpec implements Editable<AWSDNSSpecBuilder>, KubernetesResour
     }
 
     /**
-     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.
+     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.<br><p> <br><p> The ARN must follow the format: arn:&lt;partition&gt;:iam::&lt;account-id&gt;:role/&lt;role-name&gt;, where: &lt;partition&gt; is the AWS partition (aws, aws-cn, aws-us-gov, or aws-eusc), &lt;account-id&gt; is a 12-digit numeric identifier for the AWS account, &lt;role-name&gt; is the IAM role name.
      */
     @JsonProperty("privateZoneIAMRole")
     public String getPrivateZoneIAMRole() {
@@ -89,7 +89,7 @@ public class AWSDNSSpec implements Editable<AWSDNSSpecBuilder>, KubernetesResour
     }
 
     /**
-     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.
+     * privateZoneIAMRole contains the ARN of an IAM role that should be assumed when performing operations on the cluster's private hosted zone specified in the cluster DNS config. When left empty, no role should be assumed.<br><p> <br><p> The ARN must follow the format: arn:&lt;partition&gt;:iam::&lt;account-id&gt;:role/&lt;role-name&gt;, where: &lt;partition&gt; is the AWS partition (aws, aws-cn, aws-us-gov, or aws-eusc), &lt;account-id&gt; is a 12-digit numeric identifier for the AWS account, &lt;role-name&gt; is the IAM role name.
      */
     @JsonProperty("privateZoneIAMRole")
     public void setPrivateZoneIAMRole(String privateZoneIAMRole) {

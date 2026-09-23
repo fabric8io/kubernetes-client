@@ -25,7 +25,7 @@ public class OVNKubernetesConfigBuilder extends OVNKubernetesConfigFluent<OVNKub
   }
 
   public OVNKubernetesConfig build() {
-    OVNKubernetesConfig buildable = new OVNKubernetesConfig(fluent.buildEgressIPConfig(), fluent.buildGatewayConfig(), fluent.getGenevePort(), fluent.buildHybridOverlayConfig(), fluent.buildIpsecConfig(), fluent.buildIpv4(), fluent.buildIpv6(), fluent.getMtu(), fluent.buildPolicyAuditConfig(), fluent.getRouteAdvertisements(), fluent.getV4InternalSubnet(), fluent.getV6InternalSubnet());
+    OVNKubernetesConfig buildable = new OVNKubernetesConfig(fluent.buildBgpManagedConfig(), fluent.buildEgressIPConfig(), fluent.buildGatewayConfig(), fluent.getGenevePort(), fluent.buildHybridOverlayConfig(), fluent.buildIpsecConfig(), fluent.buildIpv4(), fluent.buildIpv6(), fluent.getMtu(), fluent.buildNoOverlayConfig(), fluent.buildPolicyAuditConfig(), fluent.getRouteAdvertisements(), fluent.getTransport(), fluent.getV4InternalSubnet(), fluent.getV6InternalSubnet());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

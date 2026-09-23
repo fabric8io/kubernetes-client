@@ -25,7 +25,7 @@ public class MachineConfigPoolStatusBuilder extends MachineConfigPoolStatusFluen
   }
 
   public MachineConfigPoolStatus build() {
-    MachineConfigPoolStatus buildable = new MachineConfigPoolStatus(fluent.buildCertExpirys(), fluent.buildConditions(), fluent.buildConfiguration(), fluent.getDegradedMachineCount(), fluent.getMachineCount(), fluent.getObservedGeneration(), fluent.buildPoolSynchronizersStatus(), fluent.getReadyMachineCount(), fluent.getUnavailableMachineCount(), fluent.getUpdatedMachineCount());
+    MachineConfigPoolStatus buildable = new MachineConfigPoolStatus(fluent.buildCertExpirys(), fluent.buildConditions(), fluent.buildConfiguration(), fluent.getDegradedMachineCount(), fluent.getMachineCount(), fluent.getObservedGeneration(), fluent.buildOsImageStream(), fluent.buildPoolSynchronizersStatus(), fluent.getReadyMachineCount(), fluent.getUnavailableMachineCount(), fluent.getUpdatedMachineCount());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

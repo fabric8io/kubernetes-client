@@ -27,6 +27,7 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openshift.api.model.config.v1.ClusterVersionStatus;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -43,6 +44,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "apiURL",
     "certificateBundles",
     "cliImage",
+    "clusterVersionStatus",
     "conditions",
     "installRestarts",
     "installStartedTimestamp",
@@ -86,6 +88,8 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     private List<CertificateBundleStatus> certificateBundles = new ArrayList<>();
     @JsonProperty("cliImage")
     private String cliImage;
+    @JsonProperty("clusterVersionStatus")
+    private ClusterVersionStatus clusterVersionStatus;
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterDeploymentCondition> conditions = new ArrayList<>();
@@ -116,11 +120,12 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     public ClusterDeploymentStatus() {
     }
 
-    public ClusterDeploymentStatus(String apiURL, List<CertificateBundleStatus> certificateBundles, String cliImage, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, String installVersion, String installedTimestamp, String installerImage, PlatformStatus platformStatus, String powerState, LocalObjectReference provisionRef, String webConsoleURL) {
+    public ClusterDeploymentStatus(String apiURL, List<CertificateBundleStatus> certificateBundles, String cliImage, ClusterVersionStatus clusterVersionStatus, List<ClusterDeploymentCondition> conditions, Integer installRestarts, String installStartedTimestamp, String installVersion, String installedTimestamp, String installerImage, PlatformStatus platformStatus, String powerState, LocalObjectReference provisionRef, String webConsoleURL) {
         super();
         this.apiURL = apiURL;
         this.certificateBundles = certificateBundles;
         this.cliImage = cliImage;
+        this.clusterVersionStatus = clusterVersionStatus;
         this.conditions = conditions;
         this.installRestarts = installRestarts;
         this.installStartedTimestamp = installStartedTimestamp;
@@ -180,6 +185,22 @@ public class ClusterDeploymentStatus implements Editable<ClusterDeploymentStatus
     @JsonProperty("cliImage")
     public void setCliImage(String cliImage) {
         this.cliImage = cliImage;
+    }
+
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
+    @JsonProperty("clusterVersionStatus")
+    public ClusterVersionStatus getClusterVersionStatus() {
+        return clusterVersionStatus;
+    }
+
+    /**
+     * ClusterDeploymentStatus defines the observed state of ClusterDeployment
+     */
+    @JsonProperty("clusterVersionStatus")
+    public void setClusterVersionStatus(ClusterVersionStatus clusterVersionStatus) {
+        this.clusterVersionStatus = clusterVersionStatus;
     }
 
     /**

@@ -35,6 +35,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "eventTTLMinutes",
     "failedRevisionLimit",
     "forceRedeploymentReason",
     "logLevel",
@@ -69,6 +70,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class KubeAPIServerSpec implements Editable<KubeAPIServerSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("eventTTLMinutes")
+    private Integer eventTTLMinutes;
     @JsonProperty("failedRevisionLimit")
     private Integer failedRevisionLimit;
     @JsonProperty("forceRedeploymentReason")
@@ -96,8 +99,9 @@ public class KubeAPIServerSpec implements Editable<KubeAPIServerSpecBuilder>, Ku
     public KubeAPIServerSpec() {
     }
 
-    public KubeAPIServerSpec(Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
+    public KubeAPIServerSpec(Integer eventTTLMinutes, Integer failedRevisionLimit, String forceRedeploymentReason, String logLevel, String managementState, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
         super();
+        this.eventTTLMinutes = eventTTLMinutes;
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
         this.logLevel = logLevel;
@@ -106,6 +110,22 @@ public class KubeAPIServerSpec implements Editable<KubeAPIServerSpecBuilder>, Ku
         this.operatorLogLevel = operatorLogLevel;
         this.succeededRevisionLimit = succeededRevisionLimit;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    /**
+     * eventTTLMinutes specifies the amount of time that the events are stored before being deleted. The TTL is allowed between 5 minutes minimum up to a maximum of 180 minutes (3 hours).<br><p> <br><p> Lowering this value will reduce the storage required in etcd. Note that this setting will only apply to new events being created and will not update existing events.<br><p> <br><p> When omitted this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default value is 3h (180 minutes).
+     */
+    @JsonProperty("eventTTLMinutes")
+    public Integer getEventTTLMinutes() {
+        return eventTTLMinutes;
+    }
+
+    /**
+     * eventTTLMinutes specifies the amount of time that the events are stored before being deleted. The TTL is allowed between 5 minutes minimum up to a maximum of 180 minutes (3 hours).<br><p> <br><p> Lowering this value will reduce the storage required in etcd. Note that this setting will only apply to new events being created and will not update existing events.<br><p> <br><p> When omitted this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default value is 3h (180 minutes).
+     */
+    @JsonProperty("eventTTLMinutes")
+    public void setEventTTLMinutes(Integer eventTTLMinutes) {
+        this.eventTTLMinutes = eventTTLMinutes;
     }
 
     /**

@@ -460,8 +460,8 @@ public class TokenClaimMappingsFluent<A extends io.fabric8.openshift.api.model.c
     return new GroupsNested(null);
   }
   
-  public A withNewGroups(String claim,String prefix) {
-    return (A) this.withGroups(new PrefixedClaimMapping(claim, prefix));
+  public A withNewGroups(String claim,String expression,String prefix) {
+    return (A) this.withGroups(new PrefixedClaimMapping(claim, expression, prefix));
   }
   
   public GroupsNested<A> withNewGroupsLike(PrefixedClaimMapping item) {

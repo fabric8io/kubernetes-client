@@ -25,7 +25,7 @@ public class MachineConfigurationStatusBuilder extends MachineConfigurationStatu
   }
 
   public MachineConfigurationStatus build() {
-    MachineConfigurationStatus buildable = new MachineConfigurationStatus(fluent.getConditions(), fluent.buildManagedBootImagesStatus(), fluent.buildNodeDisruptionPolicyStatus(), fluent.getObservedGeneration());
+    MachineConfigurationStatus buildable = new MachineConfigurationStatus(fluent.buildBootImageSkewEnforcementStatus(), fluent.getConditions(), fluent.buildManagedBootImagesStatus(), fluent.buildNodeDisruptionPolicyStatus(), fluent.getObservedGeneration());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -25,7 +25,7 @@ public class MachinePoolPlatformBuilder extends MachinePoolPlatformFluent<Machin
   }
 
   public MachinePoolPlatform build() {
-    MachinePoolPlatform buildable = new MachinePoolPlatform(fluent.buildAws(), fluent.buildAzure(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildOpenstack(), fluent.buildOvirt(), fluent.buildVsphere());
+    MachinePoolPlatform buildable = new MachinePoolPlatform(fluent.buildAws(), fluent.buildAzure(), fluent.buildGcp(), fluent.buildIbmcloud(), fluent.buildNutanix(), fluent.buildOpenstack(), fluent.buildVsphere());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

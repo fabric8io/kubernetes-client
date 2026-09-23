@@ -25,7 +25,7 @@ public class MachineConfigNodeSpecBuilder extends MachineConfigNodeSpecFluent<Ma
   }
 
   public MachineConfigNodeSpec build() {
-    MachineConfigNodeSpec buildable = new MachineConfigNodeSpec(fluent.buildConfigVersion(), fluent.buildNode(), fluent.buildPool());
+    MachineConfigNodeSpec buildable = new MachineConfigNodeSpec(fluent.buildConfigImage(), fluent.buildConfigVersion(), fluent.buildNode(), fluent.buildPool());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

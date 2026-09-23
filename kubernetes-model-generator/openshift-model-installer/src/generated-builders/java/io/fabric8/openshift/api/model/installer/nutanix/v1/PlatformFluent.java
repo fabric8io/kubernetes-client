@@ -30,6 +30,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
   private List<String> apiVIPs = new ArrayList<String>();
   private String clusterOSImage;
   private MachinePoolBuilder defaultMachinePlatform;
+  private String dnsRecordsType;
   private ArrayList<FailureDomainBuilder> failureDomains = new ArrayList<FailureDomainBuilder>();
   private String ingressVIP;
   private List<String> ingressVIPs = new ArrayList<String>();
@@ -310,6 +311,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
         this.withApiVIPs(instance.getApiVIPs());
         this.withClusterOSImage(instance.getClusterOSImage());
         this.withDefaultMachinePlatform(instance.getDefaultMachinePlatform());
+        this.withDnsRecordsType(instance.getDnsRecordsType());
         this.withFailureDomains(instance.getFailureDomains());
         this.withIngressVIP(instance.getIngressVIP());
         this.withIngressVIPs(instance.getIngressVIPs());
@@ -442,6 +444,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
     if (!(Objects.equals(defaultMachinePlatform, that.defaultMachinePlatform))) {
       return false;
     }
+    if (!(Objects.equals(dnsRecordsType, that.dnsRecordsType))) {
+      return false;
+    }
     if (!(Objects.equals(failureDomains, that.failureDomains))) {
       return false;
     }
@@ -493,6 +498,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
   
   public String getClusterOSImage() {
     return this.clusterOSImage;
+  }
+  
+  public String getDnsRecordsType() {
+    return this.dnsRecordsType;
   }
   
   public String getFirstApiVIP() {
@@ -598,6 +607,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
     return this.defaultMachinePlatform != null;
   }
   
+  public boolean hasDnsRecordsType() {
+    return this.dnsRecordsType != null;
+  }
+  
   public boolean hasFailureDomains() {
     return this.failureDomains != null && !(this.failureDomains.isEmpty());
   }
@@ -680,7 +693,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
   }
   
   public int hashCode() {
-    return Objects.hash(apiVIP, apiVIPs, clusterOSImage, defaultMachinePlatform, failureDomains, ingressVIP, ingressVIPs, loadBalancer, preloadedOSImageName, prismAPICallTimeout, prismCentral, prismElements, subnetUUIDs, additionalProperties);
+    return Objects.hash(apiVIP, apiVIPs, clusterOSImage, defaultMachinePlatform, dnsRecordsType, failureDomains, ingressVIP, ingressVIPs, loadBalancer, preloadedOSImageName, prismAPICallTimeout, prismCentral, prismElements, subnetUUIDs, additionalProperties);
   }
   
   public A removeAllFromApiVIPs(Collection<String> items) {
@@ -932,6 +945,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
         sb.append(defaultMachinePlatform);
         sb.append(",");
     }
+    if (!(dnsRecordsType == null)) {
+        sb.append("dnsRecordsType:");
+        sb.append(dnsRecordsType);
+        sb.append(",");
+    }
     if (!(failureDomains == null) && !(failureDomains.isEmpty())) {
         sb.append("failureDomains:");
         sb.append(failureDomains);
@@ -1038,6 +1056,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.n
         this.defaultMachinePlatform = null;
         this._visitables.get("defaultMachinePlatform").remove(this.defaultMachinePlatform);
     }
+    return (A) this;
+  }
+  
+  public A withDnsRecordsType(String dnsRecordsType) {
+    this.dnsRecordsType = dnsRecordsType;
     return (A) this;
   }
   

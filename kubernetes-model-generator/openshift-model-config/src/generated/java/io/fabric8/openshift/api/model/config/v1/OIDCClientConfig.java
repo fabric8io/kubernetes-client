@@ -34,7 +34,7 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+ * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -116,7 +116,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.
      */
     @JsonProperty("clientSecret")
     public SecretNameReference getClientSecret() {
@@ -124,7 +124,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method
+     * OIDCClientConfig configures how platform clients interact with identity providers as an authentication method.
      */
     @JsonProperty("clientSecret")
     public void setClientSecret(SecretNameReference clientSecret) {
@@ -132,7 +132,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
+     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode.<br><p> <br><p> It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public String getComponentName() {
@@ -140,7 +140,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode. It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
+     * componentName is a required field that specifies the name of the platform component being configured to use the identity provider as an authentication mode.<br><p> <br><p> It is used in combination with componentNamespace as a unique identifier.<br><p> <br><p> componentName must not be an empty string ("") and must not exceed 256 characters in length.
      */
     @JsonProperty("componentName")
     public void setComponentName(String componentName) {
@@ -148,7 +148,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
+     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running.<br><p> <br><p> It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public String getComponentNamespace() {
@@ -156,7 +156,7 @@ public class OIDCClientConfig implements Editable<OIDCClientConfigBuilder>, Kube
     }
 
     /**
-     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running. It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
+     * componentNamespace is a required field that specifies the namespace in which the platform component being configured to use the identity provider as an authentication mode is running.<br><p> <br><p> It is used in combination with componentName as a unique identifier.<br><p> <br><p> componentNamespace must not be an empty string ("") and must not exceed 63 characters in length.
      */
     @JsonProperty("componentNamespace")
     public void setComponentNamespace(String componentNamespace) {

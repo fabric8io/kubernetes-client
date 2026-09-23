@@ -25,6 +25,7 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
 
   private Map<String,Object> additionalProperties;
   private CloudLoadBalancerConfigBuilder cloudLoadBalancerConfig;
+  private String ipFamily;
   private String region;
   private ArrayList<AWSResourceTagBuilder> resourceTags = new ArrayList<AWSResourceTagBuilder>();
   private ArrayList<AWSServiceEndpointBuilder> serviceEndpoints = new ArrayList<AWSServiceEndpointBuilder>();
@@ -216,6 +217,7 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     instance = instance != null ? instance : new AWSPlatformStatus();
     if (instance != null) {
         this.withCloudLoadBalancerConfig(instance.getCloudLoadBalancerConfig());
+        this.withIpFamily(instance.getIpFamily());
         this.withRegion(instance.getRegion());
         this.withResourceTags(instance.getResourceTags());
         this.withServiceEndpoints(instance.getServiceEndpoints());
@@ -321,6 +323,9 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     if (!(Objects.equals(cloudLoadBalancerConfig, that.cloudLoadBalancerConfig))) {
       return false;
     }
+    if (!(Objects.equals(ipFamily, that.ipFamily))) {
+      return false;
+    }
     if (!(Objects.equals(region, that.region))) {
       return false;
     }
@@ -340,6 +345,10 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.additionalProperties;
   }
   
+  public String getIpFamily() {
+    return this.ipFamily;
+  }
+  
   public String getRegion() {
     return this.region;
   }
@@ -350,6 +359,10 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   
   public boolean hasCloudLoadBalancerConfig() {
     return this.cloudLoadBalancerConfig != null;
+  }
+  
+  public boolean hasIpFamily() {
+    return this.ipFamily != null;
   }
   
   public boolean hasMatchingResourceTag(Predicate<AWSResourceTagBuilder> predicate) {
@@ -383,7 +396,7 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   }
   
   public int hashCode() {
-    return Objects.hash(cloudLoadBalancerConfig, region, resourceTags, serviceEndpoints, additionalProperties);
+    return Objects.hash(cloudLoadBalancerConfig, ipFamily, region, resourceTags, serviceEndpoints, additionalProperties);
   }
   
   public A removeAllFromResourceTags(Collection<AWSResourceTag> items) {
@@ -536,6 +549,11 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
         sb.append(cloudLoadBalancerConfig);
         sb.append(",");
     }
+    if (!(ipFamily == null)) {
+        sb.append("ipFamily:");
+        sb.append(ipFamily);
+        sb.append(",");
+    }
     if (!(region == null)) {
         sb.append("region:");
         sb.append(region);
@@ -577,6 +595,11 @@ public class AWSPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
         this.cloudLoadBalancerConfig = null;
         this._visitables.get("cloudLoadBalancerConfig").remove(this.cloudLoadBalancerConfig);
     }
+    return (A) this;
+  }
+  
+  public A withIpFamily(String ipFamily) {
+    this.ipFamily = ipFamily;
     return (A) this;
   }
   

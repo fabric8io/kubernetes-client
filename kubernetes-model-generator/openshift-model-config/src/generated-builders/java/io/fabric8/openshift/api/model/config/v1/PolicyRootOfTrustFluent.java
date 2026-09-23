@@ -18,10 +18,10 @@ import java.util.Optional;
 public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.config.v1.PolicyRootOfTrustFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
-  private FulcioCAWithRekorBuilder fulcioCAWithRekor;
-  private PKIBuilder pki;
+  private ImagePolicyFulcioCAWithRekorRootOfTrustBuilder fulcioCAWithRekor;
+  private ImagePolicyPKIRootOfTrustBuilder pki;
   private String policyType;
-  private PublicKeyBuilder publicKey;
+  private ImagePolicyPublicKeyRootOfTrustBuilder publicKey;
 
   public PolicyRootOfTrustFluent() {
   }
@@ -50,15 +50,15 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public FulcioCAWithRekor buildFulcioCAWithRekor() {
+  public ImagePolicyFulcioCAWithRekorRootOfTrust buildFulcioCAWithRekor() {
     return this.fulcioCAWithRekor != null ? this.fulcioCAWithRekor.build() : null;
   }
   
-  public PKI buildPki() {
+  public ImagePolicyPKIRootOfTrust buildPki() {
     return this.pki != null ? this.pki.build() : null;
   }
   
-  public PublicKey buildPublicKey() {
+  public ImagePolicyPublicKeyRootOfTrust buildPublicKey() {
     return this.publicKey != null ? this.publicKey.build() : null;
   }
   
@@ -78,26 +78,26 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
   }
   
   public FulcioCAWithRekorNested<A> editOrNewFulcioCAWithRekor() {
-    return this.withNewFulcioCAWithRekorLike(Optional.ofNullable(this.buildFulcioCAWithRekor()).orElse(new FulcioCAWithRekorBuilder().build()));
+    return this.withNewFulcioCAWithRekorLike(Optional.ofNullable(this.buildFulcioCAWithRekor()).orElse(new ImagePolicyFulcioCAWithRekorRootOfTrustBuilder().build()));
   }
   
-  public FulcioCAWithRekorNested<A> editOrNewFulcioCAWithRekorLike(FulcioCAWithRekor item) {
+  public FulcioCAWithRekorNested<A> editOrNewFulcioCAWithRekorLike(ImagePolicyFulcioCAWithRekorRootOfTrust item) {
     return this.withNewFulcioCAWithRekorLike(Optional.ofNullable(this.buildFulcioCAWithRekor()).orElse(item));
   }
   
   public PkiNested<A> editOrNewPki() {
-    return this.withNewPkiLike(Optional.ofNullable(this.buildPki()).orElse(new PKIBuilder().build()));
+    return this.withNewPkiLike(Optional.ofNullable(this.buildPki()).orElse(new ImagePolicyPKIRootOfTrustBuilder().build()));
   }
   
-  public PkiNested<A> editOrNewPkiLike(PKI item) {
+  public PkiNested<A> editOrNewPkiLike(ImagePolicyPKIRootOfTrust item) {
     return this.withNewPkiLike(Optional.ofNullable(this.buildPki()).orElse(item));
   }
   
   public PublicKeyNested<A> editOrNewPublicKey() {
-    return this.withNewPublicKeyLike(Optional.ofNullable(this.buildPublicKey()).orElse(new PublicKeyBuilder().build()));
+    return this.withNewPublicKeyLike(Optional.ofNullable(this.buildPublicKey()).orElse(new ImagePolicyPublicKeyRootOfTrustBuilder().build()));
   }
   
-  public PublicKeyNested<A> editOrNewPublicKeyLike(PublicKey item) {
+  public PublicKeyNested<A> editOrNewPublicKeyLike(ImagePolicyPublicKeyRootOfTrust item) {
     return this.withNewPublicKeyLike(Optional.ofNullable(this.buildPublicKey()).orElse(item));
   }
   
@@ -234,10 +234,10 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A withFulcioCAWithRekor(FulcioCAWithRekor fulcioCAWithRekor) {
+  public A withFulcioCAWithRekor(ImagePolicyFulcioCAWithRekorRootOfTrust fulcioCAWithRekor) {
     this._visitables.remove("fulcioCAWithRekor");
     if (fulcioCAWithRekor != null) {
-        this.fulcioCAWithRekor = new FulcioCAWithRekorBuilder(fulcioCAWithRekor);
+        this.fulcioCAWithRekor = new ImagePolicyFulcioCAWithRekorRootOfTrustBuilder(fulcioCAWithRekor);
         this._visitables.get("fulcioCAWithRekor").add(this.fulcioCAWithRekor);
     } else {
         this.fulcioCAWithRekor = null;
@@ -250,7 +250,7 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     return new FulcioCAWithRekorNested(null);
   }
   
-  public FulcioCAWithRekorNested<A> withNewFulcioCAWithRekorLike(FulcioCAWithRekor item) {
+  public FulcioCAWithRekorNested<A> withNewFulcioCAWithRekorLike(ImagePolicyFulcioCAWithRekorRootOfTrust item) {
     return new FulcioCAWithRekorNested(item);
   }
   
@@ -258,7 +258,7 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     return new PkiNested(null);
   }
   
-  public PkiNested<A> withNewPkiLike(PKI item) {
+  public PkiNested<A> withNewPkiLike(ImagePolicyPKIRootOfTrust item) {
     return new PkiNested(item);
   }
   
@@ -267,17 +267,17 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
   }
   
   public A withNewPublicKey(String keyData,String rekorKeyData) {
-    return (A) this.withPublicKey(new PublicKey(keyData, rekorKeyData));
+    return (A) this.withPublicKey(new ImagePolicyPublicKeyRootOfTrust(keyData, rekorKeyData));
   }
   
-  public PublicKeyNested<A> withNewPublicKeyLike(PublicKey item) {
+  public PublicKeyNested<A> withNewPublicKeyLike(ImagePolicyPublicKeyRootOfTrust item) {
     return new PublicKeyNested(item);
   }
   
-  public A withPki(PKI pki) {
+  public A withPki(ImagePolicyPKIRootOfTrust pki) {
     this._visitables.remove("pki");
     if (pki != null) {
-        this.pki = new PKIBuilder(pki);
+        this.pki = new ImagePolicyPKIRootOfTrustBuilder(pki);
         this._visitables.get("pki").add(this.pki);
     } else {
         this.pki = null;
@@ -291,10 +291,10 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A withPublicKey(PublicKey publicKey) {
+  public A withPublicKey(ImagePolicyPublicKeyRootOfTrust publicKey) {
     this._visitables.remove("publicKey");
     if (publicKey != null) {
-        this.publicKey = new PublicKeyBuilder(publicKey);
+        this.publicKey = new ImagePolicyPublicKeyRootOfTrustBuilder(publicKey);
         this._visitables.get("publicKey").add(this.publicKey);
     } else {
         this.publicKey = null;
@@ -302,12 +302,12 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     }
     return (A) this;
   }
-  public class FulcioCAWithRekorNested<N> extends FulcioCAWithRekorFluent<FulcioCAWithRekorNested<N>> implements Nested<N>{
+  public class FulcioCAWithRekorNested<N> extends ImagePolicyFulcioCAWithRekorRootOfTrustFluent<FulcioCAWithRekorNested<N>> implements Nested<N>{
   
-    FulcioCAWithRekorBuilder builder;
+    ImagePolicyFulcioCAWithRekorRootOfTrustBuilder builder;
   
-    FulcioCAWithRekorNested(FulcioCAWithRekor item) {
-      this.builder = new FulcioCAWithRekorBuilder(this, item);
+    FulcioCAWithRekorNested(ImagePolicyFulcioCAWithRekorRootOfTrust item) {
+      this.builder = new ImagePolicyFulcioCAWithRekorRootOfTrustBuilder(this, item);
     }
   
     public N and() {
@@ -319,12 +319,12 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     }
     
   }
-  public class PkiNested<N> extends PKIFluent<PkiNested<N>> implements Nested<N>{
+  public class PkiNested<N> extends ImagePolicyPKIRootOfTrustFluent<PkiNested<N>> implements Nested<N>{
   
-    PKIBuilder builder;
+    ImagePolicyPKIRootOfTrustBuilder builder;
   
-    PkiNested(PKI item) {
-      this.builder = new PKIBuilder(this, item);
+    PkiNested(ImagePolicyPKIRootOfTrust item) {
+      this.builder = new ImagePolicyPKIRootOfTrustBuilder(this, item);
     }
   
     public N and() {
@@ -336,12 +336,12 @@ public class PolicyRootOfTrustFluent<A extends io.fabric8.openshift.api.model.co
     }
     
   }
-  public class PublicKeyNested<N> extends PublicKeyFluent<PublicKeyNested<N>> implements Nested<N>{
+  public class PublicKeyNested<N> extends ImagePolicyPublicKeyRootOfTrustFluent<PublicKeyNested<N>> implements Nested<N>{
   
-    PublicKeyBuilder builder;
+    ImagePolicyPublicKeyRootOfTrustBuilder builder;
   
-    PublicKeyNested(PublicKey item) {
-      this.builder = new PublicKeyBuilder(this, item);
+    PublicKeyNested(ImagePolicyPublicKeyRootOfTrust item) {
+      this.builder = new ImagePolicyPublicKeyRootOfTrustBuilder(this, item);
     }
   
     public N and() {

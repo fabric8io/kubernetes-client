@@ -677,10 +677,6 @@ public class ClusterVersionSpecFluent<A extends io.fabric8.openshift.api.model.c
     return new DesiredUpdateNested(null);
   }
   
-  public A withNewDesiredUpdate(String architecture,Boolean force,String image,String version) {
-    return (A) this.withDesiredUpdate(new Update(architecture, force, image, version));
-  }
-  
   public DesiredUpdateNested<A> withNewDesiredUpdateLike(Update item) {
     return new DesiredUpdateNested(item);
   }

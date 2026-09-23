@@ -29,6 +29,7 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
   private TokenIssuerBuilder issuer;
   private String name;
   private ArrayList<OIDCClientConfigBuilder> oidcClients = new ArrayList<OIDCClientConfigBuilder>();
+  private ArrayList<TokenUserValidationRuleBuilder> userValidationRules = new ArrayList<TokenUserValidationRuleBuilder>();
 
   public OIDCProviderFluent() {
   }
@@ -61,6 +62,18 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return (A) this;
   }
   
+  public A addAllToUserValidationRules(Collection<TokenUserValidationRule> items) {
+    if (this.userValidationRules == null) {
+      this.userValidationRules = new ArrayList();
+    }
+    for (TokenUserValidationRule item : items) {
+        TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+        _visitables.get("userValidationRules").add(builder);
+        this.userValidationRules.add(builder);
+    }
+    return (A) this;
+  }
+  
   public ClaimValidationRulesNested<A> addNewClaimValidationRule() {
     return new ClaimValidationRulesNested(-1, null);
   }
@@ -75,6 +88,18 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
   
   public OidcClientsNested<A> addNewOidcClientLike(OIDCClientConfig item) {
     return new OidcClientsNested(-1, item);
+  }
+  
+  public UserValidationRulesNested<A> addNewUserValidationRule() {
+    return new UserValidationRulesNested(-1, null);
+  }
+  
+  public A addNewUserValidationRule(String expression,String message) {
+    return (A) this.addToUserValidationRules(new TokenUserValidationRule(expression, message));
+  }
+  
+  public UserValidationRulesNested<A> addNewUserValidationRuleLike(TokenUserValidationRule item) {
+    return new UserValidationRulesNested(-1, item);
   }
   
   public A addToAdditionalProperties(Map<String,Object> map) {
@@ -151,6 +176,33 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return (A) this;
   }
   
+  public A addToUserValidationRules(TokenUserValidationRule... items) {
+    if (this.userValidationRules == null) {
+      this.userValidationRules = new ArrayList();
+    }
+    for (TokenUserValidationRule item : items) {
+        TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+        _visitables.get("userValidationRules").add(builder);
+        this.userValidationRules.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToUserValidationRules(int index,TokenUserValidationRule item) {
+    if (this.userValidationRules == null) {
+      this.userValidationRules = new ArrayList();
+    }
+    TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+    if (index < 0 || index >= userValidationRules.size()) {
+        _visitables.get("userValidationRules").add(builder);
+        userValidationRules.add(builder);
+    } else {
+        _visitables.get("userValidationRules").add(builder);
+        userValidationRules.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public TokenClaimMappings buildClaimMappings() {
     return this.claimMappings != null ? this.claimMappings.build() : null;
   }
@@ -171,6 +223,10 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return this.oidcClients.get(0).build();
   }
   
+  public TokenUserValidationRule buildFirstUserValidationRule() {
+    return this.userValidationRules.get(0).build();
+  }
+  
   public TokenIssuer buildIssuer() {
     return this.issuer != null ? this.issuer.build() : null;
   }
@@ -181,6 +237,10 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
   
   public OIDCClientConfig buildLastOidcClient() {
     return this.oidcClients.get(oidcClients.size() - 1).build();
+  }
+  
+  public TokenUserValidationRule buildLastUserValidationRule() {
+    return this.userValidationRules.get(userValidationRules.size() - 1).build();
   }
   
   public TokenClaimValidationRule buildMatchingClaimValidationRule(Predicate<TokenClaimValidationRuleBuilder> predicate) {
@@ -201,12 +261,29 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
       return null;
   }
   
+  public TokenUserValidationRule buildMatchingUserValidationRule(Predicate<TokenUserValidationRuleBuilder> predicate) {
+      for (TokenUserValidationRuleBuilder item : userValidationRules) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
   public OIDCClientConfig buildOidcClient(int index) {
     return this.oidcClients.get(index).build();
   }
   
   public List<OIDCClientConfig> buildOidcClients() {
     return this.oidcClients != null ? build(oidcClients) : null;
+  }
+  
+  public TokenUserValidationRule buildUserValidationRule(int index) {
+    return this.userValidationRules.get(index).build();
+  }
+  
+  public List<TokenUserValidationRule> buildUserValidationRules() {
+    return this.userValidationRules != null ? build(userValidationRules) : null;
   }
   
   protected void copyInstance(OIDCProvider instance) {
@@ -217,6 +294,7 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
         this.withIssuer(instance.getIssuer());
         this.withName(instance.getName());
         this.withOidcClients(instance.getOidcClients());
+        this.withUserValidationRules(instance.getUserValidationRules());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -246,6 +324,13 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return this.setNewOidcClientLike(0, this.buildOidcClient(0));
   }
   
+  public UserValidationRulesNested<A> editFirstUserValidationRule() {
+    if (userValidationRules.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "userValidationRules"));
+    }
+    return this.setNewUserValidationRuleLike(0, this.buildUserValidationRule(0));
+  }
+  
   public IssuerNested<A> editIssuer() {
     return this.withNewIssuerLike(Optional.ofNullable(this.buildIssuer()).orElse(null));
   }
@@ -264,6 +349,14 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "oidcClients"));
     }
     return this.setNewOidcClientLike(index, this.buildOidcClient(index));
+  }
+  
+  public UserValidationRulesNested<A> editLastUserValidationRule() {
+    int index = userValidationRules.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "userValidationRules"));
+    }
+    return this.setNewUserValidationRuleLike(index, this.buildUserValidationRule(index));
   }
   
   public ClaimValidationRulesNested<A> editMatchingClaimValidationRule(Predicate<TokenClaimValidationRuleBuilder> predicate) {
@@ -294,6 +387,20 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return this.setNewOidcClientLike(index, this.buildOidcClient(index));
   }
   
+  public UserValidationRulesNested<A> editMatchingUserValidationRule(Predicate<TokenUserValidationRuleBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < userValidationRules.size();i++) {
+      if (predicate.test(userValidationRules.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "userValidationRules"));
+    }
+    return this.setNewUserValidationRuleLike(index, this.buildUserValidationRule(index));
+  }
+  
   public OidcClientsNested<A> editOidcClient(int index) {
     if (oidcClients.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "oidcClients"));
@@ -315,6 +422,13 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
   
   public IssuerNested<A> editOrNewIssuerLike(TokenIssuer item) {
     return this.withNewIssuerLike(Optional.ofNullable(this.buildIssuer()).orElse(item));
+  }
+  
+  public UserValidationRulesNested<A> editUserValidationRule(int index) {
+    if (userValidationRules.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "userValidationRules"));
+    }
+    return this.setNewUserValidationRuleLike(index, this.buildUserValidationRule(index));
   }
   
   public boolean equals(Object o) {
@@ -341,6 +455,9 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
       return false;
     }
     if (!(Objects.equals(oidcClients, that.oidcClients))) {
+      return false;
+    }
+    if (!(Objects.equals(userValidationRules, that.userValidationRules))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -391,6 +508,15 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
       return false;
   }
   
+  public boolean hasMatchingUserValidationRule(Predicate<TokenUserValidationRuleBuilder> predicate) {
+      for (TokenUserValidationRuleBuilder item : userValidationRules) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasName() {
     return this.name != null;
   }
@@ -399,8 +525,12 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return this.oidcClients != null && !(this.oidcClients.isEmpty());
   }
   
+  public boolean hasUserValidationRules() {
+    return this.userValidationRules != null && !(this.userValidationRules.isEmpty());
+  }
+  
   public int hashCode() {
-    return Objects.hash(claimMappings, claimValidationRules, issuer, name, oidcClients, additionalProperties);
+    return Objects.hash(claimMappings, claimValidationRules, issuer, name, oidcClients, userValidationRules, additionalProperties);
   }
   
   public A removeAllFromClaimValidationRules(Collection<TokenClaimValidationRule> items) {
@@ -423,6 +553,18 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
         OIDCClientConfigBuilder builder = new OIDCClientConfigBuilder(item);
         _visitables.get("oidcClients").remove(builder);
         this.oidcClients.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromUserValidationRules(Collection<TokenUserValidationRule> items) {
+    if (this.userValidationRules == null) {
+      return (A) this;
+    }
+    for (TokenUserValidationRule item : items) {
+        TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+        _visitables.get("userValidationRules").remove(builder);
+        this.userValidationRules.remove(builder);
     }
     return (A) this;
   }
@@ -475,6 +617,18 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return (A) this;
   }
   
+  public A removeFromUserValidationRules(TokenUserValidationRule... items) {
+    if (this.userValidationRules == null) {
+      return (A) this;
+    }
+    for (TokenUserValidationRule item : items) {
+        TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+        _visitables.get("userValidationRules").remove(builder);
+        this.userValidationRules.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeMatchingFromClaimValidationRules(Predicate<TokenClaimValidationRuleBuilder> predicate) {
     if (claimValidationRules == null) {
       return (A) this;
@@ -507,12 +661,32 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return (A) this;
   }
   
+  public A removeMatchingFromUserValidationRules(Predicate<TokenUserValidationRuleBuilder> predicate) {
+    if (userValidationRules == null) {
+      return (A) this;
+    }
+    Iterator<TokenUserValidationRuleBuilder> each = userValidationRules.iterator();
+    List visitables = _visitables.get("userValidationRules");
+    while (each.hasNext()) {
+        TokenUserValidationRuleBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
   public ClaimValidationRulesNested<A> setNewClaimValidationRuleLike(int index,TokenClaimValidationRule item) {
     return new ClaimValidationRulesNested(index, item);
   }
   
   public OidcClientsNested<A> setNewOidcClientLike(int index,OIDCClientConfig item) {
     return new OidcClientsNested(index, item);
+  }
+  
+  public UserValidationRulesNested<A> setNewUserValidationRuleLike(int index,TokenUserValidationRule item) {
+    return new UserValidationRulesNested(index, item);
   }
   
   public A setToClaimValidationRules(int index,TokenClaimValidationRule item) {
@@ -545,6 +719,21 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     return (A) this;
   }
   
+  public A setToUserValidationRules(int index,TokenUserValidationRule item) {
+    if (this.userValidationRules == null) {
+      this.userValidationRules = new ArrayList();
+    }
+    TokenUserValidationRuleBuilder builder = new TokenUserValidationRuleBuilder(item);
+    if (index < 0 || index >= userValidationRules.size()) {
+        _visitables.get("userValidationRules").add(builder);
+        userValidationRules.add(builder);
+    } else {
+        _visitables.get("userValidationRules").add(builder);
+        userValidationRules.set(index, builder);
+    }
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -571,6 +760,11 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     if (!(oidcClients == null) && !(oidcClients.isEmpty())) {
         sb.append("oidcClients:");
         sb.append(oidcClients);
+        sb.append(",");
+    }
+    if (!(userValidationRules == null) && !(userValidationRules.isEmpty())) {
+        sb.append("userValidationRules:");
+        sb.append(userValidationRules);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -690,6 +884,34 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     }
     return (A) this;
   }
+  
+  public A withUserValidationRules(List<TokenUserValidationRule> userValidationRules) {
+    if (this.userValidationRules != null) {
+      this._visitables.get("userValidationRules").clear();
+    }
+    if (userValidationRules != null) {
+        this.userValidationRules = new ArrayList();
+        for (TokenUserValidationRule item : userValidationRules) {
+          this.addToUserValidationRules(item);
+        }
+    } else {
+      this.userValidationRules = null;
+    }
+    return (A) this;
+  }
+  
+  public A withUserValidationRules(TokenUserValidationRule... userValidationRules) {
+    if (this.userValidationRules != null) {
+        this.userValidationRules.clear();
+        _visitables.remove("userValidationRules");
+    }
+    if (userValidationRules != null) {
+      for (TokenUserValidationRule item : userValidationRules) {
+        this.addToUserValidationRules(item);
+      }
+    }
+    return (A) this;
+  }
   public class ClaimMappingsNested<N> extends TokenClaimMappingsFluent<ClaimMappingsNested<N>> implements Nested<N>{
   
     TokenClaimMappingsBuilder builder;
@@ -758,6 +980,25 @@ public class OIDCProviderFluent<A extends io.fabric8.openshift.api.model.config.
     }
     
     public N endOidcClient() {
+      return and();
+    }
+    
+  }
+  public class UserValidationRulesNested<N> extends TokenUserValidationRuleFluent<UserValidationRulesNested<N>> implements Nested<N>{
+  
+    TokenUserValidationRuleBuilder builder;
+    int index;
+  
+    UserValidationRulesNested(int index,TokenUserValidationRule item) {
+      this.index = index;
+      this.builder = new TokenUserValidationRuleBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) OIDCProviderFluent.this.setToUserValidationRules(index, builder.build());
+    }
+    
+    public N endUserValidationRule() {
       return and();
     }
     

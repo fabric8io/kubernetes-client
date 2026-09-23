@@ -40,7 +40,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "installConfigPatches"
+    "installConfigPatches",
+    "installerManifestPatches"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,9 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     @JsonProperty("installConfigPatches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PatchEntity> installConfigPatches = new ArrayList<>();
+    @JsonProperty("installerManifestPatches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<InstallerManifestPatch> installerManifestPatches = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,9 +83,10 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     public ClusterDeploymentCustomizationSpec() {
     }
 
-    public ClusterDeploymentCustomizationSpec(List<PatchEntity> installConfigPatches) {
+    public ClusterDeploymentCustomizationSpec(List<PatchEntity> installConfigPatches, List<InstallerManifestPatch> installerManifestPatches) {
         super();
         this.installConfigPatches = installConfigPatches;
+        this.installerManifestPatches = installerManifestPatches;
     }
 
     /**
@@ -99,6 +104,23 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     @JsonProperty("installConfigPatches")
     public void setInstallConfigPatches(List<PatchEntity> installConfigPatches) {
         this.installConfigPatches = installConfigPatches;
+    }
+
+    /**
+     * InstallerManifestPatches is a list of patches to be applied to installer-generated manifests.
+     */
+    @JsonProperty("installerManifestPatches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<InstallerManifestPatch> getInstallerManifestPatches() {
+        return installerManifestPatches;
+    }
+
+    /**
+     * InstallerManifestPatches is a list of patches to be applied to installer-generated manifests.
+     */
+    @JsonProperty("installerManifestPatches")
+    public void setInstallerManifestPatches(List<InstallerManifestPatch> installerManifestPatches) {
+        this.installerManifestPatches = installerManifestPatches;
     }
 
     @JsonIgnore

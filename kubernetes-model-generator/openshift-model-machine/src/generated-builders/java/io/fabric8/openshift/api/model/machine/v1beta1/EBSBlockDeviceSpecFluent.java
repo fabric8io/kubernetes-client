@@ -3,6 +3,7 @@ package io.fabric8.openshift.api.model.machine.v1beta1;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
+import java.lang.Integer;
 import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
@@ -24,6 +25,7 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
   private Boolean encrypted;
   private Long iops;
   private AWSResourceReferenceBuilder kmsKey;
+  private Integer throughputMib;
   private Long volumeSize;
   private String volumeType;
 
@@ -65,6 +67,7 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
         this.withEncrypted(instance.getEncrypted());
         this.withIops(instance.getIops());
         this.withKmsKey(instance.getKmsKey());
+        this.withThroughputMib(instance.getThroughputMib());
         this.withVolumeSize(instance.getVolumeSize());
         this.withVolumeType(instance.getVolumeType());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -106,6 +109,9 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
     if (!(Objects.equals(kmsKey, that.kmsKey))) {
       return false;
     }
+    if (!(Objects.equals(throughputMib, that.throughputMib))) {
+      return false;
+    }
     if (!(Objects.equals(volumeSize, that.volumeSize))) {
       return false;
     }
@@ -132,6 +138,10 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
   
   public Long getIops() {
     return this.iops;
+  }
+  
+  public Integer getThroughputMib() {
+    return this.throughputMib;
   }
   
   public Long getVolumeSize() {
@@ -162,6 +172,10 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
     return this.kmsKey != null;
   }
   
+  public boolean hasThroughputMib() {
+    return this.throughputMib != null;
+  }
+  
   public boolean hasVolumeSize() {
     return this.volumeSize != null;
   }
@@ -171,7 +185,7 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
   }
   
   public int hashCode() {
-    return Objects.hash(deleteOnTermination, encrypted, iops, kmsKey, volumeSize, volumeType, additionalProperties);
+    return Objects.hash(deleteOnTermination, encrypted, iops, kmsKey, throughputMib, volumeSize, volumeType, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -219,6 +233,11 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
     if (!(kmsKey == null)) {
         sb.append("kmsKey:");
         sb.append(kmsKey);
+        sb.append(",");
+    }
+    if (!(throughputMib == null)) {
+        sb.append("throughputMib:");
+        sb.append(throughputMib);
         sb.append(",");
     }
     if (!(volumeSize == null)) {
@@ -289,6 +308,11 @@ public class EBSBlockDeviceSpecFluent<A extends io.fabric8.openshift.api.model.m
   
   public KmsKeyNested<A> withNewKmsKeyLike(AWSResourceReference item) {
     return new KmsKeyNested(item);
+  }
+  
+  public A withThroughputMib(Integer throughputMib) {
+    this.throughputMib = throughputMib;
+    return (A) this;
   }
   
   public A withVolumeSize(Long volumeSize) {
