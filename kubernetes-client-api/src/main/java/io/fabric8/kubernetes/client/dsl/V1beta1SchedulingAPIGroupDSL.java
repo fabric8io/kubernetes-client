@@ -15,10 +15,28 @@
  */
 package io.fabric8.kubernetes.client.dsl;
 
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PodGroup;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PodGroupList;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClass;
 import io.fabric8.kubernetes.api.model.scheduling.v1beta1.PriorityClassList;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.Workload;
+import io.fabric8.kubernetes.api.model.scheduling.v1beta1.WorkloadList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface V1beta1SchedulingAPIGroupDSL extends Client {
   NonNamespaceOperation<PriorityClass, PriorityClassList, Resource<PriorityClass>> priorityClasses();
+
+  /**
+   * API entrypoint for scheduling.k8s.io/v1beta1 PodGroup (namespaced)
+   *
+   * @return {@link MixedOperation} for PodGroup
+   */
+  MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups();
+
+  /**
+   * API entrypoint for scheduling.k8s.io/v1beta1 Workload (namespaced)
+   *
+   * @return {@link MixedOperation} for Workload
+   */
+  MixedOperation<Workload, WorkloadList, Resource<Workload>> workloads();
 }

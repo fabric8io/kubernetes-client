@@ -76,9 +76,11 @@
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
+* Fix #8041: Typed DSL for the resources added in Kubernetes 1.37: `certificates().v1().podCertificateRequests()`, `dynamicResourceAllocation().v1().deviceTaintRules()`, `storageMigration().v1().storageVersionMigrations()` and `scheduling().v1beta1()` `podGroups()` and `workloads()`, plus `certificates().v1beta1().podCertificateRequests()` and `storageMigration().v1beta1().storageVersionMigrations()`. `kubernetes-model-policy` also ships the `lifecycle.k8s.io/v1alpha1` model (`Eviction` and `EvictionRequest`)
 
 #### _**Note**_: Breaking changes
 * Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8041: (kubernetes-client-api) `runtimeClasses()` and `network().ingresses()` (and `network().ingress()`) use the `v1` models instead of `v1beta1` ones Kubernetes no longer serves, see the [migration guide](./doc/MIGRATION-v8.md#unversioned-dsl-v1)
 * Fix #7374: Moved to Jackson 3 (`tools.jackson` coordinates and packages). The default serialization keeps the Jackson 2 behavior for custom types, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
 * Fix #7987: (kubernetes-client-api) `Filterable#withShardSelector` also accepts a typed `ShardSelector`, so a literal `withShardSelector(null)` no longer compiles, see the [migration guide](./doc/MIGRATION-v8.md#shard-selector-null)
 * Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
@@ -115,7 +117,6 @@
 * Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
-* Fix #8041: (kubernetes-client-api, kubernetes-client) `V1CertificatesAPIGroupDSL` gains a typed `podCertificateRequests()` accessor and `V1DynamicresourceAllocationAPIGroupDSL` gains a typed `deviceTaintRules()` accessor, matching the typed-DSL treatment already given to other v1.37 resources (e.g. `ClusterTrustBundle`). Both resources were previously reachable only through the generic `client.resources(...)` API
 * Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
 * Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 

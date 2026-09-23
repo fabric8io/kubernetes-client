@@ -1,3 +1,7 @@
+io.fabric8.kubernetes.api.model.lifecycle.v1alpha1.Eviction
+io.fabric8.kubernetes.api.model.lifecycle.v1alpha1.EvictionList
+io.fabric8.kubernetes.api.model.lifecycle.v1alpha1.EvictionRequest
+io.fabric8.kubernetes.api.model.lifecycle.v1alpha1.EvictionRequestList
 io.fabric8.kubernetes.api.model.policy.v1.Eviction
 io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudget
 io.fabric8.kubernetes.api.model.policy.v1.PodDisruptionBudgetList
