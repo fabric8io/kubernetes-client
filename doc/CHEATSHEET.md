@@ -937,14 +937,14 @@ client.serviceAccounts().inNamespace("default").withName("serviceaccount1").dele
 ```
 
 ### Ingress
-`Ingress` resource is available in Kubernetes Client API via `client.network().v1().ingress()`. Here are some examples regarding its usage:
+`Ingress` resource is available in Kubernetes Client API via `client.network().v1().ingresses()`. Here are some examples regarding its usage:
 - Load `Ingress` from yaml:
 ```java
-Ingress ingress = client.network().v1().ingress().load(new FileInputStream("ingress.yml")).item();
+Ingress ingress = client.network().v1().ingresses().load(new FileInputStream("ingress.yml")).item();
 ```
 - Get `Ingress` from Kubernetes API server:
 ```java
-Ingress ingress = client.network().v1().ingress().inNamespace("default").withName("ingress1").get();
+Ingress ingress = client.network().v1().ingresses().inNamespace("default").withName("ingress1").get();
 ```
 - Create `Ingress`:
 ```java
@@ -960,7 +960,7 @@ Ingress ingress = new IngressBuilder()
   .endRule()
   .endSpec()
   .build();
-client.network().v1().ingress().inNamespace("default").resource(ingress).create();
+client.network().v1().ingresses().inNamespace("default").resource(ingress).create();
 ```
 - Apply `Ingress` onto Kubernetes Cluster:
 ```java
@@ -968,19 +968,19 @@ Ingress igx = client.network().v1().ingresses().inNamespace("default").resource(
 ```
 - List `Ingress` in some namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inNamespace("default").list();
+IngressList ingressList = client.network().v1().ingresses().inNamespace("default").list();
 ```
 - List `Ingress` in any namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inAnyNamespace().list();
+IngressList ingressList = client.network().v1().ingresses().inAnyNamespace().list();
 ```
 - List `Ingress` with some label in any namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inNamespace("default").withLabel("foo", "bar").list();
+IngressList ingressList = client.network().v1().ingresses().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Delete `Ingress`:
 ```java
-client.network().v1().ingress().inNamespace("default").withName("ingress1").delete();
+client.network().v1().ingresses().inNamespace("default").withName("ingress1").delete();
 ```
 
 ### StatefulSet

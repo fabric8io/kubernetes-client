@@ -24,58 +24,52 @@ import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EvictionRequestTest {
+class EvictionTest {
   private final ObjectMapper mapper = new JsonMapper();
 
   @Test
-  @DisplayName("EvictionRequest is namespaced")
+  @DisplayName("Eviction is namespaced")
   void isNamespaced() {
-    assertThat(new EvictionRequest()).isInstanceOf(Namespaced.class);
+    assertThat(new Eviction()).isInstanceOf(Namespaced.class);
   }
 
   @Test
-  @DisplayName("EvictionRequest defaults to lifecycle.k8s.io/v1alpha1")
+  @DisplayName("Eviction defaults to lifecycle.k8s.io/v1alpha1")
   void apiVersion() {
-    assertThat(new EvictionRequest().getApiVersion()).isEqualTo("lifecycle.k8s.io/v1alpha1");
+    assertThat(new Eviction().getApiVersion()).isEqualTo("lifecycle.k8s.io/v1alpha1");
   }
 
   @Test
-  @DisplayName("EvictionRequest round-trips through JSON")
+  @DisplayName("Eviction round-trips through JSON")
   void serializationRoundTrip() {
     // Given
-    final EvictionRequest evictionRequest = new EvictionRequestBuilder()
+    final Eviction eviction = new EvictionBuilder()
         .withNewMetadata().withName("evict-my-pod").withNamespace("ns").endMetadata()
-        .withNewSpec()
-        .withRequester("requester.example.com")
-        .withIntent("Evict")
-        .withNewTarget().withNewPod("my-pod", "pod-uid").endTarget()
-        .endSpec()
+        .withNewSpec().withNewTarget().withNewPod("my-pod", "pod-uid").endTarget().endSpec()
         .build();
 
     // When
-    final EvictionRequest result = mapper.readValue(mapper.writeValueAsString(evictionRequest), EvictionRequest.class);
+    final Eviction result = mapper.readValue(mapper.writeValueAsString(eviction), Eviction.class);
 
     // Then
     assertThat(result)
-        .isEqualTo(evictionRequest)
-        .hasFieldOrPropertyWithValue("kind", "EvictionRequest")
-        .hasFieldOrPropertyWithValue("spec.target.pod.name", "my-pod")
-        .hasFieldOrPropertyWithValue("spec.target.pod.uid", "pod-uid");
+        .isEqualTo(eviction)
+        .hasFieldOrPropertyWithValue("kind", "Eviction")
+        .hasFieldOrPropertyWithValue("spec.target.pod.name", "my-pod");
   }
 
   @Test
-  @DisplayName("lifecycle.k8s.io/v1alpha1 EvictionRequest documents deserialize to EvictionRequest")
+  @DisplayName("lifecycle.k8s.io/v1alpha1 Eviction documents deserialize to the lifecycle Eviction, not the policy one")
   void deserializationResolvesApiVersionAndKind() {
     // When
     final KubernetesResource result = mapper.readValue("{" +
-        "\"apiVersion\":\"lifecycle.k8s.io/v1alpha1\",\"kind\":\"EvictionRequest\"," +
+        "\"apiVersion\":\"lifecycle.k8s.io/v1alpha1\",\"kind\":\"Eviction\"," +
         "\"metadata\":{\"name\":\"evict-my-pod\"}," +
-        "\"spec\":{\"requester\":\"requester.example.com\",\"intent\":\"Evict\"," +
-        "\"target\":{\"pod\":{\"name\":\"my-pod\",\"uid\":\"pod-uid\"}}}}", KubernetesResource.class);
+        "\"spec\":{\"target\":{\"pod\":{\"name\":\"my-pod\",\"uid\":\"pod-uid\"}}}}", KubernetesResource.class);
 
     // Then
     assertThat(result)
-        .isInstanceOf(EvictionRequest.class)
-        .hasFieldOrPropertyWithValue("spec.requester", "requester.example.com");
+        .isInstanceOf(Eviction.class)
+        .hasFieldOrPropertyWithValue("spec.target.pod.uid", "pod-uid");
   }
 }

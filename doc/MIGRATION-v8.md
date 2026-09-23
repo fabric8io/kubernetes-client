@@ -150,12 +150,14 @@ Passing a `null`-valued variable is unaffected, and either overload still clears
 
 ## `runtimeClasses()` and `network().ingresses()` use `v1` <a href="#unversioned-dsl-v1" id="unversioned-dsl-v1"/>
 
-Two entry points without a version in their path still used `v1beta1` APIs that Kubernetes no longer serves. They now use the `v1` models:
+Two entry points without a version in their path, and not deprecated, still used `v1beta1` APIs that Kubernetes no longer serves. They now use the `v1` models:
 
 - `client.runtimeClasses()`: `io.fabric8.kubernetes.api.model.node.v1.RuntimeClass` (`node.k8s.io/v1beta1` was removed in Kubernetes 1.25). The fields are the same, change your imports from `node.v1beta1` to `node.v1`.
 - `client.network().ingresses()` and `client.network().ingress()`: `io.fabric8.kubernetes.api.model.networking.v1.Ingress` (`networking.k8s.io/v1beta1` was removed in Kubernetes 1.22). The v1 `Ingress` spec changed upstream (for example `serviceName`/`servicePort` became `service.name`/`service.port`), same as with `client.network().v1().ingresses()`.
 
 If you still target clusters that old, use `client.network().v1beta1().ingresses()` or `client.resources(io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass.class)`.
+
+The deprecated unversioned entry points, such as `certificateSigningRequests()`, `batch().cronjobs()` or `policy().podDisruptionBudget()`, keep their `v1beta1` types. Use the versioned DSL they point to instead.
 
 ## `kubernetes-httpclient-jetty` moved to Jetty 12 <a href="#jetty-12" id="jetty-12"/>
 
