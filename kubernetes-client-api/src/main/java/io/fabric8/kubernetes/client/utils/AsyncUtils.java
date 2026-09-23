@@ -97,6 +97,10 @@ public class AsyncUtils {
           onCancel.accept(r);
         }
       } catch (Throwable failure) {
+        // keep the attempt's failure (e.g. connection refused) visible when a retry callback throws on top of it
+        if (t != null && t != failure) {
+          failure.addSuppressed(t);
+        }
         result.completeExceptionally(failure);
       }
     });
