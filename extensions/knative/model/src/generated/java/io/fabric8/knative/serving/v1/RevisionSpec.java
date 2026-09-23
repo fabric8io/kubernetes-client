@@ -18,6 +18,7 @@ import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.EphemeralContainer;
+import io.fabric8.kubernetes.api.model.EvictionResponder;
 import io.fabric8.kubernetes.api.model.HostAlias;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -31,6 +32,7 @@ import io.fabric8.kubernetes.api.model.PodOS;
 import io.fabric8.kubernetes.api.model.PodReadinessGate;
 import io.fabric8.kubernetes.api.model.PodResourceClaim;
 import io.fabric8.kubernetes.api.model.PodSchedulingGate;
+import io.fabric8.kubernetes.api.model.PodSchedulingGroup;
 import io.fabric8.kubernetes.api.model.PodSecurityContext;
 import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.Quantity;
@@ -39,7 +41,6 @@ import io.fabric8.kubernetes.api.model.Toleration;
 import io.fabric8.kubernetes.api.model.TopologySpreadConstraint;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
-import io.fabric8.kubernetes.api.model.WorkloadReference;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
@@ -62,6 +63,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "dnsPolicy",
     "enableServiceLinks",
     "ephemeralContainers",
+    "evictionResponders",
     "hostAliases",
     "hostIPC",
     "hostNetwork",
@@ -87,6 +89,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "runtimeClassName",
     "schedulerName",
     "schedulingGates",
+    "schedulingGroup",
     "securityContext",
     "serviceAccount",
     "serviceAccountName",
@@ -97,8 +100,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "timeoutSeconds",
     "tolerations",
     "topologySpreadConstraints",
-    "volumes",
-    "workloadRef"
+    "volumes"
 })
 @ToString
 @EqualsAndHashCode
@@ -145,6 +147,9 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("ephemeralContainers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<EphemeralContainer> ephemeralContainers = new ArrayList<>();
+    @JsonProperty("evictionResponders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<EvictionResponder> evictionResponders = new ArrayList<>();
     @JsonProperty("hostAliases")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<HostAlias> hostAliases = new ArrayList<>();
@@ -203,6 +208,8 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("schedulingGates")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PodSchedulingGate> schedulingGates = new ArrayList<>();
+    @JsonProperty("schedulingGroup")
+    private PodSchedulingGroup schedulingGroup;
     @JsonProperty("securityContext")
     private PodSecurityContext securityContext;
     @JsonProperty("serviceAccount")
@@ -228,8 +235,6 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<>();
-    @JsonProperty("workloadRef")
-    private WorkloadReference workloadRef;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -239,7 +244,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     public RevisionSpec() {
     }
 
-    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes, WorkloadReference workloadRef) {
+    public RevisionSpec(Long activeDeadlineSeconds, Affinity affinity, Boolean automountServiceAccountToken, Long containerConcurrency, List<Container> containers, PodDNSConfig dnsConfig, String dnsPolicy, Boolean enableServiceLinks, List<EphemeralContainer> ephemeralContainers, List<EvictionResponder> evictionResponders, List<HostAlias> hostAliases, Boolean hostIPC, Boolean hostNetwork, Boolean hostPID, Boolean hostUsers, String hostname, String hostnameOverride, Long idleTimeoutSeconds, List<LocalObjectReference> imagePullSecrets, List<Container> initContainers, String nodeName, Map<String, String> nodeSelector, PodOS os, Map<String, Quantity> overhead, String preemptionPolicy, Integer priority, String priorityClassName, List<PodReadinessGate> readinessGates, List<PodResourceClaim> resourceClaims, ResourceRequirements resources, Long responseStartTimeoutSeconds, String restartPolicy, String runtimeClassName, String schedulerName, List<PodSchedulingGate> schedulingGates, PodSchedulingGroup schedulingGroup, PodSecurityContext securityContext, String serviceAccount, String serviceAccountName, Boolean setHostnameAsFQDN, Boolean shareProcessNamespace, String subdomain, Long terminationGracePeriodSeconds, Long timeoutSeconds, List<Toleration> tolerations, List<TopologySpreadConstraint> topologySpreadConstraints, List<Volume> volumes) {
         super();
         this.activeDeadlineSeconds = activeDeadlineSeconds;
         this.affinity = affinity;
@@ -250,6 +255,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.dnsPolicy = dnsPolicy;
         this.enableServiceLinks = enableServiceLinks;
         this.ephemeralContainers = ephemeralContainers;
+        this.evictionResponders = evictionResponders;
         this.hostAliases = hostAliases;
         this.hostIPC = hostIPC;
         this.hostNetwork = hostNetwork;
@@ -275,6 +281,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.runtimeClassName = runtimeClassName;
         this.schedulerName = schedulerName;
         this.schedulingGates = schedulingGates;
+        this.schedulingGroup = schedulingGroup;
         this.securityContext = securityContext;
         this.serviceAccount = serviceAccount;
         this.serviceAccountName = serviceAccountName;
@@ -286,7 +293,6 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
         this.tolerations = tolerations;
         this.topologySpreadConstraints = topologySpreadConstraints;
         this.volumes = volumes;
-        this.workloadRef = workloadRef;
     }
 
     /**
@@ -436,6 +442,23 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
+     * evictionResponders reference responders that react to Evictions based on EvictionRequests. Responders should observe and communicate through the Eviction Resource API to help with the graceful termination of a pod. The responders are selected sequentially, according to their specified priority.<br><p> <br><p> Responders should periodically report on an eviction progress by updating the .status.responders[].heartbeatTime field of the Eviction object. If this field is not updated within the heartbeat deadline defined by the Eviction API (currently 20 minutes), the eviction is passed over to the next responder with a lower priority. If there is no other responder, the last default imperative-eviction.k8s.io/evictor responder with a priority of 100 will evict the pod using the imperative Eviction API (pods/&lt;name&gt;/eviction subresource).<br><p> <br><p> The maximum length of the responders list is 10. Responders are not supported when the pod is part of a PodGroup (.spec.schedulingGroup is set). This field can only be set on creation and is immutable afterwards.
+     */
+    @JsonProperty("evictionResponders")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<EvictionResponder> getEvictionResponders() {
+        return evictionResponders;
+    }
+
+    /**
+     * evictionResponders reference responders that react to Evictions based on EvictionRequests. Responders should observe and communicate through the Eviction Resource API to help with the graceful termination of a pod. The responders are selected sequentially, according to their specified priority.<br><p> <br><p> Responders should periodically report on an eviction progress by updating the .status.responders[].heartbeatTime field of the Eviction object. If this field is not updated within the heartbeat deadline defined by the Eviction API (currently 20 minutes), the eviction is passed over to the next responder with a lower priority. If there is no other responder, the last default imperative-eviction.k8s.io/evictor responder with a priority of 100 will evict the pod using the imperative Eviction API (pods/&lt;name&gt;/eviction subresource).<br><p> <br><p> The maximum length of the responders list is 10. Responders are not supported when the pod is part of a PodGroup (.spec.schedulingGroup is set). This field can only be set on creation and is immutable afterwards.
+     */
+    @JsonProperty("evictionResponders")
+    public void setEvictionResponders(List<EvictionResponder> evictionResponders) {
+        this.evictionResponders = evictionResponders;
+    }
+
+    /**
      * HostAliases is an optional list of hosts and IPs that will be injected into the pod's hosts file if specified.
      */
     @JsonProperty("hostAliases")
@@ -501,7 +524,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host. This field is alpha-level and is only honored by servers that enable the UserNamespacesSupport feature.
+     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host.
      */
     @JsonProperty("hostUsers")
     public Boolean getHostUsers() {
@@ -509,7 +532,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host. This field is alpha-level and is only honored by servers that enable the UserNamespacesSupport feature.
+     * Use the host's user namespace. Optional: Default to true. If set to true or not present, the pod will be run in the host user namespace, useful for when the pod needs a feature only available to the host user namespace, such as loading a kernel module with CAP_SYS_MODULE. When set to false, a new userns is created for the pod. Setting false is useful for mitigating container breakout vulnerabilities even allowing users to run their containers as root without actually having root privileges on the host.
      */
     @JsonProperty("hostUsers")
     public void setHostUsers(Boolean hostUsers) {
@@ -533,7 +556,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters.
      */
     @JsonProperty("hostnameOverride")
     public String getHostnameOverride() {
@@ -541,7 +564,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters. Requires the HostnameOverride feature gate to be enabled.
+     * HostnameOverride specifies an explicit override for the pod's hostname as perceived by the pod. This field only specifies the pod's hostname and does not affect its DNS records. When this field is set to a non-empty string: - It takes precedence over the values set in `hostname` and `subdomain`. - The Pod's hostname will be set to this value. - `setHostnameAsFQDN` must be nil or set to false. - `hostNetwork` must be set to false.<br><p> <br><p> This field must be a valid DNS subdomain as defined in RFC 1123 and contain at most 64 characters.
      */
     @JsonProperty("hostnameOverride")
     public void setHostnameOverride(String hostnameOverride) {
@@ -665,7 +688,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.
+     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. When Priority Admission Controller is enabled, it prevents users from setting this field. The admission controller populates this field from PriorityClassName. Defaults to PreemptLowerPriority if unset.
      */
     @JsonProperty("preemptionPolicy")
     public String getPreemptionPolicy() {
@@ -673,7 +696,7 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     }
 
     /**
-     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.
+     * PreemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. When Priority Admission Controller is enabled, it prevents users from setting this field. The admission controller populates this field from PriorityClassName. Defaults to PreemptLowerPriority if unset.
      */
     @JsonProperty("preemptionPolicy")
     public void setPreemptionPolicy(String preemptionPolicy) {
@@ -841,6 +864,22 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("schedulingGates")
     public void setSchedulingGates(List<PodSchedulingGate> schedulingGates) {
         this.schedulingGates = schedulingGates;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("schedulingGroup")
+    public PodSchedulingGroup getSchedulingGroup() {
+        return schedulingGroup;
+    }
+
+    /**
+     * RevisionSpec holds the desired state of the Revision (from the client).
+     */
+    @JsonProperty("schedulingGroup")
+    public void setSchedulingGroup(PodSchedulingGroup schedulingGroup) {
+        this.schedulingGroup = schedulingGroup;
     }
 
     /**
@@ -1020,22 +1059,6 @@ public class RevisionSpec implements Editable<RevisionSpecBuilder>, KubernetesRe
     @JsonProperty("volumes")
     public void setVolumes(List<Volume> volumes) {
         this.volumes = volumes;
-    }
-
-    /**
-     * RevisionSpec holds the desired state of the Revision (from the client).
-     */
-    @JsonProperty("workloadRef")
-    public WorkloadReference getWorkloadRef() {
-        return workloadRef;
-    }
-
-    /**
-     * RevisionSpec holds the desired state of the Revision (from the client).
-     */
-    @JsonProperty("workloadRef")
-    public void setWorkloadRef(WorkloadReference workloadRef) {
-        this.workloadRef = workloadRef;
     }
 
     @JsonIgnore

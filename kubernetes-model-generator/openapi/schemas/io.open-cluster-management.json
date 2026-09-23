@@ -128,6 +128,136 @@
         "Scope": "Namespaced"
       }
     },
+    "io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicy": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicy.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicySpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1",
+        "Kind": "MutatingAdmissionPolicy",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicyBinding": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicyBinding.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicyBindingSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1",
+        "Kind": "MutatingAdmissionPolicyBinding",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicyBindingList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of PolicyBinding.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicyBinding"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1",
+        "Kind": "MutatingAdmissionPolicyBindingList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicyList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "List of ValidatingAdmissionPolicy.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingAdmissionPolicy"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "admissionregistration.k8s.io",
+        "Version": "v1",
+        "Kind": "MutatingAdmissionPolicyList",
+        "Scope": "Namespaced"
+      }
+    },
     "io.k8s.api.admissionregistration.v1.MutatingWebhookConfiguration": {
       "type": "object",
       "properties": {
@@ -140,12 +270,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "webhooks": {
-          "description": "Webhooks is a list of webhooks and the affected resources and operations.",
+          "description": "webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.MutatingWebhook"
@@ -188,7 +318,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -213,17 +343,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicy.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicy.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicySpec"
         },
         "status": {
-          "description": "The status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
+          "description": "status represents the current status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicyStatus"
         }
@@ -238,6 +368,9 @@
     },
     "io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicyBinding": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -248,12 +381,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicyBinding.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicyBinding.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingAdmissionPolicyBindingSpec"
         }
@@ -288,7 +421,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -323,7 +456,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -348,12 +481,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "webhooks": {
-          "description": "Webhooks is a list of webhooks and the affected resources and operations.",
+          "description": "webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1.ValidatingWebhook"
@@ -396,7 +529,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -421,12 +554,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the MutatingAdmissionPolicy.",
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicy.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicySpec"
         }
@@ -451,12 +584,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the MutatingAdmissionPolicyBinding.",
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicyBinding.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.MutatingAdmissionPolicyBindingSpec"
         }
@@ -491,7 +624,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -526,7 +659,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -551,17 +684,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicy.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicy.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicySpec"
         },
         "status": {
-          "description": "The status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
+          "description": "status represents the current status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicyStatus"
         }
@@ -576,6 +709,9 @@
     },
     "io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicyBinding": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -586,12 +722,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicyBinding.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicyBinding.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1alpha1.ValidatingAdmissionPolicyBindingSpec"
         }
@@ -626,7 +762,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -661,7 +797,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -686,12 +822,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the MutatingAdmissionPolicy.",
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicy.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingAdmissionPolicySpec"
         }
@@ -716,12 +852,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the MutatingAdmissionPolicyBinding.",
+          "description": "spec defines the desired behavior of the MutatingAdmissionPolicyBinding.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingAdmissionPolicyBindingSpec"
         }
@@ -756,7 +892,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -791,7 +927,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -816,12 +952,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "webhooks": {
-          "description": "Webhooks is a list of webhooks and the affected resources and operations.",
+          "description": "webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.MutatingWebhook"
@@ -864,7 +1000,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -889,17 +1025,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicy.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicy.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicySpec"
         },
         "status": {
-          "description": "The status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
+          "description": "status represents the current status of the ValidatingAdmissionPolicy, including warnings that are useful to determine if the policy behaves in the expected way. Populated by the system. Read-only.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicyStatus"
         }
@@ -914,6 +1050,9 @@
     },
     "io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicyBinding": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -924,12 +1063,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the ValidatingAdmissionPolicyBinding.",
+          "description": "spec defines the desired behavior of the ValidatingAdmissionPolicyBinding.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingAdmissionPolicyBindingSpec"
         }
@@ -964,7 +1103,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -999,7 +1138,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -1024,12 +1163,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "webhooks": {
-          "description": "Webhooks is a list of webhooks and the affected resources and operations.",
+          "description": "webhooks is a list of webhooks and the affected resources and operations.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.admissionregistration.v1beta1.ValidatingWebhook"
@@ -1072,7 +1211,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -1088,8 +1227,7 @@
     "io.k8s.api.apiserverinternal.v1alpha1.StorageVersion": {
       "type": "object",
       "required": [
-        "spec",
-        "status"
+        "metadata"
       ],
       "properties": {
         "apiVersion": {
@@ -1101,17 +1239,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "The name is \u003cgroup\u003e.\u003cresource\u003e.",
+          "description": "metadata is the standard object metadata. The name is \u003cgroup\u003e.\u003cresource\u003e.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec is an empty spec. It is here to comply with Kubernetes API style.",
+          "description": "spec is an empty spec. It is here to comply with Kubernetes API style.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.apiserverinternal.v1alpha1.StorageVersionSpec"
         },
         "status": {
-          "description": "API server instances report the version they can decode and the version they encode objects to when persisting objects in the backend.",
+          "description": "status on the version the API server instance can decode from and encode objects to when persisting objects in the backend.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.apiserverinternal.v1alpha1.StorageVersionStatus"
         }
@@ -1162,7 +1300,7 @@
     "io.k8s.api.apps.v1.ControllerRevision": {
       "type": "object",
       "required": [
-        "revision"
+        "data"
       ],
       "properties": {
         "apiVersion": {
@@ -1234,6 +1372,9 @@
     },
     "io.k8s.api.apps.v1.DaemonSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1304,6 +1445,9 @@
     },
     "io.k8s.api.apps.v1.Deployment": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1374,6 +1518,9 @@
     },
     "io.k8s.api.apps.v1.ReplicaSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1444,6 +1591,9 @@
     },
     "io.k8s.api.apps.v1.StatefulSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1515,7 +1665,7 @@
     "io.k8s.api.apps.v1beta1.ControllerRevision": {
       "type": "object",
       "required": [
-        "revision"
+        "data"
       ],
       "properties": {
         "apiVersion": {
@@ -1587,6 +1737,9 @@
     },
     "io.k8s.api.apps.v1beta1.Deployment": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1657,6 +1810,9 @@
     },
     "io.k8s.api.apps.v1beta1.StatefulSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1725,7 +1881,7 @@
     "io.k8s.api.apps.v1beta2.ControllerRevision": {
       "type": "object",
       "required": [
-        "revision"
+        "data"
       ],
       "properties": {
         "apiVersion": {
@@ -1797,6 +1953,9 @@
     },
     "io.k8s.api.apps.v1beta2.DaemonSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1867,6 +2026,9 @@
     },
     "io.k8s.api.apps.v1beta2.Deployment": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -1937,6 +2099,9 @@
     },
     "io.k8s.api.apps.v1beta2.ReplicaSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -2042,6 +2207,9 @@
     },
     "io.k8s.api.apps.v1beta2.StatefulSet": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -2119,12 +2287,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "status": {
-          "description": "Status is filled in by the server with the user attributes.",
+          "description": "status is filled in by the server with the user attributes.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1.SelfSubjectReviewStatus"
         }
@@ -2139,9 +2307,6 @@
     },
     "io.k8s.api.authentication.v1.TokenRequest": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -2152,17 +2317,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated",
+          "description": "spec holds information about the request being evaluated",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1.TokenRequestSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the token can be authenticated.",
+          "description": "status is filled in by the server and indicates whether the token can be authenticated.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1.TokenRequestStatus"
         }
@@ -2190,17 +2355,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated",
+          "description": "spec holds information about the request being evaluated",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1.TokenReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request can be authenticated.",
+          "description": "status is filled in by the server and indicates whether the request can be authenticated.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1.TokenReviewStatus"
         }
@@ -2225,12 +2390,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "status": {
-          "description": "Status is filled in by the server with the user attributes.",
+          "description": "status is filled in by the server with the user attributes.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1alpha1.SelfSubjectReviewStatus"
         }
@@ -2255,12 +2420,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "status": {
-          "description": "Status is filled in by the server with the user attributes.",
+          "description": "status is filled in by the server with the user attributes.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1beta1.SelfSubjectReviewStatus"
         }
@@ -2288,17 +2453,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated",
+          "description": "spec holds information about the request being evaluated",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1beta1.TokenReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the token can be authenticated.",
+          "description": "status is filled in by the server and indicates whether the token can be authenticated.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authentication.v1beta1.TokenReviewStatus"
         }
@@ -2326,17 +2491,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.  spec.namespace must be equal to the namespace you made the request against.  If empty, it is defaulted.",
+          "description": "spec holds information about the request being evaluated.  spec.namespace must be equal to the namespace you made the request against.  If empty, it is defaulted.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectAccessReviewStatus"
         }
@@ -2364,17 +2529,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.  user and groups must be empty",
+          "description": "spec holds information about the request being evaluated.  user and groups must be empty",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SelfSubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectAccessReviewStatus"
         }
@@ -2402,17 +2567,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.",
+          "description": "spec holds information about the request being evaluated.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SelfSubjectRulesReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates the set of actions a user can perform.",
+          "description": "status is filled in by the server and indicates the set of actions a user can perform.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectRulesReviewStatus"
         }
@@ -2440,17 +2605,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated",
+          "description": "spec holds information about the request being evaluated",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1.SubjectAccessReviewStatus"
         }
@@ -2478,17 +2643,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.  spec.namespace must be equal to the namespace you made the request against.  If empty, it is defaulted.",
+          "description": "spec holds information about the request being evaluated.  spec.namespace must be equal to the namespace you made the request against.  If empty, it is defaulted.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectAccessReviewStatus"
         }
@@ -2516,17 +2681,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.  user and groups must be empty",
+          "description": "spec holds information about the request being evaluated.  user and groups must be empty",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SelfSubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectAccessReviewStatus"
         }
@@ -2554,17 +2719,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated.",
+          "description": "spec holds information about the request being evaluated.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SelfSubjectRulesReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates the set of actions a user can perform.",
+          "description": "status is filled in by the server and indicates the set of actions a user can perform.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectRulesReviewStatus"
         }
@@ -2592,17 +2757,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec holds information about the request being evaluated",
+          "description": "spec holds information about the request being evaluated",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectAccessReviewSpec"
         },
         "status": {
-          "description": "Status is filled in by the server and indicates whether the request is allowed or not",
+          "description": "status is filled in by the server and indicates whether the request is allowed or not",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.authorization.v1beta1.SubjectAccessReviewStatus"
         }
@@ -2617,6 +2782,9 @@
     },
     "io.k8s.api.autoscaling.v1.HorizontalPodAutoscaler": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -2627,7 +2795,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -2697,7 +2865,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -2722,6 +2890,9 @@
     },
     "io.k8s.api.autoscaling.v2.HorizontalPodAutoscaler": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -2790,148 +2961,11 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscaler": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "spec": {
-          "description": "spec is the specification for the behaviour of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscalerSpec"
-        },
-        "status": {
-          "description": "status is the current information about the autoscaler.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscalerStatus"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "autoscaling",
-        "Version": "v2beta1",
-        "Kind": "HorizontalPodAutoscaler",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscalerList": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is the list of horizontal pod autoscaler objects.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta1.HorizontalPodAutoscaler"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata is the standard list metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "autoscaling",
-        "Version": "v2beta1",
-        "Kind": "HorizontalPodAutoscalerList",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler": {
-      "type": "object",
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "spec": {
-          "description": "spec is the specification for the behaviour of the autoscaler. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerSpec"
-        },
-        "status": {
-          "description": "status is the current information about the autoscaler.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerStatus"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "autoscaling",
-        "Version": "v2beta2",
-        "Kind": "HorizontalPodAutoscaler",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscalerList": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is the list of horizontal pod autoscaler objects.",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.autoscaling.v2beta2.HorizontalPodAutoscaler"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "metadata is the standard list metadata.",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "autoscaling",
-        "Version": "v2beta2",
-        "Kind": "HorizontalPodAutoscalerList",
-        "Scope": "Namespaced"
-      }
-    },
     "io.k8s.api.batch.v1.CronJob": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -3072,6 +3106,9 @@
     },
     "io.k8s.api.batch.v1beta1.CronJob": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -3208,6 +3245,147 @@
         "Group": "certificates.k8s.io",
         "Version": "v1",
         "Kind": "CertificateSigningRequestList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1.ClusterTrustBundle": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the signer (if any) and trust anchors.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1.ClusterTrustBundleSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "certificates.k8s.io",
+        "Version": "v1",
+        "Kind": "ClusterTrustBundle",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.certificates.v1.ClusterTrustBundleList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of ClusterTrustBundle objects",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.certificates.v1.ClusterTrustBundle"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "certificates.k8s.io",
+        "Version": "v1",
+        "Kind": "ClusterTrustBundleList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1.PodCertificateRequest": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec contains the details about the certificate being requested.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1.PodCertificateRequestSpec"
+        },
+        "status": {
+          "description": "status contains the issued certificate, and a standard set of conditions.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.certificates.v1.PodCertificateRequestStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "certificates.k8s.io",
+        "Version": "v1",
+        "Kind": "PodCertificateRequest",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.certificates.v1.PodCertificateRequestList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is a collection of PodCertificateRequest objects",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.certificates.v1.PodCertificateRequest"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata contains the list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "certificates.k8s.io",
+        "Version": "v1",
+        "Kind": "PodCertificateRequestList",
         "Scope": "Namespaced"
       }
     },
@@ -3502,7 +3680,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -3557,6 +3735,9 @@
     },
     "io.k8s.api.coordination.v1alpha2.LeaseCandidate": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -3567,7 +3748,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -3632,7 +3813,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -3652,6 +3833,9 @@
     },
     "io.k8s.api.coordination.v1beta1.LeaseCandidate": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -3662,7 +3846,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -3864,7 +4048,7 @@
           "type": "string"
         },
         "binaryData": {
-          "description": "BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet.",
+          "description": "BinaryData contains the binary data. Each key must consist of alphanumeric characters, '-', '_' or '.'. BinaryData can contain byte sequences that are not in the UTF-8 range. The keys stored in BinaryData must not overlap with the ones in the Data field, this is enforced during validation process. Using this field will require 1.10+ apiserver and kubelet. Note: BinaryData keys are not currently propagated to container env vars via ConfigMapKeyRef or ConfigMapRef env sources; only Data keys are used.",
           "type": "object",
           "additionalProperties": {
             "type": "string",
@@ -5052,8 +5236,7 @@
     "io.k8s.api.discovery.v1.EndpointSlice": {
       "type": "object",
       "required": [
-        "addressType",
-        "endpoints"
+        "addressType"
       ],
       "properties": {
         "addressType": {
@@ -5260,7 +5443,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -5328,7 +5511,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -5382,7 +5565,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -5450,7 +5633,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
         }
@@ -5886,6 +6069,9 @@
     },
     "io.k8s.api.flowcontrol.v1.FlowSchema": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -5956,6 +6142,9 @@
     },
     "io.k8s.api.flowcontrol.v1.PriorityLevelConfiguration": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6026,6 +6215,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta1.FlowSchema": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6096,6 +6288,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta1.PriorityLevelConfiguration": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6166,6 +6361,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta2.FlowSchema": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6236,6 +6434,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta2.PriorityLevelConfiguration": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6306,6 +6507,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta3.FlowSchema": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6376,6 +6580,9 @@
     },
     "io.k8s.api.flowcontrol.v1beta3.PriorityLevelConfiguration": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6444,8 +6651,11 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.networking.v1.IPAddress": {
+    "io.k8s.api.lifecycle.v1alpha1.Eviction": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6456,7 +6666,153 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata. .metadata.name set by the evictionrequest-controller is purely informative and subject to change. .spec.target field should be used to identify the target precisesly.\n\nThe requester and responder names will be used as label keys and added to the labels of the eviction in one of the following formats: 1. acme.io/foo: \"requester\" 2. acme.io/foo: \"responder\" 3. acme.io/foo: \"requester-responder\"\n\nPlease see EvictionParticipantRole for available role label values.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the eviction specification. https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.EvictionSpec"
+        },
+        "status": {
+          "description": "status represents the most recently observed status of the eviction. Populated by responders and evictionrequest-controller. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.EvictionStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "lifecycle.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "Eviction",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.lifecycle.v1alpha1.EvictionList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of Evictions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.Eviction"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "lifecycle.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "EvictionList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.lifecycle.v1alpha1.EvictionRequest": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata; More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the eviction request specification. https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.EvictionRequestSpec"
+        },
+        "status": {
+          "description": "status represents the most recently observed status of the eviction request. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#spec-and-status",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.EvictionRequestStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "lifecycle.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "EvictionRequest",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.lifecycle.v1alpha1.EvictionRequestList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of EvictionRequests.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.lifecycle.v1alpha1.EvictionRequest"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "lifecycle.k8s.io",
+        "Version": "v1alpha1",
+        "Kind": "EvictionRequestList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.networking.v1.IPAddress": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6521,7 +6877,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6556,7 +6912,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6656,7 +7012,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6721,7 +7077,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6781,6 +7137,9 @@
     },
     "io.k8s.api.networking.v1beta1.IPAddress": {
       "type": "object",
+      "required": [
+        "spec"
+      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -6791,7 +7150,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6856,7 +7215,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6891,7 +7250,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -6991,7 +7350,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -7069,7 +7428,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -7140,7 +7499,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -7213,7 +7572,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -7277,7 +7636,7 @@
           "type": "string"
         },
         "deleteOptions": {
-          "description": "DeleteOptions may be provided",
+          "description": "deleteOptions may be provided",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions"
         },
         "kind": {
@@ -7285,7 +7644,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "ObjectMeta describes the pod that is being evicted.",
+          "description": "metadata describes the pod that is being evicted.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         }
@@ -7310,17 +7669,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the PodDisruptionBudget.",
+          "description": "spec is the specification of the desired behavior of the PodDisruptionBudget.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetSpec"
         },
         "status": {
-          "description": "Most recently observed status of the PodDisruptionBudget.",
+          "description": "status is the most recently observed status of the PodDisruptionBudget.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.policy.v1.PodDisruptionBudgetStatus"
         }
@@ -7376,7 +7735,7 @@
           "type": "string"
         },
         "deleteOptions": {
-          "description": "DeleteOptions may be provided",
+          "description": "deleteOptions may be provided",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.DeleteOptions"
         },
         "kind": {
@@ -7384,7 +7743,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "ObjectMeta describes the pod that is being evicted.",
+          "description": "metadata describes the pod that is being evicted.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         }
@@ -7409,17 +7768,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Specification of the desired behavior of the PodDisruptionBudget.",
+          "description": "spec is the specification of the desired behavior of the PodDisruptionBudget.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetSpec"
         },
         "status": {
-          "description": "Most recently observed status of the PodDisruptionBudget.",
+          "description": "status is the most recently observed status of the PodDisruptionBudget.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.policy.v1beta1.PodDisruptionBudgetStatus"
         }
@@ -7471,7 +7830,7 @@
       "type": "object",
       "properties": {
         "aggregationRule": {
-          "description": "AggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
+          "description": "aggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
           "$ref": "#/definitions/io.k8s.api.rbac.v1.AggregationRule"
         },
         "apiVersion": {
@@ -7483,12 +7842,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this ClusterRole",
+          "description": "rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
@@ -7519,17 +7878,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
+          "description": "roleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.Subject"
@@ -7627,12 +7986,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this Role",
+          "description": "rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.PolicyRule"
@@ -7663,17 +8022,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
+          "description": "roleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error. This field is immutable.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1.Subject"
@@ -7763,7 +8122,7 @@
       "type": "object",
       "properties": {
         "aggregationRule": {
-          "description": "AggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
+          "description": "aggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
           "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.AggregationRule"
         },
         "apiVersion": {
@@ -7775,12 +8134,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this ClusterRole",
+          "description": "rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.PolicyRule"
@@ -7811,17 +8170,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
+          "description": "roleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.Subject"
@@ -7919,12 +8278,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this Role",
+          "description": "rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.PolicyRule"
@@ -7955,17 +8314,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
+          "description": "roleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1alpha1.Subject"
@@ -8055,7 +8414,7 @@
       "type": "object",
       "properties": {
         "aggregationRule": {
-          "description": "AggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
+          "description": "aggregationRule is an optional field that describes how to build the Rules for this ClusterRole. If AggregationRule is set, then the Rules are controller managed and direct changes to Rules will be stomped by the controller.",
           "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.AggregationRule"
         },
         "apiVersion": {
@@ -8067,12 +8426,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this ClusterRole",
+          "description": "rules holds all the PolicyRules for this ClusterRole",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.PolicyRule"
@@ -8103,17 +8462,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
+          "description": "roleRef can only reference a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.Subject"
@@ -8211,12 +8570,12 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "rules": {
-          "description": "Rules holds all the PolicyRules for this Role",
+          "description": "rules holds all the PolicyRules for this Role",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.PolicyRule"
@@ -8247,17 +8606,17 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata.",
+          "description": "metadata is the standard object's metadata.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "roleRef": {
-          "description": "RoleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
+          "description": "roleRef can reference a Role in the current namespace or a ClusterRole in the global namespace. If the RoleRef cannot be resolved, the Authorizer must return an error.",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.RoleRef"
         },
         "subjects": {
-          "description": "Subjects holds references to the objects the role applies to.",
+          "description": "subjects holds references to the objects the role applies to.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.rbac.v1beta1.Subject"
@@ -8345,9 +8704,6 @@
     },
     "io.k8s.api.resource.v1.DeviceClass": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8411,11 +8767,81 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.resource.v1.ResourceClaim": {
+    "io.k8s.api.resource.v1.DeviceTaintRule": {
       "type": "object",
       "required": [
         "spec"
       ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceTaintRuleSpec"
+        },
+        "status": {
+          "description": "Status provides information about what was requested in the spec.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceTaintRuleStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1",
+        "Kind": "DeviceTaintRule",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1.DeviceTaintRuleList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of DeviceTaintRules.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.resource.v1.DeviceTaintRule"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1",
+        "Kind": "DeviceTaintRuleList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1.ResourceClaim": {
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8486,9 +8912,6 @@
     },
     "io.k8s.api.resource.v1.ResourceClaimTemplate": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8693,11 +9116,81 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.resource.v1beta1.DeviceClass": {
+    "io.k8s.api.resource.v1alpha3.ResourcePoolStatusRequest": {
       "type": "object",
       "required": [
+        "metadata",
         "spec"
       ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the filters for which pools to include in the status. The spec is immutable once created.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.ResourcePoolStatusRequestSpec"
+        },
+        "status": {
+          "description": "Status is populated by the controller with the calculated pool status. When status is non-nil, the request is considered complete and the entire object becomes immutable.",
+          "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.ResourcePoolStatusRequestStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1alpha3",
+        "Kind": "ResourcePoolStatusRequest",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1alpha3.ResourcePoolStatusRequestList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of ResourcePoolStatusRequests.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.resource.v1alpha3.ResourcePoolStatusRequest"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1alpha3",
+        "Kind": "ResourcePoolStatusRequestList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta1.DeviceClass": {
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8763,9 +9256,6 @@
     },
     "io.k8s.api.resource.v1beta1.ResourceClaim": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8836,9 +9326,6 @@
     },
     "io.k8s.api.resource.v1beta1.ResourceClaimTemplate": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -8972,9 +9459,6 @@
     },
     "io.k8s.api.resource.v1beta2.DeviceClass": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -9038,11 +9522,81 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.resource.v1beta2.ResourceClaim": {
+    "io.k8s.api.resource.v1beta2.DeviceTaintRule": {
       "type": "object",
       "required": [
         "spec"
       ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec specifies the selector and one taint.\n\nChanging the spec automatically increments the metadata.generation number.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceTaintRuleSpec"
+        },
+        "status": {
+          "description": "Status provides information about what was requested in the spec.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceTaintRuleStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "DeviceTaintRule",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.DeviceTaintRuleList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of DeviceTaintRules.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.resource.v1beta2.DeviceTaintRule"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "resource.k8s.io",
+        "Version": "v1beta2",
+        "Kind": "DeviceTaintRuleList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.resource.v1beta2.ResourceClaim": {
+      "type": "object",
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -9113,9 +9667,6 @@
     },
     "io.k8s.api.resource.v1beta2.ResourceClaimTemplate": {
       "type": "object",
-      "required": [
-        "spec"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -9249,9 +9800,6 @@
     },
     "io.k8s.api.scheduling.v1.PriorityClass": {
       "type": "object",
-      "required": [
-        "value"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -9270,7 +9818,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9328,88 +9876,7 @@
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.scheduling.v1alpha1.PriorityClass": {
-      "type": "object",
-      "required": [
-        "value"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "description": {
-          "description": "description is an arbitrary string that usually provides guidelines on when this priority class should be used.",
-          "type": "string"
-        },
-        "globalDefault": {
-          "description": "globalDefault specifies whether this PriorityClass should be considered as the default priority for pods that do not have any priority class. Only one PriorityClass can be marked as `globalDefault`. However, if more than one PriorityClasses exists with their `globalDefault` field set to true, the smallest value of such global default PriorityClasses will be used as the default priority.",
-          "type": "boolean"
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
-        },
-        "preemptionPolicy": {
-          "description": "preemptionPolicy is the Policy for preempting pods with lower priority. One of Never, PreemptLowerPriority. Defaults to PreemptLowerPriority if unset.",
-          "type": "string"
-        },
-        "value": {
-          "description": "value represents the integer value of this priority class. This is the actual priority that pods receive when they have the name of this class in their pod spec.",
-          "type": "integer",
-          "format": "int32",
-          "default": 0
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "object",
-        "Group": "scheduling.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PriorityClass",
-        "Scope": "Clustered"
-      }
-    },
-    "io.k8s.api.scheduling.v1alpha1.PriorityClassList": {
-      "type": "object",
-      "required": [
-        "items"
-      ],
-      "properties": {
-        "apiVersion": {
-          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
-          "type": "string"
-        },
-        "items": {
-          "description": "items is the list of PriorityClasses",
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.PriorityClass"
-          }
-        },
-        "kind": {
-          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
-          "type": "string"
-        },
-        "metadata": {
-          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
-          "default": {},
-          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
-        }
-      },
-      "x-fabric8-info": {
-        "Type": "list",
-        "Group": "scheduling.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "PriorityClassList",
-        "Scope": "Namespaced"
-      }
-    },
-    "io.k8s.api.scheduling.v1alpha1.Workload": {
+    "io.k8s.api.scheduling.v1alpha3.CompositePodGroup": {
       "type": "object",
       "required": [
         "spec"
@@ -9424,25 +9891,30 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. Name must be a DNS subdomain.",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
         "spec": {
-          "description": "Spec defines the desired behavior of a Workload.",
+          "description": "spec defines the desired state of the CompositePodGroup.",
           "default": {},
-          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.WorkloadSpec"
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.CompositePodGroupSpec"
+        },
+        "status": {
+          "description": "status represents the current observed state of the CompositePodGroup.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.CompositePodGroupStatus"
         }
       },
       "x-fabric8-info": {
         "Type": "object",
         "Group": "scheduling.k8s.io",
-        "Version": "v1alpha1",
-        "Kind": "Workload",
+        "Version": "v1alpha3",
+        "Kind": "CompositePodGroup",
         "Scope": "Namespaced"
       }
     },
-    "io.k8s.api.scheduling.v1alpha1.WorkloadList": {
+    "io.k8s.api.scheduling.v1alpha3.CompositePodGroupList": {
       "type": "object",
       "required": [
         "items"
@@ -9453,10 +9925,10 @@
           "type": "string"
         },
         "items": {
-          "description": "Items is the list of Workloads.",
+          "description": "Items is the list of CompositePodGroups.",
           "type": "array",
           "items": {
-            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha1.Workload"
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.CompositePodGroup"
           }
         },
         "kind": {
@@ -9472,16 +9944,227 @@
       "x-fabric8-info": {
         "Type": "list",
         "Group": "scheduling.k8s.io",
-        "Version": "v1alpha1",
+        "Version": "v1alpha3",
+        "Kind": "CompositePodGroupList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha3.PodGroup": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired state of the PodGroup.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.PodGroupSpec"
+        },
+        "status": {
+          "description": "status represents the current observed state of the PodGroup.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.PodGroupStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha3",
+        "Kind": "PodGroup",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha3.PodGroupList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of PodGroups.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.PodGroup"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha3",
+        "Kind": "PodGroupList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha3.Workload": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired behavior of a Workload.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.WorkloadSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha3",
+        "Kind": "Workload",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1alpha3.WorkloadList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of Workloads.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1alpha3.Workload"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1alpha3",
         "Kind": "WorkloadList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1beta1.PodGroup": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired state of the PodGroup.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.PodGroupSpec"
+        },
+        "status": {
+          "description": "status represents the current observed state of the PodGroup.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.PodGroupStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodGroup",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1beta1.PodGroupList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of PodGroups.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.PodGroup"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "PodGroupList",
         "Scope": "Namespaced"
       }
     },
     "io.k8s.api.scheduling.v1beta1.PriorityClass": {
       "type": "object",
-      "required": [
-        "value"
-      ],
       "properties": {
         "apiVersion": {
           "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
@@ -9500,7 +10183,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9558,6 +10241,74 @@
         "Scope": "Namespaced"
       }
     },
+    "io.k8s.api.scheduling.v1beta1.Workload": {
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "spec defines the desired behavior of a Workload.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.WorkloadSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "Workload",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.scheduling.v1beta1.WorkloadList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "items is the list of Workloads.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.scheduling.v1beta1.Workload"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "metadata is the standard list metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.k8s.io",
+        "Version": "v1beta1",
+        "Kind": "WorkloadList",
+        "Scope": "Namespaced"
+      }
+    },
     "io.k8s.api.storage.v1.CSIDriver": {
       "type": "object",
       "required": [
@@ -9573,7 +10324,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. metadata.Name indicates the name of the CSI driver that this object refers to; it MUST be the same name returned by the CSI GetPluginName() call for that driver. The driver name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics between. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. metadata.Name indicates the name of the CSI driver that this object refers to; it MUST be the same name returned by the CSI GetPluginName() call for that driver. The driver name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics between. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9641,7 +10392,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. metadata.name must be the Kubernetes node name.",
+          "description": "metadata is the standard object metadata. metadata.name must be the Kubernetes node name.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9649,6 +10400,11 @@
           "description": "spec is the specification of CSINode",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.storage.v1.CSINodeSpec"
+        },
+        "status": {
+          "description": "status contains health and status information for the node's storage.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.storage.v1.CSINodeStatus"
         }
       },
       "x-fabric8-info": {
@@ -9717,7 +10473,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
         },
         "metadata": {
-          "description": "Standard object's metadata. The name has no particular meaning. It must be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. The name has no particular meaning. It must be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9801,7 +10557,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9892,7 +10648,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -9961,7 +10717,7 @@
           "type": "string"
         },
         "driverName": {
-          "description": "Name of the CSI driver This field is immutable.",
+          "description": "driverName is the name of the CSI driver This field is immutable.",
           "type": "string",
           "default": ""
         },
@@ -9970,7 +10726,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10048,7 +10804,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
         },
         "metadata": {
-          "description": "Standard object's metadata. The name has no particular meaning. It must be be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. The name has no particular meaning. It must be be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10120,7 +10876,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10189,7 +10945,7 @@
           "type": "string"
         },
         "driverName": {
-          "description": "Name of the CSI driver This field is immutable.",
+          "description": "driverName is the name of the CSI driver This field is immutable.",
           "type": "string",
           "default": ""
         },
@@ -10198,7 +10954,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10268,7 +11024,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. metadata.Name indicates the name of the CSI driver that this object refers to; it MUST be the same name returned by the CSI GetPluginName() call for that driver. The driver name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics between. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. metadata.Name indicates the name of the CSI driver that this object refers to; it MUST be the same name returned by the CSI GetPluginName() call for that driver. The driver name must be 63 characters or less, beginning and ending with an alphanumeric character ([a-z0-9A-Z]) with dashes (-), dots (.), and alphanumerics between. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10336,7 +11092,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "metadata.name must be the Kubernetes node name.",
+          "description": "metadata is the standard object metadata. metadata.name must be the Kubernetes node name.",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10344,6 +11100,11 @@
           "description": "spec is the specification of CSINode",
           "default": {},
           "$ref": "#/definitions/io.k8s.api.storage.v1beta1.CSINodeSpec"
+        },
+        "status": {
+          "description": "status contains health and status information for the node's storage.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.storage.v1beta1.CSINodeStatus"
         }
       },
       "x-fabric8-info": {
@@ -10412,7 +11173,7 @@
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
         },
         "metadata": {
-          "description": "Standard object's metadata. The name has no particular meaning. It must be be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. The name has no particular meaning. It must be be a DNS subdomain (dots allowed, 253 characters). To ensure that there are no conflicts with other CSI drivers on the cluster, the recommendation is to use csisc-\u003cuuid\u003e, a generated name, or a reverse-domain name which ends with the unique CSI driver name.\n\nObjects are namespaced.\n\nMore info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10496,7 +11257,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10587,7 +11348,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10656,7 +11417,7 @@
           "type": "string"
         },
         "driverName": {
-          "description": "Name of the CSI driver This field is immutable.",
+          "description": "driverName is the name of the CSI driver This field is immutable.",
           "type": "string",
           "default": ""
         },
@@ -10665,7 +11426,7 @@
           "type": "string"
         },
         "metadata": {
-          "description": "Standard object's metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "description": "metadata is the standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
           "default": {},
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
         },
@@ -10717,6 +11478,76 @@
         "Group": "storage.k8s.io",
         "Version": "v1beta1",
         "Kind": "VolumeAttributesClassList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.k8s.api.storagemigration.v1.StorageVersionMigration": {
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard object metadata. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Specification of the migration.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1.StorageVersionMigrationSpec"
+        },
+        "status": {
+          "description": "Status of the migration.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.api.storagemigration.v1.StorageVersionMigrationStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "storagemigration.k8s.io",
+        "Version": "v1",
+        "Kind": "StorageVersionMigration",
+        "Scope": "Clustered"
+      }
+    },
+    "io.k8s.api.storagemigration.v1.StorageVersionMigrationList": {
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "description": "Items is the list of StorageVersionMigration",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.api.storagemigration.v1.StorageVersionMigration"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "Standard list metadata More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#metadata",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "storagemigration.k8s.io",
+        "Version": "v1",
+        "Kind": "StorageVersionMigrationList",
         "Scope": "Namespaced"
       }
     },
