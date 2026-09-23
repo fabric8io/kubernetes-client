@@ -154,7 +154,52 @@ public abstract class AbstractHttpClientProxyHttpsTest {
       assertThat(proxy.getRequestHeads())
           .as("the requests should have been tunneled through the proxy")
           .isNotEmpty()
-          .allMatch(head -> head.startsWith("CONNECT "));
+          .allMatch(head -> head.startsWith("CONNECT "))
+          .as("whether the CONNECT carries credentials that aren't Basic")
+          .allMatch(head -> head.contains("Other kind of auth") == sendsOtherAuthorizationOnConnect());
+    } finally {
+      origin.shutdown();
+    }
+  }
+
+  /**
+   * Whether the implementation authenticates the CONNECT with credentials it can't decode as Basic. Those that don't
+   * can only get through a proxy that doesn't require them.
+   */
+  protected boolean sendsOtherAuthorizationOnConnect() {
+    return false;
+  }
+
+  @Test
+  @DisplayName("Proxied HttpClient doesn't answer a 407 from the HTTPS server (e.g. through pods/proxy) with the proxy credentials, which would send them through the tunnel")
+  protected void proxyCredentialsAreNotSentThroughTunnelOnOrigin407() throws Exception {
+    final DefaultMockServer origin = new DefaultMockServer(true);
+    origin.start();
+    try (TunnelingProxy proxy = new TunnelingProxy(origin.getPort())) {
+      // Given
+      origin.expect().get().withPath("/origin-407")
+          .andReturn(407, "from the server")
+          .withHeader("Proxy-Authenticate", "Basic realm=\"server\"")
+          .always();
+      try (HttpClient client = getHttpClientFactory().newBuilder()
+          .sslContext(null, SSLUtils.trustManagers(null, null, true, null, null))
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort()))
+          .proxyAuthorization("Other kind of auth")
+          .build()) {
+        // When
+        final HttpResponse<String> response = client
+            .sendAsync(client.newHttpRequestBuilder().uri(origin.url("/origin-407")).build(), String.class)
+            // the first HTTPS exchange of a fork is slow to set up, plus the proxy hop
+            .get(30L, TimeUnit.SECONDS);
+        // Then
+        assertThat(response.code()).isEqualTo(407);
+      }
+      final int requestCount = origin.getRequestCount();
+      for (int i = 0; i < requestCount; i++) {
+        assertThat(origin.takeRequest().getHeader(StandardHttpHeaders.PROXY_AUTHORIZATION))
+            .as("request %d to the HTTPS server", i + 1)
+            .isNull();
+      }
     } finally {
       origin.shutdown();
     }

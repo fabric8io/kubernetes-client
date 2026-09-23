@@ -18,11 +18,13 @@ package io.fabric8.kubernetes.client.jetty;
 import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpResponse;
+import io.fabric8.kubernetes.client.http.WebSocket;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.net.InetSocketAddress;
+import java.net.URI;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
@@ -62,6 +64,29 @@ public class JettyHttpClientProxyTest extends AbstractHttpClientProxyTest {
           .isEqualTo(2);
       assertThat(proxy.takeRequest().getHeader("Proxy-Authorization")).isNull();
       assertThat(proxy.takeRequest().getHeader("Proxy-Authorization")).isEqualTo(basicCredentials("user", "wrong"));
+    } finally {
+      proxy.shutdown();
+    }
+  }
+
+  @Test
+  @DisplayName("Proxied WebSocket over plain HTTP with other authorization, sends it to the proxy (Jetty doesn't tunnel it, the proxy reads the upgrade request)")
+  void plainWebSocketUpgradeSendsOtherAuthToProxy() throws Exception {
+    final DefaultMockServer proxy = new DefaultMockServer(false);
+    proxy.start();
+    try (HttpClient client = getHttpClientFactory().newBuilder()
+        .proxyAddress(new InetSocketAddress("localhost", proxy.getPort()))
+        .proxyAuthorization("Other kind of auth")
+        .build()) {
+      // Given
+      proxy.expect().withPath("ws://ws.example.test/plain-ws").andUpgradeToWebSocket().open().done().always();
+      // When
+      client.newWebSocketBuilder()
+          .uri(URI.create("http://ws.example.test/plain-ws"))
+          .buildAsync(new WebSocket.Listener() {
+          }).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(proxy.getLastRequest().getHeader("Proxy-Authorization")).isEqualTo("Other kind of auth");
     } finally {
       proxy.shutdown();
     }

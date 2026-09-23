@@ -440,6 +440,19 @@ class Vertx5HttpClientBuilderTest {
     }
 
     @Test
+    @DisplayName("Proxy credentials that aren't Basic, go to the HTTP proxy through Vert.x (on the CONNECT too) instead of a request header")
+    void nonBasicProxyCredentialsGoToVertxProxyOptions() {
+      final AtomicReference<Vertx5HttpClientBuilder<?>> builderRef = new AtomicReference<>();
+      final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(builder -> builderRef.set(builder
+          .proxyAddress(InetSocketAddress.createUnresolved("proxy.example.com", 3128))
+          .proxyAuthorization("Negotiate token")));
+      assertThat(wsOptions.getProxyOptions())
+          .returns(ProxyType.HTTP, ProxyOptions::getType)
+          .returns("Negotiate token", ProxyOptions::getProxyAuthorization);
+      assertThat(builderRef.get().getInterceptors()).doesNotContainKey("PROXY-AUTH");
+    }
+
+    @Test
     @DisplayName("WebSocket client is left unproxied when the proxy type is DIRECT")
     void webSocketClientSkipsProxyWhenDirect() {
       final WebSocketClientOptions wsOptions = buildAndCaptureWsOptions(builder -> builder

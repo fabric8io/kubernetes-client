@@ -146,7 +146,8 @@ public class JettyHttpClientBuilder
           throw new KubernetesClientException("Unsupported proxy type");
       }
       if (userPassword == null) {
-        // Jetty sends plain WebSocket upgrades to the proxy in absolute form, like other http requests
+        // Over HTTP/1.1 (preferHttp11), Jetty sends plain http requests and WebSocket upgrades to the proxy in absolute
+        // form. With HTTP/2 it would tunnel them, and the header would reach the API server
         addPlainHttpProxyAuthInterceptor(false);
       }
     }
