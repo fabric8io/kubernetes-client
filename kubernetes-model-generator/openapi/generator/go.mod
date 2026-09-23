@@ -1,6 +1,44 @@
 module github.com/fabric8io/kubernetes-client/kubernetes-model-generator/openapi/generator
 
-go 1.26.7
+go 1.27.0
+
+// Required by some openshift operator dependencies
+// Force usage of latest Kuberentes Version
+replace (
+	// go list -m -json github.com/openshift/api@release-4.19
+	github.com/openshift/api => github.com/openshift/api v0.0.0-20251202204302-1cb53e34ca33
+	github.com/openshift/assisted-service/api => github.com/openshift/assisted-service/api v1.0.10-0.20251202132226-43bfecff9fdb
+	github.com/openshift/assisted-service/client => github.com/openshift/assisted-service/client v1.0.10-0.20251202132226-43bfecff9fdb
+	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v1.0.10-0.20251202132226-43bfecff9fdb
+	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
+	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
+
+	// Held at v0.35.x by the controller-runtime pin below: client-go v0.36.0+ doesn't compile with controller-runtime v0.23.x
+	k8s.io/api => k8s.io/api v0.37.0
+	k8s.io/client-go => k8s.io/client-go v0.37.0
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.0
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.37.0
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.37.0
+	k8s.io/mount-utils => k8s.io/mount-utils v0.37.0
+
+	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
+	knative.dev/pkg => knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042
+
+	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.2
+	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
+	sigs.k8s.io/cluster-api/api => sigs.k8s.io/cluster-api/api v1.14.2
+
+	// v0.23.x is the latest release built on k8s.io v0.35.x (v0.24+ needs v0.36); governance-policy-propagator v0.19+ needs at least v0.23
+	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.25.1
+)
+
+// Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
+replace (
+	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
+	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20260922120428-553f19cbad09
+	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20260922190252-30a542091361
+	volcano.sh/apis => volcano.sh/apis v1.15.2
+)
 
 require (
 	github.com/cert-manager/cert-manager v1.21.2
@@ -37,7 +75,7 @@ require (
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
 	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
-	k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
+	k8s.io/kube-openapi v0.0.0-20260911184034-7970a1e230da
 	k8s.io/metrics v0.37.0
 	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
 	knative.dev/eventing v0.50.0
@@ -58,44 +96,6 @@ require (
 	sigs.k8s.io/kustomize/api v0.21.1
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6
-)
-
-// Required by some openshift operator dependencies
-// Force usage of latest Kuberentes Version
-replace (
-	// go list -m -json github.com/openshift/api@release-4.19
-	github.com/openshift/api => github.com/openshift/api v0.0.0-20251202204302-1cb53e34ca33
-	github.com/openshift/assisted-service/api => github.com/openshift/assisted-service/api v1.0.10-0.20251202132226-43bfecff9fdb
-	github.com/openshift/assisted-service/client => github.com/openshift/assisted-service/client v1.0.10-0.20251202132226-43bfecff9fdb
-	github.com/openshift/assisted-service/models => github.com/openshift/assisted-service/models v1.0.10-0.20251202132226-43bfecff9fdb
-	github.com/openshift/hive => github.com/openshift/hive v1.1.17-0.20251208194543-6648a44ea777 // Latest Master
-	github.com/openshift/installer => github.com/openshift/installer v1.4.21-pre // Most up-to-date tag https://issues.redhat.com/browse/OCPBUGS-42448
-
-	// Held at v0.35.x by the controller-runtime pin below: client-go v0.36.0+ doesn't compile with controller-runtime v0.23.x
-	k8s.io/api => k8s.io/api v0.35.8
-	k8s.io/client-go => k8s.io/client-go v0.35.8
-	k8s.io/cloud-provider => k8s.io/cloud-provider v0.35.8
-	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.35.8
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.35.8
-	k8s.io/mount-utils => k8s.io/mount-utils v0.35.8
-
-	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
-	knative.dev/pkg => knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042
-
-	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.2
-	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
-	sigs.k8s.io/cluster-api/api => sigs.k8s.io/cluster-api/api v1.14.2
-
-	// v0.23.x is the latest release built on k8s.io v0.35.x (v0.24+ needs v0.36); governance-policy-propagator v0.19+ needs at least v0.23
-	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.23.3
-)
-
-// Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
-replace (
-	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
-	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20260922120428-553f19cbad09
-	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20260922190252-30a542091361
-	volcano.sh/apis => volcano.sh/apis v1.15.2
 )
 
 require (
@@ -149,7 +149,6 @@ require (
 	github.com/go-openapi/validate v0.24.0 // indirect
 	github.com/go-test/deep v1.1.1 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/btree v1.1.3 // indirect
 	github.com/google/cel-go v0.31.0 // indirect
 	github.com/google/gnostic-models v0.7.1 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
@@ -247,5 +246,6 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
+	sigs.k8s.io/structured-merge-diff/v7 v7.0.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
