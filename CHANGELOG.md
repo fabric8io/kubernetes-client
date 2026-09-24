@@ -77,6 +77,7 @@
 * Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
 
 #### New Features
+* Fix #8111: Allow configuring the minimum watch lifetime per informer with `SharedIndexInformer#setMinWatchTimeout(long)`.
 * Fix #8041: Typed DSL for the resources added in Kubernetes 1.37: `certificates().v1().podCertificateRequests()`, `dynamicResourceAllocation().v1().deviceTaintRules()`, `storageMigration().v1().storageVersionMigrations()` and `scheduling().v1beta1()` `podGroups()` and `workloads()`, plus `certificates().v1beta1().podCertificateRequests()` and `storageMigration().v1beta1().storageVersionMigrations()`. `kubernetes-model-policy` also ships the `lifecycle.k8s.io/v1alpha1` model (`Eviction` and `EvictionRequest`)
 
 #### _**Note**_: Breaking changes
