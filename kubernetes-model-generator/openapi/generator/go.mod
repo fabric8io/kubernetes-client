@@ -46,7 +46,7 @@ require (
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.6.0
-	github.com/metal3-io/baremetal-operator/apis v0.13.0
+	github.com/metal3-io/baremetal-operator/apis v0.14.0
 	github.com/metal3-io/cluster-api-provider-metal3/api v1.14.0
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
