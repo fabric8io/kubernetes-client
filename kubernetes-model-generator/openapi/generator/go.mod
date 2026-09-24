@@ -57,7 +57,7 @@ require (
 	github.com/openshift/installer v1.5.0-rc-1
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.46.0
-	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
+	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20260923175703-d13564c72d45
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.0
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20260922145900-ea34ca3eb97c
