@@ -1,6 +1,6 @@
 ## CHANGELOG
 
-### 8.0-SNAPSHOT
+### 8.0.0 (2026-09-24)
 
 #### Bugs
 * Fix #8105: requests hanging when a retry action, retry decision, or response cleanup throws an exception.
