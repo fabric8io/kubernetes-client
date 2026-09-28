@@ -121,7 +121,7 @@
     <bcpkix-fips.version>2.1.13</bcpkix-fips.version>
     <keycloak.version>26.7.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <jboss-logging.version>3.6.3.Final</jboss-logging.version><!-- Keycloak classes reference it; needed to introspect them -->
-    <mockito.version>5.23.0</mockito.version>
+    <mockito.version>5.24.0</mockito.version>
     <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
          avoid Mockito's runtime self-attach. Keep this in sync with the byte-buddy-agent that mockito-core
          ${mockito.version} pulls transitively; a small skew is harmless since the agent only installs
