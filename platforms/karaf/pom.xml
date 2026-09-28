@@ -34,7 +34,7 @@
   </modules>
 
   <properties>
-    <karaf.version>4.4.11</karaf.version>
+    <karaf.version>4.4.12</karaf.version>
     <osgi.version>6.0.0</osgi.version>
     <!-- Only consumed by features/src/main/resources/feature.xml. SPI-Fly weaves the
          ServiceLoader call sites the client relies on, so ASM must be able to read the
