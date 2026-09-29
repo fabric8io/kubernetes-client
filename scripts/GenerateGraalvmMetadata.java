@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
  *                                            COMPREHENSIVE, PATTERN_BASED, ALL_PUBLIC_CLASSES, DIRECT_OBJECT_SUBCLASSES
  *   -i <pattern>                     Include pattern (can be specified multiple times)
  *   -e <pattern>                     Exclude pattern (can be specified multiple times)
- *   --no-merge                       Don't merge with existing reflect-config.json
+ *   --no-merge                       Don't merge with existing reachability-metadata.json
  *   --no-constructors                Don't include all declared constructors
  *   --no-methods                     Don't include all declared methods
  *   --no-fields                      Don't include all declared fields
@@ -74,14 +74,14 @@ import java.util.stream.Collectors;
  * Examples:
  *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx
  *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -s COMPREHENSIVE
- *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -o output/reflect-config.json
+ *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -o output/reachability-metadata.json
  *   jbang GenerateGraalvmMetadata.java target/classes/META-INF/jandex.idx -i "io.fabric8.*" -e "*.internal.*"
  */
 class GenerateGraalvmMetadata {
 
   /** Outcome of a single {@link #generate(String[])} invocation. */
   enum Result {
-    /** A reflect-config.json was written. */
+    /** A reachability-metadata.json was written. */
     WROTE,
     /** No classes matched the inclusion criteria; nothing was written. Not an error. */
     EMPTY,
@@ -113,7 +113,7 @@ class GenerateGraalvmMetadata {
       // Determine output file
       if (config.outputFile == null) {
         // index file is at: target/classes/META-INF/jandex.idx
-        // we need: target/classes/META-INF/native-image/io.fabric8/<artifactId>/reflect-config.json
+        // we need: target/classes/META-INF/native-image/io.fabric8/<artifactId>/reachability-metadata.json
         var classesDir = config.indexFile.getParentFile().getParentFile().toPath(); // target/classes
 
         // Extract artifactId from pom.xml
@@ -126,7 +126,7 @@ class GenerateGraalvmMetadata {
         }
 
         config.outputFile = classesDir
-          .resolve("META-INF/native-image/io.fabric8/" + artifactId + "/reflect-config.json")
+          .resolve("META-INF/native-image/io.fabric8/" + artifactId + "/reachability-metadata.json")
           .toFile();
 
         // Defensive: artifactId comes from a parsed pom.xml; refuse to write outside the
@@ -269,7 +269,7 @@ class GenerateGraalvmMetadata {
     System.out.println("Options:");
     System.out.println("  -o <file>                        Output file path");
     System.out.println("                                   Default: target/classes/META-INF/native-image/");
-    System.out.println("                                           io.fabric8/<artifactId>/reflect-config.json");
+    System.out.println("                                           io.fabric8/<artifactId>/reachability-metadata.json");
     System.out.println("  -s <strategy>                    Inclusion strategy (default: JACKSON_ANNOTATIONS)");
     System.out.println("                                   Options: JACKSON_ANNOTATIONS, SUNDRIO_BUILDERS,");
     System.out.println("                                           KUBERNETES_RESOURCES, COMPREHENSIVE,");
@@ -277,7 +277,7 @@ class GenerateGraalvmMetadata {
     System.out.println("                                           DIRECT_OBJECT_SUBCLASSES");
     System.out.println("  -i <pattern>                     Include pattern (can be used multiple times)");
     System.out.println("  -e <pattern>                     Exclude pattern (can be used multiple times)");
-    System.out.println("  --no-merge                       Don't merge with existing reflect-config.json");
+    System.out.println("  --no-merge                       Don't merge with existing reachability-metadata.json");
     System.out.println("  --no-constructors                Don't include all declared constructors");
     System.out.println("  --no-methods                     Don't include all declared methods");
     System.out.println("  --no-fields                      Don't include all declared fields");
@@ -542,7 +542,7 @@ class GenerateGraalvmMetadata {
       if (mergeWithExisting && outputFile.exists()) {
         var existing = loadExisting(outputFile);
         for (var entry : existing) {
-          entries.put(entry.getName(), entry);
+          entries.put(entry.getType(), entry);
         }
       }
 
@@ -560,7 +560,7 @@ class GenerateGraalvmMetadata {
 
       // Sort by class name for stable output
       var sortedEntries = new ArrayList<>(entries.values());
-      sortedEntries.sort(Comparator.comparing(ReflectionEntry::getName));
+      sortedEntries.sort(Comparator.comparing(ReflectionEntry::getType));
 
       // Ensure output directory exists
       var outputDir = outputFile.getParentFile();
@@ -568,13 +568,20 @@ class GenerateGraalvmMetadata {
         outputDir.mkdirs();
       }
 
-      // Write to file
-      objectMapper.writeValue(outputFile, sortedEntries);
+      // Write in reachability-metadata.json format: {"reflection": [...]}
+      var wrapper = new LinkedHashMap<String, Object>();
+      wrapper.put("reflection", sortedEntries);
+      objectMapper.writeValue(outputFile, wrapper);
     }
 
+    @SuppressWarnings("unchecked")
     private List<ReflectionEntry> loadExisting(File file) throws IOException {
-      var entries = objectMapper.readValue(file, ReflectionEntry[].class);
-      return Arrays.asList(entries);
+      var tree = objectMapper.readTree(file);
+      // Support both formats: wrapped {"reflection": [...]} and legacy bare array [...]
+      if (tree.isObject() && tree.has("reflection")) {
+        return Arrays.asList(objectMapper.treeToValue(tree.get("reflection"), ReflectionEntry[].class));
+      }
+      return Arrays.asList(objectMapper.treeToValue(tree, ReflectionEntry[].class));
     }
   }
 
@@ -583,8 +590,8 @@ class GenerateGraalvmMetadata {
     @JsonProperty("condition")
     private Condition condition;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("type")
+    private String type;
 
     @JsonProperty("allDeclaredConstructors")
     private Boolean allDeclaredConstructors;
@@ -597,30 +604,30 @@ class GenerateGraalvmMetadata {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     static class Condition {
-      @JsonProperty("typeReachable")
-      private String typeReachable;
+      @JsonProperty("typeReached")
+      private String typeReached;
 
       public Condition() {
       }
 
-      public Condition(String typeReachable) {
-        this.typeReachable = typeReachable;
+      public Condition(String typeReached) {
+        this.typeReached = typeReached;
       }
 
-      public String getTypeReachable() {
-        return typeReachable;
+      public String getTypeReached() {
+        return typeReached;
       }
 
-      public void setTypeReachable(String typeReachable) {
-        this.typeReachable = typeReachable;
+      public void setTypeReached(String typeReached) {
+        this.typeReached = typeReached;
       }
     }
 
     public ReflectionEntry() {
     }
 
-    public ReflectionEntry(String name) {
-      this.name = name;
+    public ReflectionEntry(String type) {
+      this.type = type;
     }
 
     public Condition getCondition() {
@@ -631,12 +638,12 @@ class GenerateGraalvmMetadata {
       this.condition = condition;
     }
 
-    public String getName() {
-      return name;
+    public String getType() {
+      return type;
     }
 
-    public void setName(String name) {
-      this.name = name;
+    public void setType(String type) {
+      this.type = type;
     }
 
     public Boolean getAllDeclaredConstructors() {
@@ -670,18 +677,18 @@ class GenerateGraalvmMetadata {
       if (o == null || getClass() != o.getClass())
         return false;
       ReflectionEntry that = (ReflectionEntry) o;
-      return Objects.equals(name, that.name);
+      return Objects.equals(type, that.type);
     }
 
     @Override
     public int hashCode() {
-      return Objects.hash(name);
+      return Objects.hash(type);
     }
 
     @Override
     public String toString() {
       return "ReflectionEntry{" +
-        "name='" + name + '\'' +
+        "type='" + type + '\'' +
         ", allDeclaredConstructors=" + allDeclaredConstructors +
         ", allDeclaredMethods=" + allDeclaredMethods +
         ", allDeclaredFields=" + allDeclaredFields +
