@@ -4845,8 +4845,8 @@ github.com/subosito/gotenv v1.4.1/go.mod h1:ayKnFf/c6rvx/2iiLrJUk1e6plDbT3edrFNG
 github.com/substrait-io/substrait-go v0.4.2/go.mod h1:qhpnLmrcvAnlZsUyPXZRqldiHapPTXC3t7xFgDi3aQg=
 github.com/tektoncd/pipeline v1.16.0 h1:J5RXmYft5Tljjvn+WV0zdfdh7paNw0eh8y6UCqZRNn0=
 github.com/tektoncd/pipeline v1.16.0/go.mod h1:s0AvpOqeqnD8i30nG9H6V4cf01OkG3QBNDzueKpzh+A=
-github.com/tektoncd/triggers v0.37.0 h1:xXljDsLAtV2rvXXp9yF4MQwWDJiRs/aUcTtApx1uBBw=
-github.com/tektoncd/triggers v0.37.0/go.mod h1:vvP2wD1xxFkWRAGifM35d4r/rh9hX9bvI0VomPAQ+bs=
+github.com/tektoncd/triggers v0.37.1 h1:Cy2rISJICd2HWiCrt6tqX9tKR6Qm/h7+ZgfQFKFawrQ=
+github.com/tektoncd/triggers v0.37.1/go.mod h1:WOm3yczqA+wbcb9xAEAj02tsqgzijdBVYTzOkaO6TDM=
 github.com/tidwall/gjson v1.14.2/go.mod h1:/wbyibRr2FHMks5tjHJ5F8dMZh3AcwJEMf5vlfC0lxk=
 github.com/tidwall/gjson v1.18.0 h1:FIDeeyB800efLX89e5a8Y0BNH+LOngJyGrIWxG2FKQY=
 github.com/tidwall/gjson v1.18.0/go.mod h1:/wbyibRr2FHMks5tjHJ5F8dMZh3AcwJEMf5vlfC0lxk=
