@@ -457,6 +457,166 @@ public class Toy implements HasMetadata {
 }
 ```
 
+#### 6. Extra Annotations (Lombok / Sundrio)
+
+Defaults to `false`. When enabled, the generated classes are decorated with extra Lombok and [Sundrio](https://github.com/sundrio/sundrio) annotations and made editable through a generated builder. This option requires the additional dependencies and annotation processor configuration described in the [Quick start Maven](#quick-start-maven) / [Quick start Gradle](#quick-start-gradle) sections above and in [Annotation processor configuration for `extraAnnotations`](#annotation-processor-configuration-for-extraannotations) below.
+
+**Maven:**
+
+```xml
+<configuration>
+  <extraAnnotations>true</extraAnnotations>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  extraAnnotations = true
+}
+```
+
+**CLI:**
+
+```bash
+--add-extra-annotations
+```
+
+**Generated Code (with `extraAnnotations = true`):**
+
+```java
+@lombok.ToString
+@lombok.EqualsAndHashCode
+@io.sundr.builder.annotations.Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @io.sundr.builder.annotations.BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class)
+    // ...
+})
+public class ToySpec implements io.fabric8.kubernetes.api.builder.Editable<ToySpecBuilder>, KubernetesResource {
+
+    @Override
+    public ToySpecBuilder edit() {
+        return new ToySpecBuilder(this);
+    }
+    // ...
+}
+```
+
+#### 7. Generated Annotations
+
+Defaults to `true`, which emits the `@javax.annotation.processing.Generated` annotation on the generated types. Set to `false` to omit it.
+
+**Maven:**
+
+```xml
+<configuration>
+  <generatedAnnotations>false</generatedAnnotations>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  generatedAnnotations = false
+}
+```
+
+**CLI:**
+
+The annotation is emitted by default. To suppress it from the CLI, use the (hidden) skip flag:
+
+```bash
+--skip-generated-annotations
+```
+
+**Generated Code (default — annotation emitted):**
+
+```java
+@javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
+public class ToySpec implements KubernetesResource {
+    // ...
+}
+```
+
+**Generated Code (with `generatedAnnotations = false`):**
+
+```java
+public class ToySpec implements KubernetesResource {
+    // ...
+}
+```
+
+#### 8. DateTime Serialization Format
+
+Sets the date/time pattern used when serializing fields of type `date-time`. Defaults to `yyyy-MM-dd'T'HH:mm:ssXXX`. The pattern is applied as a `@com.fasterxml.jackson.annotation.JsonFormat` annotation on the generated getter.
+
+**Maven:**
+
+```xml
+<configuration>
+  <datetimeSerializationFormat>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</datetimeSerializationFormat>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  serializationDatetimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+}
+```
+
+**CLI:**
+
+```bash
+--serialization-datetime-format="yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+```
+
+**Generated Code (for a CRD field of format `date-time`):**
+
+```java
+@com.fasterxml.jackson.annotation.JsonFormat(shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+public java.time.ZonedDateTime getCreatedAt() {
+    return createdAt;
+}
+```
+
+#### 9. DateTime Deserialization Format
+
+Sets the date/time pattern used when deserializing fields of type `date-time`. Defaults to `yyyy-MM-dd'T'HH:mm:ssXXX`. The pattern is applied as a `@com.fasterxml.jackson.annotation.JsonFormat` annotation on the generated setter.
+
+**Maven:**
+
+```xml
+<configuration>
+  <datetimeDeserializationFormat>yyyy-MM-dd'T'HH:mm:ss.SSSXXX</datetimeDeserializationFormat>
+</configuration>
+```
+
+**Gradle:**
+
+```groovy
+javaGen {
+  deserializationDatetimeFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+}
+```
+
+**CLI:**
+
+```bash
+--deserialization-datetime-format="yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+```
+
+**Generated Code (for a CRD field of format `date-time`):**
+
+```java
+@com.fasterxml.jackson.annotation.JsonFormat(shape = com.fasterxml.jackson.annotation.JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+public void setCreatedAt(java.time.ZonedDateTime createdAt) {
+    this.createdAt = createdAt;
+}
+```
+
 
 ## Compiling the generated code
 
