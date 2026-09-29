@@ -78,6 +78,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -119,6 +120,34 @@ class DefaultSharedIndexInformerTest {
   @AfterEach
   void tearDown() {
     factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  @DisplayName("Informer uses the configured minimum watch timeout for its watch request")
+  void testMinWatchTimeout() throws Exception {
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(200, getList("1000", Pod.class))
+        .once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=1000&timeoutSeconds=3600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+    informer.setMinWatchTimeout(1800).start().toCompletableFuture().get(10, TimeUnit.SECONDS);
+    assertThatIllegalStateException().isThrownBy(() -> informer.setMinWatchTimeout(1800));
+  }
+
+  @Test
+  @DisplayName("Informer rejects invalid watch timeouts")
+  void testMinWatchTimeoutValidation() {
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.setMinWatchTimeout(0));
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.setMinWatchTimeout(Long.MAX_VALUE));
   }
 
   @Test
