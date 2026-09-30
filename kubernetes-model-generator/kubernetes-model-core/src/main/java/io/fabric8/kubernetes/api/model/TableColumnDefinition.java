@@ -27,7 +27,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"name", "type", "format", "description", "priority"})
+@JsonPropertyOrder({ "name", "type", "format", "description", "priority" })
 public class TableColumnDefinition {
   /**
    * name is a human readable name for the column.
@@ -142,30 +142,39 @@ public class TableColumnDefinition {
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "TableColumnDefinition(name=" + this.getName() + ", type=" + this.getType() + ", format=" + this.getFormat() + ", description=" + this.getDescription() + ", priority=" + this.getPriority() + ")";
+    return "TableColumnDefinition(name=" + this.getName() + ", type=" + this.getType() + ", format=" + this.getFormat()
+        + ", description=" + this.getDescription() + ", priority=" + this.getPriority() + ")";
   }
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof TableColumnDefinition)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof TableColumnDefinition))
+      return false;
     final TableColumnDefinition other = (TableColumnDefinition) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$priority = this.getPriority();
     final java.lang.Object other$priority = other.getPriority();
-    if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority)) return false;
+    if (this$priority == null ? other$priority != null : !this$priority.equals(other$priority))
+      return false;
     final java.lang.Object this$name = this.getName();
     final java.lang.Object other$name = other.getName();
-    if (this$name == null ? other$name != null : !this$name.equals(other$name)) return false;
+    if (this$name == null ? other$name != null : !this$name.equals(other$name))
+      return false;
     final java.lang.Object this$type = this.getType();
     final java.lang.Object other$type = other.getType();
-    if (this$type == null ? other$type != null : !this$type.equals(other$type)) return false;
+    if (this$type == null ? other$type != null : !this$type.equals(other$type))
+      return false;
     final java.lang.Object this$format = this.getFormat();
     final java.lang.Object other$format = other.getFormat();
-    if (this$format == null ? other$format != null : !this$format.equals(other$format)) return false;
+    if (this$format == null ? other$format != null : !this$format.equals(other$format))
+      return false;
     final java.lang.Object this$description = this.getDescription();
     final java.lang.Object other$description = other.getDescription();
-    if (this$description == null ? other$description != null : !this$description.equals(other$description)) return false;
+    if (this$description == null ? other$description != null : !this$description.equals(other$description))
+      return false;
     return true;
   }
 

@@ -59,6 +59,7 @@ class ListOptionsTest {
     assertThat(copy)
         .isEqualTo(original)
         .hasSameHashCodeAs(original)
-        .hasToString("ListOptions(allowWatchBookmarks=false, apiVersion=v1, _continue=token, fieldSelector=metadata.name=example, kind=ListOptions, labelSelector=app=example, limit=25, resourceVersion=7, resourceVersionMatch=Exact, sendInitialEvents=true, shardSelector=shard-a, timeoutSeconds=3, watch=false, additionalProperties={custom=value})");
+        .hasToString(
+            "ListOptions(allowWatchBookmarks=false, apiVersion=v1, _continue=token, fieldSelector=metadata.name=example, kind=ListOptions, labelSelector=app=example, limit=25, resourceVersion=7, resourceVersionMatch=Exact, sendInitialEvents=true, shardSelector=shard-a, timeoutSeconds=3, watch=false, additionalProperties={custom=value})");
   }
 }

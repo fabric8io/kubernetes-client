@@ -30,32 +30,36 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"apiVersion", "kind", "metadata", "items"})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "items" })
 @Group("meta.k8s.io")
 @Version("v1")
 public class PartialObjectMetadataList extends DefaultKubernetesResourceList<PartialObjectMetadata> {
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "PartialObjectMetadataList()";
-    }
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "PartialObjectMetadataList()";
+  }
 
-    @java.lang.Override
-    public boolean equals(final java.lang.Object o) {
-        if (o == this) return true;
-        if (!(o instanceof PartialObjectMetadataList)) return false;
-        final PartialObjectMetadataList other = (PartialObjectMetadataList) o;
-        if (!other.canEqual((java.lang.Object) this)) return false;
-        if (!super.equals(o)) return false;
-        return true;
-    }
+  @java.lang.Override
+  public boolean equals(final java.lang.Object o) {
+    if (o == this)
+      return true;
+    if (!(o instanceof PartialObjectMetadataList))
+      return false;
+    final PartialObjectMetadataList other = (PartialObjectMetadataList) o;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
+    if (!super.equals(o))
+      return false;
+    return true;
+  }
 
-    protected boolean canEqual(final java.lang.Object other) {
-        return other instanceof PartialObjectMetadataList;
-    }
+  protected boolean canEqual(final java.lang.Object other) {
+    return other instanceof PartialObjectMetadataList;
+  }
 
-    @java.lang.Override
-    public int hashCode() {
-        final int result = super.hashCode();
-        return result;
-    }
+  @java.lang.Override
+  public int hashCode() {
+    final int result = super.hashCode();
+    return result;
+  }
 }

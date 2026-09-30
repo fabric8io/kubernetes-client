@@ -30,7 +30,7 @@ import java.util.List;
 @JsonDeserialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"cells", "object"})
+@JsonPropertyOrder({ "cells", "object" })
 public class TableRow {
   /**
    * cells will be as wide as the column definitions array and may contain strings, numbers,
@@ -84,16 +84,21 @@ public class TableRow {
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof TableRow)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof TableRow))
+      return false;
     final TableRow other = (TableRow) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$cells = this.getCells();
     final java.lang.Object other$cells = other.getCells();
-    if (this$cells == null ? other$cells != null : !this$cells.equals(other$cells)) return false;
+    if (this$cells == null ? other$cells != null : !this$cells.equals(other$cells))
+      return false;
     final java.lang.Object this$object = this.getObject();
     final java.lang.Object other$object = other.getObject();
-    if (this$object == null ? other$object != null : !this$object.equals(other$object)) return false;
+    if (this$object == null ? other$object != null : !this$object.equals(other$object))
+      return false;
     return true;
   }
 

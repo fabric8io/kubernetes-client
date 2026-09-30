@@ -34,7 +34,7 @@ import java.util.List;
 @JsonDeserialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"apiVersion", "kind", "metadata", "columnDefinitions", "rows"})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "columnDefinitions", "rows" })
 @Group("meta.k8s.io")
 @Version("v1")
 public class Table implements KubernetesResource {
@@ -109,30 +109,40 @@ public class Table implements KubernetesResource {
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "Table(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", columnDefinitions=" + this.getColumnDefinitions() + ", rows=" + this.getRows() + ")";
+    return "Table(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata()
+        + ", columnDefinitions=" + this.getColumnDefinitions() + ", rows=" + this.getRows() + ")";
   }
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof Table)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof Table))
+      return false;
     final Table other = (Table) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$apiVersion = this.getApiVersion();
     final java.lang.Object other$apiVersion = other.getApiVersion();
-    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) return false;
+    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion))
+      return false;
     final java.lang.Object this$kind = this.getKind();
     final java.lang.Object other$kind = other.getKind();
-    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) return false;
+    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind))
+      return false;
     final java.lang.Object this$metadata = this.getMetadata();
     final java.lang.Object other$metadata = other.getMetadata();
-    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) return false;
+    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata))
+      return false;
     final java.lang.Object this$columnDefinitions = this.getColumnDefinitions();
     final java.lang.Object other$columnDefinitions = other.getColumnDefinitions();
-    if (this$columnDefinitions == null ? other$columnDefinitions != null : !this$columnDefinitions.equals(other$columnDefinitions)) return false;
+    if (this$columnDefinitions == null ? other$columnDefinitions != null
+        : !this$columnDefinitions.equals(other$columnDefinitions))
+      return false;
     final java.lang.Object this$rows = this.getRows();
     final java.lang.Object other$rows = other.getRows();
-    if (this$rows == null ? other$rows != null : !this$rows.equals(other$rows)) return false;
+    if (this$rows == null ? other$rows != null : !this$rows.equals(other$rows))
+      return false;
     return true;
   }
 

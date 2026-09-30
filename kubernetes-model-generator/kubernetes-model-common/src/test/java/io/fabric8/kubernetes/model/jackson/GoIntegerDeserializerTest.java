@@ -27,6 +27,7 @@ import tools.jackson.databind.exc.InvalidFormatException;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS;
@@ -39,19 +40,23 @@ class GoIntegerDeserializerTest {
     context = JsonMapper.builder().addModule(new GoCompatibilityModule()).build();
   }
 
-
   @Nested
   @TestInstance(PER_CLASS)
   class Applicable {
     @ParameterizedTest(name = "{index}: with \'{\'\"{0}\": {1}\'}\' parses as {2}")
     @MethodSource
     void parsesOctals(String fieldName, String content, Integer expected) throws Exception {
-      final IntegerFieldsContainer result = context.readValue(String.format("{\"%s\": %s}", fieldName, content), IntegerFieldsContainer.class);
+      final IntegerFieldsContainer result = context.readValue(String.format("{\"%s\": %s}", fieldName, content),
+          IntegerFieldsContainer.class);
       assertThat(result).hasFieldOrPropertyWithValue(fieldName, expected);
     }
 
     private Stream<Arguments> parsesOctals() {
-      return Stream.of("mode", "defaultMode").flatMap(field -> Stream.of(Arguments.of(field, "null", null), Arguments.of(field, "\"400\"", 400), Arguments.of(field, "\"0555\"", 365), Arguments.of(field, "\"0o555\"", 365), Arguments.of(field, "\"0O555\"", 365), Arguments.of(field, "\"555\"", 555), Arguments.of(field, "\"0888\"", 888), Arguments.of(field, "\"0o12\"", 10), Arguments.of(field, "\"0O12\"", 10)));
+      return Stream.of("mode", "defaultMode")
+          .flatMap(field -> Stream.of(Arguments.of(field, "null", null), Arguments.of(field, "\"400\"", 400),
+              Arguments.of(field, "\"0555\"", 365), Arguments.of(field, "\"0o555\"", 365),
+              Arguments.of(field, "\"0O555\"", 365), Arguments.of(field, "\"555\"", 555), Arguments.of(field, "\"0888\"", 888),
+              Arguments.of(field, "\"0o12\"", 10), Arguments.of(field, "\"0O12\"", 10)));
     }
   }
 
@@ -66,15 +71,16 @@ class GoIntegerDeserializerTest {
 
     @Test
     void throwsExceptionForInvalidOctal() {
-      assertThatThrownBy(() -> context.readValue("{\"mode\": \"0o955\"}", IntegerFieldsContainer.class)).isInstanceOf(InvalidFormatException.class);
+      assertThatThrownBy(() -> context.readValue("{\"mode\": \"0o955\"}", IntegerFieldsContainer.class))
+          .isInstanceOf(InvalidFormatException.class);
     }
 
     @Test
     void throwsExceptionForOctalWithSeparator() {
-      assertThatThrownBy(() -> context.readValue("{\"notApplicable\": \"0o555\"}", IntegerFieldsContainer.class)).isInstanceOf(InvalidFormatException.class);
+      assertThatThrownBy(() -> context.readValue("{\"notApplicable\": \"0o555\"}", IntegerFieldsContainer.class))
+          .isInstanceOf(InvalidFormatException.class);
     }
   }
-
 
   private static final class IntegerFieldsContainer {
     private Integer mode;
@@ -110,18 +116,23 @@ class GoIntegerDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof GoIntegerDeserializerTest.IntegerFieldsContainer)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof GoIntegerDeserializerTest.IntegerFieldsContainer))
+        return false;
       final GoIntegerDeserializerTest.IntegerFieldsContainer other = (GoIntegerDeserializerTest.IntegerFieldsContainer) o;
       final java.lang.Object this$mode = this.getMode();
       final java.lang.Object other$mode = other.getMode();
-      if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode)) return false;
+      if (this$mode == null ? other$mode != null : !this$mode.equals(other$mode))
+        return false;
       final java.lang.Object this$defaultMode = this.getDefaultMode();
       final java.lang.Object other$defaultMode = other.getDefaultMode();
-      if (this$defaultMode == null ? other$defaultMode != null : !this$defaultMode.equals(other$defaultMode)) return false;
+      if (this$defaultMode == null ? other$defaultMode != null : !this$defaultMode.equals(other$defaultMode))
+        return false;
       final java.lang.Object this$notApplicable = this.getNotApplicable();
       final java.lang.Object other$notApplicable = other.getNotApplicable();
-      if (this$notApplicable == null ? other$notApplicable != null : !this$notApplicable.equals(other$notApplicable)) return false;
+      if (this$notApplicable == null ? other$notApplicable != null : !this$notApplicable.equals(other$notApplicable))
+        return false;
       return true;
     }
 
@@ -140,7 +151,8 @@ class GoIntegerDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "GoIntegerDeserializerTest.IntegerFieldsContainer(mode=" + this.getMode() + ", defaultMode=" + this.getDefaultMode() + ", notApplicable=" + this.getNotApplicable() + ")";
+      return "GoIntegerDeserializerTest.IntegerFieldsContainer(mode=" + this.getMode() + ", defaultMode="
+          + this.getDefaultMode() + ", notApplicable=" + this.getNotApplicable() + ")";
     }
   }
 }

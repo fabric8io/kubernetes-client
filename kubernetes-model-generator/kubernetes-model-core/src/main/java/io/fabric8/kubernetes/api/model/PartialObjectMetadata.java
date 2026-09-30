@@ -32,7 +32,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"apiVersion", "kind", "metadata"})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata" })
 @Group("meta.k8s.io")
 @Version("v1")
 public class PartialObjectMetadata implements HasMetadata {
@@ -69,24 +69,31 @@ public class PartialObjectMetadata implements HasMetadata {
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "PartialObjectMetadata(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ")";
+    return "PartialObjectMetadata(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata="
+        + this.getMetadata() + ")";
   }
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof PartialObjectMetadata)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof PartialObjectMetadata))
+      return false;
     final PartialObjectMetadata other = (PartialObjectMetadata) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$apiVersion = this.getApiVersion();
     final java.lang.Object other$apiVersion = other.getApiVersion();
-    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) return false;
+    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion))
+      return false;
     final java.lang.Object this$kind = this.getKind();
     final java.lang.Object other$kind = other.getKind();
-    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) return false;
+    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind))
+      return false;
     final java.lang.Object this$metadata = this.getMetadata();
     final java.lang.Object other$metadata = other.getMetadata();
-    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) return false;
+    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata))
+      return false;
     return true;
   }
 

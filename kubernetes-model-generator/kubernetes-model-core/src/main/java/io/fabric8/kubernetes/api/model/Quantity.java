@@ -166,55 +166,55 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     BigDecimal binaryFactor = new BigDecimal("2");
     BigDecimal decimalFactor = new BigDecimal("10");
     switch (formatStr) {
-    case "Ki":
-      multiple = binaryFactor.pow(10, MathContext.DECIMAL64);
-      break;
-    case "Mi":
-      multiple = binaryFactor.pow(20, MathContext.DECIMAL64);
-      break;
-    case "Gi":
-      multiple = binaryFactor.pow(30, MathContext.DECIMAL64);
-      break;
-    case "Ti":
-      multiple = binaryFactor.pow(40, MathContext.DECIMAL64);
-      break;
-    case "Pi":
-      multiple = binaryFactor.pow(50, MathContext.DECIMAL64);
-      break;
-    case "Ei":
-      multiple = binaryFactor.pow(60, MathContext.DECIMAL64);
-      break;
-    case "n":
-      multiple = decimalFactor.pow(-9, MathContext.DECIMAL64);
-      break;
-    case "u":
-      multiple = decimalFactor.pow(-6, MathContext.DECIMAL64);
-      break;
-    case "m":
-      multiple = decimalFactor.pow(-3, MathContext.DECIMAL64);
-      break;
-    case "k":
-      multiple = decimalFactor.pow(3, MathContext.DECIMAL64);
-      break;
-    case "M":
-      multiple = decimalFactor.pow(6, MathContext.DECIMAL64);
-      break;
-    case "G":
-      multiple = decimalFactor.pow(9, MathContext.DECIMAL64);
-      break;
-    case "T":
-      multiple = decimalFactor.pow(12, MathContext.DECIMAL64);
-      break;
-    case "P":
-      multiple = decimalFactor.pow(15, MathContext.DECIMAL64);
-      break;
-    case "E":
-      multiple = decimalFactor.pow(18, MathContext.DECIMAL64);
-      break;
-    case "":
-      break;
-    default:
-      throw new IllegalArgumentException("Invalid quantity format passed to parse");
+      case "Ki":
+        multiple = binaryFactor.pow(10, MathContext.DECIMAL64);
+        break;
+      case "Mi":
+        multiple = binaryFactor.pow(20, MathContext.DECIMAL64);
+        break;
+      case "Gi":
+        multiple = binaryFactor.pow(30, MathContext.DECIMAL64);
+        break;
+      case "Ti":
+        multiple = binaryFactor.pow(40, MathContext.DECIMAL64);
+        break;
+      case "Pi":
+        multiple = binaryFactor.pow(50, MathContext.DECIMAL64);
+        break;
+      case "Ei":
+        multiple = binaryFactor.pow(60, MathContext.DECIMAL64);
+        break;
+      case "n":
+        multiple = decimalFactor.pow(-9, MathContext.DECIMAL64);
+        break;
+      case "u":
+        multiple = decimalFactor.pow(-6, MathContext.DECIMAL64);
+        break;
+      case "m":
+        multiple = decimalFactor.pow(-3, MathContext.DECIMAL64);
+        break;
+      case "k":
+        multiple = decimalFactor.pow(3, MathContext.DECIMAL64);
+        break;
+      case "M":
+        multiple = decimalFactor.pow(6, MathContext.DECIMAL64);
+        break;
+      case "G":
+        multiple = decimalFactor.pow(9, MathContext.DECIMAL64);
+        break;
+      case "T":
+        multiple = decimalFactor.pow(12, MathContext.DECIMAL64);
+        break;
+      case "P":
+        multiple = decimalFactor.pow(15, MathContext.DECIMAL64);
+        break;
+      case "E":
+        multiple = decimalFactor.pow(18, MathContext.DECIMAL64);
+        break;
+      case "":
+        break;
+      default:
+        throw new IllegalArgumentException("Invalid quantity format passed to parse");
     }
     return multiple;
   }
@@ -292,22 +292,22 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     for (int i = 0; i < quantityAsString.length(); i++) {
       char ch = quantityAsString.charAt(i);
       switch (ch) {
-      case 'e':
-      case 'E':
-      case 'i':
-      case 'n':
-      case 'u':
-      case 'm':
-      case 'k':
-      case 'K':
-      case 'M':
-      case 'G':
-      case 'T':
-      case 'P':
-        return i;
-      default:
-        //noinspection UnnecessaryContinue - satisfy Sonar
-        continue;
+        case 'e':
+        case 'E':
+        case 'i':
+        case 'n':
+        case 'u':
+        case 'm':
+        case 'k':
+        case 'K':
+        case 'M':
+        case 'G':
+        case 'T':
+        case 'P':
+          return i;
+        default:
+          //noinspection UnnecessaryContinue - satisfy Sonar
+          continue;
       }
     }
     return quantityAsString.length();

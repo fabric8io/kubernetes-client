@@ -23,8 +23,6 @@ import java.util.List;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 
-
-
 public class DefaultKubernetesResourceList<T extends HasMetadata> implements KubernetesResource, KubernetesResourceList<T> {
   @JsonProperty("apiVersion")
   private String apiVersion;
@@ -69,6 +67,7 @@ public class DefaultKubernetesResourceList<T extends HasMetadata> implements Kub
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "DefaultKubernetesResourceList(apiVersion=" + this.getApiVersion() + ", items=" + this.getItems() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ")";
+    return "DefaultKubernetesResourceList(apiVersion=" + this.getApiVersion() + ", items=" + this.getItems() + ", kind="
+        + this.getKind() + ", metadata=" + this.getMetadata() + ")";
   }
 }

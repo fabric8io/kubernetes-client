@@ -34,7 +34,7 @@ import java.util.Map;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"apiVersion", "kind", "metadata", "items"})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "items" })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class GenericKubernetesResource implements Editable<GenericKubernetesResourceBuilder>, HasMetadata {
 
@@ -103,13 +103,13 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
    *
    * <pre>{@code
    * {
-   *   "field": {
-   *     "value": 42
-   *     "list": [
-   *       {entry: 1}, {entry: 2}, {entry: 3}
-   *     ],
-   *     "1": "one"
-   *   }
+   * "field": {
+   * "value": 42
+   * "list": [
+   * {entry: 1}, {entry: 2}, {entry: 3}
+   * ],
+   * "1": "one"
+   * }
    * }
    * }</pre>
    *
@@ -182,27 +182,36 @@ public class GenericKubernetesResource implements Editable<GenericKubernetesReso
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "GenericKubernetesResource(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata=" + this.getMetadata() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+    return "GenericKubernetesResource(apiVersion=" + this.getApiVersion() + ", kind=" + this.getKind() + ", metadata="
+        + this.getMetadata() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
   }
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof GenericKubernetesResource)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof GenericKubernetesResource))
+      return false;
     final GenericKubernetesResource other = (GenericKubernetesResource) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$apiVersion = this.getApiVersion();
     final java.lang.Object other$apiVersion = other.getApiVersion();
-    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) return false;
+    if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion))
+      return false;
     final java.lang.Object this$kind = this.getKind();
     final java.lang.Object other$kind = other.getKind();
-    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) return false;
+    if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind))
+      return false;
     final java.lang.Object this$metadata = this.getMetadata();
     final java.lang.Object other$metadata = other.getMetadata();
-    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) return false;
+    if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata))
+      return false;
     final java.lang.Object this$additionalProperties = this.getAdditionalProperties();
     final java.lang.Object other$additionalProperties = other.getAdditionalProperties();
-    if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) return false;
+    if (this$additionalProperties == null ? other$additionalProperties != null
+        : !this$additionalProperties.equals(other$additionalProperties))
+      return false;
     return true;
   }
 

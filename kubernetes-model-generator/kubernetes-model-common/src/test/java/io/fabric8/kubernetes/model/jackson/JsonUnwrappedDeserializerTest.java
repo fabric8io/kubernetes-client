@@ -40,7 +40,6 @@ class JsonUnwrappedDeserializerTest {
     mapper = new JsonMapper();
   }
 
-
   @Nested
   class Deserialize {
     @Test
@@ -123,7 +122,6 @@ class JsonUnwrappedDeserializerTest {
     }
   }
 
-
   public static class MultipleJsonUnwrapped {
     @JsonUnwrapped
     private FooImpl foo;
@@ -160,19 +158,25 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped))
+        return false;
       final JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped other = (JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$foo = this.getFoo();
       final java.lang.Object other$foo = other.getFoo();
-      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo)) return false;
+      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo))
+        return false;
       final java.lang.Object this$bar = this.getBar();
       final java.lang.Object other$bar = other.getBar();
-      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar)) return false;
+      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar))
+        return false;
       final java.lang.Object this$control = this.getControl();
       final java.lang.Object other$control = other.getControl();
-      if (this$control == null ? other$control != null : !this$control.equals(other$control)) return false;
+      if (this$control == null ? other$control != null : !this$control.equals(other$control))
+        return false;
       return true;
     }
 
@@ -195,10 +199,10 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped(foo=" + this.getFoo() + ", bar=" + this.getBar() + ", control=" + this.getControl() + ")";
+      return "JsonUnwrappedDeserializerTest.MultipleJsonUnwrapped(foo=" + this.getFoo() + ", bar=" + this.getBar()
+          + ", control=" + this.getControl() + ")";
     }
   }
-
 
   public static class MultiplePolymorphicFields {
     private Foo foo;
@@ -234,19 +238,25 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.MultiplePolymorphicFields)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.MultiplePolymorphicFields))
+        return false;
       final JsonUnwrappedDeserializerTest.MultiplePolymorphicFields other = (JsonUnwrappedDeserializerTest.MultiplePolymorphicFields) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$foo = this.getFoo();
       final java.lang.Object other$foo = other.getFoo();
-      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo)) return false;
+      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo))
+        return false;
       final java.lang.Object this$bar = this.getBar();
       final java.lang.Object other$bar = other.getBar();
-      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar)) return false;
+      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar))
+        return false;
       final java.lang.Object this$control = this.getControl();
       final java.lang.Object other$control = other.getControl();
-      if (this$control == null ? other$control != null : !this$control.equals(other$control)) return false;
+      if (this$control == null ? other$control != null : !this$control.equals(other$control))
+        return false;
       return true;
     }
 
@@ -269,10 +279,10 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "JsonUnwrappedDeserializerTest.MultiplePolymorphicFields(foo=" + this.getFoo() + ", bar=" + this.getBar() + ", control=" + this.getControl() + ")";
+      return "JsonUnwrappedDeserializerTest.MultiplePolymorphicFields(foo=" + this.getFoo() + ", bar=" + this.getBar()
+          + ", control=" + this.getControl() + ")";
     }
   }
-
 
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
   public static class MultipleJsonUnwrappedPolymorphicFields {
@@ -311,19 +321,25 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields))
+        return false;
       final JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields other = (JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$foo = this.getFoo();
       final java.lang.Object other$foo = other.getFoo();
-      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo)) return false;
+      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo))
+        return false;
       final java.lang.Object this$bar = this.getBar();
       final java.lang.Object other$bar = other.getBar();
-      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar)) return false;
+      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar))
+        return false;
       final java.lang.Object this$control = this.getControl();
       final java.lang.Object other$control = other.getControl();
-      if (this$control == null ? other$control != null : !this$control.equals(other$control)) return false;
+      if (this$control == null ? other$control != null : !this$control.equals(other$control))
+        return false;
       return true;
     }
 
@@ -346,10 +362,10 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields(foo=" + this.getFoo() + ", bar=" + this.getBar() + ", control=" + this.getControl() + ")";
+      return "JsonUnwrappedDeserializerTest.MultipleJsonUnwrappedPolymorphicFields(foo=" + this.getFoo() + ", bar="
+          + this.getBar() + ", control=" + this.getControl() + ")";
     }
   }
-
 
   @JsonSubTypes(@JsonSubTypes.Type(FooImpl.class))
   @JsonTypeInfo(use = DEDUCTION)
@@ -357,13 +373,11 @@ class JsonUnwrappedDeserializerTest {
     String getFoo();
   }
 
-
   @JsonSubTypes(@JsonSubTypes.Type(BarImpl.class))
   @JsonTypeInfo(use = DEDUCTION)
   public interface Bar {
     String getBar();
   }
-
 
   @JsonTypeInfo(use = NONE)
   public static class FooImpl implements Foo {
@@ -379,13 +393,17 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.FooImpl)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.FooImpl))
+        return false;
       final JsonUnwrappedDeserializerTest.FooImpl other = (JsonUnwrappedDeserializerTest.FooImpl) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$foo = this.getFoo();
       final java.lang.Object other$foo = other.getFoo();
-      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo)) return false;
+      if (this$foo == null ? other$foo != null : !this$foo.equals(other$foo))
+        return false;
       return true;
     }
 
@@ -411,7 +429,6 @@ class JsonUnwrappedDeserializerTest {
     }
   }
 
-
   @JsonTypeInfo(use = NONE)
   public static class BarImpl implements Bar {
     private String bar;
@@ -426,13 +443,17 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.BarImpl)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.BarImpl))
+        return false;
       final JsonUnwrappedDeserializerTest.BarImpl other = (JsonUnwrappedDeserializerTest.BarImpl) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$bar = this.getBar();
       final java.lang.Object other$bar = other.getBar();
-      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar)) return false;
+      if (this$bar == null ? other$bar != null : !this$bar.equals(other$bar))
+        return false;
       return true;
     }
 
@@ -458,7 +479,6 @@ class JsonUnwrappedDeserializerTest {
     }
   }
 
-
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
   public static class RootClass {
     private String stringField;
@@ -483,16 +503,21 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.RootClass)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.RootClass))
+        return false;
       final JsonUnwrappedDeserializerTest.RootClass other = (JsonUnwrappedDeserializerTest.RootClass) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$stringField = this.getStringField();
       final java.lang.Object other$stringField = other.getStringField();
-      if (this$stringField == null ? other$stringField != null : !this$stringField.equals(other$stringField)) return false;
+      if (this$stringField == null ? other$stringField != null : !this$stringField.equals(other$stringField))
+        return false;
       final java.lang.Object this$rootInterface = this.getRootInterface();
       final java.lang.Object other$rootInterface = other.getRootInterface();
-      if (this$rootInterface == null ? other$rootInterface != null : !this$rootInterface.equals(other$rootInterface)) return false;
+      if (this$rootInterface == null ? other$rootInterface != null : !this$rootInterface.equals(other$rootInterface))
+        return false;
       return true;
     }
 
@@ -513,19 +538,18 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "JsonUnwrappedDeserializerTest.RootClass(stringField=" + this.getStringField() + ", rootInterface=" + this.getRootInterface() + ")";
+      return "JsonUnwrappedDeserializerTest.RootClass(stringField=" + this.getStringField() + ", rootInterface="
+          + this.getRootInterface() + ")";
     }
 
     public RootClass() {
     }
   }
 
-
   @JsonSubTypes(@JsonSubTypes.Type(RootImplementation.class))
   @JsonTypeInfo(use = DEDUCTION)
   interface RootInterface {
   }
-
 
   @JsonDeserialize(using = io.fabric8.kubernetes.model.jackson.JsonUnwrappedDeserializer.class)
   public static class RootImplementation implements RootInterface {
@@ -551,16 +575,21 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.RootImplementation)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.RootImplementation))
+        return false;
       final JsonUnwrappedDeserializerTest.RootImplementation other = (JsonUnwrappedDeserializerTest.RootImplementation) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$extendedField = this.getExtendedField();
       final java.lang.Object other$extendedField = other.getExtendedField();
-      if (this$extendedField == null ? other$extendedField != null : !this$extendedField.equals(other$extendedField)) return false;
+      if (this$extendedField == null ? other$extendedField != null : !this$extendedField.equals(other$extendedField))
+        return false;
       final java.lang.Object this$nestedInterface = this.getNestedInterface();
       final java.lang.Object other$nestedInterface = other.getNestedInterface();
-      if (this$nestedInterface == null ? other$nestedInterface != null : !this$nestedInterface.equals(other$nestedInterface)) return false;
+      if (this$nestedInterface == null ? other$nestedInterface != null : !this$nestedInterface.equals(other$nestedInterface))
+        return false;
       return true;
     }
 
@@ -581,19 +610,18 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public java.lang.String toString() {
-      return "JsonUnwrappedDeserializerTest.RootImplementation(extendedField=" + this.getExtendedField() + ", nestedInterface=" + this.getNestedInterface() + ")";
+      return "JsonUnwrappedDeserializerTest.RootImplementation(extendedField=" + this.getExtendedField() + ", nestedInterface="
+          + this.getNestedInterface() + ")";
     }
 
     public RootImplementation() {
     }
   }
 
-
   @JsonSubTypes(@JsonSubTypes.Type(NestedImplementation.class))
   @JsonTypeInfo(use = DEDUCTION)
   interface NestedInterface {
   }
-
 
   public static class NestedImplementation implements NestedInterface {
     private String nestedField;
@@ -608,13 +636,17 @@ class JsonUnwrappedDeserializerTest {
 
     @java.lang.Override
     public boolean equals(final java.lang.Object o) {
-      if (o == this) return true;
-      if (!(o instanceof JsonUnwrappedDeserializerTest.NestedImplementation)) return false;
+      if (o == this)
+        return true;
+      if (!(o instanceof JsonUnwrappedDeserializerTest.NestedImplementation))
+        return false;
       final JsonUnwrappedDeserializerTest.NestedImplementation other = (JsonUnwrappedDeserializerTest.NestedImplementation) o;
-      if (!other.canEqual((java.lang.Object) this)) return false;
+      if (!other.canEqual((java.lang.Object) this))
+        return false;
       final java.lang.Object this$nestedField = this.getNestedField();
       final java.lang.Object other$nestedField = other.getNestedField();
-      if (this$nestedField == null ? other$nestedField != null : !this$nestedField.equals(other$nestedField)) return false;
+      if (this$nestedField == null ? other$nestedField != null : !this$nestedField.equals(other$nestedField))
+        return false;
       return true;
     }
 

@@ -47,8 +47,15 @@ import java.util.Map;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonPropertyOrder({"apiVersion", "kind", "metadata", "acquireTime", "holderIdentity", "leaseDurationSeconds", "leaseTransitions", "preferredHolder", "renewTime", "strategy"})
-@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {@BuildableReference(ObjectMeta.class), @BuildableReference(LabelSelector.class), @BuildableReference(Container.class), @BuildableReference(PodTemplateSpec.class), @BuildableReference(ResourceRequirements.class), @BuildableReference(IntOrString.class), @BuildableReference(ObjectReference.class), @BuildableReference(LocalObjectReference.class), @BuildableReference(PersistentVolumeClaim.class), @BuildableReference(EnvVar.class), @BuildableReference(ContainerPort.class), @BuildableReference(Volume.class), @BuildableReference(VolumeMount.class)})
+@JsonPropertyOrder({ "apiVersion", "kind", "metadata", "acquireTime", "holderIdentity", "leaseDurationSeconds",
+    "leaseTransitions", "preferredHolder", "renewTime", "strategy" })
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @BuildableReference(ObjectMeta.class), @BuildableReference(LabelSelector.class), @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class), @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class), @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class), @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(EnvVar.class), @BuildableReference(ContainerPort.class), @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class) })
 public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource {
   @JsonProperty("acquireTime")
   @JsonFormat(timezone = "UTC", pattern = "yyyy-MM-dd\'T\'HH:mm:ss.SSSSSS\'Z\'")
@@ -72,7 +79,8 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
   public LeaseSpec() {
   }
 
-  public LeaseSpec(ZonedDateTime acquireTime, String holderIdentity, Integer leaseDurationSeconds, Integer leaseTransitions, String preferredHolder, ZonedDateTime renewTime, String strategy) {
+  public LeaseSpec(ZonedDateTime acquireTime, String holderIdentity, Integer leaseDurationSeconds, Integer leaseTransitions,
+      String preferredHolder, ZonedDateTime renewTime, String strategy) {
     this.acquireTime = acquireTime;
     this.holderIdentity = holderIdentity;
     this.leaseDurationSeconds = leaseDurationSeconds;
@@ -179,39 +187,55 @@ public class LeaseSpec implements Editable<LeaseSpecBuilder>, KubernetesResource
 
   @java.lang.Override
   public java.lang.String toString() {
-    return "LeaseSpec(acquireTime=" + this.getAcquireTime() + ", holderIdentity=" + this.getHolderIdentity() + ", leaseDurationSeconds=" + this.getLeaseDurationSeconds() + ", leaseTransitions=" + this.getLeaseTransitions() + ", preferredHolder=" + this.getPreferredHolder() + ", renewTime=" + this.getRenewTime() + ", strategy=" + this.getStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
+    return "LeaseSpec(acquireTime=" + this.getAcquireTime() + ", holderIdentity=" + this.getHolderIdentity()
+        + ", leaseDurationSeconds=" + this.getLeaseDurationSeconds() + ", leaseTransitions=" + this.getLeaseTransitions()
+        + ", preferredHolder=" + this.getPreferredHolder() + ", renewTime=" + this.getRenewTime() + ", strategy="
+        + this.getStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
   }
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof LeaseSpec)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof LeaseSpec))
+      return false;
     final LeaseSpec other = (LeaseSpec) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$leaseDurationSeconds = this.getLeaseDurationSeconds();
     final java.lang.Object other$leaseDurationSeconds = other.getLeaseDurationSeconds();
-    if (this$leaseDurationSeconds == null ? other$leaseDurationSeconds != null : !this$leaseDurationSeconds.equals(other$leaseDurationSeconds)) return false;
+    if (this$leaseDurationSeconds == null ? other$leaseDurationSeconds != null
+        : !this$leaseDurationSeconds.equals(other$leaseDurationSeconds))
+      return false;
     final java.lang.Object this$leaseTransitions = this.getLeaseTransitions();
     final java.lang.Object other$leaseTransitions = other.getLeaseTransitions();
-    if (this$leaseTransitions == null ? other$leaseTransitions != null : !this$leaseTransitions.equals(other$leaseTransitions)) return false;
+    if (this$leaseTransitions == null ? other$leaseTransitions != null : !this$leaseTransitions.equals(other$leaseTransitions))
+      return false;
     final java.lang.Object this$acquireTime = this.getAcquireTime();
     final java.lang.Object other$acquireTime = other.getAcquireTime();
-    if (this$acquireTime == null ? other$acquireTime != null : !this$acquireTime.equals(other$acquireTime)) return false;
+    if (this$acquireTime == null ? other$acquireTime != null : !this$acquireTime.equals(other$acquireTime))
+      return false;
     final java.lang.Object this$holderIdentity = this.getHolderIdentity();
     final java.lang.Object other$holderIdentity = other.getHolderIdentity();
-    if (this$holderIdentity == null ? other$holderIdentity != null : !this$holderIdentity.equals(other$holderIdentity)) return false;
+    if (this$holderIdentity == null ? other$holderIdentity != null : !this$holderIdentity.equals(other$holderIdentity))
+      return false;
     final java.lang.Object this$preferredHolder = this.getPreferredHolder();
     final java.lang.Object other$preferredHolder = other.getPreferredHolder();
-    if (this$preferredHolder == null ? other$preferredHolder != null : !this$preferredHolder.equals(other$preferredHolder)) return false;
+    if (this$preferredHolder == null ? other$preferredHolder != null : !this$preferredHolder.equals(other$preferredHolder))
+      return false;
     final java.lang.Object this$renewTime = this.getRenewTime();
     final java.lang.Object other$renewTime = other.getRenewTime();
-    if (this$renewTime == null ? other$renewTime != null : !this$renewTime.equals(other$renewTime)) return false;
+    if (this$renewTime == null ? other$renewTime != null : !this$renewTime.equals(other$renewTime))
+      return false;
     final java.lang.Object this$strategy = this.getStrategy();
     final java.lang.Object other$strategy = other.getStrategy();
-    if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy)) return false;
+    if (this$strategy == null ? other$strategy != null : !this$strategy.equals(other$strategy))
+      return false;
     final java.lang.Object this$additionalProperties = this.getAdditionalProperties();
     final java.lang.Object other$additionalProperties = other.getAdditionalProperties();
-    if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) return false;
+    if (this$additionalProperties == null ? other$additionalProperties != null
+        : !this$additionalProperties.equals(other$additionalProperties))
+      return false;
     return true;
   }
 

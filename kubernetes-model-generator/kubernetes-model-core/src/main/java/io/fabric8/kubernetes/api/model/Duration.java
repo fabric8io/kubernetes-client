@@ -163,7 +163,9 @@ public class Duration implements KubernetesResource {
     final Matcher matcher = Optional.ofNullable(duration).map(String::trim).map(DURATION_PATTERN::matcher).orElse(null);
     while (matcher != null && matcher.find()) {
       found = true;
-      final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2))).map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit)).orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
+      final java.time.Duration durationToken = Optional.ofNullable(TimeUnits.from(matcher.group(2)))
+          .map(tu -> java.time.Duration.of(Long.parseLong(matcher.group(1)), tu.timeUnit))
+          .orElseThrow(() -> new ParseException(String.format("Invalid duration token (%s)", matcher.group()), 0));
       accumulator = accumulator.plus(durationToken);
     }
     if (!found) {
@@ -171,7 +173,6 @@ public class Duration implements KubernetesResource {
     }
     return new Duration(accumulator);
   }
-
 
   public static class Serializer extends StdSerializer<Duration> {
     public Serializer() {
@@ -189,9 +190,16 @@ public class Duration implements KubernetesResource {
     }
   }
 
-
   private enum TimeUnits {
-    NANOSECOND(ChronoUnit.NANOS, "ns", "nano", "nanos"), MICROSECOND(ChronoUnit.MICROS, "us", "µs", "micro", "micros"), MILLISECOND(ChronoUnit.MILLIS, "ms", "milli", "millis"), SECOND(ChronoUnit.SECONDS, "s", "sec", "secs"), MINUTE(ChronoUnit.MINUTES, "m", "min", "mins"), HOUR(ChronoUnit.HOURS, "h", "hr", "hour", "hours"), DAY(ChronoUnit.DAYS, "d", "day", "days"), WEEK(SevenDayWeek.INSTANCE, "w", "wk", "week", "weeks");
+    NANOSECOND(ChronoUnit.NANOS, "ns", "nano", "nanos"),
+    MICROSECOND(ChronoUnit.MICROS, "us", "µs", "micro", "micros"),
+    MILLISECOND(ChronoUnit.MILLIS, "ms", "milli", "millis"),
+    SECOND(ChronoUnit.SECONDS, "s", "sec", "secs"),
+    MINUTE(ChronoUnit.MINUTES, "m", "min", "mins"),
+    HOUR(ChronoUnit.HOURS, "h", "hr", "hour", "hours"),
+    DAY(ChronoUnit.DAYS, "d", "day", "days"),
+    WEEK(SevenDayWeek.INSTANCE, "w", "wk", "week", "weeks");
+
     private final Set<String> abbreviations;
     private final TemporalUnit timeUnit;
 
@@ -204,7 +212,6 @@ public class Duration implements KubernetesResource {
       return Stream.of(values()).filter(tu -> tu.abbreviations.contains(abbreviation.toLowerCase())).findAny().orElse(null);
     }
   }
-
 
   /**
    * Provides an <strong>exact</strong> {@link TemporalUnit} implementation
@@ -256,13 +263,17 @@ public class Duration implements KubernetesResource {
 
   @java.lang.Override
   public boolean equals(final java.lang.Object o) {
-    if (o == this) return true;
-    if (!(o instanceof Duration)) return false;
+    if (o == this)
+      return true;
+    if (!(o instanceof Duration))
+      return false;
     final Duration other = (Duration) o;
-    if (!other.canEqual((java.lang.Object) this)) return false;
+    if (!other.canEqual((java.lang.Object) this))
+      return false;
     final java.lang.Object this$javaDuration = this.javaDuration;
     final java.lang.Object other$javaDuration = other.javaDuration;
-    if (this$javaDuration == null ? other$javaDuration != null : !this$javaDuration.equals(other$javaDuration)) return false;
+    if (this$javaDuration == null ? other$javaDuration != null : !this$javaDuration.equals(other$javaDuration))
+      return false;
     return true;
   }
 
