@@ -26,9 +26,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -40,12 +37,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "allocationStrategy",
     "dynamicHostAllocation",
     "id"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(io.fabric8.kubernetes.api.model.ObjectMeta.class),
@@ -159,6 +150,64 @@ public class DedicatedHost implements Editable<DedicatedHostBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DedicatedHost)) {
+            return false;
+        }
+        DedicatedHost other = (DedicatedHost) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$allocationStrategy = this.getAllocationStrategy();
+        Object other$allocationStrategy = other.getAllocationStrategy();
+        if (this$allocationStrategy == null ? other$allocationStrategy != null : !this$allocationStrategy.equals(other$allocationStrategy)) {
+            return false;
+        }
+        Object this$dynamicHostAllocation = this.getDynamicHostAllocation();
+        Object other$dynamicHostAllocation = other.getDynamicHostAllocation();
+        if (this$dynamicHostAllocation == null ? other$dynamicHostAllocation != null : !this$dynamicHostAllocation.equals(other$dynamicHostAllocation)) {
+            return false;
+        }
+        Object this$id = this.getId();
+        Object other$id = other.getId();
+        if (this$id == null ? other$id != null : !this$id.equals(other$id)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DedicatedHost;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $allocationStrategy = this.getAllocationStrategy();
+        result = result * prime + ($allocationStrategy == null ? 43 : $allocationStrategy.hashCode());
+        Object $dynamicHostAllocation = this.getDynamicHostAllocation();
+        result = result * prime + ($dynamicHostAllocation == null ? 43 : $dynamicHostAllocation.hashCode());
+        Object $id = this.getId();
+        result = result * prime + ($id == null ? 43 : $id.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DedicatedHost(" + "allocationStrategy=" + this.getAllocationStrategy() + ", dynamicHostAllocation=" + this.getDynamicHostAllocation() + ", id=" + this.getId() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

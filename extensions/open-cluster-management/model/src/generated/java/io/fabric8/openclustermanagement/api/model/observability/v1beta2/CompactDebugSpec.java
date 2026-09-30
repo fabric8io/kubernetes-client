@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -39,12 +36,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "downsampleConcurrency",
     "logLevel",
     "waitInterval"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -177,6 +168,71 @@ public class CompactDebugSpec implements Editable<CompactDebugSpecBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CompactDebugSpec)) {
+            return false;
+        }
+        CompactDebugSpec other = (CompactDebugSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$blockMetaFetchConcurrency = this.getBlockMetaFetchConcurrency();
+        Object other$blockMetaFetchConcurrency = other.getBlockMetaFetchConcurrency();
+        if (this$blockMetaFetchConcurrency == null ? other$blockMetaFetchConcurrency != null : !this$blockMetaFetchConcurrency.equals(other$blockMetaFetchConcurrency)) {
+            return false;
+        }
+        Object this$downsampleConcurrency = this.getDownsampleConcurrency();
+        Object other$downsampleConcurrency = other.getDownsampleConcurrency();
+        if (this$downsampleConcurrency == null ? other$downsampleConcurrency != null : !this$downsampleConcurrency.equals(other$downsampleConcurrency)) {
+            return false;
+        }
+        Object this$logLevel = this.getLogLevel();
+        Object other$logLevel = other.getLogLevel();
+        if (this$logLevel == null ? other$logLevel != null : !this$logLevel.equals(other$logLevel)) {
+            return false;
+        }
+        Object this$waitInterval = this.getWaitInterval();
+        Object other$waitInterval = other.getWaitInterval();
+        if (this$waitInterval == null ? other$waitInterval != null : !this$waitInterval.equals(other$waitInterval)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CompactDebugSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $blockMetaFetchConcurrency = this.getBlockMetaFetchConcurrency();
+        result = result * prime + ($blockMetaFetchConcurrency == null ? 43 : $blockMetaFetchConcurrency.hashCode());
+        Object $downsampleConcurrency = this.getDownsampleConcurrency();
+        result = result * prime + ($downsampleConcurrency == null ? 43 : $downsampleConcurrency.hashCode());
+        Object $logLevel = this.getLogLevel();
+        result = result * prime + ($logLevel == null ? 43 : $logLevel.hashCode());
+        Object $waitInterval = this.getWaitInterval();
+        result = result * prime + ($waitInterval == null ? 43 : $waitInterval.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CompactDebugSpec(" + "blockMetaFetchConcurrency=" + this.getBlockMetaFetchConcurrency() + ", downsampleConcurrency=" + this.getDownsampleConcurrency() + ", logLevel=" + this.getLogLevel() + ", waitInterval=" + this.getWaitInterval() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
