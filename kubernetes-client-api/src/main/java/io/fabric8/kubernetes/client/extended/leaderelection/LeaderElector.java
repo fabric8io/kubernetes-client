@@ -156,7 +156,7 @@ public class LeaderElector {
     }
     ZonedDateTime now = now();
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
-        null,
+        "",
         Duration.ofSeconds(1),
         now,
         now,
@@ -254,7 +254,7 @@ public class LeaderElector {
   private void updateObserved(LeaderElectionRecord leaderElectionRecord) {
     final LeaderElectionRecord current = observedRecord.getAndSet(leaderElectionRecord);
     if (!Objects.equals(leaderElectionRecord, current)) {
-      final String currentLeader = current == null ? null : current.getHolderIdentity();
+      final String currentLeader = current == null ? "" : current.getHolderIdentity();
       final String newLeader = leaderElectionRecord.getHolderIdentity();
       if (!Objects.equals(newLeader, currentLeader)) {
         logger.debug("Leader changed from {} to {}", currentLeader, newLeader);
