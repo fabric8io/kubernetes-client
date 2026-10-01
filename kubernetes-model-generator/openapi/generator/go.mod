@@ -46,8 +46,8 @@ require (
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
 	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.6.0
-	github.com/metal3-io/baremetal-operator/apis v0.13.0
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.14.0
+	github.com/metal3-io/baremetal-operator/apis v0.14.1
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.14.1
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20260918225044-5c4a3963b75c
@@ -166,7 +166,7 @@ require (
 	github.com/kdomanski/iso9660 v0.2.1 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
-	github.com/metal3-io/ip-address-manager/api v1.14.0 // indirect
+	github.com/metal3-io/ip-address-manager/api v1.14.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
