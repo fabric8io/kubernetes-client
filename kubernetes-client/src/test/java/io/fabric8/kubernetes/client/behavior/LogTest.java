@@ -83,4 +83,69 @@ class LogTest {
     }
 
   }
+
+  @Nested
+  class WithTerminatedContainer {
+
+    private String namespace;
+    private String podName;
+
+    @BeforeEach
+    void setUp() {
+      namespace = "default";
+      podName = "with-terminated-pod";
+      factory.expect("/api/v1/namespaces/" + namespace + "/pods", 200, client.getKubernetesSerialization().asJson(
+          new PodListBuilder()
+              .withNewMetadata().endMetadata()
+              .addToItems(new PodBuilder()
+                  .withNewMetadata().withName(podName).endMetadata()
+                  .withNewStatus().withPhase("Running").endStatus()
+                  .build())
+              .build()));
+    }
+
+    @Test
+    @DisplayName("fetches logs from previous container")
+    void getPreviousLog() {
+      factory.expect("/api/v1/namespaces/" + namespace + "/pods/" + podName + "/log", 200, "previous log");
+      final var result = client.pods().inNamespace(namespace).withName(podName).previous().getLog();
+      assertThat(result).isEqualTo("previous log");
+      assertThat(httpClient.getRecordedConsumeBytesDirects())
+          .last()
+          .extracting(r -> r.getRequest().uri().getRawQuery())
+          .asString()
+          .contains("previous=true");
+    }
+
+    @Test
+    @DisplayName("chains previous with tailingLines")
+    void getPreviousLogWithTailing() {
+      factory.expect("/api/v1/namespaces/" + namespace + "/pods/" + podName + "/log",
+          200, "previous log");
+      final var result = client.pods().inNamespace(namespace).withName(podName).previous().tailingLines(10).getLog();
+      assertThat(result).isEqualTo("previous log");
+      assertThat(httpClient.getRecordedConsumeBytesDirects())
+          .last()
+          .extracting(r -> r.getRequest().uri().getRawQuery())
+          .asString()
+          .contains("previous=true")
+          .contains("tailLines=10");
+    }
+
+    @Test
+    @DisplayName("chains previous with usingTimestamps")
+    void getPreviousLogWithTimestamps() {
+      factory.expect("/api/v1/namespaces/" + namespace + "/pods/" + podName + "/log",
+          200, "previous log");
+      final var result = client.pods().inNamespace(namespace).withName(podName).previous().usingTimestamps().getLog();
+      assertThat(result).isEqualTo("previous log");
+      assertThat(httpClient.getRecordedConsumeBytesDirects())
+          .last()
+          .extracting(r -> r.getRequest().uri().getRawQuery())
+          .asString()
+          .contains("previous=true")
+          .contains("timestamps=true");
+    }
+
+  }
 }

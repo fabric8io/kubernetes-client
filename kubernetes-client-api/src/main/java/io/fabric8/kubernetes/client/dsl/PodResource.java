@@ -59,4 +59,12 @@ public interface PodResource extends Resource<Pod>,
    */
   Pod patchReadinessGateStatus(Map<String, Boolean> readiness);
 
+  /**
+   * Get logs from the previous instance of the container (if it crashed/restarted).
+   * Equivalent to kubectl logs --previous
+   *
+   * @return {@link TimestampBytesLimitTerminateTimeTailPrettyLoggable} for fetching logs from previous container
+   */
+  TimestampBytesLimitTerminateTimeTailPrettyLoggable previous();
+
 }
