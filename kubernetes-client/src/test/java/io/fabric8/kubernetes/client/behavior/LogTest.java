@@ -87,8 +87,8 @@ class LogTest {
   @Nested
   class WithTerminatedContainer {
 
-    private String namespace = "default";
-    private String podName = "pod-get-log-previous";
+    private String namespace;
+    private String podName;
 
     @BeforeEach
     void setUp() {
