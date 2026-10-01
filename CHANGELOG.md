@@ -9,6 +9,7 @@
 #### Dependency Upgrade
 
 #### New Features
+* Fix #5753: Support fetching previous pod logs via `.previous()` method. `client.pods().withName("pod").previous().getLog()` retrieves logs from restarted containers
 
 #### _**Note**_: Breaking changes
 
