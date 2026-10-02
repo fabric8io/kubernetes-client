@@ -25,6 +25,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -47,29 +48,86 @@ import java.util.stream.Collectors;
  */
 public class CacheImpl<T extends HasMetadata> implements Cache<T> {
 
+  /**
+   * One index: the keys and resource versions recorded under each index value, plus the reverse record of the
+   * buckets each key is in. Invariant: {@code bucketsByKey} holds a key if and only if {@code values} holds it,
+   * in exactly those buckets.
+   * <p>
+   * {@code values} is read without the {@link CacheImpl} monitor, {@code bucketsByKey} only under it.
+   */
   private static class Index<T extends HasMetadata> {
 
     private final Function<T, List<String>> indexer;
     private final Map<Object, Map<String, String>> values = new ConcurrentHashMap<>();
+    private final Map<String, Set<Object>> bucketsByKey = new HashMap<>();
 
     public Index(Function<T, List<String>> indexer) {
       this.indexer = indexer;
     }
 
-    public void update(String indexKey, String key, String resourceVersion, boolean remove) {
-      if (remove) {
-        values.computeIfPresent(indexKey == null ? this : indexKey, (k, v) -> {
-          v.remove(key);
-          return v.isEmpty() ? null : v;
-        });
-      } else {
-        values.computeIfAbsent(indexKey == null ? this : indexKey, k -> new ConcurrentHashMap<>())
-            .put(key, nullAsEmpty(resourceVersion));
+    /**
+     * Records the key in the buckets of the given index values and removes it from the buckets it was recorded
+     * in before. The old buckets come from that record rather than from a previous version of the object, so a
+     * key is cleaned up correctly even if the object was mutated in place or is no longer available.
+     *
+     * @param key the key
+     * @param indexValues the index values of the object, possibly empty
+     * @param resourceVersion the resource version of the object, ignored when there are no index values
+     */
+    public void put(String key, Collection<String> indexValues, String resourceVersion) {
+      Set<Object> buckets = buckets(indexValues);
+      Set<Object> previous = buckets.isEmpty() ? bucketsByKey.remove(key) : bucketsByKey.put(key, buckets);
+      if (previous != null) {
+        for (Object bucket : previous) {
+          if (!buckets.contains(bucket)) {
+            removeFrom(bucket, key);
+          }
+        }
+      }
+      for (Object bucket : buckets) {
+        values.computeIfAbsent(bucket, k -> new ConcurrentHashMap<>()).put(key, nullAsEmpty(resourceVersion));
+      }
+    }
+
+    public void remove(String key) {
+      Set<Object> previous = bucketsByKey.remove(key);
+      if (previous != null) {
+        previous.forEach(bucket -> removeFrom(bucket, key));
       }
     }
 
     public Map<String, String> get(String indexKey) {
-      return values.getOrDefault(indexKey == null ? this : indexKey, Map.of());
+      return values.getOrDefault(bucket(indexKey), Map.of());
+    }
+
+    /**
+     * The result is free of nulls and duplicates, since {@link #bucket(String)} maps a null index value to this
+     * index and the multi value case deduplicates before collapsing, so the immutable {@link Set#of} forms are
+     * safe.
+     */
+    private Set<Object> buckets(Collection<String> indexValues) {
+      if (indexValues.isEmpty()) {
+        return Set.of();
+      }
+      if (indexValues.size() == 1) {
+        return Set.of(bucket(indexValues.iterator().next()));
+      }
+      Set<Object> buckets = new LinkedHashSet<>();
+      for (String indexValue : indexValues) {
+        buckets.add(bucket(indexValue));
+      }
+      return buckets.size() == 1 ? Set.of(buckets.iterator().next()) : buckets;
+    }
+
+    private void removeFrom(Object bucket, String key) {
+      values.computeIfPresent(bucket, (k, v) -> {
+        v.remove(key);
+        return v.isEmpty() ? null : v;
+      });
+    }
+
+    private Object bucket(String indexKey) {
+      return indexKey == null ? this : indexKey;
     }
   }
 
@@ -131,22 +189,21 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     }
     String key = getKey(obj);
     T oldObj = this.items.put(key, obj);
-    this.updateIndices(oldObj, obj, key);
+    this.updateIndices(obj, key);
     return oldObj;
   }
 
   /**
-   * Delete the object.
+   * Delete the object. The index entries of its key are removed even if the {@link ItemStore} no longer
+   * holds the object.
    *
    * @param obj object
-   * @return the old object
+   * @return the old object, or {@code null} if the {@link ItemStore} did not hold it
    */
   public synchronized T remove(T obj) {
     String key = getKey(obj);
     T old = this.items.remove(key);
-    if (old != null) {
-      this.updateIndices(old, null, key);
-    }
+    indices.values().forEach(index -> index.remove(key));
     return old;
   }
 
@@ -284,29 +341,18 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   }
 
   /**
-   * UpdateIndices modifies the objects location in the managed indexes, if there is
-   * an update, you must provide an oldObj
+   * Records the key in every managed index, under the index values its indexer returns for the object.
    *
-   *
-   * @param oldObj old object
-   * @param newObj new object
+   * @param obj the object
    * @param key the key
    */
-  private void updateIndices(T oldObj, T newObj, String key) {
-    indices.values().forEach(i -> updateIndex(key, oldObj, newObj, i));
+  private void updateIndices(T obj, String key) {
+    indices.values().forEach(index -> updateIndex(key, obj, index));
   }
 
-  private void updateIndex(String key, T oldObj, T newObj, Index<T> index) {
-    List<String> oldValues = getIndexValues(oldObj, index.indexer);
-    Collection<String> newIndexValues = new LinkedHashSet<>(getIndexValues(newObj, index.indexer));
-    for (String indexValue : oldValues) {
-      if (!newIndexValues.contains(indexValue)) {
-        index.update(indexValue, key, null, true);
-      }
-    }
-    for (String indexValue : newIndexValues) {
-      index.update(indexValue, key, newObj.getMetadata().getResourceVersion(), false);
-    }
+  private void updateIndex(String key, T obj, Index<T> index) {
+    List<String> indexValues = getIndexValues(obj, index.indexer);
+    index.put(key, indexValues, indexValues.isEmpty() ? null : obj.getMetadata().getResourceVersion());
   }
 
   private List<String> getIndexValues(T obj, Function<T, List<String>> indexFunc) {
@@ -332,7 +378,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
     Index<T> index = new Index<>(indexFunc);
     this.indices.put(indexName, index);
 
-    items.values().forEach(v -> updateIndex(getKey(v), null, v, index));
+    items.values().forEach(v -> updateIndex(getKey(v), v, index));
     return this;
   }
 
