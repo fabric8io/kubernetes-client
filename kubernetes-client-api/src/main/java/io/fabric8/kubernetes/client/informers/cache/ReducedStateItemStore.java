@@ -82,9 +82,10 @@ public class ReducedStateItemStore<V extends HasMetadata> implements ItemStore<V
    * metadata.resourceVersion - will automatically be saved as will
    * the necessary key fields.
    * <p>
-   * If you are using custom indexers, then the fields used by those
-   * indexes must be added to the valueFields - otherwise the indexer won't be able to delete the
-   * index entries when the item is removed.
+   * Removing an item no longer evaluates the custom indexers, so their fields are not needed to clean up
+   * the index entries of a key. They are still read when an indexer is added to an already populated store
+   * and when a read has to revalidate an index entry, so keeping them in the valueFields remains the safe
+   * choice.
    * <p>
    * For example in level event handling systems all you may need beyond the
    * key is the ownerReferences. You would use withValueFields("metadata.ownerReferences")
