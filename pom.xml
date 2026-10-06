@@ -119,7 +119,7 @@
     <bouncycastle.version>1.86</bouncycastle.version>
     <bc-fips.version>2.1.3</bc-fips.version>
     <bcpkix-fips.version>2.1.13</bcpkix-fips.version>
-    <keycloak.version>26.7.4</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
+    <keycloak.version>26.8.0</keycloak.version><!-- Used by CRD Generator integration tests for verifications -->
     <jboss-logging.version>3.6.3.Final</jboss-logging.version><!-- Keycloak classes reference it; needed to introspect them -->
     <mockito.version>5.24.0</mockito.version>
     <!-- byte-buddy-agent is loaded as a startup -javaagent by surefire (see maven-surefire-plugin) to
