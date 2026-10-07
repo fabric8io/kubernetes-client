@@ -44,6 +44,7 @@ import io.fabric8.kubernetes.client.dsl.PodResource;
 import io.fabric8.kubernetes.client.dsl.PrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TimeTailPrettyLoggable;
+import io.fabric8.kubernetes.client.dsl.TimestampBytesLimitTerminateTimeTailPrettyLoggable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorChannelable;
 import io.fabric8.kubernetes.client.dsl.TtyExecErrorable;
 import io.fabric8.kubernetes.client.dsl.TtyExecOutputErrorable;
@@ -617,6 +618,11 @@ public class PodOperationsImpl extends HasMetadataOperation<Pod, PodList, PodRes
   @Override
   public Loggable withPrettyOutput() {
     return new PodOperationsImpl(getContext().withPrettyOutput(true), context);
+  }
+
+  @Override
+  public TimestampBytesLimitTerminateTimeTailPrettyLoggable previous() {
+    return new PodOperationsImpl(getContext().withTerminatedStatus(true), context);
   }
 
   @Override
