@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -38,12 +35,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "chunkEncoding",
     "outOfOrderTimeWindow",
     "staleSeriesCompactionThreshold"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -145,6 +136,64 @@ public class TSDBSpec implements Editable<TSDBSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TSDBSpec)) {
+            return false;
+        }
+        TSDBSpec other = (TSDBSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$chunkEncoding = this.getChunkEncoding();
+        Object other$chunkEncoding = other.getChunkEncoding();
+        if (this$chunkEncoding == null ? other$chunkEncoding != null : !this$chunkEncoding.equals(other$chunkEncoding)) {
+            return false;
+        }
+        Object this$outOfOrderTimeWindow = this.getOutOfOrderTimeWindow();
+        Object other$outOfOrderTimeWindow = other.getOutOfOrderTimeWindow();
+        if (this$outOfOrderTimeWindow == null ? other$outOfOrderTimeWindow != null : !this$outOfOrderTimeWindow.equals(other$outOfOrderTimeWindow)) {
+            return false;
+        }
+        Object this$staleSeriesCompactionThreshold = this.getStaleSeriesCompactionThreshold();
+        Object other$staleSeriesCompactionThreshold = other.getStaleSeriesCompactionThreshold();
+        if (this$staleSeriesCompactionThreshold == null ? other$staleSeriesCompactionThreshold != null : !this$staleSeriesCompactionThreshold.equals(other$staleSeriesCompactionThreshold)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TSDBSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $chunkEncoding = this.getChunkEncoding();
+        result = result * prime + ($chunkEncoding == null ? 43 : $chunkEncoding.hashCode());
+        Object $outOfOrderTimeWindow = this.getOutOfOrderTimeWindow();
+        result = result * prime + ($outOfOrderTimeWindow == null ? 43 : $outOfOrderTimeWindow.hashCode());
+        Object $staleSeriesCompactionThreshold = this.getStaleSeriesCompactionThreshold();
+        result = result * prime + ($staleSeriesCompactionThreshold == null ? 43 : $staleSeriesCompactionThreshold.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TSDBSpec(" + "chunkEncoding=" + this.getChunkEncoding() + ", outOfOrderTimeWindow=" + this.getOutOfOrderTimeWindow() + ", staleSeriesCompactionThreshold=" + this.getStaleSeriesCompactionThreshold() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -32,18 +32,6 @@
 {{/properties}}
 })
 {{/propertyOrder}}
-{{#lombokToString}}
-@ToString
-{{/lombokToString}}
-{{#lombokEqualsAndHashCode}}
-@EqualsAndHashCode
-{{/lombokEqualsAndHashCode}}
-{{#lombokAccessors}}
-@Accessors(prefix = {
-    "_",
-    ""
-})
-{{/lombokAccessors}}
 {{#buildable}}
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "{{builderPackage}}")
 {{/buildable}}
