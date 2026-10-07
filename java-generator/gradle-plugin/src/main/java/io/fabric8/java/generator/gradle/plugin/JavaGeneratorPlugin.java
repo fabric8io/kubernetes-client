@@ -22,10 +22,27 @@ import org.gradle.api.Project;
 public class JavaGeneratorPlugin implements Plugin<Project> {
   @Override
   public void apply(Project project) {
-    // create an extension for the plugin
     project.getExtensions().create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class);
-    // register tasks
-    project.getTasks().register(JavaGeneratorCrd2JavaTask.NAME, JavaGeneratorCrd2JavaTask.class,
-        JavaGeneratorPluginExtension.class);
+    final JavaGeneratorPluginExtension extension = project.getExtensions()
+        .getByType(JavaGeneratorPluginExtension.class);
+    // Wire the task's lazy inputs from the extension's providers so the task captures neither the
+    // Project nor the extension (configuration-cache compatible).
+    project.getTasks().register(JavaGeneratorCrd2JavaTask.NAME, JavaGeneratorCrd2JavaTask.class, task -> {
+      task.getSource().from(extension.getSource());
+      task.getUrls().set(extension.getUrls());
+      task.getDownloadTarget().set(extension.getDownloadTarget()
+          .orElse(project.getLayout().getBuildDirectory().dir("crds")));
+      task.getTarget().set(extension.getTarget()
+          .orElse(project.getLayout().getBuildDirectory().dir("generated/sources")));
+      task.getUppercaseEnums().set(project.provider(extension::getEnumUppercase));
+      task.getObjectExtraAnnotations().set(project.provider(extension::getExtraAnnotations));
+      task.getGeneratedAnnotations().set(project.provider(extension::getGeneratedAnnotations));
+      task.getAlwaysPreserveUnknown().set(project.provider(extension::getAlwaysPreserveUnknown));
+      task.getPackageOverrides().set(project.provider(extension::getPackageOverrides));
+      task.getFilesSuffixes().set(project.provider(extension::getFilesSuffixes));
+      task.getSerDatetimeFormat().set(project.provider(extension::getSerializationDatetimeFormat));
+      task.getDeserDatetimeFormat().set(project.provider(extension::getDeserializationDatetimeFormat));
+      task.getExistingJavaTypes().set(project.provider(extension::getExistingJavaTypes));
+    });
   }
 }
