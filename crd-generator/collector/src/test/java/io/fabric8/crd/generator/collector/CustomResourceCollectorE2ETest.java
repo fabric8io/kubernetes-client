@@ -16,11 +16,13 @@
 package io.fabric8.crd.generator.collector;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,6 +35,19 @@ class CustomResourceCollectorE2ETest {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(tempDir);
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToScan(tempDir);
+    List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
+    assertEquals(expectedClasses.size(), classes.size());
+    classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
+  }
+
+  @Test
+  @DisplayName("Classes directories which were never created, like build/classes/java/main of a Kotlin-only Gradle project, don't fail the scan")
+  void scanClassDirsWithMissingDir_thenFindAllInExistingDir(@TempDir File tempDir) throws IOException {
+    File javaClassesDir = new File(tempDir, "java/main");
+    File kotlinClassesDir = new File(tempDir, "kotlin/main");
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(kotlinClassesDir);
+    CustomResourceCollector collector = new CustomResourceCollector();
+    collector.withFilesToScan(Arrays.asList(javaClassesDir, kotlinClassesDir));
     List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
     assertEquals(expectedClasses.size(), classes.size());
     classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
