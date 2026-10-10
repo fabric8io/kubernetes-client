@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #7041: (crd-generator) The collector skips files to scan that don't exist, such as `build/classes/java/main` in a Kotlin-only Gradle project, instead of failing with "Not a class file, JAR file or directory"
 
 #### Improvements
 

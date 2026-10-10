@@ -16,6 +16,7 @@
 package io.fabric8.crd.generator.collector;
 
 import org.jboss.jandex.Index;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -25,6 +26,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -58,6 +60,27 @@ class JandexIndexerTest {
     JandexIndexer indexer = new JandexIndexer();
     Index index = indexer.createIndex(tempDir);
     expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
+  }
+
+  @Test
+  @DisplayName("Files which don't exist are skipped and the existing ones are still indexed")
+  void checkNonExistentFileIsSkipped(@TempDir File tempDir) throws IOException {
+    File missingClassesDir = new File(tempDir, "java");
+    File classesDir = new File(tempDir, "kotlin");
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(classesDir);
+    JandexIndexer indexer = new JandexIndexer();
+    Index index = indexer.createIndex(missingClassesDir, classesDir);
+    assertEquals(expectedClasses.size(), index.getKnownClasses().size());
+    expectedClasses.forEach(s -> assertNotNull(index.getClassByName(s)));
+  }
+
+  @Test
+  @DisplayName("Existing files which are neither a class file, a JAR file nor a directory are rejected")
+  void checkUnsupportedFile(@TempDir File tempDir) throws IOException {
+    File file = new File(tempDir, "my-resource.txt");
+    Files.writeString(file.toPath(), "not a class file");
+    JandexIndexer indexer = new JandexIndexer();
+    assertThrows(JandexException.class, () -> indexer.createIndex(file));
   }
 
   @Test

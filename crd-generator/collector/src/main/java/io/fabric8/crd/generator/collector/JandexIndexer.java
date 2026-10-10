@@ -40,6 +40,11 @@ import java.util.stream.Stream;
  * Unlike {@link Index#of(File...)}, this implementation performs a recursive scan
  * of the directories and enforces some limits.
  * </p>
+ * <p>
+ * Files which don't exist are skipped, so that the output directories of a build
+ * can be passed as they are, even if some of them are never created
+ * (e.g. the Java classes directory of a Kotlin-only Gradle project).
+ * </p>
  */
 class JandexIndexer {
 
@@ -100,7 +105,10 @@ class JandexIndexer {
 
   private void appendToIndex(Collection<File> files, Indexer indexer) {
     for (File file : files) {
-      if (file.isDirectory()) {
+      if (!file.exists()) {
+        // e.g. build/classes/java/main of a Gradle project without Java sources
+        logger.debug("Skipping {}, it does not exist", file);
+      } else if (file.isDirectory()) {
         scanDirectoryAndAddToIndex(file, indexer);
       } else if (file.isFile() && file.getName().endsWith(CLASS_FILE_SUFFIX)) {
         addClassFileToIndex(file, indexer);
