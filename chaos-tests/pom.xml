@@ -29,6 +29,10 @@
 
   <properties>
     <maven.deploy.skip>true</maven.deploy.skip>
+    <!-- The default java-exec base image of jkube 1.20.0 (quay.io/jkube/jkube-java:0.0.26) is amd64-only.
+         Use a multi-arch (amd64 and arm64) image with the same Java 21 runtime so the checker and control
+         images also run on ARM64 clusters. -->
+    <jkube.generator.from>quay.io/jkube/jkube-java-21:0.0.28</jkube.generator.from>
   </properties>
 
   <repositories>

@@ -34,9 +34,7 @@ env:
 jobs:
   chaos-tests:
     name: K8S Chaos Test
-    # Stays on x64: jkube java-exec base image (quay.io/jkube/jkube-java) is amd64-only.
-    # See #7805 for the multi-arch path forward.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     timeout-minutes: 45
     if: github.repository == 'fabric8io/kubernetes-client'
     strategy:
