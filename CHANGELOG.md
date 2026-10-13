@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire or unreadable, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
 
 #### Improvements
 
