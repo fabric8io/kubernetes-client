@@ -62,7 +62,9 @@ public class KubernetesResourceUtil {
       .compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?+(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?+)*+");
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   public static final Pattern KUBERNETES_KEY_REGEX = Pattern
-      .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[a-z0-9]([-_.a-z0-9]{0,61}[a-z0-9])?");
+      .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[A-Za-z0-9]([-_.A-Za-z0-9]{0,61}[A-Za-z0-9])?");
+  public static final Pattern KUBERNETES_LABEL_VALUE_REGEX = Pattern
+      .compile("(([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9])?");
 
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
   private static final String DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME = "container-image-registry-secret";
@@ -349,6 +351,18 @@ public class KubernetesResourceUtil {
   }
 
   /**
+   * Validates a label value.
+   * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set">
+   * Syntax and character set</a>
+   *
+   * @param value the label value
+   * @return true if the value is valid
+   */
+  public static boolean isValidLabelValue(String value) {
+    return value != null && KUBERNETES_LABEL_VALUE_REGEX.matcher(value).matches();
+  }
+
+  /**
    * Validates annotation or label key.
    *
    * @param key the annotation or label key
@@ -393,7 +407,7 @@ public class KubernetesResourceUtil {
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean areLabelsValid(Map<String, String> map) {
-    return map.entrySet().stream().allMatch(e -> isValidKey(e.getKey()) && isValidName(e.getValue()));
+    return map.entrySet().stream().allMatch(e -> isValidKey(e.getKey()) && isValidLabelValue(e.getValue()));
   }
 
   /**
