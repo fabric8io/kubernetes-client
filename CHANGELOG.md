@@ -5,6 +5,7 @@
 #### Bugs
 
 #### Improvements
+* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`
 
 #### Dependency Upgrade
 
