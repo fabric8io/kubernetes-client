@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #8182 (kubernetes-client-api): `areLabelsValid` and `isValidKey` incorrectly rejected mixed-case label key names and values. The Kubernetes label syntax spec ([kube.go#L24](https://github.com/kubernetes/kubernetes/blob/release-1.37/staging/src/k8s.io/apimachinery/pkg/api/validate/content/kube.go#L24)) allows `[A-Za-z0-9]` for the key name segment and label values; only the key prefix must be a lowercase DNS subdomain. Added `isValidLabelValue` for validating label values (allows empty string, mixed case, hyphens, underscores, and dots) and updated `KUBERNETES_KEY_REGEX` to accept mixed-case key names while keeping the prefix pattern lowercase.
 
 #### Improvements
 

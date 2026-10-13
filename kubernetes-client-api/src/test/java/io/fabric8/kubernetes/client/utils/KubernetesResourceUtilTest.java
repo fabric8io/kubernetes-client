@@ -125,7 +125,10 @@ class KubernetesResourceUtilTest {
     assertFalse(KubernetesResourceUtil.isValidName("test.invalid.name"));
     assertTrue(KubernetesResourceUtil.areLabelsValid(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
     assertFalse(KubernetesResourceUtil
-        .areLabelsValid(Collections.singletonMap("NoUppercaseOrSpecialCharsLike=Equals", "bar")));
+        .areLabelsValid(Collections.singletonMap("special=char-in-key", "bar")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("MyApp", "MyValue")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("app", "My_Value.1")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("app", "")));
 
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("test.invalid.name")));
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("90notcool-n@me")));
@@ -143,6 +146,8 @@ class KubernetesResourceUtilTest {
   void testKeyValidation() {
     assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/label.key"));
     assertFalse(KubernetesResourceUtil.isValidKey("domain.prefix.io?label.key"));
+    assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/MyLabel_Key"));
+    assertFalse(KubernetesResourceUtil.isValidKey("UPPER.PREFIX.IO/key"));
   }
 
   @Test
