@@ -112,13 +112,23 @@ class UtilsTest {
   }
 
   @Test
-  void existingEnvVarShouldReturnValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnValueFromConvertedSysPropNameDots() {
     assertEquals("value", Utils.getSystemPropertyOrEnvVar("env.var.exists"));
   }
 
   @Test
-  void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropName() {
+  void existingEnvVarShouldReturnValueFromConvertedSysPropNameDashes() {
+    assertEquals("value", Utils.getSystemPropertyOrEnvVar("env-var-exists"));
+  }
+
+  @Test
+  void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropNameDots() {
     Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("env.var.exists.boolean", false));
+  }
+
+  @Test
+  void existingEnvVarShouldReturnBooleanValueFromConvertedSysPropNameDashes() {
+    Assertions.assertTrue(Utils.getSystemPropertyOrEnvVar("env-var-exists-boolean", false));
   }
 
   @Test
