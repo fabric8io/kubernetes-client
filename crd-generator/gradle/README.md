@@ -60,7 +60,8 @@ tasks.register("generateCrds") {
     val collector = CustomResourceCollector()
       .withParentClassLoader(Thread.currentThread().contextClassLoader)
       .withClasspathElements(classpathElements)
-      .withFilesToScan(filesToScan)
+      // Skip class directories that don't exist, e.g. build/classes/java/main in a Kotlin-only project.
+      .withFilesToScan(filesToScan.filter { it.exists() })
 
     val crdGenerator = CRDGenerator()
       .customResourceClasses(collector.findCustomResourceClasses())
@@ -162,8 +163,9 @@ tasks.register<JavaExec>("generateCrds") {
             add("--output-dir"); add(outputDir.absolutePath)
             // Pass the project classpath so the CLI can load custom resource classes.
             projectClasspath.forEach { add("--classpath"); add(it) }
-            // Directories to scan for custom resource classes.
-            sourceSet.output.classesDirs.forEach { add(it.absolutePath) }
+            // Directories to scan for custom resource classes. The CLI rejects paths that don't exist,
+            // e.g. build/classes/java/main in a Kotlin-only project, so only existing ones are passed.
+            sourceSet.output.classesDirs.filter { it.exists() }.forEach { add(it.absolutePath) }
         }
     }
 }
@@ -235,7 +237,8 @@ tasks.register('generateCrds', JavaExec) {
 
         def cliArgs = ['--output-dir', outputDir.absolutePath]
         projectClasspath.each { cliArgs << '--classpath' << it }
-        sourceSet.output.classesDirs.each { cliArgs << it.absolutePath }
+        // Only pass class directories that exist, the CLI rejects the others.
+        sourceSet.output.classesDirs.filter { it.exists() }.each { cliArgs << it.absolutePath }
 
         args = cliArgs
     }

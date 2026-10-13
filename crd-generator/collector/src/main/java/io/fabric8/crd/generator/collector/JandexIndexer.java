@@ -100,7 +100,10 @@ class JandexIndexer {
 
   private void appendToIndex(Collection<File> files, Indexer indexer) {
     for (File file : files) {
-      if (file.isDirectory()) {
+      if (!file.exists()) {
+        // e.g. Gradle's classesDirs contains build/classes/java/main even in Kotlin-only projects
+        logger.warn("Skipping non-existent file to scan: {}", file);
+      } else if (file.isDirectory()) {
         scanDirectoryAndAddToIndex(file, indexer);
       } else if (file.isFile() && file.getName().endsWith(CLASS_FILE_SUFFIX)) {
         addClassFileToIndex(file, indexer);
