@@ -31,14 +31,20 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
@@ -54,6 +60,11 @@ public class CertManager {
   public static final String CLIENT_KEY_NAME = "client.key";
   public static final String CLIENT_CERT_NAME = "client.crt";
 
+  // certificates expiring within this period are regenerated, so they do not expire during a test run
+  static final Duration VALIDITY_MARGIN = Duration.ofDays(1);
+  private static final String LOCK_FILE_NAME = ".certificates.lock";
+
+  // serializes the threads of this JVM; the lock file serializes the JVMs sharing the directory
   private static final ReentrantLock generatorLock = new ReentrantLock();
 
   private final String kubeAPITestDir;
@@ -63,18 +74,52 @@ public class CertManager {
   }
 
   public void createCertificatesIfNeeded() {
-    if (certFilesPresent()) {
+    if (certificateProblem() == null) {
       return;
     }
     generatorLock.lock();
     try {
-      if (certFilesPresent()) {
-        return;
+      Files.createDirectories(new File(kubeAPITestDir).toPath());
+      try (var lockChannel = FileChannel.open(new File(kubeAPITestDir, LOCK_FILE_NAME).toPath(),
+          StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+          var ignored = lockChannel.lock()) {
+        var problem = certificateProblem();
+        if (problem == null) {
+          return;
+        }
+        logger.info("Generating certificates in {}: {}", kubeAPITestDir, problem);
+        generateAPIServerCertificates();
+        generateUserCertificates();
       }
-      generateAPIServerCertificates();
-      generateUserCertificates();
+    } catch (IOException e) {
+      throw new KubeAPITestException(e);
     } finally {
       generatorLock.unlock();
+    }
+  }
+
+  /**
+   * @return why the certificates cannot be used, or {@code null} when all files are present and both certificates are
+   *         valid for at least {@link #VALIDITY_MARGIN}
+   */
+  private String certificateProblem() {
+    if (!certFilesPresent()) {
+      return "certificate files are missing";
+    }
+    var problem = certificateProblem(new File(kubeAPITestDir, API_SERVER_CERT_NAME));
+    if (problem == null) {
+      problem = certificateProblem(new File(kubeAPITestDir, CLIENT_CERT_NAME));
+    }
+    return problem;
+  }
+
+  private static String certificateProblem(File certFile) {
+    try (var in = new FileInputStream(certFile)) {
+      var certificate = (X509Certificate) CertificateFactory.getInstance("X.509").generateCertificate(in);
+      certificate.checkValidity(Date.from(Instant.now().plus(VALIDITY_MARGIN)));
+      return null;
+    } catch (CertificateException | IOException e) {
+      return certFile.getName() + " is not valid: " + e.getMessage();
     }
   }
 
@@ -110,6 +155,13 @@ public class CertManager {
 
   public static void generateKeyAndCertificate(String dirName, File keyFile, File certFile,
       GeneralName... generalNames) {
+    Instant validFrom = Instant.now();
+    generateKeyAndCertificate(dirName, keyFile, certFile, validFrom, validFrom.plus(365, ChronoUnit.DAYS),
+        generalNames);
+  }
+
+  static void generateKeyAndCertificate(String dirName, File keyFile, File certFile, Instant validFrom,
+      Instant validUntil, GeneralName... generalNames) {
     try {
       KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 
@@ -118,8 +170,6 @@ public class CertManager {
       // If you issue more than just test certificates, you might want a decent serial number schema
       // ^.^
       BigInteger serialNumber = BigInteger.valueOf(System.currentTimeMillis());
-      Instant validFrom = Instant.now();
-      Instant validUntil = validFrom.plus(365, ChronoUnit.DAYS);
 
       JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(
           name,
