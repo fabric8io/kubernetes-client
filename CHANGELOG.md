@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #8103: `CacheImpl` records which index buckets hold each key and cleans them up from that record, so `remove` works even when the `ItemStore` no longer holds the object, a re-put after an in-place mutation leaves no stale entry, and `ReducedStateItemStore` no longer runs custom indexers against its reduced object on update (a `NullPointerException` when their fields were not in the valueFields)
 
 #### Improvements
 
