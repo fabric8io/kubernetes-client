@@ -45,6 +45,7 @@ import io.fabric8.mockwebserver.internal.MockDispatcher;
 
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -164,6 +165,27 @@ public class KubernetesMockServer extends DefaultMockServer implements Resetable
    */
   public final void setVersionInfo(VersionInfo versionInfo) {
     this.versionInfo = Objects.requireNonNull(versionInfo);
+  }
+
+  /**
+   * Sets the {@link Clock} used by the CRUD dispatcher for generating timestamps
+   * (creationTimestamp, deletionTimestamp).
+   * <p>
+   * Only has effect when the server is configured with a CRUD or mixed dispatcher.
+   * Defaults to {@link Clock#systemUTC()}.
+   *
+   * @param clock the clock to use.
+   * @throws IllegalStateException if the dispatcher does not support CRUD operations.
+   */
+  public void setClock(Clock clock) {
+    Objects.requireNonNull(clock, "clock");
+    if (this.dispatcher instanceof KubernetesMixedDispatcher) {
+      ((KubernetesMixedDispatcher) this.dispatcher).setClock(clock);
+    } else if (this.dispatcher instanceof KubernetesCrudDispatcher) {
+      ((KubernetesCrudDispatcher) this.dispatcher).setClock(clock);
+    } else {
+      throw new IllegalStateException("setClock is only supported when the server uses a CRUD dispatcher");
+    }
   }
 
   /**
