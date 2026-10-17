@@ -181,6 +181,18 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> itemStore(ItemStore<T> itemStore);
 
   /**
+   * Sets the lower bound for this informer's client-managed watch timeout in seconds. The watch request uses twice this
+   * value as its {@code timeoutSeconds}, while the client closes the watch after a randomized interval between one and
+   * two times this value. The default lower bound is 300 seconds. The server or network may close the watch earlier.
+   * <p>
+   * May only be called before the informer starts.
+   *
+   * @param minTimeoutSeconds a positive value no greater than {@code Long.MAX_VALUE / 2}
+   * @return this informer
+   */
+  SharedIndexInformer<T> setMinWatchTimeout(long minTimeoutSeconds);
+
+  /**
    * A non-blocking alternative to run. Starts the shared informer, which will normally be stopped when {@link #stop()} is
    * called.
    * <br>

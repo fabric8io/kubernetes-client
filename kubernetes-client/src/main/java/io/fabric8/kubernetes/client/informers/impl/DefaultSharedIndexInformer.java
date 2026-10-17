@@ -321,6 +321,18 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   }
 
   @Override
+  public synchronized SharedIndexInformer<T> setMinWatchTimeout(long minTimeoutSeconds) {
+    if (started.get()) {
+      throw new IllegalStateException("Informer cannot be running when minimum watch timeout is set");
+    }
+    if (minTimeoutSeconds <= 0 || minTimeoutSeconds > Long.MAX_VALUE / 2) {
+      throw new IllegalArgumentException("Minimum watch timeout must be positive and no greater than Long.MAX_VALUE / 2");
+    }
+    this.reflector.setMinTimeout(minTimeoutSeconds);
+    return this;
+  }
+
+  @Override
   public String toString() {
     return this.description;
   }
