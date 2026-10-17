@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 import static io.fabric8.kubernetes.client.Config.HTTPS_PROTOCOL_PREFIX;
 import static io.fabric8.kubernetes.client.Config.HTTP_PROTOCOL_PREFIX;
@@ -380,27 +379,14 @@ public class KubeConfigUtils {
       // Appears to be a relative path; normalize. Spec is vague about how to detect this situation.
       command = Paths.get(configFile.getAbsolutePath()).resolveSibling(command).normalize().toString();
     }
-    List<String> argv = new ArrayList<>(Utils.getCommandPlatformPrefix());
     command = findExecutable(command, systemPathValue);
-
-    command = shellQuote(command);
-
+    List<String> argv = new ArrayList<>();
+    argv.add(command);
     List<String> args = exec.getArgs();
     if (args != null && !args.isEmpty()) {
-      command += " " + args
-          .stream()
-          .map(KubeConfigUtils::shellQuote)
-          .collect(Collectors.joining(" "));
+      argv.addAll(args);
     }
-    argv.add(command);
     return argv;
-  }
-
-  private static String shellQuote(String value) {
-    if (value.contains(" ") || value.contains("\"") || value.contains("'")) {
-      return "\"" + value.replace("\"", "\\\"") + "\"";
-    }
-    return value;
   }
 
   protected static String findExecutable(String command, String pathValue) {
