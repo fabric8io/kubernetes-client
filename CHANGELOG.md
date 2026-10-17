@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
 
 #### Improvements
 
