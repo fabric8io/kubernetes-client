@@ -544,6 +544,10 @@ public class KubernetesResourceUtil {
   }
 
   private static Map.Entry<String, String> createConfigMapEntry(final String key, final Path file) throws IOException {
+    if (Files.isSymbolicLink(file)) {
+      throw new IllegalArgumentException("symbolic links are not supported " + file);
+    }
+
     final byte[] bytes = Files.readAllBytes(file);
     if (isFileWithBinaryContent(file)) {
       final String value = Base64.getEncoder().encodeToString(bytes);
@@ -598,7 +602,7 @@ public class KubernetesResourceUtil {
 
   public static ConfigMapBuilder addEntriesFromDirOrFileToConfigMap(ConfigMapBuilder configMapBuilder, final String key,
       final Path dirOrFilePath) throws IOException {
-    if (!Files.exists(dirOrFilePath)) {
+    if (!Files.exists(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
       throw new IllegalArgumentException("invalid file path provided " + dirOrFilePath);
     }
     if (Files.isDirectory(dirOrFilePath, LinkOption.NOFOLLOW_LINKS)) {
