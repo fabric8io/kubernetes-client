@@ -536,21 +536,18 @@ public class Config extends SundrioConfig {
     // Only set http(s) proxy fields if they're not set. This is done in order to align behavior of
     // KubernetesClient with kubectl / client-go . Please see https://github.com/fabric8io/kubernetes-client/issues/6150
     // Precedence is given to proxy-url read from kubeconfig .
-    if (Utils.isNullOrEmpty(config.getHttpProxy())) {
-      config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpProxy()));
-      config.setHttpProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTP_PROXY, config.getHttpProxy()));
-    }
-    if (Utils.isNullOrEmpty(config.getHttpsProxy())) {
-      config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_ALL_PROXY, config.getHttpsProxy()));
-      config.setHttpsProxy(Utils.getSystemPropertyOrEnvVar(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy()));
-    }
+    ConfigValue httpProxy = resolveProxyConfigValue(KUBERNETES_HTTP_PROXY, config.getHttpProxy());
+    config.setHttpProxy(httpProxy.value);
+    ConfigValue httpsProxy = resolveProxyConfigValue(KUBERNETES_HTTPS_PROXY, config.getHttpsProxy());
+    config.setHttpsProxy(httpsProxy.value);
 
     config.setProxyUsername(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_USERNAME, config.getProxyUsername()));
     config.setProxyPassword(Utils.getSystemPropertyOrEnvVar(KUBERNETES_PROXY_PASSWORD, config.getProxyPassword()));
 
-    String noProxyVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_NO_PROXY);
-    if (noProxyVar != null) {
-      config.setNoProxy(noProxyVar.split(","));
+    ConfigValue noProxy = resolveNoProxyConfigValue(config.getNoProxy());
+    ConfigSource applicableProxySource = proxySourceForMasterUrl(config.getMasterUrl(), httpProxy, httpsProxy);
+    if (Utils.isNotNullOrEmpty(noProxy.value) && noProxy.source.hasAtLeastPriority(applicableProxySource)) {
+      config.setNoProxy(noProxy.value.split(","));
     }
 
     String tlsVersionsVar = Utils.getSystemPropertyOrEnvVar(KUBERNETES_TLS_VERSIONS);
@@ -561,6 +558,75 @@ public class Config extends SundrioConfig {
         tlsVersions[i] = TlsVersion.forJavaName(tlsVersionsSplit[i]);
       }
       config.setTlsVersions(tlsVersions);
+    }
+  }
+
+  private static ConfigValue resolveProxyConfigValue(String protocolKey, String existing) {
+    if (Utils.isNotNullOrEmpty(existing)) {
+      return new ConfigValue(existing, ConfigSource.PRECONFIGURED);
+    }
+    String value = System.getProperty(protocolKey);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.SYSTEM_PROPERTY);
+    }
+    value = System.getProperty(KUBERNETES_ALL_PROXY);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.SYSTEM_PROPERTY_FALLBACK);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(protocolKey));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.ENVIRONMENT);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(KUBERNETES_ALL_PROXY));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.ENVIRONMENT_FALLBACK);
+    }
+    return new ConfigValue(null, ConfigSource.NONE);
+  }
+
+  private static ConfigSource proxySourceForMasterUrl(String masterUrl, ConfigValue httpProxy, ConfigValue httpsProxy) {
+    if (masterUrl != null && masterUrl.toLowerCase(Locale.ROOT).startsWith(HTTP_PROTOCOL_PREFIX)) {
+      return httpProxy.source;
+    }
+    return httpsProxy.source;
+  }
+
+  private static ConfigValue resolveNoProxyConfigValue(String[] existing) {
+    if (Utils.isNotNullOrEmpty(existing)) {
+      return new ConfigValue(String.join(",", existing), ConfigSource.PRECONFIGURED);
+    }
+    String value = System.getProperty(KUBERNETES_NO_PROXY);
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.SYSTEM_PROPERTY);
+    }
+    value = System.getenv(Utils.convertSystemPropertyNameToEnvVar(KUBERNETES_NO_PROXY));
+    if (Utils.isNotNullOrEmpty(value)) {
+      return new ConfigValue(value, ConfigSource.ENVIRONMENT);
+    }
+    return new ConfigValue(null, ConfigSource.NONE);
+  }
+
+  // Ordered from lowest to highest priority.
+  private enum ConfigSource {
+    NONE,
+    ENVIRONMENT_FALLBACK,
+    ENVIRONMENT,
+    SYSTEM_PROPERTY_FALLBACK,
+    SYSTEM_PROPERTY,
+    PRECONFIGURED;
+
+    private boolean hasAtLeastPriority(ConfigSource other) {
+      return compareTo(other) >= 0;
+    }
+  }
+
+  private static final class ConfigValue {
+    private final String value;
+    private final ConfigSource source;
+
+    private ConfigValue(String value, ConfigSource source) {
+      this.value = value;
+      this.source = source;
     }
   }
 
