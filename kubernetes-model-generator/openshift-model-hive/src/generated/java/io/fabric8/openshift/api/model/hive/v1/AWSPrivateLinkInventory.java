@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "region",
     "subnets",
     "vpcID"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class AWSPrivateLinkInventory implements Editable<AWSPrivateLinkInventory
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof AWSPrivateLinkInventory)) {
+            return false;
+        }
+        AWSPrivateLinkInventory other = (AWSPrivateLinkInventory) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$subnets = this.getSubnets();
+        Object other$subnets = other.getSubnets();
+        if (this$subnets == null ? other$subnets != null : !this$subnets.equals(other$subnets)) {
+            return false;
+        }
+        Object this$vpcID = this.getVpcID();
+        Object other$vpcID = other.getVpcID();
+        if (this$vpcID == null ? other$vpcID != null : !this$vpcID.equals(other$vpcID)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof AWSPrivateLinkInventory;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $subnets = this.getSubnets();
+        result = result * prime + ($subnets == null ? 43 : $subnets.hashCode());
+        Object $vpcID = this.getVpcID();
+        result = result * prime + ($vpcID == null ? 43 : $vpcID.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "AWSPrivateLinkInventory(" + "region=" + this.getRegion() + ", subnets=" + this.getSubnets() + ", vpcID=" + this.getVpcID() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

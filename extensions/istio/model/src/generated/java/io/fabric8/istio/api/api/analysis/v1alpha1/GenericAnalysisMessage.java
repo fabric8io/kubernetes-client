@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "args",
     "messageBase",
     "resourcePaths"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class GenericAnalysisMessage implements Editable<GenericAnalysisMessageBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GenericAnalysisMessage)) {
+            return false;
+        }
+        GenericAnalysisMessage other = (GenericAnalysisMessage) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$args = this.getArgs();
+        Object other$args = other.getArgs();
+        if (this$args == null ? other$args != null : !this$args.equals(other$args)) {
+            return false;
+        }
+        Object this$messageBase = this.getMessageBase();
+        Object other$messageBase = other.getMessageBase();
+        if (this$messageBase == null ? other$messageBase != null : !this$messageBase.equals(other$messageBase)) {
+            return false;
+        }
+        Object this$resourcePaths = this.getResourcePaths();
+        Object other$resourcePaths = other.getResourcePaths();
+        if (this$resourcePaths == null ? other$resourcePaths != null : !this$resourcePaths.equals(other$resourcePaths)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GenericAnalysisMessage;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $args = this.getArgs();
+        result = result * prime + ($args == null ? 43 : $args.hashCode());
+        Object $messageBase = this.getMessageBase();
+        result = result * prime + ($messageBase == null ? 43 : $messageBase.hashCode());
+        Object $resourcePaths = this.getResourcePaths();
+        result = result * prime + ($resourcePaths == null ? 43 : $resourcePaths.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GenericAnalysisMessage(" + "args=" + this.getArgs() + ", messageBase=" + this.getMessageBase() + ", resourcePaths=" + this.getResourcePaths() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

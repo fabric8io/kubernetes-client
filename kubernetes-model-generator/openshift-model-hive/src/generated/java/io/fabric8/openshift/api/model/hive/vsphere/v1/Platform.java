@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -47,12 +44,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "infrastructure",
     "network",
     "vCenter"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -280,6 +271,106 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Platform)) {
+            return false;
+        }
+        Platform other = (Platform) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certificatesSecretRef = this.getCertificatesSecretRef();
+        Object other$certificatesSecretRef = other.getCertificatesSecretRef();
+        if (this$certificatesSecretRef == null ? other$certificatesSecretRef != null : !this$certificatesSecretRef.equals(other$certificatesSecretRef)) {
+            return false;
+        }
+        Object this$cluster = this.getCluster();
+        Object other$cluster = other.getCluster();
+        if (this$cluster == null ? other$cluster != null : !this$cluster.equals(other$cluster)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$datacenter = this.getDatacenter();
+        Object other$datacenter = other.getDatacenter();
+        if (this$datacenter == null ? other$datacenter != null : !this$datacenter.equals(other$datacenter)) {
+            return false;
+        }
+        Object this$defaultDatastore = this.getDefaultDatastore();
+        Object other$defaultDatastore = other.getDefaultDatastore();
+        if (this$defaultDatastore == null ? other$defaultDatastore != null : !this$defaultDatastore.equals(other$defaultDatastore)) {
+            return false;
+        }
+        Object this$folder = this.getFolder();
+        Object other$folder = other.getFolder();
+        if (this$folder == null ? other$folder != null : !this$folder.equals(other$folder)) {
+            return false;
+        }
+        Object this$infrastructure = this.getInfrastructure();
+        Object other$infrastructure = other.getInfrastructure();
+        if (this$infrastructure == null ? other$infrastructure != null : !this$infrastructure.equals(other$infrastructure)) {
+            return false;
+        }
+        Object this$network = this.getNetwork();
+        Object other$network = other.getNetwork();
+        if (this$network == null ? other$network != null : !this$network.equals(other$network)) {
+            return false;
+        }
+        Object this$vCenter = this.getVCenter();
+        Object other$vCenter = other.getVCenter();
+        if (this$vCenter == null ? other$vCenter != null : !this$vCenter.equals(other$vCenter)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Platform;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certificatesSecretRef = this.getCertificatesSecretRef();
+        result = result * prime + ($certificatesSecretRef == null ? 43 : $certificatesSecretRef.hashCode());
+        Object $cluster = this.getCluster();
+        result = result * prime + ($cluster == null ? 43 : $cluster.hashCode());
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $datacenter = this.getDatacenter();
+        result = result * prime + ($datacenter == null ? 43 : $datacenter.hashCode());
+        Object $defaultDatastore = this.getDefaultDatastore();
+        result = result * prime + ($defaultDatastore == null ? 43 : $defaultDatastore.hashCode());
+        Object $folder = this.getFolder();
+        result = result * prime + ($folder == null ? 43 : $folder.hashCode());
+        Object $infrastructure = this.getInfrastructure();
+        result = result * prime + ($infrastructure == null ? 43 : $infrastructure.hashCode());
+        Object $network = this.getNetwork();
+        result = result * prime + ($network == null ? 43 : $network.hashCode());
+        Object $vCenter = this.getVCenter();
+        result = result * prime + ($vCenter == null ? 43 : $vCenter.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Platform(" + "certificatesSecretRef=" + this.getCertificatesSecretRef() + ", cluster=" + this.getCluster() + ", credentialsSecretRef=" + this.getCredentialsSecretRef() + ", datacenter=" + this.getDatacenter() + ", defaultDatastore=" + this.getDefaultDatastore() + ", folder=" + this.getFolder() + ", infrastructure=" + this.getInfrastructure() + ", network=" + this.getNetwork() + ", vCenter=" + this.getVCenter() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

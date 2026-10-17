@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -41,12 +38,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "dependsOn",
     "name",
     "patch"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class Flow implements Editable<FlowBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Flow)) {
+            return false;
+        }
+        Flow other = (Flow) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$dependsOn = this.getDependsOn();
+        Object other$dependsOn = other.getDependsOn();
+        if (this$dependsOn == null ? other$dependsOn != null : !this$dependsOn.equals(other$dependsOn)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$patch = this.getPatch();
+        Object other$patch = other.getPatch();
+        if (this$patch == null ? other$patch != null : !this$patch.equals(other$patch)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Flow;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $dependsOn = this.getDependsOn();
+        result = result * prime + ($dependsOn == null ? 43 : $dependsOn.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $patch = this.getPatch();
+        result = result * prime + ($patch == null ? 43 : $patch.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Flow(" + "dependsOn=" + this.getDependsOn() + ", name=" + this.getName() + ", patch=" + this.getPatch() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -44,12 +41,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "metadata",
     "probe",
     "template"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -165,6 +156,64 @@ public class WorkloadGroup implements Editable<WorkloadGroupBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof WorkloadGroup)) {
+            return false;
+        }
+        WorkloadGroup other = (WorkloadGroup) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$probe = this.getProbe();
+        Object other$probe = other.getProbe();
+        if (this$probe == null ? other$probe != null : !this$probe.equals(other$probe)) {
+            return false;
+        }
+        Object this$template = this.getTemplate();
+        Object other$template = other.getTemplate();
+        if (this$template == null ? other$template != null : !this$template.equals(other$template)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof WorkloadGroup;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $probe = this.getProbe();
+        result = result * prime + ($probe == null ? 43 : $probe.hashCode());
+        Object $template = this.getTemplate();
+        result = result * prime + ($template == null ? 43 : $template.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "WorkloadGroup(" + "metadata=" + this.getMetadata() + ", probe=" + this.getProbe() + ", template=" + this.getTemplate() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
