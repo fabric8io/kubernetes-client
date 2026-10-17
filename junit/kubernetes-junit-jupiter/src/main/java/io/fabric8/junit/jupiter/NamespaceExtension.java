@@ -39,7 +39,7 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
 
   @Override
   public void beforeAll(ExtensionContext context) throws Exception {
-    final KubernetesClient client = new KubernetesClientBuilder().build();
+    final KubernetesClient client = createClient(context);
     getStore(context).put(KubernetesClient.class, client);
     if (shouldCreateNamespace(context)) {
       getStore(context).put(Namespace.class, initNamespace(client));
@@ -104,6 +104,19 @@ public class NamespaceExtension implements HasKubernetesClient, BeforeAllCallbac
       }
     }
     return namespace;
+  }
+
+  private KubernetesClient createClient(ExtensionContext context) {
+    final KubernetesClientBuilder kubernetesClientBuilder = new KubernetesClientBuilder();
+    final KubernetesTest annotation = findAnnotation(context.getRequiredTestClass(), KubernetesTest.class);
+    if (annotation != null) {
+      try {
+        annotation.kubernetesClientBuilderCustomizer().getConstructor().newInstance().accept(kubernetesClientBuilder);
+      } catch (ReflectiveOperationException e) {
+        throw new IllegalArgumentException("The provided kubernetesClientBuilderCustomizer is invalid", e);
+      }
+    }
+    return kubernetesClientBuilder.build();
   }
 
   private boolean shouldCreateNamespace(ExtensionContext context) {
