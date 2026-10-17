@@ -96,11 +96,11 @@
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
     <!-- Jackson 2 for the internal openapi model generator/validator tooling (swagger-parser, swagger-request-validator) -->
     <jackson2.version>2.22.3</jackson2.version>
-    <jetty.version>12.1.13</jetty.version>
+    <jetty.version>12.1.14</jetty.version>
     <maven-core.version>3.10.0</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
-    <vertx.version>5.2.0</vertx.version>
-    <vertx4.version>4.5.34</vertx4.version>
+    <vertx.version>5.2.1</vertx.version>
+    <vertx4.version>4.5.35</vertx4.version>
     <jandex.version>3.6.0</jandex.version>
     <snakeyaml.version>3.1.1</snakeyaml.version>
     <snakeyaml.bundle.version>2.5</snakeyaml.bundle.version> <!-- Transitive Jackson -->
@@ -171,7 +171,7 @@
     <sonar-maven-plugin.version>5.8.0.7211</sonar-maven-plugin.version>
     <central-publishing-maven-plugin>0.11.0</central-publishing-maven-plugin>
     <properties.maven.plugin.version>1.0.0</properties.maven.plugin.version>
-    <spotless-maven-plugin.version>3.10.3</spotless-maven-plugin.version>
+    <spotless-maven-plugin.version>3.10.4</spotless-maven-plugin.version>
     <really-executable-jar-maven-plugin.version>2.1.1</really-executable-jar-maven-plugin.version>
 
     <!-- Other options -->
