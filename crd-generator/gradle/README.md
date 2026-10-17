@@ -76,7 +76,7 @@ tasks.register("generateCrds") {
   }
 }
 
-tasks.named(JvmConstants.CLASSES_TASK_NAME) {
+tasks.named("classes") {
   finalizedBy("generateCrds")
 }
 ```
@@ -141,7 +141,7 @@ tasks.register<JavaExec>("generateCrds") {
     val sourceSet = project.sourceSets["main"]
     val outputDir = sourceSet.output.resourcesDir!!
 
-    dependsOn(tasks.named(JvmConstants.CLASSES_TASK_NAME))
+    dependsOn(tasks.named("classes"))
 
     // Run in the same JDK that compiled the project so the forked process can load the class files.
     javaLauncher.set(javaToolchains.launcherFor {
@@ -170,7 +170,7 @@ tasks.register<JavaExec>("generateCrds") {
     }
 }
 
-tasks.named(JvmConstants.CLASSES_TASK_NAME) {
+tasks.named("classes") {
     finalizedBy("generateCrds")
 }
 ```
