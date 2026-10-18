@@ -15,12 +15,15 @@
  */
 package io.fabric8.kubeapitest.cert;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.channels.FileChannel;
 import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
@@ -39,6 +42,7 @@ class CertManagerTest {
   File certsDir;
 
   @Test
+  @DisplayName("generates the API server and client keys and certificates in an empty directory")
   void generatesCertificates() {
     CertManager certManager = new CertManager(certsDir.getPath());
     certManager.createCertificatesIfNeeded();
@@ -47,6 +51,7 @@ class CertManagerTest {
   }
 
   @Test
+  @DisplayName("keeps certificates that are valid beyond the validity margin")
   void keepsValidCertificates() throws Exception {
     CertManager certManager = new CertManager(certsDir.getPath());
     certManager.createCertificatesIfNeeded();
@@ -60,6 +65,7 @@ class CertManagerTest {
   }
 
   @Test
+  @DisplayName("regenerates expired certificates")
   void regeneratesExpiredCertificates() throws Exception {
     var validFrom = Instant.now().minus(2, ChronoUnit.DAYS);
     var validUntil = Instant.now().minus(1, ChronoUnit.DAYS);
@@ -73,6 +79,7 @@ class CertManagerTest {
   }
 
   @Test
+  @DisplayName("regenerates certificates that expire within the validity margin, so they don't expire during a test run")
   void regeneratesCertificatesExpiringWithinTheValidityMargin() throws Exception {
     var validFrom = Instant.now().minus(1, ChronoUnit.DAYS);
     var validUntil = Instant.now().plus(CertManager.VALIDITY_MARGIN).minus(1, ChronoUnit.HOURS);
@@ -86,6 +93,7 @@ class CertManagerTest {
   }
 
   @Test
+  @DisplayName("regenerates every key and certificate when only one of the certificates is expired")
   void regeneratesAllCertificatesWhenOnlyTheClientCertificateIsExpired() throws Exception {
     var validFrom = Instant.now().minus(2, ChronoUnit.DAYS);
     generateCertificate(API_SERVER_KEY_NAME, API_SERVER_CERT_NAME, validFrom, validFrom.plus(365, ChronoUnit.DAYS));
@@ -101,6 +109,7 @@ class CertManagerTest {
   }
 
   @Test
+  @DisplayName("regenerates certificates that can't be parsed")
   void regeneratesUnreadableCertificates() throws Exception {
     new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
     Files.writeString(new File(certsDir, API_SERVER_CERT_NAME).toPath(), "not a certificate");
@@ -108,6 +117,46 @@ class CertManagerTest {
     new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
 
     assertThat(readCertificate(API_SERVER_CERT_NAME).getNotAfter()).isAfter(new Date());
+  }
+
+  @Test
+  @DisplayName("regenerates certificates whose key file holds a different key")
+  void regeneratesCertificatesWithMismatchedKey() throws Exception {
+    new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
+    var apiServerCert = Files.readAllBytes(new File(certsDir, API_SERVER_CERT_NAME).toPath());
+    var clientKey = Files.readAllBytes(new File(certsDir, CLIENT_KEY_NAME).toPath());
+    Files.write(new File(certsDir, API_SERVER_KEY_NAME).toPath(), clientKey);
+
+    new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
+
+    assertThat(Files.readAllBytes(new File(certsDir, API_SERVER_CERT_NAME).toPath())).isNotEqualTo(apiServerCert);
+    assertThat(Files.readAllBytes(new File(certsDir, API_SERVER_KEY_NAME).toPath())).isNotEqualTo(clientKey);
+  }
+
+  @Test
+  @DisplayName("generates certificates without the cross-JVM lock when the lock file is locked by this JVM (another class loader)")
+  void generatesCertificatesWhenTheLockFileIsAlreadyLockedInThisJvm() throws Exception {
+    try (var channel = FileChannel.open(new File(certsDir, ".certificates.lock").toPath(),
+        StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        var ignored = channel.lock()) {
+
+      new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
+    }
+
+    assertThat(readCertificate(API_SERVER_CERT_NAME).getNotAfter()).isAfter(new Date());
+    assertThat(readCertificate(CLIENT_CERT_NAME).getNotAfter()).isAfter(new Date());
+  }
+
+  @Test
+  @DisplayName("generates certificates without the cross-JVM lock when the lock file can't be opened or locked")
+  void generatesCertificatesWhenTheLockFileCannotBeLocked() throws Exception {
+    // a directory can't be opened for writing, like a lock on a file system without lock support fails
+    Files.createDirectory(new File(certsDir, ".certificates.lock").toPath());
+
+    new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
+
+    assertThat(readCertificate(API_SERVER_CERT_NAME).getNotAfter()).isAfter(new Date());
+    assertThat(readCertificate(CLIENT_CERT_NAME).getNotAfter()).isAfter(new Date());
   }
 
   private void generateCertificate(String keyName, String certName, Instant validFrom, Instant validUntil) {
