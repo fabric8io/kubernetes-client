@@ -16,6 +16,7 @@
 package io.fabric8.kubernetes.client.server.mock;
 
 import io.fabric8.kubernetes.client.Client;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.mockwebserver.Context;
@@ -30,6 +31,7 @@ import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -99,6 +102,8 @@ public class KubernetesMockServerExtension
     if (a == null) {
       return;
     }
+    final Consumer<KubernetesClientBuilder> kubernetesClientBuilderCustomizer = newKubernetesClientBuilderCustomizer(
+        a.kubernetesClientBuilderCustomizer());
     final Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
     final Dispatcher dispatcher;
     if (a.crud()) {
@@ -114,16 +119,23 @@ public class KubernetesMockServerExtension
     } else {
       instantMock = mock;
     }
+    final NamespacedKubernetesClient client = mock.createClient(kubernetesClientBuilderCustomizer);
+    if (isStatic) {
+      staticClient = client;
+    } else {
+      instantClient = client;
+    }
+  }
+
+  private static Consumer<KubernetesClientBuilder> newKubernetesClientBuilderCustomizer(
+      Class<? extends Consumer<KubernetesClientBuilder>> customizer) {
     try {
-      final NamespacedKubernetesClient client = mock.createClient(
-          a.kubernetesClientBuilderCustomizer().getConstructor().newInstance());
-      if (isStatic) {
-        staticClient = client;
-      } else {
-        instantClient = client;
-      }
-    } catch (Exception e) {
-      throw new IllegalArgumentException("The provided kubernetesClientBuilder is invalid", e);
+      final Constructor<? extends Consumer<KubernetesClientBuilder>> constructor = customizer.getDeclaredConstructor();
+      constructor.setAccessible(true);
+      return constructor.newInstance();
+    } catch (ReflectiveOperationException e) {
+      throw new IllegalArgumentException("The provided kubernetesClientBuilderCustomizer " + customizer.getName()
+          + " is invalid, it must be a concrete class with a no-arg constructor", e);
     }
   }
 
