@@ -130,12 +130,17 @@ var OpenClusterManagementPackagePatterns = []string{
 }
 
 var OvnPackagePatterns = []string{
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressip/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/clusternetworkconnect/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressip/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/routeadvertisements/v1",
+	// Shared selectors (no API group) referenced by clusternetworkconnect and routeadvertisements
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/types",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/vtep/v1",
 }
 
 var TektonPackagePatterns = []string{

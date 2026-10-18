@@ -118,7 +118,7 @@
     {
       "description": "Nested modules without tags of their own: the lookup falls back to the parent repo's tags, which don't contain the package. Only track pseudo-versions (digests)",
       "matchPackageNames": [
-        "github.com/ovn-org/ovn-kubernetes/go-controller",
+        "github.com/ovn-kubernetes/ovn-kubernetes/go-controller",
         "github.com/chaos-mesh/chaos-mesh/api",
         "github.com/openshift/hive/apis"
       ],

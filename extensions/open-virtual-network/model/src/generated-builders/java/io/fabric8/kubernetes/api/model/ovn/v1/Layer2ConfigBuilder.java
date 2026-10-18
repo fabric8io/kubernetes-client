@@ -25,7 +25,7 @@ public class Layer2ConfigBuilder extends Layer2ConfigFluent<Layer2ConfigBuilder>
   }
 
   public Layer2Config build() {
-    Layer2Config buildable = new Layer2Config(fluent.getIpamLifecycle(), fluent.getJoinSubnets(), fluent.getMtu(), fluent.getRole(), fluent.getSubnets());
+    Layer2Config buildable = new Layer2Config(fluent.getDefaultGatewayIPs(), fluent.getInfrastructureSubnets(), fluent.buildIpam(), fluent.getJoinSubnets(), fluent.buildMacSecurity(), fluent.getMtu(), fluent.getReservedSubnets(), fluent.getRole(), fluent.getSubnets());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }
