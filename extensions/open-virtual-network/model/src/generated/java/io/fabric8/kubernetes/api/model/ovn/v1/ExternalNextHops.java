@@ -90,7 +90,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     * DynamicHops defines a slice of DynamicHop. This field is optional.
      */
     @JsonProperty("dynamic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     * DynamicHops defines a slice of DynamicHop. This field is optional.
      */
     @JsonProperty("dynamic")
     public void setDynamic(List<DynamicHop> dynamic) {

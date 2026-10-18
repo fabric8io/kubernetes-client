@@ -26,6 +26,7 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
 
   private Map<String,Object> additionalProperties;
   private List<String> egressIPs = new ArrayList<String>();
+  private LabelSelectorBuilder egressNodeSelector;
   private LabelSelectorBuilder namespaceSelector;
   private LabelSelectorBuilder podSelector;
 
@@ -84,6 +85,10 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
     return (A) this;
   }
   
+  public LabelSelector buildEgressNodeSelector() {
+    return this.egressNodeSelector != null ? this.egressNodeSelector.build() : null;
+  }
+  
   public LabelSelector buildNamespaceSelector() {
     return this.namespaceSelector != null ? this.namespaceSelector.build() : null;
   }
@@ -96,14 +101,27 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
     instance = instance != null ? instance : new EgressIPSpec();
     if (instance != null) {
         this.withEgressIPs(instance.getEgressIPs());
+        this.withEgressNodeSelector(instance.getEgressNodeSelector());
         this.withNamespaceSelector(instance.getNamespaceSelector());
         this.withPodSelector(instance.getPodSelector());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
   
+  public EgressNodeSelectorNested<A> editEgressNodeSelector() {
+    return this.withNewEgressNodeSelectorLike(Optional.ofNullable(this.buildEgressNodeSelector()).orElse(null));
+  }
+  
   public NamespaceSelectorNested<A> editNamespaceSelector() {
     return this.withNewNamespaceSelectorLike(Optional.ofNullable(this.buildNamespaceSelector()).orElse(null));
+  }
+  
+  public EgressNodeSelectorNested<A> editOrNewEgressNodeSelector() {
+    return this.withNewEgressNodeSelectorLike(Optional.ofNullable(this.buildEgressNodeSelector()).orElse(new LabelSelectorBuilder().build()));
+  }
+  
+  public EgressNodeSelectorNested<A> editOrNewEgressNodeSelectorLike(LabelSelector item) {
+    return this.withNewEgressNodeSelectorLike(Optional.ofNullable(this.buildEgressNodeSelector()).orElse(item));
   }
   
   public NamespaceSelectorNested<A> editOrNewNamespaceSelector() {
@@ -138,6 +156,9 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
     }
     EgressIPSpecFluent that = (EgressIPSpecFluent) o;
     if (!(Objects.equals(egressIPs, that.egressIPs))) {
+      return false;
+    }
+    if (!(Objects.equals(egressNodeSelector, that.egressNodeSelector))) {
       return false;
     }
     if (!(Objects.equals(namespaceSelector, that.namespaceSelector))) {
@@ -189,6 +210,10 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
     return this.egressIPs != null && !(this.egressIPs.isEmpty());
   }
   
+  public boolean hasEgressNodeSelector() {
+    return this.egressNodeSelector != null;
+  }
+  
   public boolean hasMatchingEgressIP(Predicate<String> predicate) {
       for (String item : egressIPs) {
         if (predicate.test(item)) {
@@ -207,7 +232,7 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
   }
   
   public int hashCode() {
-    return Objects.hash(egressIPs, namespaceSelector, podSelector, additionalProperties);
+    return Objects.hash(egressIPs, egressNodeSelector, namespaceSelector, podSelector, additionalProperties);
   }
   
   public A removeAllFromEgressIPs(Collection<String> items) {
@@ -270,6 +295,11 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
         sb.append(egressIPs);
         sb.append(",");
     }
+    if (!(egressNodeSelector == null)) {
+        sb.append("egressNodeSelector:");
+        sb.append(egressNodeSelector);
+        sb.append(",");
+    }
     if (!(namespaceSelector == null)) {
         sb.append("namespaceSelector:");
         sb.append(namespaceSelector);
@@ -322,6 +352,18 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
     return (A) this;
   }
   
+  public A withEgressNodeSelector(LabelSelector egressNodeSelector) {
+    this._visitables.remove("egressNodeSelector");
+    if (egressNodeSelector != null) {
+        this.egressNodeSelector = new LabelSelectorBuilder(egressNodeSelector);
+        this._visitables.get("egressNodeSelector").add(this.egressNodeSelector);
+    } else {
+        this.egressNodeSelector = null;
+        this._visitables.get("egressNodeSelector").remove(this.egressNodeSelector);
+    }
+    return (A) this;
+  }
+  
   public A withNamespaceSelector(LabelSelector namespaceSelector) {
     this._visitables.remove("namespaceSelector");
     if (namespaceSelector != null) {
@@ -332,6 +374,14 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
         this._visitables.get("namespaceSelector").remove(this.namespaceSelector);
     }
     return (A) this;
+  }
+  
+  public EgressNodeSelectorNested<A> withNewEgressNodeSelector() {
+    return new EgressNodeSelectorNested(null);
+  }
+  
+  public EgressNodeSelectorNested<A> withNewEgressNodeSelectorLike(LabelSelector item) {
+    return new EgressNodeSelectorNested(item);
   }
   
   public NamespaceSelectorNested<A> withNewNamespaceSelector() {
@@ -360,6 +410,23 @@ public class EgressIPSpecFluent<A extends io.fabric8.kubernetes.api.model.ovn.v1
         this._visitables.get("podSelector").remove(this.podSelector);
     }
     return (A) this;
+  }
+  public class EgressNodeSelectorNested<N> extends LabelSelectorFluent<EgressNodeSelectorNested<N>> implements Nested<N>{
+  
+    LabelSelectorBuilder builder;
+  
+    EgressNodeSelectorNested(LabelSelector item) {
+      this.builder = new LabelSelectorBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) EgressIPSpecFluent.this.withEgressNodeSelector(builder.build());
+    }
+    
+    public N endEgressNodeSelector() {
+      return and();
+    }
+    
   }
   public class NamespaceSelectorNested<N> extends LabelSelectorFluent<NamespaceSelectorNested<N>> implements Nested<N>{
   

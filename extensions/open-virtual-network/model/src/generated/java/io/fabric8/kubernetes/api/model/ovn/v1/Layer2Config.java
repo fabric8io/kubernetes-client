@@ -37,9 +37,13 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "ipamLifecycle",
+    "defaultGatewayIPs",
+    "infrastructureSubnets",
+    "ipam",
     "joinSubnets",
+    "macSecurity",
     "mtu",
+    "reservedSubnets",
     "role",
     "subnets"
 })
@@ -68,13 +72,24 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesResource
 {
 
-    @JsonProperty("ipamLifecycle")
-    private String ipamLifecycle;
+    @JsonProperty("defaultGatewayIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> defaultGatewayIPs = new ArrayList<>();
+    @JsonProperty("infrastructureSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> infrastructureSubnets = new ArrayList<>();
+    @JsonProperty("ipam")
+    private IPAMConfig ipam;
     @JsonProperty("joinSubnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> joinSubnets = new ArrayList<>();
+    @JsonProperty("macSecurity")
+    private MACSecurityConfig macSecurity;
     @JsonProperty("mtu")
     private Integer mtu;
+    @JsonProperty("reservedSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> reservedSubnets = new ArrayList<>();
     @JsonProperty("role")
     private String role;
     @JsonProperty("subnets")
@@ -89,29 +104,61 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
     public Layer2Config() {
     }
 
-    public Layer2Config(String ipamLifecycle, List<String> joinSubnets, Integer mtu, String role, List<String> subnets) {
+    public Layer2Config(List<String> defaultGatewayIPs, List<String> infrastructureSubnets, IPAMConfig ipam, List<String> joinSubnets, MACSecurityConfig macSecurity, Integer mtu, List<String> reservedSubnets, String role, List<String> subnets) {
         super();
-        this.ipamLifecycle = ipamLifecycle;
+        this.defaultGatewayIPs = defaultGatewayIPs;
+        this.infrastructureSubnets = infrastructureSubnets;
+        this.ipam = ipam;
         this.joinSubnets = joinSubnets;
+        this.macSecurity = macSecurity;
         this.mtu = mtu;
+        this.reservedSubnets = reservedSubnets;
         this.role = role;
         this.subnets = subnets;
     }
 
     /**
-     * IPAMLifecycle controls IP addresses management lifecycle.<br><p> <br><p> The only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when "subnets" are set.
+     * defaultGatewayIPs specifies the default gateway IP used in the internal OVN topology.<br><p> <br><p> Dual-stack clusters may set 2 IPs (one for each IP family), otherwise only 1 IP is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, an IP from the subnets field is used.
      */
-    @JsonProperty("ipamLifecycle")
-    public String getIpamLifecycle() {
-        return ipamLifecycle;
+    @JsonProperty("defaultGatewayIPs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getDefaultGatewayIPs() {
+        return defaultGatewayIPs;
     }
 
     /**
-     * IPAMLifecycle controls IP addresses management lifecycle.<br><p> <br><p> The only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when "subnets" are set.
+     * defaultGatewayIPs specifies the default gateway IP used in the internal OVN topology.<br><p> <br><p> Dual-stack clusters may set 2 IPs (one for each IP family), otherwise only 1 IP is allowed. This field is only allowed for "Primary" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, an IP from the subnets field is used.
      */
-    @JsonProperty("ipamLifecycle")
-    public void setIpamLifecycle(String ipamLifecycle) {
-        this.ipamLifecycle = ipamLifecycle;
+    @JsonProperty("defaultGatewayIPs")
+    public void setDefaultGatewayIPs(List<String> defaultGatewayIPs) {
+        this.defaultGatewayIPs = defaultGatewayIPs;
+    }
+
+    /**
+     * infrastructureSubnets specifies a list of internal CIDR ranges that OVN-Kubernetes will reserve for internal network infrastructure. Any IP addresses within these ranges cannot be assigned to workloads. When omitted, OVN-Kubernetes will automatically allocate IP addresses from `subnets` for its infrastructure needs. When there are not enough available IPs in the provided infrastructureSubnets, OVN-Kubernetes will automatically allocate IP addresses from subnets for its infrastructure needs. When `reservedSubnets` is also specified the CIDRs cannot overlap. When `defaultGatewayIPs` is also specified, the default gateway IPs must belong to one of the infrastructure subnet CIDRs. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 4. The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.
+     */
+    @JsonProperty("infrastructureSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getInfrastructureSubnets() {
+        return infrastructureSubnets;
+    }
+
+    /**
+     * infrastructureSubnets specifies a list of internal CIDR ranges that OVN-Kubernetes will reserve for internal network infrastructure. Any IP addresses within these ranges cannot be assigned to workloads. When omitted, OVN-Kubernetes will automatically allocate IP addresses from `subnets` for its infrastructure needs. When there are not enough available IPs in the provided infrastructureSubnets, OVN-Kubernetes will automatically allocate IP addresses from subnets for its infrastructure needs. When `reservedSubnets` is also specified the CIDRs cannot overlap. When `defaultGatewayIPs` is also specified, the default gateway IPs must belong to one of the infrastructure subnet CIDRs. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 4. The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.
+     */
+    @JsonProperty("infrastructureSubnets")
+    public void setInfrastructureSubnets(List<String> infrastructureSubnets) {
+        this.infrastructureSubnets = infrastructureSubnets;
+    }
+
+    @JsonProperty("ipam")
+    public IPAMConfig getIpam() {
+        return ipam;
+    }
+
+    @JsonProperty("ipam")
+    public void setIpam(IPAMConfig ipam) {
+        this.ipam = ipam;
     }
 
     /**
@@ -131,6 +178,16 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
         this.joinSubnets = joinSubnets;
     }
 
+    @JsonProperty("macSecurity")
+    public MACSecurityConfig getMacSecurity() {
+        return macSecurity;
+    }
+
+    @JsonProperty("macSecurity")
+    public void setMacSecurity(MACSecurityConfig macSecurity) {
+        this.macSecurity = macSecurity;
+    }
+
     /**
      * MTU is the maximum transmission unit for a network. MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.
      */
@@ -145,6 +202,23 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
     @JsonProperty("mtu")
     public void setMtu(Integer mtu) {
         this.mtu = mtu;
+    }
+
+    /**
+     * reservedSubnets specifies a list of CIDRs reserved for static IP assignment, excluded from automatic allocation. reservedSubnets is optional. When omitted, all IP addresses in `subnets` are available for automatic assignment. IPs from these ranges can still be requested through static IP assignment. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 25. The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.
+     */
+    @JsonProperty("reservedSubnets")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getReservedSubnets() {
+        return reservedSubnets;
+    }
+
+    /**
+     * reservedSubnets specifies a list of CIDRs reserved for static IP assignment, excluded from automatic allocation. reservedSubnets is optional. When omitted, all IP addresses in `subnets` are available for automatic assignment. IPs from these ranges can still be requested through static IP assignment. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 25. The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.
+     */
+    @JsonProperty("reservedSubnets")
+    public void setReservedSubnets(List<String> reservedSubnets) {
+        this.reservedSubnets = reservedSubnets;
     }
 
     /**
@@ -164,7 +238,7 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.
+     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `ipam.mode` is `Disabled`.
      */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -173,7 +247,7 @@ public class Layer2Config implements Editable<Layer2ConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.
+     * Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.<br><p> <br><p> The format should match standard CIDR notation (for example, "10.128.0.0/16"). This field must be omitted if `ipam.mode` is `Disabled`.
      */
     @JsonProperty("subnets")
     public void setSubnets(List<String> subnets) {

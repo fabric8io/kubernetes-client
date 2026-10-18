@@ -6,6 +6,161 @@
   },
   "paths": null,
   "definitions": {
+    "com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.ClusterUserDefinedNetworkSelector": {
+      "description": "ClusterUserDefinedNetworkSelector selects ClusterUserDefinedNetworks.",
+      "type": "object",
+      "required": [
+        "networkSelector"
+      ],
+      "properties": {
+        "networkSelector": {
+          "description": "networkSelector selects ClusterUserDefinedNetworks by label. A null selector will mot match anything, while an empty ({}) selector will match all.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "ClusterUserDefinedNetworkSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.NetworkAttachmentDefinitionSelector": {
+      "description": "NetworkAttachmentDefinitionSelector selects networks defined in the selected NetworkAttachmentDefinitions.",
+      "type": "object",
+      "required": [
+        "namespaceSelector",
+        "networkSelector"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "description": "namespaceSelector selects namespaces where the NetworkAttachmentDefinitions are defined. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "networkSelector": {
+          "description": "networkSelector selects NetworkAttachmentDefinitions within the selected namespaces by label. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "NetworkAttachmentDefinitionSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.NetworkSelector": {
+      "description": "NetworkSelector selects a set of networks.",
+      "type": "object",
+      "required": [
+        "networkSelectionType"
+      ],
+      "properties": {
+        "clusterUserDefinedNetworkSelector": {
+          "description": "clusterUserDefinedNetworkSelector selects ClusterUserDefinedNetworks when NetworkSelectionType is 'ClusterUserDefinedNetworks'.",
+          "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.ClusterUserDefinedNetworkSelector"
+        },
+        "networkAttachmentDefinitionSelector": {
+          "description": "networkAttachmentDefinitionSelector selects networks defined in the selected NetworkAttachmentDefinitions when NetworkSelectionType is 'SecondaryUserDefinedNetworks'.",
+          "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.NetworkAttachmentDefinitionSelector"
+        },
+        "networkSelectionType": {
+          "description": "networkSelectionType determines the type of networks selected.",
+          "type": "string",
+          "default": ""
+        },
+        "primaryUserDefinedNetworkSelector": {
+          "description": "primaryUserDefinedNetworkSelector selects primary UserDefinedNetworks when NetworkSelectionType is 'PrimaryUserDefinedNetworks'.",
+          "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.PrimaryUserDefinedNetworkSelector"
+        },
+        "secondaryUserDefinedNetworkSelector": {
+          "description": "secondaryUserDefinedNetworkSelector selects secondary UserDefinedNetworks when NetworkSelectionType is 'SecondaryUserDefinedNetworks'.",
+          "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.SecondaryUserDefinedNetworkSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "NetworkSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.PrimaryUserDefinedNetworkSelector": {
+      "description": "PrimaryUserDefinedNetworkSelector selects primary UserDefinedNetworks.",
+      "type": "object",
+      "required": [
+        "namespaceSelector"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "description": "namespaceSelector select the primary UserDefinedNetworks that are servind the selected namespaces. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "PrimaryUserDefinedNetworkSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.SecondaryUserDefinedNetworkSelector": {
+      "description": "SecondaryUserDefinedNetworkSelector selects secondary UserDefinedNetworks.",
+      "type": "object",
+      "required": [
+        "namespaceSelector",
+        "networkSelector"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "description": "namespaceSelector selects namespaces where the secondary UserDefinedNetworks are defined. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "networkSelector": {
+          "description": "networkSelector selects secondary UserDefinedNetworks within the selected namespaces by label. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "",
+        "Version": "types",
+        "Kind": "SecondaryUserDefinedNetworkSelector",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.AccessVLANConfig": {
+      "description": "AccessVLANConfig describes an access VLAN configuration.",
+      "type": "object",
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "description": "id is the VLAN ID (VID) to be set for the network. id should be higher than 0 and lower than 4095.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "AccessVLANConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "org.ovn.k8s.v1.AdminPolicyBasedExternalRoute": {
       "description": "AdminPolicyBasedExternalRoute is a CRD allowing the cluster administrators to configure policies for external gateway IPs to be applied to all the pods contained in selected namespaces. Egress traffic from the pods that belong to the selected namespaces to outside the cluster is routed through these external gateway IPs.",
       "type": "object",
@@ -117,8 +272,7 @@
           "items": {
             "type": "string"
           },
-          "x-kubernetes-list-type": "set",
-          "x-kubernetes-patch-strategy": "merge"
+          "x-kubernetes-list-type": "set"
         },
         "status": {
           "description": "A concise indication of whether the AdminPolicyBasedRoute resource is applied with success",
@@ -130,6 +284,307 @@
         "Group": "k8s.ovn.org",
         "Version": "v1",
         "Kind": "AdminPolicyBasedRouteStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterNetworkConnect": {
+      "description": "ClusterNetworkConnect enables connecting multiple User Defined Networks and/or Cluster User Defined Networks together.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ClusterNetworkConnectSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ClusterNetworkConnectStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterNetworkConnect",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterNetworkConnectList": {
+      "description": "ClusterNetworkConnectList contains a list of ClusterNetworkConnect.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.ClusterNetworkConnect"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterNetworkConnectList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterNetworkConnectSpec": {
+      "description": "ClusterNetworkConnectSpec defines the desired state of ClusterNetworkConnect.",
+      "type": "object",
+      "required": [
+        "networkSelectors",
+        "connectSubnets",
+        "connectivity"
+      ],
+      "properties": {
+        "connectSubnets": {
+          "description": "connectSubnets specifies the subnets used for interconnecting the selected networks. This creates a shared subnet space that connected networks can use to communicate. Can have at most 1 CIDR for each IP family (IPv4 and IPv6). Must not overlap with:\n any of the pod subnets used by the selected networks.\n any of the transit subnets used by the selected networks.\n any of the service CIDR range used in the cluster.\n any of the join subnet of the selected networks to be connected.\n any of the masquerade subnet range used in the cluster.\n any of the node subnets chosen by the platform.\n any of other connect subnets for other ClusterNetworkConnects that might be selecting same networks.\n\nDoes not have a default value for the above reason so that user takes care in setting non-overlapping subnets.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.ConnectSubnet"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "connectivity": {
+          "description": "connectivity specifies which connectivity types should be enabled for the connected networks.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "networkSelectors": {
+          "description": "networkSelectors selects the networks to be connected together. This can match User Defined Networks (UDNs) and/or Cluster User Defined Networks (CUDNs). Only ClusterUserDefinedNetworkSelector and PrimaryUserDefinedNetworkSelector can be selected.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.NetworkSelector"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterNetworkConnectSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterNetworkConnectStatus": {
+      "description": "ClusterNetworkConnectStatus defines the observed state of ClusterNetworkConnect.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "conditions is an array of condition objects indicating details about status of ClusterNetworkConnect object.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "status": {
+          "description": "status is a concise indication of whether the ClusterNetworkConnect resource is applied with success.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterNetworkConnectStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterUserDefinedNetwork": {
+      "description": "ClusterUserDefinedNetwork describe network request for a shared network across namespaces.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ClusterUserDefinedNetworkSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.ClusterUserDefinedNetworkStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterUserDefinedNetwork",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterUserDefinedNetworkList": {
+      "description": "ClusterUserDefinedNetworkList contains a list of ClusterUserDefinedNetwork.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.ClusterUserDefinedNetwork"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterUserDefinedNetworkList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterUserDefinedNetworkSpec": {
+      "description": "ClusterUserDefinedNetworkSpec defines the desired state of ClusterUserDefinedNetwork.",
+      "type": "object",
+      "required": [
+        "namespaceSelector",
+        "network"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "description": "NamespaceSelector Label selector for which namespace network should be available for.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "network": {
+          "description": "Network is the user-defined-network spec",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.NetworkSpec"
+        },
+        "uplinks": {
+          "description": "Uplinks references Uplink resources used for this network's external traffic. Currently, one Uplink is supported. When omitted, existing gateway behavior is preserved.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterUserDefinedNetworkSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ClusterUserDefinedNetworkStatus": {
+      "description": "ClusterUserDefinedNetworkStatus contains the observed status of the ClusterUserDefinedNetwork.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions slice of condition objects indicating details about ClusterUserDefineNetwork status.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
+        },
+        "vrfName": {
+          "description": "VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ClusterUserDefinedNetworkStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.ConnectSubnet": {
+      "type": "object",
+      "required": [
+        "cidr",
+        "networkPrefix"
+      ],
+      "properties": {
+        "cidr": {
+          "description": "CIDR specifies ConnectSubnet, which is split into smaller subnets for every connected network. This CIDR should be containing 2*((Number of L3 networks*Max Number of Nodes)+Number of L2 networks) IPs. Example: cidr= \"192.168.0.0/16\", networkPrefix=24 and if the cluster has 128 nodes that means that you can connect 256 layer3 networks and 0 layer2 networks OR 255 layer3 networks and 128 layer2 networks.\n\nCIDR also restricts the maximum number of networks that can be connected together based on what CIDR range is picked. So choosing a large enough CIDR for future use cases is important.\n\nThe largest CIDR that can be used for this field is /16 (65536 IPs) because OVN has a limit of 32K(2^15) tunnel keys per router. So we will only ever have 32K /31 or /127 slices which is 2^16 IPs. Having a CIDR greater than /16 will not be utilized fully for the same reason.",
+          "type": "string",
+          "default": ""
+        },
+        "networkPrefix": {
+          "description": "NetworkPrefix specifies the prefix length for every connected network. This prefix length should be strictly longer than the length of the CIDR prefix.\n\nFor example, if the CIDR is 10.0.0.0/16 and the networkPrefix is 24, then the connect subnet for each connected layer3 network will be 10.0.0.0/24, 10.0.1.0/24, 10.0.2.0/24 etc.\n\nFor layer2 networks we will allocate the next available /networkPrefix range that is then split into /31 or /127 slices for each layer2 network A good practice is to set this to a value that ensures it contains more than twice the number of maximum nodes planned to be deployed in the cluster. Each node gets a /31 subnet for the layer3 networks, hence networkPrefix should contain enough IPs for 4 times the maximum nodes planned Example - recommended values: if you plan to deploy 10 nodes, set the networkPrefix to /26 (40+ IPs) if you plan to deploy 100 nodes, set the networkPrefix to /23 (400+ IPs) if you plan to deploy 1000 nodes, set the networkPrefix to /20 (4000+ IPs) if you plan to deploy 5000 nodes, set the networkPrefix to /17 (20000+ IPs) This field restricts the maximum number of nodes that can be deployed in the cluster and hence its good to plan this value carefully along with the CIDR.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "ConnectSubnet",
         "Scope": "Namespaced"
       }
     },
@@ -167,6 +622,35 @@
         "Group": "k8s.ovn.org",
         "Version": "v1",
         "Kind": "DynamicHop",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.EVPNConfig": {
+      "description": "EVPNConfig contains configuration options for networks operating in EVPN mode.",
+      "type": "object",
+      "required": [
+        "vtep"
+      ],
+      "properties": {
+        "ipVRF": {
+          "description": "IPVRF contains the IP-VRF configuration for Layer 3 EVPN. This field is required for Layer3 topology and optional for Layer2 topology.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.VRFConfig"
+        },
+        "macVRF": {
+          "description": "MACVRF contains the MAC-VRF configuration for Layer 2 EVPN. This field is required for Layer2 topology and forbidden for Layer3 topology.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.VRFConfig"
+        },
+        "vtep": {
+          "description": "VTEP is the name of the VTEP CR that defines VTEP IPs for EVPN.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "EVPNConfig",
         "Scope": "Namespaced"
       }
     },
@@ -309,7 +793,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallPort"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "to": {
           "description": "to is the target that traffic is allowed/denied to",
@@ -342,7 +827,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressFirewallRule"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -361,8 +847,7 @@
           "items": {
             "type": "string"
           },
-          "x-kubernetes-list-type": "set",
-          "x-kubernetes-patch-strategy": "merge"
+          "x-kubernetes-list-type": "set"
         },
         "status": {
           "type": "string"
@@ -462,7 +947,12 @@
           "type": "array",
           "items": {
             "type": "string"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "egressNodeSelector": {
+          "description": "EgressNodeSelector limits the pool of nodes that can host the EgressIPs in this object; it applies to all EgressIPs in this object. Only nodes whose labels match this selector are eligible for assignment. This field is optional. When not specified by the user, the CRD default is applied: {matchExpressions: [{key: k8s.ovn.org/egress-assignable, operator: Exists}]}. An empty selector ({}) matches all nodes in the cluster including control plane nodes — use with caution as it expands the eligible node pool and health-check set to the entire cluster. This field restricts only where the IPs in this EgressIP object are placed; it does not reserve the matched nodes for exclusive use. Other EgressIP objects can still consume capacity on the same nodes.",
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
         },
         "namespaceSelector": {
           "description": "NamespaceSelector applies the egress IP only to the namespace(s) whose label matches this definition. This field is mandatory.",
@@ -494,7 +984,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressIPStatusItem"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -641,7 +1132,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.EgressQoSRule"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -822,18 +1314,20 @@
       "type": "object",
       "properties": {
         "dynamic": {
-          "description": "DynamicHops defines a slices of DynamicHop. This field is optional.",
+          "description": "DynamicHops defines a slice of DynamicHop. This field is optional.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.DynamicHop"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "static": {
           "description": "StaticHops defines a slice of StaticHop. This field is optional.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.StaticHop"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -844,15 +1338,50 @@
         "Scope": "Namespaced"
       }
     },
+    "org.ovn.k8s.v1.IPAMConfig": {
+      "type": "object",
+      "properties": {
+        "lifecycle": {
+          "description": "Lifecycle controls IP addresses management lifecycle.\n\nThe only allowed value is Persistent. When set, the IP addresses assigned by OVN-Kubernetes will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when mode is `Enabled`.",
+          "type": "string"
+        },
+        "mode": {
+          "description": "Mode controls how much of the IP configuration will be managed by OVN. `Enabled` means OVN-Kubernetes will apply IP configuration to the SDN infrastructure and it will also assign IPs from the selected subnet to the individual pods. `DHCP` delegates IP assignment to a DHCP server reachable on the physical network; OVN-Kubernetes does not allocate addresses. Lease acquisition depends on the workload type: regular pods use the DHCP CNI plugin on the node, while KubeVirt virtual machines run a DHCP client inside the guest OS. Only supported for Localnet Secondary networks, and currently only for IPv4. `Disabled` means OVN-Kubernetes will only assign MAC addresses and provide layer 2 communication, letting users configure IP addresses for the pods. `Disabled` is only available for Secondary networks. By disabling IPAM, any Kubernetes features that rely on selecting pods by IP will no longer function (such as network policy, services, etc). Additionally, IP port security will also be disabled for interfaces attached to this network. Defaults to `Enabled`.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "IPAMConfig",
+        "Scope": "Namespaced"
+      }
+    },
     "org.ovn.k8s.v1.Layer2Config": {
       "type": "object",
       "required": [
         "role"
       ],
       "properties": {
-        "ipamLifecycle": {
-          "description": "IPAMLifecycle controls IP addresses management lifecycle.\n\nThe only allowed value is Persistent. When set, OVN Kubernetes assigned IP addresses will be persisted in an `ipamclaims.k8s.cni.cncf.io` object. These IP addresses will be reused by other pods if requested. Only supported when \"subnets\" are set.",
-          "type": "string"
+        "defaultGatewayIPs": {
+          "description": "defaultGatewayIPs specifies the default gateway IP used in the internal OVN topology.\n\nDual-stack clusters may set 2 IPs (one for each IP family), otherwise only 1 IP is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, an IP from the subnets field is used.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "infrastructureSubnets": {
+          "description": "infrastructureSubnets specifies a list of internal CIDR ranges that OVN-Kubernetes will reserve for internal network infrastructure. Any IP addresses within these ranges cannot be assigned to workloads. When omitted, OVN-Kubernetes will automatically allocate IP addresses from `subnets` for its infrastructure needs. When there are not enough available IPs in the provided infrastructureSubnets, OVN-Kubernetes will automatically allocate IP addresses from subnets for its infrastructure needs. When `reservedSubnets` is also specified the CIDRs cannot overlap. When `defaultGatewayIPs` is also specified, the default gateway IPs must belong to one of the infrastructure subnet CIDRs. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 4. The format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "ipam": {
+          "description": "IPAM section contains IPAM-related configuration for the network.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.IPAMConfig"
         },
         "joinSubnets": {
           "description": "JoinSubnets are used inside the OVN network topology.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. This field is only allowed for \"Primary\" network. It is not recommended to set this field without explicit need and understanding of the OVN network topology. When omitted, the platform will choose a reasonable default which is subject to change over time.",
@@ -861,10 +1390,22 @@
             "type": "string"
           }
         },
+        "macSecurity": {
+          "description": "macSecurity configures MAC spoof protection on the network's logical switch ports.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.MACSecurityConfig"
+        },
         "mtu": {
           "description": "MTU is the maximum transmission unit for a network. MTU is optional, if not provided, the globally configured value in OVN-Kubernetes (defaults to 1400) is used for the network.",
           "type": "integer",
           "format": "int32"
+        },
+        "reservedSubnets": {
+          "description": "reservedSubnets specifies a list of CIDRs reserved for static IP assignment, excluded from automatic allocation. reservedSubnets is optional. When omitted, all IP addresses in `subnets` are available for automatic assignment. IPs from these ranges can still be requested through static IP assignment. Each item should be in range of the specified CIDR(s) in `subnets`. The maximum number of entries allowed is 25. The format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled`.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
         },
         "role": {
           "description": "Role describes the network role in the pod.\n\nAllowed value is \"Secondary\". Secondary network is only assigned to pods that use `k8s.v1.cni.cncf.io/networks` annotation to select given network.",
@@ -872,7 +1413,7 @@
           "default": ""
         },
         "subnets": {
-          "description": "Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.\n\nThe format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field may be omitted. In that case the logical switch implementing the network only provides layer 2 communication, and users must configure IP addresses for the pods. As a consequence, Port security only prevents MAC spoofing.",
+          "description": "Subnets are used for the pod network across the cluster. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed.\n\nThe format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field must be omitted if `ipam.mode` is `Disabled`.",
           "type": "array",
           "items": {
             "type": "string"
@@ -912,11 +1453,12 @@
           "default": ""
         },
         "subnets": {
-          "description": "Subnets are used for the pod network across the cluster.\n\nDual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.",
+          "description": "Subnets are used for the pod network across the cluster.\n\nEach IP family can have multiple subnets. For each IP family, every node allocates a smaller subnet from the provided subnets.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.Layer3Subnet"
-          }
+          },
+          "x-kubernetes-list-type": "atomic"
         }
       },
       "x-fabric8-info": {
@@ -948,6 +1490,314 @@
         "Group": "k8s.ovn.org",
         "Version": "v1",
         "Kind": "Layer3Subnet",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.LocalnetConfig": {
+      "type": "object",
+      "required": [
+        "role",
+        "physicalNetworkName"
+      ],
+      "properties": {
+        "excludeSubnets": {
+          "description": "excludeSubnets is a list of CIDRs to be removed from the specified CIDRs in `subnets`. The CIDRs in this list must be in range of at least one subnet specified in `subnets`. excludeSubnets is optional. When omitted no IP address is excluded and all IP addresses specified in `subnets` are subject to assignment. The format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field must be omitted if `subnets` is unset or `ipam.mode` is `Disabled` or `DHCP`. When `physicalNetworkName` points to OVS bridge mapping of a network with reserved IP addresses (which shouldn't be assigned by OVN-Kubernetes), the specified CIDRs will not be assigned. For example: Given: `subnets: \"10.0.0.0/24\"`, `excludeSubnets`: \"10.0.0.200/30\", the following addresses will not be assigned to pods: `10.0.0.201`, `10.0.0.202`.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "ipam": {
+          "description": "ipam configurations for the network. ipam is optional. When omitted, `subnets` must be specified. When `ipam.mode` is `Disabled` or `DHCP`, `subnets` must be omitted. `ipam.mode` controls how much of the IP configuration will be managed by OVN.\n   When `Enabled`, OVN-Kubernetes will apply IP configuration to the SDN infra and assign IPs from the selected\n   subnet to the pods.\n   When `Disabled`, OVN-Kubernetes only assigns MAC addresses, and provides layer2 communication, and enables users\n   to configure IP addresses on the pods.\n   When `DHCP`, IP assignment is delegated to a DHCP server reachable on the physical network. OVN-Kubernetes\n   learns the assigned IPs but does not allocate them. Currently supported only for IPv4.\n`ipam.lifecycle` controls IP addresses management lifecycle.\n   When set to 'Persistent', the assigned IP addresses will be persisted in `ipamclaims.k8s.cni.cncf.io` object.\n\t  Useful for VMs, IP address will be persistent after restarts and migrations. Supported when `ipam.mode` is `Enabled`.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.IPAMConfig"
+        },
+        "macSecurity": {
+          "description": "macSecurity configures MAC spoof protection on the network's logical switch ports.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.MACSecurityConfig"
+        },
+        "mtu": {
+          "description": "mtu is the maximum transmission unit for a network. mtu is optional. When omitted, the configured value in OVN-Kubernetes (defaults to 1500 for localnet topology) is used for the network. Minimum value for IPv4 subnet is 576, and for IPv6 subnet is 1280. Maximum value is 65536. In a scenario `physicalNetworkName` points to OVS bridge mapping of a network configured with certain MTU settings, this field enables configuring the same MTU on pod interface, having the pod MTU aligned with the network MTU. Misaligned MTU across the stack (e.g.: pod has MTU X, node NIC has MTU Y), could result in network disruptions and bad performance.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "physicalNetworkName": {
+          "description": "physicalNetworkName points to the OVS bridge-mapping's network-name configured in the nodes, required. Min length is 1, max length is 253, cannot contain `,` or `:` characters. In case OVS bridge-mapping is defined by Kubernetes-nmstate with `NodeNetworkConfigurationPolicy` (NNCP), this field should point to the NNCP `spec.desiredState.ovn.bridge-mappings` item's `localnet` value.",
+          "type": "string",
+          "default": ""
+        },
+        "role": {
+          "description": "role describes the network role in the pod, required. Controls whether the pod interface will act as primary or secondary. Localnet topology supports `Secondary` only. The network will be assigned to pods that have the `k8s.v1.cni.cncf.io/networks` annotation in place pointing to subject.",
+          "type": "string",
+          "default": ""
+        },
+        "subnets": {
+          "description": "subnets is a list of subnets used for pods in this localnet network across the cluster. The list may be either 1 IPv4 subnet, 1 IPv6 subnet, or 1 of each IP family. When set, OVN-Kubernetes assigns an IP address from the specified CIDRs to the connected pod, eliminating the need for manual IP assignment or reliance on an external IPAM service (e.g., a DHCP server). subnets is optional. When omitted OVN-Kubernetes won't assign IP address automatically. Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. The format should match standard CIDR notation (for example, \"10.128.0.0/16\"). This field must be omitted if `ipam.mode` is `Disabled` or `DHCP`. When physicalNetworkName points to the OVS bridge mapping of a network that provides IPAM services, ipam.mode should be set to `Disabled` (users configure the pod IPs themselves) or `DHCP` (a DHCP server on that network assigns them). Both turn off OVN-Kubernetes IPAM and avoid conflicts with the existing IPAM services on this localnet network.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vlan": {
+          "description": "vlan configuration for the network. vlan.mode is the VLAN mode.\n  When \"Access\" is set, OVN-Kubernetes configures the network logical switch port in access mode.\nvlan.access is the access VLAN configuration. vlan.access.id is the VLAN ID (VID) to be set on the network logical switch port. vlan is optional, when omitted the underlying network default VLAN will be used (usually `1`). When set, OVN-Kubernetes will apply VLAN configuration to the SDN infra and to the connected pods.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.VLANConfig"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "LocalnetConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.MACSecurityConfig": {
+      "description": "MACSecurityConfig configures MAC spoof protection behavior.",
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "mode": {
+          "description": "mode controls the MAC spoof protection enforcement posture. `Enabled` (default) restricts traffic to assigned addresses. `Disabled` removes all MAC spoof protection restrictions and enables unknown MAC address handling for nested virtualization and NFV use cases. Only `Disabled` requires ipam.mode to be Disabled.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "MACSecurityConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.NetworkSpec": {
+      "description": "NetworkSpec defines the desired state of UserDefinedNetworkSpec.",
+      "type": "object",
+      "required": [
+        "topology"
+      ],
+      "properties": {
+        "evpn": {
+          "description": "EVPN contains configuration for EVPN mode. This is only allowed when Transport is \"EVPN\".",
+          "$ref": "#/definitions/org.ovn.k8s.v1.EVPNConfig"
+        },
+        "layer2": {
+          "description": "Layer2 is the Layer2 topology configuration.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.Layer2Config"
+        },
+        "layer3": {
+          "description": "Layer3 is the Layer3 topology configuration.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.Layer3Config"
+        },
+        "localnet": {
+          "description": "Localnet is the Localnet topology configuration.",
+          "$ref": "#/definitions/org.ovn.k8s.v1.LocalnetConfig"
+        },
+        "noOverlay": {
+          "description": "NoOverlay contains configuration for no-overlay mode. This is only allowed when Transport is \"NoOverlay\".",
+          "$ref": "#/definitions/org.ovn.k8s.v1.NoOverlayConfig"
+        },
+        "topology": {
+          "description": "Topology describes network configuration.\n\nAllowed values are \"Layer3\", \"Layer2\" and \"Localnet\". Layer3 topology creates a layer 2 segment per node, each with a different subnet. Layer 3 routing is used to interconnect node subnets. Layer2 topology creates one logical switch shared by all nodes. Localnet topology is based on layer 2 topology, but also allows connecting to an existent (configured) physical network to provide north-south traffic to the workloads.",
+          "type": "string",
+          "default": ""
+        },
+        "transport": {
+          "description": "Transport describes the transport technology for pod-to-pod traffic. Allowed values are \"NoOverlay\" and \"EVPN\". - \"NoOverlay\": The network operates in no-overlay mode. - \"EVPN\": The network uses EVPN transport. When omitted, the network uses the default OVN overlay transport (e.g. Geneve, VXLAN) as configured by ovn-encap-type.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "NetworkSpec",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-unions": [
+        {
+          "discriminator": "topology",
+          "fields-to-discriminateBy": {
+            "evpn": "EVPN",
+            "layer2": "Layer2",
+            "layer3": "Layer3",
+            "localnet": "Localnet",
+            "noOverlay": "NoOverlay",
+            "transport": "Transport"
+          }
+        }
+      ]
+    },
+    "org.ovn.k8s.v1.NoOverlayConfig": {
+      "description": "NoOverlayConfig contains configuration options for networks operating in no-overlay mode.",
+      "type": "object",
+      "required": [
+        "outboundSNAT",
+        "routing"
+      ],
+      "properties": {
+        "outboundSNAT": {
+          "description": "OutboundSNAT defines the SNAT behavior for outbound traffic from pods.",
+          "type": "string",
+          "default": ""
+        },
+        "routing": {
+          "description": "Routing specifies whether the pod network routing is managed by OVN-Kubernetes or users.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "NoOverlayConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.RouteAdvertisements": {
+      "description": "RouteAdvertisements is the Schema for the routeadvertisements API",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.RouteAdvertisementsSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.RouteAdvertisementsStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "RouteAdvertisements",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.RouteAdvertisementsList": {
+      "description": "RouteAdvertisementsList contains a list of RouteAdvertisements",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.RouteAdvertisements"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "RouteAdvertisementsList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.RouteAdvertisementsSpec": {
+      "description": "RouteAdvertisementsSpec defines the desired state of RouteAdvertisements",
+      "type": "object",
+      "required": [
+        "networkSelectors",
+        "nodeSelector",
+        "frrConfigurationSelector"
+      ],
+      "properties": {
+        "advertisements": {
+          "description": "advertisements determines what is advertised.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "frrConfigurationSelector": {
+          "description": "frrConfigurationSelector determines which FRRConfigurations will the OVN-Kubernetes driven FRRConfigurations be based on. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "networkSelectors": {
+          "description": "networkSelectors determines which network routes should be advertised. Only ClusterUserDefinedNetworks and the default network can be selected.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/com.github.ovn-kubernetes.ovn-kubernetes.go-controller.pkg.crd.types.NetworkSelector"
+          }
+        },
+        "nodeSelector": {
+          "description": "nodeSelector limits the advertisements to selected nodes. This field follows standard label selector semantics.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "targetVRF": {
+          "description": "targetVRF determines which VRF the routes should be advertised in.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "RouteAdvertisementsSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.RouteAdvertisementsStatus": {
+      "description": "RouteAdvertisementsStatus defines the observed state of RouteAdvertisements. It should always be reconstructable from the state of the cluster and/or outside world.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "conditions is an array of condition objects indicating details about status of RouteAdvertisements object.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        },
+        "status": {
+          "description": "status is a concise indication of whether the RouteAdvertisements resource is applied with success.",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "RouteAdvertisementsStatus",
         "Scope": "Namespaced"
       }
     },
@@ -1098,6 +1948,10 @@
             "type"
           ],
           "x-kubernetes-list-type": "map"
+        },
+        "vrfName": {
+          "description": "VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.",
+          "type": "string"
         }
       },
       "x-fabric8-info": {
@@ -1105,6 +1959,191 @@
         "Group": "k8s.ovn.org",
         "Version": "v1",
         "Kind": "UserDefinedNetworkStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.VLANConfig": {
+      "description": "VLANConfig describes the network VLAN configuration.",
+      "type": "object",
+      "required": [
+        "mode"
+      ],
+      "properties": {
+        "access": {
+          "description": "Access is the access VLAN configuration",
+          "$ref": "#/definitions/org.ovn.k8s.v1.AccessVLANConfig"
+        },
+        "mode": {
+          "description": "mode describe the network VLAN mode. Allowed value is \"Access\". Access sets the network logical switch port in access mode, according to the config.",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VLANConfig",
+        "Scope": "Namespaced"
+      },
+      "x-kubernetes-unions": [
+        {
+          "discriminator": "mode",
+          "fields-to-discriminateBy": {
+            "access": "Access"
+          }
+        }
+      ]
+    },
+    "org.ovn.k8s.v1.VRFConfig": {
+      "description": "VRFConfig contains configuration for a VRF in EVPN.",
+      "type": "object",
+      "required": [
+        "vni"
+      ],
+      "properties": {
+        "routeTarget": {
+          "description": "RouteTarget is the import/export route target for this VRF. If not specified, it will be auto-generated as \"\u003cAS (Autonomous System)\u003e:\u003cVNI (Virtual Network Identifier)\u003e\". Auto-generation will use 2-byte AS if VNI \u003e 65535, since 4-byte AS/IPv4 only allows 2-byte local admin.\n\nFollows FRR EVPN L3 Route-Target format (A.B.C.D:MN|EF:OPQR|GHJK:MN|*:OPQR|*:MN):\n  - EF:OPQR   = 2-byte AS (1-65535) : local admin (4 bytes, 1-4294967295)\n  - GHJK:MN   = 4-byte AS (65536-4294967295) : local admin (2 bytes, 1-65535)\n  - A.B.C.D:MN = IPv4 address : local admin (2 bytes, 1-65535)\n  - *:OPQR    = wildcard AS : local admin (4 bytes, 1-4294967295) - for import matching\n  - *:MN      = wildcard AS : local admin (2 bytes, 1-65535) - for import matching\n\nThe 6-byte value constraint (RFC 4360) means AS size + local admin size = 6 bytes.",
+          "type": "string"
+        },
+        "vni": {
+          "description": "VNI is the Virtual Network Identifier for this VRF. VNI is a 24-bit field in the VXLAN header (RFC 7348), allowing values from 1 to 16777215. but in the future this could be having different limit for other dataplane implementations. Must be unique across all EVPN configurations in the cluster.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VRFConfig",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.VTEP": {
+      "description": "VTEP defines VTEP (VXLAN Tunnel Endpoint) IP configuration for EVPN.",
+      "type": "object",
+      "required": [
+        "spec"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired VTEP configuration.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.VTEPSpec"
+        },
+        "status": {
+          "description": "Status contains the observed state of the VTEP.",
+          "default": {},
+          "$ref": "#/definitions/org.ovn.k8s.v1.VTEPStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VTEP",
+        "Scope": "Clustered"
+      }
+    },
+    "org.ovn.k8s.v1.VTEPList": {
+      "description": "VTEPList contains a list of VTEP.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/org.ovn.k8s.v1.VTEP"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VTEPList",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.VTEPSpec": {
+      "description": "VTEPSpec defines the desired state of VTEP.",
+      "type": "object",
+      "required": [
+        "cidrs"
+      ],
+      "properties": {
+        "cidrs": {
+          "description": "CIDRs is the list of IP ranges from which VTEP IPs are discovered (unmanaged mode) or allocated (managed mode). Multiple CIDRs may be specified to expand capacity over time without recreating the VTEP. Each entry must be a valid network address in CIDR notation (for example, \"100.64.0.0/24\" or \"fd00:100::/64\"). Each node receives at most one IP per address family from the CIDRs listed here. In managed mode, CIDRs are consumed sequentially: IPs are allocated from the first CIDR until it is exhausted, then from the next, and so on. In managed mode, CIDRs are append-only: existing entries cannot be removed, reordered, or shrunk to a smaller mask; they can only be expanded to a wider mask, and new entries may be appended. In unmanaged mode, if multiple IPs on a node match the configured CIDRs, or if the match is otherwise ambiguous, the VTEP will be placed into a failed status. In unmanaged mode, CIDRs may be freely added, removed, reordered, or resized. Caution: removing or modifying CIDRs in unmanaged mode that are actively in use may cause traffic disruption; no downtime guarantees are provided for such operations.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "atomic"
+        },
+        "mode": {
+          "description": "Mode specifies how VTEP IPs are managed. \"Managed\" means OVN-Kubernetes allocates and assigns VTEP IPs per node automatically. \"Unmanaged\" means an external provider handles IP assignment; OVN-Kubernetes discovers existing IPs on nodes. Defaults to \"Managed\".",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VTEPSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "org.ovn.k8s.v1.VTEPStatus": {
+      "description": "VTEPStatus contains the observed state of the VTEP.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions slice of condition objects indicating details about VTEP status.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "k8s.ovn.org",
+        "Version": "v1",
+        "Kind": "VTEPStatus",
         "Scope": "Namespaced"
       }
     }
