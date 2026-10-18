@@ -1,7 +1,9 @@
 
 package io.fabric8.volcano.api.model.nodeinfo.v1alpha1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -40,6 +42,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "cpuDetail",
     "numares",
+    "podAllocations",
     "policies",
     "resReserved"
 })
@@ -74,6 +77,9 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
     @JsonProperty("numares")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, ResourceInfo> numares = new LinkedHashMap<>();
+    @JsonProperty("podAllocations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PodAllocation> podAllocations = new ArrayList<>();
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> policies = new LinkedHashMap<>();
@@ -89,10 +95,11 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
     public NumatopoSpec() {
     }
 
-    public NumatopoSpec(Map<String, CPUInfo> cpuDetail, Map<String, ResourceInfo> numares, Map<String, String> policies, Map<String, String> resReserved) {
+    public NumatopoSpec(Map<String, CPUInfo> cpuDetail, Map<String, ResourceInfo> numares, List<PodAllocation> podAllocations, Map<String, String> policies, Map<String, String> resReserved) {
         super();
         this.cpuDetail = cpuDetail;
         this.numares = numares;
+        this.podAllocations = podAllocations;
         this.policies = policies;
         this.resReserved = resReserved;
     }
@@ -129,6 +136,23 @@ public class NumatopoSpec implements Editable<NumatopoSpecBuilder>, KubernetesRe
     @JsonProperty("numares")
     public void setNumares(Map<String, ResourceInfo> numares) {
         this.numares = numares;
+    }
+
+    /**
+     * Specifies the per-pod numa resource allocation of the node
+     */
+    @JsonProperty("podAllocations")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PodAllocation> getPodAllocations() {
+        return podAllocations;
+    }
+
+    /**
+     * Specifies the per-pod numa resource allocation of the node
+     */
+    @JsonProperty("podAllocations")
+    public void setPodAllocations(List<PodAllocation> podAllocations) {
+        this.podAllocations = podAllocations;
     }
 
     /**

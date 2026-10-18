@@ -47,7 +47,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "networkTopology",
     "priorityClassName",
     "queue",
-    "subGroupPolicy"
+    "subGroupPolicy",
+    "topologyAffinity"
 })
 @ToString
 @EqualsAndHashCode
@@ -91,6 +92,8 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     @JsonProperty("subGroupPolicy")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<SubGroupPolicySpec> subGroupPolicy = new ArrayList<>();
+    @JsonProperty("topologyAffinity")
+    private TopologyAffinitySpec topologyAffinity;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -100,7 +103,7 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     public PodGroupSpec() {
     }
 
-    public PodGroupSpec(Integer minMember, Map<String, Quantity> minResources, Map<String, Integer> minTaskMember, NetworkTopologySpec networkTopology, String priorityClassName, String queue, List<SubGroupPolicySpec> subGroupPolicy) {
+    public PodGroupSpec(Integer minMember, Map<String, Quantity> minResources, Map<String, Integer> minTaskMember, NetworkTopologySpec networkTopology, String priorityClassName, String queue, List<SubGroupPolicySpec> subGroupPolicy, TopologyAffinitySpec topologyAffinity) {
         super();
         this.minMember = minMember;
         this.minResources = minResources;
@@ -109,6 +112,7 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
         this.priorityClassName = priorityClassName;
         this.queue = queue;
         this.subGroupPolicy = subGroupPolicy;
+        this.topologyAffinity = topologyAffinity;
     }
 
     /**
@@ -224,6 +228,22 @@ public class PodGroupSpec implements Editable<PodGroupSpecBuilder>, KubernetesRe
     @JsonProperty("subGroupPolicy")
     public void setSubGroupPolicy(List<SubGroupPolicySpec> subGroupPolicy) {
         this.subGroupPolicy = subGroupPolicy;
+    }
+
+    /**
+     * PodGroupSpec represents the template of a pod group.
+     */
+    @JsonProperty("topologyAffinity")
+    public TopologyAffinitySpec getTopologyAffinity() {
+        return topologyAffinity;
+    }
+
+    /**
+     * PodGroupSpec represents the template of a pod group.
+     */
+    @JsonProperty("topologyAffinity")
+    public void setTopologyAffinity(TopologyAffinitySpec topologyAffinity) {
+        this.topologyAffinity = topologyAffinity;
     }
 
     @JsonIgnore

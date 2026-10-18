@@ -33,6 +33,7 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
   private String priorityClassName;
   private String queue;
   private ArrayList<SubGroupPolicySpecBuilder> subGroupPolicy = new ArrayList<SubGroupPolicySpecBuilder>();
+  private TopologyAffinitySpecBuilder topologyAffinity;
 
   public PodGroupSpecFluent() {
   }
@@ -177,6 +178,10 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.subGroupPolicy.get(index).build();
   }
   
+  public TopologyAffinitySpec buildTopologyAffinity() {
+    return this.topologyAffinity != null ? this.topologyAffinity.build() : null;
+  }
+  
   protected void copyInstance(PodGroupSpec instance) {
     instance = instance != null ? instance : new PodGroupSpec();
     if (instance != null) {
@@ -187,6 +192,7 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
         this.withPriorityClassName(instance.getPriorityClassName());
         this.withQueue(instance.getQueue());
         this.withSubGroupPolicy(instance.getSubGroupPolicy());
+        this.withTopologyAffinity(instance.getTopologyAffinity());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -232,11 +238,23 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(item));
   }
   
+  public TopologyAffinityNested<A> editOrNewTopologyAffinity() {
+    return this.withNewTopologyAffinityLike(Optional.ofNullable(this.buildTopologyAffinity()).orElse(new TopologyAffinitySpecBuilder().build()));
+  }
+  
+  public TopologyAffinityNested<A> editOrNewTopologyAffinityLike(TopologyAffinitySpec item) {
+    return this.withNewTopologyAffinityLike(Optional.ofNullable(this.buildTopologyAffinity()).orElse(item));
+  }
+  
   public SubGroupPolicyNested<A> editSubGroupPolicy(int index) {
     if (subGroupPolicy.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "subGroupPolicy"));
     }
     return this.setNewSubGroupPolicyLike(index, this.buildSubGroupPolicy(index));
+  }
+  
+  public TopologyAffinityNested<A> editTopologyAffinity() {
+    return this.withNewTopologyAffinityLike(Optional.ofNullable(this.buildTopologyAffinity()).orElse(null));
   }
   
   public boolean equals(Object o) {
@@ -269,6 +287,9 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
       return false;
     }
     if (!(Objects.equals(subGroupPolicy, that.subGroupPolicy))) {
+      return false;
+    }
+    if (!(Objects.equals(topologyAffinity, that.topologyAffinity))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -342,8 +363,12 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return this.subGroupPolicy != null && !(this.subGroupPolicy.isEmpty());
   }
   
+  public boolean hasTopologyAffinity() {
+    return this.topologyAffinity != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(minMember, minResources, minTaskMember, networkTopology, priorityClassName, queue, subGroupPolicy, additionalProperties);
+    return Objects.hash(minMember, minResources, minTaskMember, networkTopology, priorityClassName, queue, subGroupPolicy, topologyAffinity, additionalProperties);
   }
   
   public A removeAllFromSubGroupPolicy(Collection<SubGroupPolicySpec> items) {
@@ -515,6 +540,11 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
         sb.append(subGroupPolicy);
         sb.append(",");
     }
+    if (!(topologyAffinity == null)) {
+        sb.append("topologyAffinity:");
+        sb.append(topologyAffinity);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -579,6 +609,14 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     return new NetworkTopologyNested(item);
   }
   
+  public TopologyAffinityNested<A> withNewTopologyAffinity() {
+    return new TopologyAffinityNested(null);
+  }
+  
+  public TopologyAffinityNested<A> withNewTopologyAffinityLike(TopologyAffinitySpec item) {
+    return new TopologyAffinityNested(item);
+  }
+  
   public A withPriorityClassName(String priorityClassName) {
     this.priorityClassName = priorityClassName;
     return (A) this;
@@ -616,6 +654,18 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     }
     return (A) this;
   }
+  
+  public A withTopologyAffinity(TopologyAffinitySpec topologyAffinity) {
+    this._visitables.remove("topologyAffinity");
+    if (topologyAffinity != null) {
+        this.topologyAffinity = new TopologyAffinitySpecBuilder(topologyAffinity);
+        this._visitables.get("topologyAffinity").add(this.topologyAffinity);
+    } else {
+        this.topologyAffinity = null;
+        this._visitables.get("topologyAffinity").remove(this.topologyAffinity);
+    }
+    return (A) this;
+  }
   public class NetworkTopologyNested<N> extends NetworkTopologySpecFluent<NetworkTopologyNested<N>> implements Nested<N>{
   
     NetworkTopologySpecBuilder builder;
@@ -648,6 +698,23 @@ public class PodGroupSpecFluent<A extends io.fabric8.volcano.api.model.schedulin
     }
     
     public N endSubGroupPolicy() {
+      return and();
+    }
+    
+  }
+  public class TopologyAffinityNested<N> extends TopologyAffinitySpecFluent<TopologyAffinityNested<N>> implements Nested<N>{
+  
+    TopologyAffinitySpecBuilder builder;
+  
+    TopologyAffinityNested(TopologyAffinitySpec item) {
+      this.builder = new TopologyAffinitySpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PodGroupSpecFluent.this.withTopologyAffinity(builder.build());
+    }
+    
+    public N endTopologyAffinity() {
       return and();
     }
     
