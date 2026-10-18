@@ -1324,6 +1324,30 @@
         "Scope": "Namespaced"
       }
     },
+    "sh.volcano.nodeinfo.v1alpha1.ContainerAllocation": {
+      "description": "ContainerAllocation records the numa resource allocation for a single container",
+      "type": "object",
+      "properties": {
+        "allocations": {
+          "description": "Specifies the numa resource allocations of the container Key is resource name, e.g., \"cpu\", \"memory\", \"nvidia.com/gpu\" For \"cpu\", the value is a cpuset string, e.g., \"0,2-4\" For other resources, the value is a quantity string, e.g., \"2\", \"4Gi\"",
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "name": {
+          "description": "Specifies the name of the container",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "ContainerAllocation",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.nodeinfo.v1alpha1.NumatopoSpec": {
       "description": "NumatopoSpec defines the desired state of Numatopology",
       "type": "object",
@@ -1340,6 +1364,13 @@
           "type": "object",
           "additionalProperties": {
             "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.ResourceInfo"
+          }
+        },
+        "podAllocations": {
+          "description": "Specifies the per-pod numa resource allocation of the node",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.PodAllocation"
           }
         },
         "policies": {
@@ -1429,6 +1460,38 @@
         "Scope": "Namespaced"
       }
     },
+    "sh.volcano.nodeinfo.v1alpha1.PodAllocation": {
+      "description": "PodAllocation records the numa resource allocation for all containers in a pod",
+      "type": "object",
+      "properties": {
+        "containerAllocations": {
+          "description": "Specifies the per-container numa resource allocation of the pod",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.nodeinfo.v1alpha1.ContainerAllocation"
+          }
+        },
+        "name": {
+          "description": "Specifies the name of the pod",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Specifies the namespace of the pod",
+          "type": "string"
+        },
+        "uid": {
+          "description": "Specifies the uid of the pod",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "nodeinfo.volcano.sh",
+        "Version": "v1alpha1",
+        "Kind": "PodAllocation",
+        "Scope": "Namespaced"
+      }
+    },
     "sh.volcano.nodeinfo.v1alpha1.ResourceInfo": {
       "description": "ResourceInfo is the sets about resource capacity and allocatable",
       "type": "object",
@@ -1513,6 +1576,190 @@
         "Group": "scheduling.volcano.sh",
         "Version": "v1beta1",
         "Kind": "Guarantee",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NamespaceQueue": {
+      "description": "NamespaceQueue is a namespace-scoped queue abstraction in Volcano scheduling.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "description": "ObjectMeta contains standard Kubernetes object metadata.",
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "description": "Spec defines the desired NamespaceQueue behavior.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NamespaceQueueSpec"
+        },
+        "status": {
+          "description": "Status reports the observed NamespaceQueue lifecycle and workload state.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NamespaceQueueStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NamespaceQueue",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NamespaceQueueList": {
+      "description": "NamespaceQueueList is a collection of namespace queues.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.NamespaceQueue"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NamespaceQueueList",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NamespaceQueueSpec": {
+      "description": "NamespaceQueueSpec represents the desired behavior of NamespaceQueue.",
+      "type": "object",
+      "properties": {
+        "capability": {
+          "description": "Capability limits the resources that this NamespaceQueue may consume.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "dequeueStrategy": {
+          "description": "DequeueStrategy controls how descendants are traversed when work is dequeued.",
+          "type": "string"
+        },
+        "deserved": {
+          "description": "Deserved declares the fair-share resource entitlement for this NamespaceQueue.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "guarantee": {
+          "description": "Guarantee reserves resources for this NamespaceQueue and its descendants.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Guarantee"
+        },
+        "parent": {
+          "description": "Parent can be a cluster Queue or another NamespaceQueue in the same namespace. \"cluster/\u003cname\u003e\" refers to a cluster-scoped Queue. An unprefixed value refers to a NamespaceQueue in the same namespace.",
+          "type": "string"
+        },
+        "priority": {
+          "description": "Priority influences queue ordering during scheduling and reclamation.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "reclaimable": {
+          "description": "Reclaimable controls whether workloads in this NamespaceQueue may be reclaimed.",
+          "type": "boolean"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NamespaceQueueSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.NamespaceQueueStatus": {
+      "description": "NamespaceQueueStatus represents the current status of NamespaceQueue.",
+      "type": "object",
+      "properties": {
+        "allocated": {
+          "description": "Allocated records scheduler-owned resources allocated to the queue.",
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.api.resource.Quantity"
+          }
+        },
+        "completed": {
+          "description": "Completed counts PodGroups that have finished execution.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "conditions": {
+          "description": "Conditions describe authorization and scheduling readiness transitions.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map"
+        },
+        "inqueue": {
+          "description": "Inqueue counts PodGroups admitted to the scheduling queue.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "pending": {
+          "description": "Pending counts PodGroups waiting for scheduling.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "reservation": {
+          "description": "Reservation records scheduler-owned node reservations.",
+          "default": {},
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Reservation"
+        },
+        "running": {
+          "description": "Running counts PodGroups with running workloads.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "state": {
+          "description": "State is the observed lifecycle state of the NamespaceQueue.",
+          "type": "string"
+        },
+        "unknown": {
+          "description": "Unknown counts PodGroups whose phase is unset or not recognized.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "NamespaceQueueStatus",
         "Scope": "Namespaced"
       }
     },
@@ -1621,6 +1868,64 @@
         "Group": "scheduling.volcano.sh",
         "Version": "v1beta1",
         "Kind": "PodGroup",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupAffinityTerm": {
+      "description": "PodGroupAffinityTerm selects matching PodGroups and the topology tier for HyperNode comparison.",
+      "type": "object",
+      "required": [
+        "podGroupSelector"
+      ],
+      "properties": {
+        "namespaceSelector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "podGroupSelector": {
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.LabelSelector"
+        },
+        "topologyTier": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "topologyTierName": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupAffinityTerm",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.PodGroupAntiAffinity": {
+      "description": "PodGroupAntiAffinity defines required/preferred anti-affinity against other PodGroups.",
+      "type": "object",
+      "properties": {
+        "preferred": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupAffinityTerm"
+          }
+        },
+        "required": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupAffinityTerm"
+          }
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "PodGroupAntiAffinity",
         "Scope": "Namespaced"
       }
     },
@@ -1739,6 +2044,10 @@
           "items": {
             "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.SubGroupPolicySpec"
           }
+        },
+        "topologyAffinity": {
+          "description": "TopologyAffinity expresses inter-group topology affinity and anti-affinity on the HyperNode tree.",
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.TopologyAffinitySpec"
         }
       },
       "x-fabric8-info": {
@@ -1866,6 +2175,14 @@
         "affinity": {
           "description": "If specified, the pod owned by the queue will be scheduled with constraint",
           "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.Affinity"
+        },
+        "allowedNamespaces": {
+          "description": "AllowedNamespaces lists the namespaces whose NamespaceQueues may use this Queue as their cluster-scoped parent. An empty or omitted list denies attachment. The literal \"*\" allows all namespaces and must be the only entry when present.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "x-kubernetes-list-type": "set"
         },
         "capability": {
           "type": "object",
@@ -2046,6 +2363,22 @@
         "Group": "scheduling.volcano.sh",
         "Version": "v1beta1",
         "Kind": "SubGroupPolicySpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "sh.volcano.scheduling.v1beta1.TopologyAffinitySpec": {
+      "description": "TopologyAffinitySpec holds group topology affinity and anti-affinity rules.",
+      "type": "object",
+      "properties": {
+        "podGroupAntiAffinity": {
+          "$ref": "#/definitions/sh.volcano.scheduling.v1beta1.PodGroupAntiAffinity"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "scheduling.volcano.sh",
+        "Version": "v1beta1",
+        "Kind": "TopologyAffinitySpec",
         "Scope": "Namespaced"
       }
     }

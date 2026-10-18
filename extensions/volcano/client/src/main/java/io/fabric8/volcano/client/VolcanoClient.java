@@ -18,6 +18,8 @@ package io.fabric8.volcano.client;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueue;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueueList;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.Queue;
@@ -31,6 +33,8 @@ public interface VolcanoClient extends Client {
   MixedOperation<PodGroup, PodGroupList, Resource<PodGroup>> podGroups();
 
   MixedOperation<Queue, QueueList, Resource<Queue>> queues();
+
+  MixedOperation<NamespaceQueue, NamespaceQueueList, Resource<NamespaceQueue>> namespaceQueues();
 
   V1beta1APIGroupDSL v1beta1();
 }
