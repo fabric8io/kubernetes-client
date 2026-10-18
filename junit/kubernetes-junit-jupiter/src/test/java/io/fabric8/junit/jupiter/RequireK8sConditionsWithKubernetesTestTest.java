@@ -19,10 +19,12 @@ import io.fabric8.junit.jupiter.api.KubernetesTest;
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.junit.jupiter.api.RequireK8sVersionAtLeast;
 import io.fabric8.kubernetes.api.model.APIResourceListBuilder;
-import io.fabric8.kubernetes.api.model.Pod;
+import io.fabric8.kubernetes.client.CustomResource;
 import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import io.fabric8.kubernetes.client.VersionInfo;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
+import io.fabric8.kubernetes.model.annotation.Group;
+import io.fabric8.kubernetes.model.annotation.Version;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -47,9 +49,9 @@ class RequireK8sConditionsWithKubernetesTestTest {
     server = new KubernetesMockServer(false);
     server.setVersionInfo(new VersionInfo.Builder().withMajor("1").withMinor("99").build());
     server.init();
-    server.expect().get().withPath("/api/v1")
-        .andReturn(200, new APIResourceListBuilder().withGroupVersion("v1")
-            .addNewResource().withKind("Pod").withName("pods").withNamespaced(true).endResource()
+    server.expect().get().withPath("/apis/junit.fabric8.io/v1")
+        .andReturn(200, new APIResourceListBuilder().withGroupVersion("junit.fabric8.io/v1")
+            .addNewResource().withKind("Probe").withName("probes").withNamespaced(true).endResource()
             .build())
         .always();
   }
@@ -66,7 +68,7 @@ class RequireK8sConditionsWithKubernetesTestTest {
         .evaluateExecutionCondition(contextFor(MockServerKubernetesTest.class));
     assertThat(result)
         .returns(false, ConditionEvaluationResult::isDisabled)
-        .returns(Optional.of("Kubernetes resource io.fabric8.kubernetes.api.model.Pod IS supported in this cluster"),
+        .returns(Optional.of("Kubernetes resource " + Probe.class.getName() + " IS supported in this cluster"),
             ConditionEvaluationResult::getReason);
   }
 
@@ -88,9 +90,15 @@ class RequireK8sConditionsWithKubernetesTestTest {
   }
 
   @KubernetesTest(createEphemeralNamespace = false, kubernetesClientBuilderCustomizer = MockServerCustomizer.class)
-  @RequireK8sSupport(Pod.class)
+  @RequireK8sSupport(Probe.class)
   @RequireK8sVersionAtLeast(majorVersion = 1, minorVersion = 99)
   static final class MockServerKubernetesTest {
+  }
+
+  // Only served by the mock server, so a probe against any other cluster reports it as unsupported
+  @Group("junit.fabric8.io")
+  @Version("v1")
+  static final class Probe extends CustomResource<Void, Void> {
   }
 
   static final class MockServerCustomizer implements Consumer<KubernetesClientBuilder> {

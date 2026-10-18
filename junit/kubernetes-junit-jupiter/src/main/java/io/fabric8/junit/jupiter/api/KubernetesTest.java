@@ -69,7 +69,8 @@ public @interface KubernetesTest {
    * {@link KubernetesClient} instance, and of the clients used by the {@link RequireK8sSupport} and
    * {@link RequireK8sVersionAtLeast} conditions.
    * <p>
-   * The class must have a no-arg constructor; the class and its constructor can have any visibility.
+   * The class must be a top-level or static nested class with a no-arg constructor; the class and its constructor can have
+   * any visibility.
    */
   Class<? extends Consumer<KubernetesClientBuilder>> kubernetesClientBuilderCustomizer() default KubernetesClientBuilderCustomizer.class;
 }

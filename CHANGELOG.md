@@ -7,8 +7,8 @@
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
-* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`
-* Fix #5352: (kubernetes-junit-jupiter) `@RequireK8sSupport` and `@RequireK8sVersionAtLeast` honor the `@KubernetesTest` `kubernetesClientBuilderCustomizer`, which (like the `@EnableKubernetesMockClient` one) no longer needs to be public
+* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`, also used by `@RequireK8sSupport` and `@RequireK8sVersionAtLeast`
+* Fix #5352: (kubernetes-server-mock) `@EnableKubernetesMockClient` `kubernetesClientBuilderCustomizer` no longer needs to be public
 
 #### Dependency Upgrade
 

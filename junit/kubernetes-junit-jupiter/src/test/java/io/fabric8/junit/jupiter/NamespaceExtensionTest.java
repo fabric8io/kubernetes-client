@@ -39,8 +39,8 @@ class NamespaceExtensionTest {
     final NamespaceExtension extension = new NamespaceExtension();
     assertThatThrownBy(() -> extension.beforeAll(context))
         .isInstanceOf(IllegalArgumentException.class)
-        .hasMessageContaining(NoNoArgConstructorCustomizer.class.getName())
-        .hasMessageContaining("no-arg constructor");
+        .hasMessage("The provided kubernetesClientBuilderCustomizer " + NoNoArgConstructorCustomizer.class.getName()
+            + " could not be instantiated, it must be a concrete top-level or static nested class with a no-arg constructor");
   }
 
   @KubernetesTest(createEphemeralNamespace = false, kubernetesClientBuilderCustomizer = NoNoArgConstructorCustomizer.class)

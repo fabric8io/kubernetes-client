@@ -50,7 +50,8 @@ public @interface EnableKubernetesMockClient {
    * Enables the customization of the automatically bootstrapped and injected
    * {@link io.fabric8.kubernetes.client.KubernetesClient} instance.
    * <p>
-   * The class must have a no-arg constructor; the class and its constructor can have any visibility.
+   * The class must be a top-level or static nested class with a no-arg constructor; the class and its constructor can have
+   * any visibility.
    */
   Class<? extends Consumer<KubernetesClientBuilder>> kubernetesClientBuilderCustomizer() default KubernetesClientBuilderCustomizer.class;
 

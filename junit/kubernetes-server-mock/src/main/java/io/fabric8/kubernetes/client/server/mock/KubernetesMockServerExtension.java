@@ -135,7 +135,8 @@ public class KubernetesMockServerExtension
       return constructor.newInstance();
     } catch (ReflectiveOperationException e) {
       throw new IllegalArgumentException("The provided kubernetesClientBuilderCustomizer " + customizer.getName()
-          + " is invalid, it must be a concrete class with a no-arg constructor", e);
+          + " could not be instantiated, it must be a concrete top-level or static nested class with a no-arg constructor",
+          e);
     }
   }
 
