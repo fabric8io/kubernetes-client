@@ -17,6 +17,10 @@ package io.fabric8.ovn.client.dsl;
 
 import io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRoute;
 import io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRouteList;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnect;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnectList;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetwork;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetworkList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewallList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressIP;
@@ -25,6 +29,10 @@ import io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressQoSList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressService;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressServiceList;
+import io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisements;
+import io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisementsList;
+import io.fabric8.kubernetes.api.model.ovn.v1.VTEP;
+import io.fabric8.kubernetes.api.model.ovn.v1.VTEPList;
 import io.fabric8.kubernetes.client.Client;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
@@ -88,4 +96,38 @@ public interface V1OpenVirtualNetworkingAPIGroupDSL extends Client {
    * @return {@link MixedOperation} for EgressService
    */
   MixedOperation<EgressService, EgressServiceList, Resource<EgressService>> egressServices();
+
+  /**
+   * API entrypoint for k8s.ovn.org/v1 ClusterNetworkConnect.
+   * ClusterNetworkConnect enables connecting multiple User Defined Networks and/or
+   * Cluster User Defined Networks together.
+   *
+   * @return {@link NonNamespaceOperation} for ClusterNetworkConnect
+   */
+  NonNamespaceOperation<ClusterNetworkConnect, ClusterNetworkConnectList, Resource<ClusterNetworkConnect>> clusterNetworkConnects();
+
+  /**
+   * API entrypoint for k8s.ovn.org/v1 ClusterUserDefinedNetwork.
+   * ClusterUserDefinedNetwork describes a network request for a shared network across namespaces.
+   *
+   * @return {@link NonNamespaceOperation} for ClusterUserDefinedNetwork
+   */
+  NonNamespaceOperation<ClusterUserDefinedNetwork, ClusterUserDefinedNetworkList, Resource<ClusterUserDefinedNetwork>> clusterUserDefinedNetworks();
+
+  /**
+   * API entrypoint for k8s.ovn.org/v1 RouteAdvertisements.
+   * RouteAdvertisements determines which network routes are advertised through FRR (BGP),
+   * from which nodes and in which VRF.
+   *
+   * @return {@link NonNamespaceOperation} for RouteAdvertisements
+   */
+  NonNamespaceOperation<RouteAdvertisements, RouteAdvertisementsList, Resource<RouteAdvertisements>> routeAdvertisements();
+
+  /**
+   * API entrypoint for k8s.ovn.org/v1 VTEP.
+   * VTEP defines VTEP (VXLAN Tunnel Endpoint) IP configuration for EVPN.
+   *
+   * @return {@link NonNamespaceOperation} for VTEP
+   */
+  NonNamespaceOperation<VTEP, VTEPList, Resource<VTEP>> vteps();
 }

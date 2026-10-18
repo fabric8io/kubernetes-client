@@ -57,7 +57,7 @@ require (
 	github.com/openshift/installer v1.5.0-rc-1
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.46.0
-	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20261016181840-5ff49b32879c
+	github.com/ovn-kubernetes/ovn-kubernetes/go-controller v0.0.0-20261016181840-5ff49b32879c
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.1
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20260922145900-ea34ca3eb97c
@@ -228,7 +228,7 @@ require (
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260825221802-da73d73af1c5 // indirect
-	google.golang.org/grpc v1.83.2 // indirect
+	google.golang.org/grpc v1.84.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
