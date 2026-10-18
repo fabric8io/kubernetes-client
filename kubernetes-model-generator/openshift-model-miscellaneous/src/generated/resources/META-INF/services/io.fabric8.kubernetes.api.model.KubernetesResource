@@ -32,6 +32,8 @@ io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BMCEventSubscriptio
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BMCEventSubscriptionList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHost
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalHostList
+io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalSwitch
+io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.BareMetalSwitchList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.DataImage
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.DataImageList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.FirmwareSchema
@@ -46,6 +48,8 @@ io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostFirmwareCompone
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostFirmwareComponentsList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostFirmwareSettings
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostFirmwareSettingsList
+io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostNetworkAttachment
+io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostNetworkAttachmentList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostUpdatePolicy
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.HostUpdatePolicyList
 io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1.PreprovisioningImage

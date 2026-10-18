@@ -3,10 +3,15 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #7041: (crd-generator) Files to scan that don't exist, like Gradle's `build/classes/java/main` in a Kotlin-only project, are skipped with a warning instead of failing with "Not a class file, JAR file or directory". The Gradle build-script recipes only pass existing class directories
 
 #### Improvements
+* Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
+* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`
 
 #### Dependency Upgrade
+* Fix #8150: bump baremetal-operator/apis from 0.13.0 to 0.14.1
+* Fix #8150: bump cluster-api-provider-metal3 from 1.14.0 to 1.14.1
 
 #### New Features
 
