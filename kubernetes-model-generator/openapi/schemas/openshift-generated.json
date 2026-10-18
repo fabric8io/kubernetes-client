@@ -69119,7 +69119,7 @@
           "$ref": "#/definitions/io.metal3.v1alpha1.Image"
         },
         "inspectionMode": {
-          "description": "Specifies the mode for host inspection. \"disabled\" - no inspection will be performed \"agent\" - normal agent-based inspection will run",
+          "description": "Specifies the mode for host inspection. \"disabled\" - no inspection will be performed \"agent\" - normal agent-based inspection will run \"fast\" - out-of-band inspection via BMC (Redfish), no ramdisk boot",
           "type": "string"
         },
         "metaData": {
@@ -69129,6 +69129,13 @@
         "networkData": {
           "description": "NetworkData holds the reference to the Secret containing network configuration which is passed to the Config Drive and interpreted by the first boot software such as cloud-init.",
           "$ref": "#/definitions/io.k8s.api.core.v1.SecretReference"
+        },
+        "networkInterfaces": {
+          "description": "NetworkInterfaces defines the network configuration for each interface. This will be used to configure switch ports for the host.  Interface names must correspond to actual NICs discovered during inspection (see HardwareData resource).  They are referenced by either the name or MAC address of the NIC.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.metal3.v1alpha1.NetworkInterface"
+          }
         },
         "online": {
           "description": "Should the host be powered on? If the host is currently in a stable state (e.g. provisioned), its power state will be forced to match this value.",
@@ -69148,7 +69155,7 @@
           "$ref": "#/definitions/io.metal3.v1alpha1.RootDeviceHints"
         },
         "taints": {
-          "description": "Taints is the full, authoritative list of taints to apply to the corresponding Machine. This list will overwrite any modifications made to the Machine on an ongoing basis.",
+          "description": "Taints is the full, authoritative list of taints to apply to the corresponding Machine.\n\nDeprecated: the Taints field was never actually implemented.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.k8s.api.core.v1.Taint"
@@ -69175,7 +69182,8 @@
         "provisioning",
         "errorMessage",
         "poweredOn",
-        "errorCount"
+        "errorCount",
+        "provisioningFailCount"
       ],
       "properties": {
         "conditions": {
@@ -69217,6 +69225,10 @@
           "description": "The name of the profile matching the hardware details. Hardware profiles are deprecated and should not be relied on.",
           "type": "string"
         },
+        "lastAttemptedImage": {
+          "description": "LastAttemptedImage stores the full image spec of the last provisioning attempt, used to detect user-initiated image changes (URL, checksum, format, etc.) that should reset the provisioning retry limit counter.",
+          "$ref": "#/definitions/io.metal3.v1alpha1.Image"
+        },
         "lastUpdated": {
           "description": "LastUpdated identifies when this status was last observed.",
           "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Time"
@@ -69241,6 +69253,12 @@
           "default": {},
           "$ref": "#/definitions/io.metal3.v1alpha1.ProvisionStatus"
         },
+        "provisioningFailCount": {
+          "description": "ProvisioningFailCount records how many times provisioning has failed consecutively for the current image. Unlike ErrorCount, it is not reset on deprovisioning and is only cleared on successful provisioning or when a new image is specified.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        },
         "triedCredentials": {
           "description": "The last credentials we sent to the provisioning backend.",
           "default": {},
@@ -69252,6 +69270,149 @@
         "Group": "metal3.io",
         "Version": "v1alpha1",
         "Kind": "BareMetalHostStatus",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.BareMetalSwitch": {
+      "description": "BareMetalSwitch represents a Top-of-Rack switch managed by Ironic Networking.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/io.metal3.v1alpha1.BareMetalSwitchSpec"
+        },
+        "status": {
+          "default": {},
+          "$ref": "#/definitions/io.metal3.v1alpha1.BareMetalSwitchStatus"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "BareMetalSwitch",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.BareMetalSwitchList": {
+      "description": "BareMetalSwitchList contains a list of BareMetalSwitch.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.metal3.v1alpha1.BareMetalSwitch"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "BareMetalSwitchList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.BareMetalSwitchSpec": {
+      "description": "BareMetalSwitchSpec defines the desired state of BareMetalSwitch.",
+      "type": "object",
+      "required": [
+        "address",
+        "macAddress",
+        "deviceType"
+      ],
+      "properties": {
+        "address": {
+          "description": "Address is the network address of the switch (IP address or hostname).",
+          "type": "string",
+          "default": ""
+        },
+        "credentials": {
+          "description": "The secret containing the switch credentials (requires key \"username\" and either \"password\" or \"ssh-privatekey\"). An optional \"admin-password\" key can be provided for privilege escalation.",
+          "$ref": "#/definitions/io.k8s.api.core.v1.SecretReference"
+        },
+        "deviceType": {
+          "description": "DeviceType specifies the device type for the generic-switch driver. Must be one of the device types supported by networking-generic-switch. Examples: netmiko_cisco_ios, netmiko_dell_force10, netmiko_dell_os10,\n  netmiko_juniper_junos, netmiko_arista_eos\nSee https://docs.openstack.org/networking-generic-switch/latest/configuration.html",
+          "type": "string",
+          "default": ""
+        },
+        "disableCertificateVerification": {
+          "description": "DisableCertificateVerification disables TLS certificate verification when using HTTPS to connect to the switch. This is required for self-signed certificates, but is insecure as it allows man-in-the-middle attacks.",
+          "type": "boolean"
+        },
+        "driver": {
+          "description": "Driver specifies the driver to use. Currently only \"generic-switch\" is supported.",
+          "type": "string"
+        },
+        "macAddress": {
+          "description": "MACAddress is the MAC address of the switch management interface. Used to correlate LLDP information from nodes to identify which switch they're connected to.",
+          "type": "string",
+          "default": ""
+        },
+        "port": {
+          "description": "Port specifies the management port to connect to (e.g., SSH port 22, HTTPS port 443). If not specified, the driver will use its default port based on the device type.",
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "BareMetalSwitchSpec",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.BareMetalSwitchStatus": {
+      "description": "BareMetalSwitchStatus defines the observed state of BareMetalSwitch.",
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "description": "Conditions describes the state of the BareMetalSwitch resource.",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.Condition"
+          },
+          "x-kubernetes-list-map-keys": [
+            "type"
+          ],
+          "x-kubernetes-list-type": "map",
+          "x-kubernetes-patch-merge-key": "type",
+          "x-kubernetes-patch-strategy": "merge"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "BareMetalSwitchStatus",
         "Scope": "Namespaced"
       }
     },
@@ -70438,6 +70599,130 @@
         "Scope": "Namespaced"
       }
     },
+    "io.metal3.v1alpha1.HostNetworkAttachment": {
+      "description": "HostNetworkAttachment defines switchport configuration for BMH network interfaces. Spec fields are mutable when no BMH references the attachment, immutable when in use.",
+      "type": "object",
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta"
+        },
+        "spec": {
+          "default": {},
+          "$ref": "#/definitions/io.metal3.v1alpha1.HostNetworkAttachmentSpec"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "object",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "HostNetworkAttachment",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.HostNetworkAttachmentList": {
+      "description": "HostNetworkAttachmentList contains a list of HostNetworkAttachment.",
+      "type": "object",
+      "required": [
+        "items"
+      ],
+      "properties": {
+        "apiVersion": {
+          "description": "APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources",
+          "type": "string"
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/io.metal3.v1alpha1.HostNetworkAttachment"
+          }
+        },
+        "kind": {
+          "description": "Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds",
+          "type": "string"
+        },
+        "metadata": {
+          "default": {},
+          "$ref": "#/definitions/io.k8s.apimachinery.pkg.apis.meta.v1.ListMeta"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "list",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "HostNetworkAttachmentList",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.HostNetworkAttachmentRef": {
+      "description": "HostNetworkAttachmentRef references a HostNetworkAttachment for interface configuration.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "description": "Name of the HostNetworkAttachment resource",
+          "type": "string"
+        },
+        "namespace": {
+          "description": "Namespace of the HostNetworkAttachment (defaults to BMH namespace)",
+          "type": "string"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "HostNetworkAttachmentRef",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.HostNetworkAttachmentSpec": {
+      "description": "HostNetworkAttachmentSpec defines the desired switchport configuration.",
+      "type": "object",
+      "required": [
+        "mode",
+        "nativeVLAN"
+      ],
+      "properties": {
+        "allowedVLANs": {
+          "description": "AllowedVLANs specifies the VLAN IDs allowed on this network attachment. Each entry is either a single VLAN ID (e.g., \"100\") or a range (e.g., \"100-200\"). This is typically used in trunk or hybrid mode to specify which tagged VLANs can be carried on the interface.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mode": {
+          "description": "Mode specifies the network attachment mode.",
+          "type": "string",
+          "default": ""
+        },
+        "mtu": {
+          "description": "MTU specifies the Maximum Transmission Unit size for the network attachment. If not specified, the default MTU for the underlying network will be used.",
+          "type": "integer",
+          "format": "int32"
+        },
+        "nativeVLAN": {
+          "description": "NativeVLAN specifies the native VLAN ID for the network attachment. This is the untagged VLAN used on the interface.",
+          "type": "integer",
+          "format": "int32",
+          "default": 0
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "HostNetworkAttachmentSpec",
+        "Scope": "Namespaced"
+      }
+    },
     "io.metal3.v1alpha1.HostSelector": {
       "description": "HostSelector specifies matching criteria for labels on BareMetalHosts. This is used to limit the set of BareMetalHost objects considered for claiming for a Machine.",
       "type": "object",
@@ -70740,6 +71025,36 @@
         "Group": "metal3.io",
         "Version": "v1alpha1",
         "Kind": "NameValuePair",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.NetworkInterface": {
+      "description": "NetworkInterface defines the network configuration for a specific interface.",
+      "type": "object",
+      "properties": {
+        "hostNetworkAttachment": {
+          "description": "HostNetworkAttachment references the HostNetworkAttachment for this interface",
+          "default": {},
+          "$ref": "#/definitions/io.metal3.v1alpha1.HostNetworkAttachmentRef"
+        },
+        "macAddress": {
+          "description": "MAC address of the network interface.  This must match the MAC address of a NIC discovered during inspection (see HardwareData resource). Mutually exclusive with Name.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the network interface (e.g., \"eth0\", \"ens1f0\") This must match the name of a NIC discovered during inspection (see HardwareData resource). Mutually exclusive with MACAddress.",
+          "type": "string"
+        },
+        "switchPort": {
+          "description": "SwitchPort defines the switch port on which this interface is attached. This is intended to be a replacement for LLDP information if LLDP is not enabled on the neighboring switches or if inspection is not used on the BMH.  If LLDP information is acquired during inspection and this field is provided then it will override the LLDP provided information; therefore, caution must be exercised when supplying this value.",
+          "$ref": "#/definitions/io.metal3.v1alpha1.SwitchPort"
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "NetworkInterface",
         "Scope": "Namespaced"
       }
     },
@@ -71246,6 +71561,10 @@
             "$ref": "#/definitions/io.metal3.v1alpha1.RootDeviceHints"
           }
         },
+        "rootVolume": {
+          "description": "Setting this to true, causes installer to consider this volume as root device for installation. This can only be set for one of the volumes.",
+          "type": "boolean"
+        },
         "sizeGibibytes": {
           "description": "Size of the logical disk to be created in GiB. If unspecified or set be 0, the maximum capacity of disk will be used for logical disk.",
           "type": "integer",
@@ -71322,6 +71641,33 @@
         "Group": "metal3.io",
         "Version": "v1alpha1",
         "Kind": "Storage",
+        "Scope": "Namespaced"
+      }
+    },
+    "io.metal3.v1alpha1.SwitchPort": {
+      "description": "SwitchPort defines the attributes required to identify a switch port.",
+      "type": "object",
+      "required": [
+        "switchID",
+        "portID"
+      ],
+      "properties": {
+        "portID": {
+          "description": "PortID is expected to be the configuration name of the port in the switch management system.",
+          "type": "string",
+          "default": ""
+        },
+        "switchID": {
+          "description": "SwitchID is expected to be the management MAC address of the switch",
+          "type": "string",
+          "default": ""
+        }
+      },
+      "x-fabric8-info": {
+        "Type": "nested",
+        "Group": "metal3.io",
+        "Version": "v1alpha1",
+        "Kind": "SwitchPort",
         "Scope": "Namespaced"
       }
     },

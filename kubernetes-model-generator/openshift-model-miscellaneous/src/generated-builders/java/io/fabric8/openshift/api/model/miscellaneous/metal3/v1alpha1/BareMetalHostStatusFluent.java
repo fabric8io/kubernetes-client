@@ -32,11 +32,13 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
   private CredentialsStatusBuilder goodCredentials;
   private HardwareDetailsBuilder hardware;
   private String hardwareProfile;
+  private ImageBuilder lastAttemptedImage;
   private String lastUpdated;
   private OperationHistoryBuilder operationHistory;
   private String operationalStatus;
   private Boolean poweredOn;
   private ProvisionStatusBuilder provisioning;
+  private Integer provisioningFailCount;
   private CredentialsStatusBuilder triedCredentials;
 
   public BareMetalHostStatusFluent() {
@@ -102,6 +104,10 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.hardware != null ? this.hardware.build() : null;
   }
   
+  public Image buildLastAttemptedImage() {
+    return this.lastAttemptedImage != null ? this.lastAttemptedImage.build() : null;
+  }
+  
   public OperationHistory buildOperationHistory() {
     return this.operationHistory != null ? this.operationHistory.build() : null;
   }
@@ -124,11 +130,13 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
         this.withGoodCredentials(instance.getGoodCredentials());
         this.withHardware(instance.getHardware());
         this.withHardwareProfile(instance.getHardwareProfile());
+        this.withLastAttemptedImage(instance.getLastAttemptedImage());
         this.withLastUpdated(instance.getLastUpdated());
         this.withOperationHistory(instance.getOperationHistory());
         this.withOperationalStatus(instance.getOperationalStatus());
         this.withPoweredOn(instance.getPoweredOn());
         this.withProvisioning(instance.getProvisioning());
+        this.withProvisioningFailCount(instance.getProvisioningFailCount());
         this.withTriedCredentials(instance.getTriedCredentials());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -140,6 +148,10 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
   
   public HardwareNested<A> editHardware() {
     return this.withNewHardwareLike(Optional.ofNullable(this.buildHardware()).orElse(null));
+  }
+  
+  public LastAttemptedImageNested<A> editLastAttemptedImage() {
+    return this.withNewLastAttemptedImageLike(Optional.ofNullable(this.buildLastAttemptedImage()).orElse(null));
   }
   
   public OperationHistoryNested<A> editOperationHistory() {
@@ -160,6 +172,14 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
   
   public HardwareNested<A> editOrNewHardwareLike(HardwareDetails item) {
     return this.withNewHardwareLike(Optional.ofNullable(this.buildHardware()).orElse(item));
+  }
+  
+  public LastAttemptedImageNested<A> editOrNewLastAttemptedImage() {
+    return this.withNewLastAttemptedImageLike(Optional.ofNullable(this.buildLastAttemptedImage()).orElse(new ImageBuilder().build()));
+  }
+  
+  public LastAttemptedImageNested<A> editOrNewLastAttemptedImageLike(Image item) {
+    return this.withNewLastAttemptedImageLike(Optional.ofNullable(this.buildLastAttemptedImage()).orElse(item));
   }
   
   public OperationHistoryNested<A> editOrNewOperationHistory() {
@@ -226,6 +246,9 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(hardwareProfile, that.hardwareProfile))) {
       return false;
     }
+    if (!(Objects.equals(lastAttemptedImage, that.lastAttemptedImage))) {
+      return false;
+    }
     if (!(Objects.equals(lastUpdated, that.lastUpdated))) {
       return false;
     }
@@ -239,6 +262,9 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
       return false;
     }
     if (!(Objects.equals(provisioning, that.provisioning))) {
+      return false;
+    }
+    if (!(Objects.equals(provisioningFailCount, that.provisioningFailCount))) {
       return false;
     }
     if (!(Objects.equals(triedCredentials, that.triedCredentials))) {
@@ -307,6 +333,10 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.poweredOn;
   }
   
+  public Integer getProvisioningFailCount() {
+    return this.provisioningFailCount;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -339,6 +369,10 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.hardwareProfile != null;
   }
   
+  public boolean hasLastAttemptedImage() {
+    return this.lastAttemptedImage != null;
+  }
+  
   public boolean hasLastUpdated() {
     return this.lastUpdated != null;
   }
@@ -368,12 +402,16 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.provisioning != null;
   }
   
+  public boolean hasProvisioningFailCount() {
+    return this.provisioningFailCount != null;
+  }
+  
   public boolean hasTriedCredentials() {
     return this.triedCredentials != null;
   }
   
   public int hashCode() {
-    return Objects.hash(conditions, errorCount, errorMessage, errorType, goodCredentials, hardware, hardwareProfile, lastUpdated, operationHistory, operationalStatus, poweredOn, provisioning, triedCredentials, additionalProperties);
+    return Objects.hash(conditions, errorCount, errorMessage, errorType, goodCredentials, hardware, hardwareProfile, lastAttemptedImage, lastUpdated, operationHistory, operationalStatus, poweredOn, provisioning, provisioningFailCount, triedCredentials, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -466,6 +504,11 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
         sb.append(hardwareProfile);
         sb.append(",");
     }
+    if (!(lastAttemptedImage == null)) {
+        sb.append("lastAttemptedImage:");
+        sb.append(lastAttemptedImage);
+        sb.append(",");
+    }
     if (!(lastUpdated == null)) {
         sb.append("lastUpdated:");
         sb.append(lastUpdated);
@@ -489,6 +532,11 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     if (!(provisioning == null)) {
         sb.append("provisioning:");
         sb.append(provisioning);
+        sb.append(",");
+    }
+    if (!(provisioningFailCount == null)) {
+        sb.append("provisioningFailCount:");
+        sb.append(provisioningFailCount);
         sb.append(",");
     }
     if (!(triedCredentials == null)) {
@@ -582,6 +630,18 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return (A) this;
   }
   
+  public A withLastAttemptedImage(Image lastAttemptedImage) {
+    this._visitables.remove("lastAttemptedImage");
+    if (lastAttemptedImage != null) {
+        this.lastAttemptedImage = new ImageBuilder(lastAttemptedImage);
+        this._visitables.get("lastAttemptedImage").add(this.lastAttemptedImage);
+    } else {
+        this.lastAttemptedImage = null;
+        this._visitables.get("lastAttemptedImage").remove(this.lastAttemptedImage);
+    }
+    return (A) this;
+  }
+  
   public A withLastUpdated(String lastUpdated) {
     this.lastUpdated = lastUpdated;
     return (A) this;
@@ -601,6 +661,18 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
   
   public HardwareNested<A> withNewHardwareLike(HardwareDetails item) {
     return new HardwareNested(item);
+  }
+  
+  public LastAttemptedImageNested<A> withNewLastAttemptedImage() {
+    return new LastAttemptedImageNested(null);
+  }
+  
+  public A withNewLastAttemptedImage(String checksum,String checksumType,String format,String ociAuthSecretName,String url) {
+    return (A) this.withLastAttemptedImage(new Image(checksum, checksumType, format, ociAuthSecretName, url));
+  }
+  
+  public LastAttemptedImageNested<A> withNewLastAttemptedImageLike(Image item) {
+    return new LastAttemptedImageNested(item);
   }
   
   public OperationHistoryNested<A> withNewOperationHistory() {
@@ -665,6 +737,11 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     return (A) this;
   }
   
+  public A withProvisioningFailCount(Integer provisioningFailCount) {
+    this.provisioningFailCount = provisioningFailCount;
+    return (A) this;
+  }
+  
   public A withTriedCredentials(CredentialsStatus triedCredentials) {
     this._visitables.remove("triedCredentials");
     if (triedCredentials != null) {
@@ -706,6 +783,23 @@ public class BareMetalHostStatusFluent<A extends io.fabric8.openshift.api.model.
     }
     
     public N endHardware() {
+      return and();
+    }
+    
+  }
+  public class LastAttemptedImageNested<N> extends ImageFluent<LastAttemptedImageNested<N>> implements Nested<N>{
+  
+    ImageBuilder builder;
+  
+    LastAttemptedImageNested(Image item) {
+      this.builder = new ImageBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) BareMetalHostStatusFluent.this.withLastAttemptedImage(builder.build());
+    }
+    
+    public N endLastAttemptedImage() {
       return and();
     }
     
