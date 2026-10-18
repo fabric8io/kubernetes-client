@@ -66,7 +66,7 @@ public class CertManager {
   public static final String CLIENT_CERT_NAME = "client.crt";
 
   // certificates expiring within this period are regenerated, so they do not expire during a test run
-  static final Duration VALIDITY_MARGIN = Duration.ofDays(1);
+  private static final Duration VALIDITY_MARGIN = Duration.ofDays(1);
   private static final String LOCK_FILE_NAME = ".certificates.lock";
 
   // serializes the threads of this JVM; the lock file serializes the JVMs sharing the directory

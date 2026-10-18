@@ -30,28 +30,50 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import static io.fabric8.kubeapitest.cert.CertManager.API_SERVER_CERT_NAME;
-import static io.fabric8.kubeapitest.cert.CertManager.API_SERVER_KEY_NAME;
-import static io.fabric8.kubeapitest.cert.CertManager.CLIENT_CERT_NAME;
-import static io.fabric8.kubeapitest.cert.CertManager.CLIENT_KEY_NAME;
 import static org.assertj.core.api.Assertions.assertThat;
 
+// File names, validity periods and the margin are spelled out on purpose: reusing CertManager's constants would let
+// the tests follow a regression instead of catching it.
 class CertManagerTest {
+
+  private static final String API_SERVER_KEY_NAME = "apiserver.key";
+  private static final String API_SERVER_CERT_NAME = "apiserver.crt";
+  private static final String CLIENT_KEY_NAME = "client.key";
+  private static final String CLIENT_CERT_NAME = "client.crt";
 
   @TempDir
   File certsDir;
 
   @Test
-  @DisplayName("generates the API server and client keys and certificates in an empty directory")
-  void generatesCertificates() {
+  @DisplayName("generates the API server and client keys and certificates in an empty directory, valid for a year")
+  void generatesCertificates() throws Exception {
     CertManager certManager = new CertManager(certsDir.getPath());
     certManager.createCertificatesIfNeeded();
 
     assertThat(certsDir.list()).contains(API_SERVER_CERT_NAME, API_SERVER_KEY_NAME, CLIENT_CERT_NAME, CLIENT_KEY_NAME);
+    var almostAYearFromNow = Date.from(Instant.now().plus(364, ChronoUnit.DAYS));
+    assertThat(readCertificate(API_SERVER_CERT_NAME).getNotAfter()).isAfter(almostAYearFromNow);
+    assertThat(readCertificate(CLIENT_CERT_NAME).getNotAfter()).isAfter(almostAYearFromNow);
   }
 
   @Test
-  @DisplayName("keeps certificates that are valid beyond the validity margin")
+  @DisplayName("keeps certificates that are still valid for more than one day")
+  void keepsCertificatesValidForMoreThanOneDay() throws Exception {
+    var validFrom = Instant.now().minus(1, ChronoUnit.DAYS);
+    var validUntil = Instant.now().plus(2, ChronoUnit.DAYS);
+    generateCertificate(API_SERVER_KEY_NAME, API_SERVER_CERT_NAME, validFrom, validUntil);
+    generateCertificate(CLIENT_KEY_NAME, CLIENT_CERT_NAME, validFrom, validUntil);
+    var apiServerCert = Files.readAllBytes(new File(certsDir, API_SERVER_CERT_NAME).toPath());
+    var clientCert = Files.readAllBytes(new File(certsDir, CLIENT_CERT_NAME).toPath());
+
+    new CertManager(certsDir.getPath()).createCertificatesIfNeeded();
+
+    assertThat(new File(certsDir, API_SERVER_CERT_NAME)).hasBinaryContent(apiServerCert);
+    assertThat(new File(certsDir, CLIENT_CERT_NAME)).hasBinaryContent(clientCert);
+  }
+
+  @Test
+  @DisplayName("keeps the certificates it generated on a later run")
   void keepsValidCertificates() throws Exception {
     CertManager certManager = new CertManager(certsDir.getPath());
     certManager.createCertificatesIfNeeded();
@@ -79,10 +101,10 @@ class CertManagerTest {
   }
 
   @Test
-  @DisplayName("regenerates certificates that expire within the validity margin, so they don't expire during a test run")
-  void regeneratesCertificatesExpiringWithinTheValidityMargin() throws Exception {
+  @DisplayName("regenerates certificates that expire within one day, so they don't expire during a test run")
+  void regeneratesCertificatesExpiringWithinOneDay() throws Exception {
     var validFrom = Instant.now().minus(1, ChronoUnit.DAYS);
-    var validUntil = Instant.now().plus(CertManager.VALIDITY_MARGIN).minus(1, ChronoUnit.HOURS);
+    var validUntil = Instant.now().plus(12, ChronoUnit.HOURS);
     generateCertificate(API_SERVER_KEY_NAME, API_SERVER_CERT_NAME, validFrom, validUntil);
     generateCertificate(CLIENT_KEY_NAME, CLIENT_CERT_NAME, validFrom, validUntil);
 
