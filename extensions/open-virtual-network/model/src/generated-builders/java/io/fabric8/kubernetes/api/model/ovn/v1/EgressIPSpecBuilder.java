@@ -25,7 +25,7 @@ public class EgressIPSpecBuilder extends EgressIPSpecFluent<EgressIPSpecBuilder>
   }
 
   public EgressIPSpec build() {
-    EgressIPSpec buildable = new EgressIPSpec(fluent.getEgressIPs(), fluent.buildNamespaceSelector(), fluent.buildPodSelector());
+    EgressIPSpec buildable = new EgressIPSpec(fluent.getEgressIPs(), fluent.buildEgressNodeSelector(), fluent.buildNamespaceSelector(), fluent.buildPodSelector());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

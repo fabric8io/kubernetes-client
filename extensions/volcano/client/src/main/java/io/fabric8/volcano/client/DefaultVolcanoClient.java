@@ -23,6 +23,8 @@ import io.fabric8.kubernetes.client.dsl.FunctionCallable;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.extension.ExtensionRootClientAdapter;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueue;
+import io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueueList;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList;
 import io.fabric8.volcano.api.model.scheduling.v1beta1.Queue;
@@ -64,6 +66,11 @@ public class DefaultVolcanoClient extends ExtensionRootClientAdapter<DefaultVolc
   public MixedOperation<Queue, QueueList, Resource<Queue>> queues() {
     // By default, client.podGroups() use v1beta1 version,
     return resources(Queue.class, QueueList.class);
+  }
+
+  @Override
+  public MixedOperation<NamespaceQueue, NamespaceQueueList, Resource<NamespaceQueue>> namespaceQueues() {
+    return resources(NamespaceQueue.class, NamespaceQueueList.class);
   }
 
   @Override

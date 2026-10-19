@@ -44,11 +44,13 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "goodCredentials",
     "hardware",
     "hardwareProfile",
+    "lastAttemptedImage",
     "lastUpdated",
     "operationHistory",
     "operationalStatus",
     "poweredOn",
     "provisioning",
+    "provisioningFailCount",
     "triedCredentials"
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
@@ -85,6 +87,8 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     private HardwareDetails hardware;
     @JsonProperty("hardwareProfile")
     private String hardwareProfile;
+    @JsonProperty("lastAttemptedImage")
+    private Image lastAttemptedImage;
     @JsonProperty("lastUpdated")
     private String lastUpdated;
     @JsonProperty("operationHistory")
@@ -95,6 +99,8 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     private Boolean poweredOn;
     @JsonProperty("provisioning")
     private ProvisionStatus provisioning;
+    @JsonProperty("provisioningFailCount")
+    private Integer provisioningFailCount;
     @JsonProperty("triedCredentials")
     private CredentialsStatus triedCredentials;
     @JsonIgnore
@@ -106,7 +112,7 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     public BareMetalHostStatus() {
     }
 
-    public BareMetalHostStatus(List<Condition> conditions, Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, CredentialsStatus triedCredentials) {
+    public BareMetalHostStatus(List<Condition> conditions, Integer errorCount, String errorMessage, String errorType, CredentialsStatus goodCredentials, HardwareDetails hardware, String hardwareProfile, Image lastAttemptedImage, String lastUpdated, OperationHistory operationHistory, String operationalStatus, Boolean poweredOn, ProvisionStatus provisioning, Integer provisioningFailCount, CredentialsStatus triedCredentials) {
         super();
         this.conditions = conditions;
         this.errorCount = errorCount;
@@ -115,11 +121,13 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
         this.goodCredentials = goodCredentials;
         this.hardware = hardware;
         this.hardwareProfile = hardwareProfile;
+        this.lastAttemptedImage = lastAttemptedImage;
         this.lastUpdated = lastUpdated;
         this.operationHistory = operationHistory;
         this.operationalStatus = operationalStatus;
         this.poweredOn = poweredOn;
         this.provisioning = provisioning;
+        this.provisioningFailCount = provisioningFailCount;
         this.triedCredentials = triedCredentials;
     }
 
@@ -239,6 +247,22 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     /**
      * BareMetalHostStatus defines the observed state of BareMetalHost.
      */
+    @JsonProperty("lastAttemptedImage")
+    public Image getLastAttemptedImage() {
+        return lastAttemptedImage;
+    }
+
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
+    @JsonProperty("lastAttemptedImage")
+    public void setLastAttemptedImage(Image lastAttemptedImage) {
+        this.lastAttemptedImage = lastAttemptedImage;
+    }
+
+    /**
+     * BareMetalHostStatus defines the observed state of BareMetalHost.
+     */
     @JsonProperty("lastUpdated")
     public String getLastUpdated() {
         return lastUpdated;
@@ -314,6 +338,22 @@ public class BareMetalHostStatus implements Editable<BareMetalHostStatusBuilder>
     @JsonProperty("provisioning")
     public void setProvisioning(ProvisionStatus provisioning) {
         this.provisioning = provisioning;
+    }
+
+    /**
+     * ProvisioningFailCount records how many times provisioning has failed consecutively for the current image. Unlike ErrorCount, it is not reset on deprovisioning and is only cleared on successful provisioning or when a new image is specified.
+     */
+    @JsonProperty("provisioningFailCount")
+    public Integer getProvisioningFailCount() {
+        return provisioningFailCount;
+    }
+
+    /**
+     * ProvisioningFailCount records how many times provisioning has failed consecutively for the current image. Unlike ErrorCount, it is not reset on deprovisioning and is only cleared on successful provisioning or when a new image is specified.
+     */
+    @JsonProperty("provisioningFailCount")
+    public void setProvisioningFailCount(Integer provisioningFailCount) {
+        this.provisioningFailCount = provisioningFailCount;
     }
 
     /**

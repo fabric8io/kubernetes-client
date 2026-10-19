@@ -2,6 +2,7 @@ package io.fabric8.openshift.api.model.miscellaneous.metal3.v1alpha1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
 import java.lang.RuntimeException;
@@ -26,6 +27,7 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
   private Map<String,Object> additionalProperties;
   private String level;
   private ArrayList<RootDeviceHintsBuilder> physicalDisks = new ArrayList<RootDeviceHintsBuilder>();
+  private Boolean rootVolume;
   private Integer sizeGibibytes;
 
   public SoftwareRAIDVolumeFluent() {
@@ -132,6 +134,7 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
     if (instance != null) {
         this.withLevel(instance.getLevel());
         this.withPhysicalDisks(instance.getPhysicalDisks());
+        this.withRootVolume(instance.getRootVolume());
         this.withSizeGibibytes(instance.getSizeGibibytes());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -190,6 +193,9 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
     if (!(Objects.equals(physicalDisks, that.physicalDisks))) {
       return false;
     }
+    if (!(Objects.equals(rootVolume, that.rootVolume))) {
+      return false;
+    }
     if (!(Objects.equals(sizeGibibytes, that.sizeGibibytes))) {
       return false;
     }
@@ -205,6 +211,10 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
   
   public String getLevel() {
     return this.level;
+  }
+  
+  public Boolean getRootVolume() {
+    return this.rootVolume;
   }
   
   public Integer getSizeGibibytes() {
@@ -232,12 +242,16 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
     return this.physicalDisks != null && !(this.physicalDisks.isEmpty());
   }
   
+  public boolean hasRootVolume() {
+    return this.rootVolume != null;
+  }
+  
   public boolean hasSizeGibibytes() {
     return this.sizeGibibytes != null;
   }
   
   public int hashCode() {
-    return Objects.hash(level, physicalDisks, sizeGibibytes, additionalProperties);
+    return Objects.hash(level, physicalDisks, rootVolume, sizeGibibytes, additionalProperties);
   }
   
   public A removeAllFromPhysicalDisks(Collection<RootDeviceHints> items) {
@@ -336,6 +350,11 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
         sb.append(physicalDisks);
         sb.append(",");
     }
+    if (!(rootVolume == null)) {
+        sb.append("rootVolume:");
+        sb.append(rootVolume);
+        sb.append(",");
+    }
     if (!(sizeGibibytes == null)) {
         sb.append("sizeGibibytes:");
         sb.append(sizeGibibytes);
@@ -388,6 +407,15 @@ public class SoftwareRAIDVolumeFluent<A extends io.fabric8.openshift.api.model.m
         this.addToPhysicalDisks(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withRootVolume() {
+    return withRootVolume(true);
+  }
+  
+  public A withRootVolume(Boolean rootVolume) {
+    this.rootVolume = rootVolume;
     return (A) this;
   }
   

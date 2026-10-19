@@ -37,7 +37,7 @@ replace (
 	github.com/chaos-mesh/chaos-mesh/api => github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/stolostron/multicluster-observability-operator => github.com/stolostron/multicluster-observability-operator v0.0.0-20260922120428-553f19cbad09
 	github.com/stolostron/multiclusterhub-operator => github.com/stolostron/multiclusterhub-operator v0.0.0-20260922190252-30a542091361
-	volcano.sh/apis => volcano.sh/apis v1.15.2
+	volcano.sh/apis => volcano.sh/apis v1.16.0
 )
 
 require (
@@ -45,9 +45,9 @@ require (
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
-	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.6.0
-	github.com/metal3-io/baremetal-operator/apis v0.13.0
-	github.com/metal3-io/cluster-api-provider-metal3/api v1.14.0
+	github.com/kubernetes-csi/external-snapshotter/client/v8 v8.7.0
+	github.com/metal3-io/baremetal-operator/apis v0.14.2
+	github.com/metal3-io/cluster-api-provider-metal3/api v1.14.1
 	// Match latest commit in the version branch (e.g. release-4.17)
 	github.com/openshift/api v3.9.0+incompatible
 	github.com/openshift/cloud-credential-operator v0.0.0-20260918225044-5c4a3963b75c
@@ -57,7 +57,7 @@ require (
 	github.com/openshift/installer v1.5.0-rc-1
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.46.0
-	github.com/ovn-org/ovn-kubernetes/go-controller v0.0.0-20241030140127-a68ef49d9441
+	github.com/ovn-kubernetes/ovn-kubernetes/go-controller v0.0.0-20261016181840-5ff49b32879c
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.1
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20260922145900-ea34ca3eb97c
@@ -67,7 +67,7 @@ require (
 	github.com/stolostron/search-v2-operator v0.0.0-20250818191351-8d847101bcdd
 	github.com/tektoncd/pipeline v1.16.0
 	github.com/tektoncd/triggers v0.37.1
-	istio.io/client-go v1.31.1
+	istio.io/client-go v1.31.2
 	k8s.io/api v0.37.0
 	k8s.io/apiextensions-apiserver v0.37.0
 	k8s.io/apimachinery v0.37.0
@@ -166,7 +166,7 @@ require (
 	github.com/kdomanski/iso9660 v0.2.1 // indirect
 	github.com/kelseyhightower/envconfig v1.4.0 // indirect
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
-	github.com/metal3-io/ip-address-manager/api v1.14.0 // indirect
+	github.com/metal3-io/ip-address-manager/api v1.14.1 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.3-0.20250322232337-35a7c28c31ee // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
@@ -214,26 +214,26 @@ require (
 	go.uber.org/zap v1.28.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/crypto v0.56.0 // indirect
+	golang.org/x/crypto v0.57.0 // indirect
 	golang.org/x/exp v0.0.0-20260824195058-e88cd73687aa // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.58.0 // indirect
+	golang.org/x/net v0.60.0 // indirect
 	golang.org/x/oauth2 v0.36.0 // indirect
 	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/sys v0.47.0 // indirect
-	golang.org/x/term v0.45.0 // indirect
+	golang.org/x/sys v0.48.0 // indirect
+	golang.org/x/term v0.46.0 // indirect
 	golang.org/x/text v0.42.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
 	golang.org/x/tools v0.49.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260825221802-da73d73af1c5 // indirect
-	google.golang.org/grpc v1.83.2 // indirect
+	google.golang.org/grpc v1.84.0 // indirect
 	google.golang.org/protobuf v1.36.12 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	istio.io/api v1.31.1-0.20260915183457-d60a532be69a // indirect
+	istio.io/api v1.31.2-0.20261013143744-969dd730e3f1 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
 	k8s.io/utils v0.0.0-20260707023825-cf1189d6abe3 // indirect
 	knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042 // indirect

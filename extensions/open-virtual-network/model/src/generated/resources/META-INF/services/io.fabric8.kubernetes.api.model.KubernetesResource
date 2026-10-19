@@ -1,5 +1,9 @@
 io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRoute
 io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRouteList
+io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnect
+io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnectList
+io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetwork
+io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetworkList
 io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall
 io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewallList
 io.fabric8.kubernetes.api.model.ovn.v1.EgressIP
@@ -8,5 +12,9 @@ io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS
 io.fabric8.kubernetes.api.model.ovn.v1.EgressQoSList
 io.fabric8.kubernetes.api.model.ovn.v1.EgressService
 io.fabric8.kubernetes.api.model.ovn.v1.EgressServiceList
+io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisements
+io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisementsList
 io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetwork
 io.fabric8.kubernetes.api.model.ovn.v1.UserDefinedNetworkList
+io.fabric8.kubernetes.api.model.ovn.v1.VTEP
+io.fabric8.kubernetes.api.model.ovn.v1.VTEPList

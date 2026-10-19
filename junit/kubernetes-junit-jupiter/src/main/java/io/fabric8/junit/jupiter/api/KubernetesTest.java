@@ -18,11 +18,13 @@ package io.fabric8.junit.jupiter.api;
 import io.fabric8.junit.jupiter.KubernetesExtension;
 import io.fabric8.junit.jupiter.NamespaceExtension;
 import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.lang.annotation.Inherited;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
+import java.util.function.Consumer;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;
 import static java.lang.annotation.ElementType.METHOD;
@@ -58,4 +60,17 @@ public @interface KubernetesTest {
    * Create an ephemeral Namespace for the test.
    */
   boolean createEphemeralNamespace() default true;
+
+  /**
+   * Class implementing {@link Consumer} interface that accepts the {@link KubernetesClientBuilder} instance
+   * used by the NamespaceExtension for further customization.
+   * <p>
+   * Enables the customization of the automatically bootstrapped and injected
+   * {@link KubernetesClient} instance, and of the clients used by the {@link RequireK8sSupport} and
+   * {@link RequireK8sVersionAtLeast} conditions.
+   * <p>
+   * The class must be a top-level or static nested class with a no-arg constructor; the class and its constructor can have
+   * any visibility.
+   */
+  Class<? extends Consumer<KubernetesClientBuilder>> kubernetesClientBuilderCustomizer() default KubernetesClientBuilderCustomizer.class;
 }

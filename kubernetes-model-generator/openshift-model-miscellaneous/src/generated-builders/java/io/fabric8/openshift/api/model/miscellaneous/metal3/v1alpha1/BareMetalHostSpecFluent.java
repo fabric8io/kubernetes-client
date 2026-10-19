@@ -9,11 +9,13 @@ import io.fabric8.kubernetes.api.model.SecretReference;
 import io.fabric8.kubernetes.api.model.Taint;
 import java.lang.Boolean;
 import java.lang.Object;
+import java.lang.RuntimeException;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
   private String inspectionMode;
   private SecretReference metaData;
   private SecretReference networkData;
+  private ArrayList<NetworkInterfaceBuilder> networkInterfaces = new ArrayList<NetworkInterfaceBuilder>();
   private Boolean online;
   private String preprovisioningNetworkDataName;
   private RAIDConfigBuilder raid;
@@ -58,6 +61,18 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     this.copyInstance(instance);
   }
 
+  public A addAllToNetworkInterfaces(Collection<NetworkInterface> items) {
+    if (this.networkInterfaces == null) {
+      this.networkInterfaces = new ArrayList();
+    }
+    for (NetworkInterface item : items) {
+        NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+        _visitables.get("networkInterfaces").add(builder);
+        this.networkInterfaces.add(builder);
+    }
+    return (A) this;
+  }
+  
   public A addAllToTaints(Collection<Taint> items) {
     if (this.taints == null) {
       this.taints = new ArrayList();
@@ -66,6 +81,14 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
       this.taints.add(item);
     }
     return (A) this;
+  }
+  
+  public NetworkInterfacesNested<A> addNewNetworkInterface() {
+    return new NetworkInterfacesNested(-1, null);
+  }
+  
+  public NetworkInterfacesNested<A> addNewNetworkInterfaceLike(NetworkInterface item) {
+    return new NetworkInterfacesNested(-1, item);
   }
   
   public A addNewTaint(String effect,String key,String timeAdded,String value) {
@@ -88,6 +111,33 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     }
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToNetworkInterfaces(NetworkInterface... items) {
+    if (this.networkInterfaces == null) {
+      this.networkInterfaces = new ArrayList();
+    }
+    for (NetworkInterface item : items) {
+        NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+        _visitables.get("networkInterfaces").add(builder);
+        this.networkInterfaces.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToNetworkInterfaces(int index,NetworkInterface item) {
+    if (this.networkInterfaces == null) {
+      this.networkInterfaces = new ArrayList();
+    }
+    NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+    if (index < 0 || index >= networkInterfaces.size()) {
+        _visitables.get("networkInterfaces").add(builder);
+        networkInterfaces.add(builder);
+    } else {
+        _visitables.get("networkInterfaces").add(builder);
+        networkInterfaces.add(index, builder);
     }
     return (A) this;
   }
@@ -126,8 +176,33 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     return this.firmware != null ? this.firmware.build() : null;
   }
   
+  public NetworkInterface buildFirstNetworkInterface() {
+    return this.networkInterfaces.get(0).build();
+  }
+  
   public Image buildImage() {
     return this.image != null ? this.image.build() : null;
+  }
+  
+  public NetworkInterface buildLastNetworkInterface() {
+    return this.networkInterfaces.get(networkInterfaces.size() - 1).build();
+  }
+  
+  public NetworkInterface buildMatchingNetworkInterface(Predicate<NetworkInterfaceBuilder> predicate) {
+      for (NetworkInterfaceBuilder item : networkInterfaces) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public NetworkInterface buildNetworkInterface(int index) {
+    return this.networkInterfaces.get(index).build();
+  }
+  
+  public List<NetworkInterface> buildNetworkInterfaces() {
+    return this.networkInterfaces != null ? build(networkInterfaces) : null;
   }
   
   public RAIDConfig buildRaid() {
@@ -157,6 +232,7 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
         this.withInspectionMode(instance.getInspectionMode());
         this.withMetaData(instance.getMetaData());
         this.withNetworkData(instance.getNetworkData());
+        this.withNetworkInterfaces(instance.getNetworkInterfaces());
         this.withOnline(instance.getOnline());
         this.withPreprovisioningNetworkDataName(instance.getPreprovisioningNetworkDataName());
         this.withRaid(instance.getRaid());
@@ -183,8 +259,44 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     return this.withNewFirmwareLike(Optional.ofNullable(this.buildFirmware()).orElse(null));
   }
   
+  public NetworkInterfacesNested<A> editFirstNetworkInterface() {
+    if (networkInterfaces.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "networkInterfaces"));
+    }
+    return this.setNewNetworkInterfaceLike(0, this.buildNetworkInterface(0));
+  }
+  
   public ImageNested<A> editImage() {
     return this.withNewImageLike(Optional.ofNullable(this.buildImage()).orElse(null));
+  }
+  
+  public NetworkInterfacesNested<A> editLastNetworkInterface() {
+    int index = networkInterfaces.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "networkInterfaces"));
+    }
+    return this.setNewNetworkInterfaceLike(index, this.buildNetworkInterface(index));
+  }
+  
+  public NetworkInterfacesNested<A> editMatchingNetworkInterface(Predicate<NetworkInterfaceBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < networkInterfaces.size();i++) {
+      if (predicate.test(networkInterfaces.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "networkInterfaces"));
+    }
+    return this.setNewNetworkInterfaceLike(index, this.buildNetworkInterface(index));
+  }
+  
+  public NetworkInterfacesNested<A> editNetworkInterface(int index) {
+    if (networkInterfaces.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "networkInterfaces"));
+    }
+    return this.setNewNetworkInterfaceLike(index, this.buildNetworkInterface(index));
   }
   
   public BmcNested<A> editOrNewBmc() {
@@ -308,6 +420,9 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
       return false;
     }
     if (!(Objects.equals(networkData, that.networkData))) {
+      return false;
+    }
+    if (!(Objects.equals(networkInterfaces, that.networkInterfaces))) {
       return false;
     }
     if (!(Objects.equals(online, that.online))) {
@@ -479,6 +594,15 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     return this.inspectionMode != null;
   }
   
+  public boolean hasMatchingNetworkInterface(Predicate<NetworkInterfaceBuilder> predicate) {
+      for (NetworkInterfaceBuilder item : networkInterfaces) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMatchingTaint(Predicate<Taint> predicate) {
       for (Taint item : taints) {
         if (predicate.test(item)) {
@@ -494,6 +618,10 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
   
   public boolean hasNetworkData() {
     return this.networkData != null;
+  }
+  
+  public boolean hasNetworkInterfaces() {
+    return this.networkInterfaces != null && !(this.networkInterfaces.isEmpty());
   }
   
   public boolean hasOnline() {
@@ -521,7 +649,19 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
   }
   
   public int hashCode() {
-    return Objects.hash(architecture, automatedCleaningMode, bmc, bootMACAddress, bootMode, consumerRef, customDeploy, description, disablePowerOff, externallyProvisioned, firmware, hardwareProfile, image, inspectionMode, metaData, networkData, online, preprovisioningNetworkDataName, raid, rootDeviceHints, taints, userData, additionalProperties);
+    return Objects.hash(architecture, automatedCleaningMode, bmc, bootMACAddress, bootMode, consumerRef, customDeploy, description, disablePowerOff, externallyProvisioned, firmware, hardwareProfile, image, inspectionMode, metaData, networkData, networkInterfaces, online, preprovisioningNetworkDataName, raid, rootDeviceHints, taints, userData, additionalProperties);
+  }
+  
+  public A removeAllFromNetworkInterfaces(Collection<NetworkInterface> items) {
+    if (this.networkInterfaces == null) {
+      return (A) this;
+    }
+    for (NetworkInterface item : items) {
+        NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+        _visitables.get("networkInterfaces").remove(builder);
+        this.networkInterfaces.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeAllFromTaints(Collection<Taint> items) {
@@ -558,12 +698,59 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     return (A) this;
   }
   
+  public A removeFromNetworkInterfaces(NetworkInterface... items) {
+    if (this.networkInterfaces == null) {
+      return (A) this;
+    }
+    for (NetworkInterface item : items) {
+        NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+        _visitables.get("networkInterfaces").remove(builder);
+        this.networkInterfaces.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromTaints(Taint... items) {
     if (this.taints == null) {
       return (A) this;
     }
     for (Taint item : items) {
       this.taints.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromNetworkInterfaces(Predicate<NetworkInterfaceBuilder> predicate) {
+    if (networkInterfaces == null) {
+      return (A) this;
+    }
+    Iterator<NetworkInterfaceBuilder> each = networkInterfaces.iterator();
+    List visitables = _visitables.get("networkInterfaces");
+    while (each.hasNext()) {
+        NetworkInterfaceBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
+  public NetworkInterfacesNested<A> setNewNetworkInterfaceLike(int index,NetworkInterface item) {
+    return new NetworkInterfacesNested(index, item);
+  }
+  
+  public A setToNetworkInterfaces(int index,NetworkInterface item) {
+    if (this.networkInterfaces == null) {
+      this.networkInterfaces = new ArrayList();
+    }
+    NetworkInterfaceBuilder builder = new NetworkInterfaceBuilder(item);
+    if (index < 0 || index >= networkInterfaces.size()) {
+        _visitables.get("networkInterfaces").add(builder);
+        networkInterfaces.add(builder);
+    } else {
+        _visitables.get("networkInterfaces").add(builder);
+        networkInterfaces.set(index, builder);
     }
     return (A) this;
   }
@@ -657,6 +844,11 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     if (!(networkData == null)) {
         sb.append("networkData:");
         sb.append(networkData);
+        sb.append(",");
+    }
+    if (!(networkInterfaces == null) && !(networkInterfaces.isEmpty())) {
+        sb.append("networkInterfaces:");
+        sb.append(networkInterfaces);
         sb.append(",");
     }
     if (!(online == null)) {
@@ -826,6 +1018,34 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
   
   public A withNetworkData(SecretReference networkData) {
     this.networkData = networkData;
+    return (A) this;
+  }
+  
+  public A withNetworkInterfaces(List<NetworkInterface> networkInterfaces) {
+    if (this.networkInterfaces != null) {
+      this._visitables.get("networkInterfaces").clear();
+    }
+    if (networkInterfaces != null) {
+        this.networkInterfaces = new ArrayList();
+        for (NetworkInterface item : networkInterfaces) {
+          this.addToNetworkInterfaces(item);
+        }
+    } else {
+      this.networkInterfaces = null;
+    }
+    return (A) this;
+  }
+  
+  public A withNetworkInterfaces(NetworkInterface... networkInterfaces) {
+    if (this.networkInterfaces != null) {
+        this.networkInterfaces.clear();
+        _visitables.remove("networkInterfaces");
+    }
+    if (networkInterfaces != null) {
+      for (NetworkInterface item : networkInterfaces) {
+        this.addToNetworkInterfaces(item);
+      }
+    }
     return (A) this;
   }
   
@@ -1061,6 +1281,25 @@ public class BareMetalHostSpecFluent<A extends io.fabric8.openshift.api.model.mi
     }
     
     public N endImage() {
+      return and();
+    }
+    
+  }
+  public class NetworkInterfacesNested<N> extends NetworkInterfaceFluent<NetworkInterfacesNested<N>> implements Nested<N>{
+  
+    NetworkInterfaceBuilder builder;
+    int index;
+  
+    NetworkInterfacesNested(int index,NetworkInterface item) {
+      this.index = index;
+      this.builder = new NetworkInterfaceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) BareMetalHostSpecFluent.this.setToNetworkInterfaces(index, builder.build());
+    }
+    
+    public N endNetworkInterface() {
       return and();
     }
     

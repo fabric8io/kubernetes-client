@@ -22,6 +22,7 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
 
   private Map<String,Object> additionalProperties;
   private List<Condition> conditions = new ArrayList<Condition>();
+  private String vrfName;
 
   public UserDefinedNetworkStatusFluent() {
   }
@@ -82,6 +83,7 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
     instance = instance != null ? instance : new UserDefinedNetworkStatus();
     if (instance != null) {
         this.withConditions(instance.getConditions());
+        this.withVrfName(instance.getVrfName());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -98,6 +100,9 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
     }
     UserDefinedNetworkStatusFluent that = (UserDefinedNetworkStatusFluent) o;
     if (!(Objects.equals(conditions, that.conditions))) {
+      return false;
+    }
+    if (!(Objects.equals(vrfName, that.vrfName))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -135,6 +140,10 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
       return null;
   }
   
+  public String getVrfName() {
+    return this.vrfName;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -152,8 +161,12 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
       return false;
   }
   
+  public boolean hasVrfName() {
+    return this.vrfName != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(conditions, additionalProperties);
+    return Objects.hash(conditions, vrfName, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -216,6 +229,11 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
         sb.append(conditions);
         sb.append(",");
     }
+    if (!(vrfName == null)) {
+        sb.append("vrfName:");
+        sb.append(vrfName);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -255,6 +273,11 @@ public class UserDefinedNetworkStatusFluent<A extends io.fabric8.kubernetes.api.
         this.addToConditions(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withVrfName(String vrfName) {
+    this.vrfName = vrfName;
     return (A) this;
   }
   

@@ -98,7 +98,7 @@ public class Utils {
   }
 
   public static String convertSystemPropertyNameToEnvVar(String systemPropertyName) {
-    return systemPropertyName.toUpperCase(Locale.ROOT).replaceAll("[.-]", "_");
+    return systemPropertyName.toUpperCase(Locale.ROOT).replace('.', '_').replace('-', '_');
   }
 
   public static String getEnvVar(String envVarName, String defaultValue) {

@@ -135,7 +135,7 @@ public class Layer3Config implements Editable<Layer3ConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.
+     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Each IP family can have multiple subnets. For each IP family, every node allocates a smaller subnet from the provided subnets.
      */
     @JsonProperty("subnets")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -144,7 +144,7 @@ public class Layer3Config implements Editable<Layer3ConfigBuilder>, KubernetesRe
     }
 
     /**
-     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Dual-stack clusters may set 2 subnets (one for each IP family), otherwise only 1 subnet is allowed. Given subnet is split into smaller subnets for every node.
+     * Subnets are used for the pod network across the cluster.<br><p> <br><p> Each IP family can have multiple subnets. For each IP family, every node allocates a smaller subnet from the provided subnets.
      */
     @JsonProperty("subnets")
     public void setSubnets(List<Layer3Subnet> subnets) {

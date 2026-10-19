@@ -23,6 +23,8 @@ import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
+import org.bouncycastle.openssl.PEMKeyPair;
+import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMWriter;
 import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
@@ -30,18 +32,27 @@ import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Closeable;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.channels.FileChannel;
+import java.nio.channels.OverlappingFileLockException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.StandardOpenOption;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class CertManager {
@@ -54,6 +65,11 @@ public class CertManager {
   public static final String CLIENT_KEY_NAME = "client.key";
   public static final String CLIENT_CERT_NAME = "client.crt";
 
+  // certificates expiring within this period are regenerated, so they do not expire during a test run
+  private static final Duration VALIDITY_MARGIN = Duration.ofDays(1);
+  private static final String LOCK_FILE_NAME = ".certificates.lock";
+
+  // serializes the threads of this JVM; the lock file serializes the JVMs sharing the directory
   private static final ReentrantLock generatorLock = new ReentrantLock();
 
   private final String kubeAPITestDir;
@@ -63,28 +79,89 @@ public class CertManager {
   }
 
   public void createCertificatesIfNeeded() {
-    if (certFilesPresent()) {
+    if (unusableReason().isEmpty()) {
       return;
     }
     generatorLock.lock();
-    try {
-      if (certFilesPresent()) {
-        return;
-      }
-      generateAPIServerCertificates();
-      generateUserCertificates();
+    try (var ignored = lockAgainstOtherJvms()) {
+      // re-checked: another thread or JVM may have generated them while this one waited for the locks
+      unusableReason().ifPresent(reason -> {
+        logger.info("Generating certificates in {}: {}", kubeAPITestDir, reason);
+        generateAPIServerCertificates();
+        generateUserCertificates();
+      });
+    } catch (IOException e) {
+      throw new KubeAPITestException(e);
     } finally {
       generatorLock.unlock();
     }
   }
 
-  private boolean certFilesPresent() {
-    var apiCert = new File(kubeAPITestDir, API_SERVER_CERT_NAME);
-    var apiKey = new File(kubeAPITestDir, API_SERVER_KEY_NAME);
-    var clientCert = new File(kubeAPITestDir, CLIENT_CERT_NAME);
-    var clientKey = new File(kubeAPITestDir, CLIENT_KEY_NAME);
+  /**
+   * @return why the certificates can't be used, empty when both are valid for at least {@link #VALIDITY_MARGIN} and
+   *         their key files hold their keys
+   */
+  private Optional<String> unusableReason() {
+    return unusableReason(API_SERVER_CERT_NAME, API_SERVER_KEY_NAME)
+        .or(() -> unusableReason(CLIENT_CERT_NAME, CLIENT_KEY_NAME));
+  }
 
-    return apiCert.exists() && apiKey.exists() && clientCert.exists() && clientKey.exists();
+  private Optional<String> unusableReason(String certName, String keyName) {
+    var certFile = new File(kubeAPITestDir, certName);
+    var keyFile = new File(kubeAPITestDir, keyName);
+    if (!certFile.isFile() || !keyFile.isFile()) {
+      return Optional.of(certName + " or " + keyName + " is missing");
+    }
+    try {
+      if (!(readPem(certFile) instanceof X509CertificateHolder cert)) {
+        return Optional.of(certName + " is not a PEM certificate");
+      }
+      var validOn = Date.from(Instant.now().plus(VALIDITY_MARGIN));
+      if (!cert.isValidOn(validOn)) {
+        return Optional.of(String.format("%s is valid from %s to %s, not on %s", certName, cert.getNotBefore(),
+            cert.getNotAfter(), validOn));
+      }
+      if (!(readPem(keyFile) instanceof PEMKeyPair key)
+          || !key.getPublicKeyInfo().equals(cert.getSubjectPublicKeyInfo())) {
+        return Optional.of(keyName + " is not the key of " + certName);
+      }
+      return Optional.empty();
+    } catch (IOException | RuntimeException e) {
+      // whatever can't be parsed gets regenerated
+      return Optional.of(certName + " or " + keyName + " can't be read: " + e);
+    }
+  }
+
+  private static Object readPem(File file) throws IOException {
+    try (var parser = new PEMParser(new FileReader(file, StandardCharsets.US_ASCII))) {
+      return parser.readObject();
+    }
+  }
+
+  /**
+   * Locks the lock file in the certificate directory, falling back to no lock (with a warning) when the file system
+   * doesn't support it or another class loader of this JVM holds it.
+   *
+   * @return releases the lock when closed
+   */
+  private Closeable lockAgainstOtherJvms() {
+    var lockFile = new File(kubeAPITestDir, LOCK_FILE_NAME).toPath();
+    try {
+      Files.createDirectories(lockFile.getParent());
+      var channel = FileChannel.open(lockFile, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+      try {
+        channel.lock();
+        return channel;
+      } catch (IOException | OverlappingFileLockException e) {
+        channel.close();
+        throw e;
+      }
+    } catch (IOException | OverlappingFileLockException e) {
+      logger.warn("Could not lock {}, certificates are generated without guarding against other JVMs: {}", lockFile,
+          e.toString());
+      return () -> {
+      };
+    }
   }
 
   private void generateAPIServerCertificates() {
@@ -110,6 +187,13 @@ public class CertManager {
 
   public static void generateKeyAndCertificate(String dirName, File keyFile, File certFile,
       GeneralName... generalNames) {
+    Instant validFrom = Instant.now();
+    generateKeyAndCertificate(dirName, keyFile, certFile, validFrom, validFrom.plus(365, ChronoUnit.DAYS),
+        generalNames);
+  }
+
+  static void generateKeyAndCertificate(String dirName, File keyFile, File certFile, Instant validFrom,
+      Instant validUntil, GeneralName... generalNames) {
     try {
       KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 
@@ -118,8 +202,6 @@ public class CertManager {
       // If you issue more than just test certificates, you might want a decent serial number schema
       // ^.^
       BigInteger serialNumber = BigInteger.valueOf(System.currentTimeMillis());
-      Instant validFrom = Instant.now();
-      Instant validUntil = validFrom.plus(365, ChronoUnit.DAYS);
 
       JcaX509v3CertificateBuilder builder = new JcaX509v3CertificateBuilder(
           name,

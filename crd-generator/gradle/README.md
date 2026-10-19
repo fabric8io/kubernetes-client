@@ -60,7 +60,8 @@ tasks.register("generateCrds") {
     val collector = CustomResourceCollector()
       .withParentClassLoader(Thread.currentThread().contextClassLoader)
       .withClasspathElements(classpathElements)
-      .withFilesToScan(filesToScan)
+      // Skip class directories that don't exist, e.g. build/classes/java/main in a Kotlin-only project.
+      .withFilesToScan(filesToScan.filter { it.exists() })
 
     val crdGenerator = CRDGenerator()
       .customResourceClasses(collector.findCustomResourceClasses())
@@ -75,7 +76,7 @@ tasks.register("generateCrds") {
   }
 }
 
-tasks.named(JvmConstants.CLASSES_TASK_NAME) {
+tasks.named("classes") {
   finalizedBy("generateCrds")
 }
 ```
@@ -140,7 +141,7 @@ tasks.register<JavaExec>("generateCrds") {
     val sourceSet = project.sourceSets["main"]
     val outputDir = sourceSet.output.resourcesDir!!
 
-    dependsOn(tasks.named(JvmConstants.CLASSES_TASK_NAME))
+    dependsOn(tasks.named("classes"))
 
     // Run in the same JDK that compiled the project so the forked process can load the class files.
     javaLauncher.set(javaToolchains.launcherFor {
@@ -162,13 +163,14 @@ tasks.register<JavaExec>("generateCrds") {
             add("--output-dir"); add(outputDir.absolutePath)
             // Pass the project classpath so the CLI can load custom resource classes.
             projectClasspath.forEach { add("--classpath"); add(it) }
-            // Directories to scan for custom resource classes.
-            sourceSet.output.classesDirs.forEach { add(it.absolutePath) }
+            // Directories to scan for custom resource classes. The CLI rejects paths that don't exist,
+            // e.g. build/classes/java/main in a Kotlin-only project, so only existing ones are passed.
+            sourceSet.output.classesDirs.filter { it.exists() }.forEach { add(it.absolutePath) }
         }
     }
 }
 
-tasks.named(JvmConstants.CLASSES_TASK_NAME) {
+tasks.named("classes") {
     finalizedBy("generateCrds")
 }
 ```
@@ -235,7 +237,8 @@ tasks.register('generateCrds', JavaExec) {
 
         def cliArgs = ['--output-dir', outputDir.absolutePath]
         projectClasspath.each { cliArgs << '--classpath' << it }
-        sourceSet.output.classesDirs.each { cliArgs << it.absolutePath }
+        // Only pass class directories that exist, the CLI rejects the others.
+        sourceSet.output.classesDirs.filter { it.exists() }.each { cliArgs << it.absolutePath }
 
         args = cliArgs
     }

@@ -10,6 +10,8 @@ io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplate
 io.fabric8.volcano.api.model.flow.v1alpha1.JobTemplateList
 io.fabric8.volcano.api.model.nodeinfo.v1alpha1.Numatopology
 io.fabric8.volcano.api.model.nodeinfo.v1alpha1.NumatopologyList
+io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueue
+io.fabric8.volcano.api.model.scheduling.v1beta1.NamespaceQueueList
 io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroup
 io.fabric8.volcano.api.model.scheduling.v1beta1.PodGroupList
 io.fabric8.volcano.api.model.scheduling.v1beta1.Queue

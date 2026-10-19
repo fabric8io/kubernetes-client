@@ -16,6 +16,7 @@
 package io.fabric8.crd.generator.collector;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -33,6 +34,19 @@ class CustomResourceCollectorE2ETest {
     List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(tempDir);
     CustomResourceCollector collector = new CustomResourceCollector();
     collector.withFileToScan(tempDir);
+    List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
+    assertEquals(expectedClasses.size(), classes.size());
+    classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));
+  }
+
+  @Test
+  @DisplayName("class directories that do not exist, like build/classes/java/main of a Kotlin-only Gradle project, are skipped")
+  void scanClassDirsWithNonExistingDir_thenFindAll(@TempDir File tempDir) throws IOException {
+    File nonExistingDir = new File(tempDir, "java");
+    File classesDir = new File(tempDir, "kotlin");
+    List<String> expectedClasses = TestUtils.prepareDirectoryWithClasses(classesDir);
+    CustomResourceCollector collector = new CustomResourceCollector();
+    collector.withFileToScan(nonExistingDir, classesDir);
     List<Class<? extends HasMetadata>> classes = collector.findCustomResourceClasses();
     assertEquals(expectedClasses.size(), classes.size());
     classes.forEach(aClass -> assertTrue(expectedClasses.contains(aClass.getName())));

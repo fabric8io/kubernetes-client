@@ -44,11 +44,14 @@ public @interface EnableKubernetesMockClient {
   boolean crud() default false;
 
   /**
-   * No-arg constructor class implementing {@link Consumer} interface that accepts the {@link KubernetesClientBuilder} instance
+   * Class implementing {@link Consumer} interface that accepts the {@link KubernetesClientBuilder} instance
    * used by the KubernetesMockServerExtension for further customization.
    * <p>
    * Enables the customization of the automatically bootstrapped and injected
    * {@link io.fabric8.kubernetes.client.KubernetesClient} instance.
+   * <p>
+   * The class must be a top-level or static nested class with a no-arg constructor; the class and its constructor can have
+   * any visibility.
    */
   Class<? extends Consumer<KubernetesClientBuilder>> kubernetesClientBuilderCustomizer() default KubernetesClientBuilderCustomizer.class;
 

@@ -1,0 +1,293 @@
+
+package io.fabric8.volcano.api.model.scheduling.v1beta1;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.processing.Generated;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
+import io.fabric8.kubernetes.api.model.Container;
+import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.EnvVar;
+import io.fabric8.kubernetes.api.model.IntOrString;
+import io.fabric8.kubernetes.api.model.KubernetesResource;
+import io.fabric8.kubernetes.api.model.LabelSelector;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.ObjectMeta;
+import io.fabric8.kubernetes.api.model.ObjectReference;
+import io.fabric8.kubernetes.api.model.PersistentVolumeClaim;
+import io.fabric8.kubernetes.api.model.PodTemplateSpec;
+import io.fabric8.kubernetes.api.model.Quantity;
+import io.fabric8.kubernetes.api.model.ResourceRequirements;
+import io.fabric8.kubernetes.api.model.Volume;
+import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.sundr.builder.annotations.Buildable;
+import io.sundr.builder.annotations.BuildableReference;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
+
+/**
+ * NamespaceQueueStatus represents the current status of NamespaceQueue.
+ */
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonPropertyOrder({
+    "allocated",
+    "completed",
+    "conditions",
+    "inqueue",
+    "pending",
+    "reservation",
+    "running",
+    "state",
+    "unknown"
+})
+@ToString
+@EqualsAndHashCode
+@Accessors(prefix = {
+    "_",
+    ""
+})
+@Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
+    @BuildableReference(ObjectMeta.class),
+    @BuildableReference(LabelSelector.class),
+    @BuildableReference(Container.class),
+    @BuildableReference(PodTemplateSpec.class),
+    @BuildableReference(ResourceRequirements.class),
+    @BuildableReference(IntOrString.class),
+    @BuildableReference(ObjectReference.class),
+    @BuildableReference(LocalObjectReference.class),
+    @BuildableReference(PersistentVolumeClaim.class),
+    @BuildableReference(EnvVar.class),
+    @BuildableReference(ContainerPort.class),
+    @BuildableReference(Volume.class),
+    @BuildableReference(VolumeMount.class)
+})
+@Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
+public class NamespaceQueueStatus implements Editable<NamespaceQueueStatusBuilder>, KubernetesResource
+{
+
+    @JsonProperty("allocated")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, Quantity> allocated = new LinkedHashMap<>();
+    @JsonProperty("completed")
+    private Integer completed;
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("inqueue")
+    private Integer inqueue;
+    @JsonProperty("pending")
+    private Integer pending;
+    @JsonProperty("reservation")
+    private Reservation reservation;
+    @JsonProperty("running")
+    private Integer running;
+    @JsonProperty("state")
+    private String state;
+    @JsonProperty("unknown")
+    private Integer unknown;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
+
+    /**
+     * No args constructor for use in serialization
+     */
+    public NamespaceQueueStatus() {
+    }
+
+    public NamespaceQueueStatus(Map<String, Quantity> allocated, Integer completed, List<Condition> conditions, Integer inqueue, Integer pending, Reservation reservation, Integer running, String state, Integer unknown) {
+        super();
+        this.allocated = allocated;
+        this.completed = completed;
+        this.conditions = conditions;
+        this.inqueue = inqueue;
+        this.pending = pending;
+        this.reservation = reservation;
+        this.running = running;
+        this.state = state;
+        this.unknown = unknown;
+    }
+
+    /**
+     * Allocated records scheduler-owned resources allocated to the queue.
+     */
+    @JsonProperty("allocated")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, Quantity> getAllocated() {
+        return allocated;
+    }
+
+    /**
+     * Allocated records scheduler-owned resources allocated to the queue.
+     */
+    @JsonProperty("allocated")
+    public void setAllocated(Map<String, Quantity> allocated) {
+        this.allocated = allocated;
+    }
+
+    /**
+     * Completed counts PodGroups that have finished execution.
+     */
+    @JsonProperty("completed")
+    public Integer getCompleted() {
+        return completed;
+    }
+
+    /**
+     * Completed counts PodGroups that have finished execution.
+     */
+    @JsonProperty("completed")
+    public void setCompleted(Integer completed) {
+        this.completed = completed;
+    }
+
+    /**
+     * Conditions describe authorization and scheduling readiness transitions.
+     */
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * Conditions describe authorization and scheduling readiness transitions.
+     */
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+    }
+
+    /**
+     * Inqueue counts PodGroups admitted to the scheduling queue.
+     */
+    @JsonProperty("inqueue")
+    public Integer getInqueue() {
+        return inqueue;
+    }
+
+    /**
+     * Inqueue counts PodGroups admitted to the scheduling queue.
+     */
+    @JsonProperty("inqueue")
+    public void setInqueue(Integer inqueue) {
+        this.inqueue = inqueue;
+    }
+
+    /**
+     * Pending counts PodGroups waiting for scheduling.
+     */
+    @JsonProperty("pending")
+    public Integer getPending() {
+        return pending;
+    }
+
+    /**
+     * Pending counts PodGroups waiting for scheduling.
+     */
+    @JsonProperty("pending")
+    public void setPending(Integer pending) {
+        this.pending = pending;
+    }
+
+    /**
+     * NamespaceQueueStatus represents the current status of NamespaceQueue.
+     */
+    @JsonProperty("reservation")
+    public Reservation getReservation() {
+        return reservation;
+    }
+
+    /**
+     * NamespaceQueueStatus represents the current status of NamespaceQueue.
+     */
+    @JsonProperty("reservation")
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
+    }
+
+    /**
+     * Running counts PodGroups with running workloads.
+     */
+    @JsonProperty("running")
+    public Integer getRunning() {
+        return running;
+    }
+
+    /**
+     * Running counts PodGroups with running workloads.
+     */
+    @JsonProperty("running")
+    public void setRunning(Integer running) {
+        this.running = running;
+    }
+
+    /**
+     * State is the observed lifecycle state of the NamespaceQueue.
+     */
+    @JsonProperty("state")
+    public String getState() {
+        return state;
+    }
+
+    /**
+     * State is the observed lifecycle state of the NamespaceQueue.
+     */
+    @JsonProperty("state")
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    /**
+     * Unknown counts PodGroups whose phase is unset or not recognized.
+     */
+    @JsonProperty("unknown")
+    public Integer getUnknown() {
+        return unknown;
+    }
+
+    /**
+     * Unknown counts PodGroups whose phase is unset or not recognized.
+     */
+    @JsonProperty("unknown")
+    public void setUnknown(Integer unknown) {
+        this.unknown = unknown;
+    }
+
+    @JsonIgnore
+    public NamespaceQueueStatusBuilder edit() {
+        return new NamespaceQueueStatusBuilder(this);
+    }
+
+    @JsonIgnore
+    public NamespaceQueueStatusBuilder toBuilder() {
+        return edit();
+    }
+
+    @JsonAnyGetter
+    @JsonIgnore
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    @JsonAnySetter
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
+    public void setAdditionalProperties(Map<String, Object> additionalProperties) {
+        this.additionalProperties = additionalProperties;
+    }
+
+}

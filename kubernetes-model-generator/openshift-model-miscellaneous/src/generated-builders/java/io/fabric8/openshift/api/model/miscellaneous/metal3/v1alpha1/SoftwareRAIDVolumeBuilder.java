@@ -25,7 +25,7 @@ public class SoftwareRAIDVolumeBuilder extends SoftwareRAIDVolumeFluent<Software
   }
 
   public SoftwareRAIDVolume build() {
-    SoftwareRAIDVolume buildable = new SoftwareRAIDVolume(fluent.getLevel(), fluent.buildPhysicalDisks(), fluent.getSizeGibibytes());
+    SoftwareRAIDVolume buildable = new SoftwareRAIDVolume(fluent.getLevel(), fluent.buildPhysicalDisks(), fluent.getRootVolume(), fluent.getSizeGibibytes());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

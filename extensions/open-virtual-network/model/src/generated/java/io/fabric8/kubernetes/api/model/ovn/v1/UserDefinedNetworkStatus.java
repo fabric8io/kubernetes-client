@@ -38,7 +38,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions"
+    "conditions",
+    "vrfName"
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -62,6 +63,8 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("vrfName")
+    private String vrfName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -71,9 +74,10 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     public UserDefinedNetworkStatus() {
     }
 
-    public UserDefinedNetworkStatus(List<Condition> conditions) {
+    public UserDefinedNetworkStatus(List<Condition> conditions, String vrfName) {
         super();
         this.conditions = conditions;
+        this.vrfName = vrfName;
     }
 
     /**
@@ -91,6 +95,22 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.
+     */
+    @JsonProperty("vrfName")
+    public String getVrfName() {
+        return vrfName;
+    }
+
+    /**
+     * VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.
+     */
+    @JsonProperty("vrfName")
+    public void setVrfName(String vrfName) {
+        this.vrfName = vrfName;
     }
 
     @JsonIgnore

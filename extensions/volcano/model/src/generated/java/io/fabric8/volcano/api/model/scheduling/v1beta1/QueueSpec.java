@@ -39,6 +39,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "affinity",
+    "allowedNamespaces",
     "capability",
     "dequeueStrategy",
     "deserved",
@@ -71,6 +72,9 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
 
     @JsonProperty("affinity")
     private Affinity affinity;
+    @JsonProperty("allowedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> allowedNamespaces = new ArrayList<>();
     @JsonProperty("capability")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, Quantity> capability = new LinkedHashMap<>();
@@ -103,9 +107,10 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
     public QueueSpec() {
     }
 
-    public QueueSpec(Affinity affinity, Map<String, Quantity> capability, String dequeueStrategy, Map<String, Quantity> deserved, List<Cluster> extendClusters, Guarantee guarantee, String parent, Integer priority, Boolean reclaimable, String type, Integer weight) {
+    public QueueSpec(Affinity affinity, List<String> allowedNamespaces, Map<String, Quantity> capability, String dequeueStrategy, Map<String, Quantity> deserved, List<Cluster> extendClusters, Guarantee guarantee, String parent, Integer priority, Boolean reclaimable, String type, Integer weight) {
         super();
         this.affinity = affinity;
+        this.allowedNamespaces = allowedNamespaces;
         this.capability = capability;
         this.dequeueStrategy = dequeueStrategy;
         this.deserved = deserved;
@@ -132,6 +137,23 @@ public class QueueSpec implements Editable<QueueSpecBuilder>, KubernetesResource
     @JsonProperty("affinity")
     public void setAffinity(Affinity affinity) {
         this.affinity = affinity;
+    }
+
+    /**
+     * AllowedNamespaces lists the namespaces whose NamespaceQueues may use this Queue as their cluster-scoped parent. An empty or omitted list denies attachment. The literal "&#42;" allows all namespaces and must be the only entry when present.
+     */
+    @JsonProperty("allowedNamespaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getAllowedNamespaces() {
+        return allowedNamespaces;
+    }
+
+    /**
+     * AllowedNamespaces lists the namespaces whose NamespaceQueues may use this Queue as their cluster-scoped parent. An empty or omitted list denies attachment. The literal "&#42;" allows all namespaces and must be the only entry when present.
+     */
+    @JsonProperty("allowedNamespaces")
+    public void setAllowedNamespaces(List<String> allowedNamespaces) {
+        this.allowedNamespaces = allowedNamespaces;
     }
 
     /**

@@ -25,7 +25,7 @@ public class BareMetalHostSpecBuilder extends BareMetalHostSpecFluent<BareMetalH
   }
 
   public BareMetalHostSpec build() {
-    BareMetalHostSpec buildable = new BareMetalHostSpec(fluent.getArchitecture(), fluent.getAutomatedCleaningMode(), fluent.buildBmc(), fluent.getBootMACAddress(), fluent.getBootMode(), fluent.buildConsumerRef(), fluent.buildCustomDeploy(), fluent.getDescription(), fluent.getDisablePowerOff(), fluent.getExternallyProvisioned(), fluent.buildFirmware(), fluent.getHardwareProfile(), fluent.buildImage(), fluent.getInspectionMode(), fluent.getMetaData(), fluent.getNetworkData(), fluent.getOnline(), fluent.getPreprovisioningNetworkDataName(), fluent.buildRaid(), fluent.buildRootDeviceHints(), fluent.getTaints(), fluent.getUserData());
+    BareMetalHostSpec buildable = new BareMetalHostSpec(fluent.getArchitecture(), fluent.getAutomatedCleaningMode(), fluent.buildBmc(), fluent.getBootMACAddress(), fluent.getBootMode(), fluent.buildConsumerRef(), fluent.buildCustomDeploy(), fluent.getDescription(), fluent.getDisablePowerOff(), fluent.getExternallyProvisioned(), fluent.buildFirmware(), fluent.getHardwareProfile(), fluent.buildImage(), fluent.getInspectionMode(), fluent.getMetaData(), fluent.getNetworkData(), fluent.buildNetworkInterfaces(), fluent.getOnline(), fluent.getPreprovisioningNetworkDataName(), fluent.buildRaid(), fluent.buildRootDeviceHints(), fluent.getTaints(), fluent.getUserData());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -25,7 +25,7 @@ public class BareMetalHostStatusBuilder extends BareMetalHostStatusFluent<BareMe
   }
 
   public BareMetalHostStatus build() {
-    BareMetalHostStatus buildable = new BareMetalHostStatus(fluent.getConditions(), fluent.getErrorCount(), fluent.getErrorMessage(), fluent.getErrorType(), fluent.buildGoodCredentials(), fluent.buildHardware(), fluent.getHardwareProfile(), fluent.getLastUpdated(), fluent.buildOperationHistory(), fluent.getOperationalStatus(), fluent.getPoweredOn(), fluent.buildProvisioning(), fluent.buildTriedCredentials());
+    BareMetalHostStatus buildable = new BareMetalHostStatus(fluent.getConditions(), fluent.getErrorCount(), fluent.getErrorMessage(), fluent.getErrorType(), fluent.buildGoodCredentials(), fluent.buildHardware(), fluent.getHardwareProfile(), fluent.buildLastAttemptedImage(), fluent.getLastUpdated(), fluent.buildOperationHistory(), fluent.getOperationalStatus(), fluent.getPoweredOn(), fluent.buildProvisioning(), fluent.getProvisioningFailCount(), fluent.buildTriedCredentials());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }
