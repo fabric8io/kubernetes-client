@@ -125,7 +125,10 @@ class KubernetesResourceUtilTest {
     assertFalse(KubernetesResourceUtil.isValidName("test.invalid.name"));
     assertTrue(KubernetesResourceUtil.areLabelsValid(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
     assertFalse(KubernetesResourceUtil
-        .areLabelsValid(Collections.singletonMap("NoUppercaseOrSpecialCharsLike=Equals", "bar")));
+        .areLabelsValid(Collections.singletonMap("special=char-in-key", "bar")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("MyApp", "MyValue")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("app", "My_Value.1")));
+    assertTrue(KubernetesResourceUtil.areLabelsValid(Collections.singletonMap("app", "")));
 
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("test.invalid.name")));
     assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("90notcool-n@me")));
@@ -140,9 +143,26 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
+  void testLabelValueValidation() {
+    assertTrue(KubernetesResourceUtil.isValidLabelValue("MyValue"));
+    assertTrue(KubernetesResourceUtil.isValidLabelValue("My_Value.1"));
+    assertTrue(KubernetesResourceUtil.isValidLabelValue(""));
+    assertTrue(KubernetesResourceUtil.isValidLabelValue("a".repeat(63)));
+    assertFalse(KubernetesResourceUtil.isValidLabelValue(null));
+    assertFalse(KubernetesResourceUtil.isValidLabelValue("-bad"));
+    assertFalse(KubernetesResourceUtil.isValidLabelValue("bad_"));
+    assertFalse(KubernetesResourceUtil.isValidLabelValue("a b"));
+    assertFalse(KubernetesResourceUtil.isValidLabelValue("a".repeat(64)));
+  }
+
+  @Test
   void testKeyValidation() {
     assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/label.key"));
     assertFalse(KubernetesResourceUtil.isValidKey("domain.prefix.io?label.key"));
+    assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/MyLabel_Key"));
+    assertFalse(KubernetesResourceUtil.isValidKey("UPPER.PREFIX.IO/key"));
+    assertTrue(KubernetesResourceUtil.isValidKey("a".repeat(63)));
+    assertFalse(KubernetesResourceUtil.isValidKey("a".repeat(64)));
   }
 
   @Test
