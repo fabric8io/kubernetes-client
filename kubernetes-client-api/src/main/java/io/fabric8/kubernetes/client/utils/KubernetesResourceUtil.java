@@ -49,6 +49,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -261,10 +262,10 @@ public class KubernetesResourceUtil {
    * if necessary, which may affect uniqueness.
    *
    * @param name which needs to be sanitized
-   * @return sanitized name
+   * @return sanitized name, or the given name if it's null or empty
    */
   public static String sanitizeName(String name) {
-    if (name != null) {
+    if (Utils.isNotNullOrEmpty(name)) {
       name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("-");
       if (!Character.isLetterOrDigit(name.charAt(0))) {
         name = "a" + name;
@@ -272,14 +273,13 @@ public class KubernetesResourceUtil {
       if (name.length() > 63) {
         name = name.substring(0, 63);
       }
-      name = name.toLowerCase();
+      name = name.toLowerCase(Locale.ROOT);
       final int lastChar = name.length() - 1;
       if (!Character.isLetterOrDigit(name.charAt(lastChar))) {
         name = name.substring(0, lastChar - 1) + "a";
       }
-      return name;
     }
-    return null;
+    return name;
   }
 
   /**

@@ -53,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -208,6 +209,25 @@ class KubernetesResourceUtilTest {
               "90notcool-n@me_______waytoooooooooolooooooooongand should be shorten for sure"),
           argumentSet("starts with '-'", "-name"),
           argumentSet("ends with '-'", "name-"));
+    }
+
+    @Test
+    @DisplayName("sanitizeName returns an empty name unchanged")
+    void returnsEmptyNameUnchanged() {
+      assertThat(KubernetesResourceUtil.sanitizeName("")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("sanitized name is a valid name regardless of the default locale")
+    void sanitizedNameIsValidNameInAnyLocale() {
+      final Locale defaultLocale = Locale.getDefault();
+      try {
+        // Turkish lowercases 'I' to the dotless 'ı'
+        Locale.setDefault(Locale.forLanguageTag("tr"));
+        assertThat(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("MyIngress"))).isTrue();
+      } finally {
+        Locale.setDefault(defaultLocale);
+      }
     }
   }
 
