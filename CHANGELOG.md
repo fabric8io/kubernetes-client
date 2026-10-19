@@ -5,7 +5,7 @@
 #### Bugs
 * Fix #7041: (crd-generator) Files to scan that don't exist, like Gradle's `build/classes/java/main` in a Kotlin-only project, are skipped with a warning instead of failing with "Not a class file, JAR file or directory". The Gradle build-script recipes only pass existing class directories
 * Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
-* Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) and label values with uppercase, `_`, `.` or empty, like Kubernetes does
+* Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
