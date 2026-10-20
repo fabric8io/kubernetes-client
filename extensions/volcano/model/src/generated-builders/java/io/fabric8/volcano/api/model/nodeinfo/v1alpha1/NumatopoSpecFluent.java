@@ -1,13 +1,20 @@
 package io.fabric8.volcano.api.model.nodeinfo.v1alpha1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Object;
+import java.lang.RuntimeException;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -18,6 +25,7 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
   private Map<String,Object> additionalProperties;
   private Map<String,CPUInfo> cpuDetail;
   private Map<String,ResourceInfo> numares;
+  private ArrayList<PodAllocationBuilder> podAllocations = new ArrayList<PodAllocationBuilder>();
   private Map<String,String> policies;
   private Map<String,String> resReserved;
 
@@ -28,6 +36,26 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     this.copyInstance(instance);
   }
 
+  public A addAllToPodAllocations(Collection<PodAllocation> items) {
+    if (this.podAllocations == null) {
+      this.podAllocations = new ArrayList();
+    }
+    for (PodAllocation item : items) {
+        PodAllocationBuilder builder = new PodAllocationBuilder(item);
+        _visitables.get("podAllocations").add(builder);
+        this.podAllocations.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public PodAllocationsNested<A> addNewPodAllocation() {
+    return new PodAllocationsNested(-1, null);
+  }
+  
+  public PodAllocationsNested<A> addNewPodAllocationLike(PodAllocation item) {
+    return new PodAllocationsNested(-1, item);
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -88,6 +116,33 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return (A) this;
   }
   
+  public A addToPodAllocations(PodAllocation... items) {
+    if (this.podAllocations == null) {
+      this.podAllocations = new ArrayList();
+    }
+    for (PodAllocation item : items) {
+        PodAllocationBuilder builder = new PodAllocationBuilder(item);
+        _visitables.get("podAllocations").add(builder);
+        this.podAllocations.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToPodAllocations(int index,PodAllocation item) {
+    if (this.podAllocations == null) {
+      this.podAllocations = new ArrayList();
+    }
+    PodAllocationBuilder builder = new PodAllocationBuilder(item);
+    if (index < 0 || index >= podAllocations.size()) {
+        _visitables.get("podAllocations").add(builder);
+        podAllocations.add(builder);
+    } else {
+        _visitables.get("podAllocations").add(builder);
+        podAllocations.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public A addToPolicies(Map<String,String> map) {
     if (this.policies == null && map != null) {
       this.policies = new LinkedHashMap();
@@ -128,15 +183,77 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return (A) this;
   }
   
+  public PodAllocation buildFirstPodAllocation() {
+    return this.podAllocations.get(0).build();
+  }
+  
+  public PodAllocation buildLastPodAllocation() {
+    return this.podAllocations.get(podAllocations.size() - 1).build();
+  }
+  
+  public PodAllocation buildMatchingPodAllocation(Predicate<PodAllocationBuilder> predicate) {
+      for (PodAllocationBuilder item : podAllocations) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public PodAllocation buildPodAllocation(int index) {
+    return this.podAllocations.get(index).build();
+  }
+  
+  public List<PodAllocation> buildPodAllocations() {
+    return this.podAllocations != null ? build(podAllocations) : null;
+  }
+  
   protected void copyInstance(NumatopoSpec instance) {
     instance = instance != null ? instance : new NumatopoSpec();
     if (instance != null) {
         this.withCpuDetail(instance.getCpuDetail());
         this.withNumares(instance.getNumares());
+        this.withPodAllocations(instance.getPodAllocations());
         this.withPolicies(instance.getPolicies());
         this.withResReserved(instance.getResReserved());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public PodAllocationsNested<A> editFirstPodAllocation() {
+    if (podAllocations.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "podAllocations"));
+    }
+    return this.setNewPodAllocationLike(0, this.buildPodAllocation(0));
+  }
+  
+  public PodAllocationsNested<A> editLastPodAllocation() {
+    int index = podAllocations.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "podAllocations"));
+    }
+    return this.setNewPodAllocationLike(index, this.buildPodAllocation(index));
+  }
+  
+  public PodAllocationsNested<A> editMatchingPodAllocation(Predicate<PodAllocationBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < podAllocations.size();i++) {
+      if (predicate.test(podAllocations.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "podAllocations"));
+    }
+    return this.setNewPodAllocationLike(index, this.buildPodAllocation(index));
+  }
+  
+  public PodAllocationsNested<A> editPodAllocation(int index) {
+    if (podAllocations.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "podAllocations"));
+    }
+    return this.setNewPodAllocationLike(index, this.buildPodAllocation(index));
   }
   
   public boolean equals(Object o) {
@@ -154,6 +271,9 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
       return false;
     }
     if (!(Objects.equals(numares, that.numares))) {
+      return false;
+    }
+    if (!(Objects.equals(podAllocations, that.podAllocations))) {
       return false;
     }
     if (!(Objects.equals(policies, that.policies))) {
@@ -196,8 +316,21 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return this.cpuDetail != null;
   }
   
+  public boolean hasMatchingPodAllocation(Predicate<PodAllocationBuilder> predicate) {
+      for (PodAllocationBuilder item : podAllocations) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasNumares() {
     return this.numares != null;
+  }
+  
+  public boolean hasPodAllocations() {
+    return this.podAllocations != null && !(this.podAllocations.isEmpty());
   }
   
   public boolean hasPolicies() {
@@ -209,7 +342,19 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
   }
   
   public int hashCode() {
-    return Objects.hash(cpuDetail, numares, policies, resReserved, additionalProperties);
+    return Objects.hash(cpuDetail, numares, podAllocations, policies, resReserved, additionalProperties);
+  }
+  
+  public A removeAllFromPodAllocations(Collection<PodAllocation> items) {
+    if (this.podAllocations == null) {
+      return (A) this;
+    }
+    for (PodAllocation item : items) {
+        PodAllocationBuilder builder = new PodAllocationBuilder(item);
+        _visitables.get("podAllocations").remove(builder);
+        this.podAllocations.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -284,6 +429,18 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return (A) this;
   }
   
+  public A removeFromPodAllocations(PodAllocation... items) {
+    if (this.podAllocations == null) {
+      return (A) this;
+    }
+    for (PodAllocation item : items) {
+        PodAllocationBuilder builder = new PodAllocationBuilder(item);
+        _visitables.get("podAllocations").remove(builder);
+        this.podAllocations.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromPolicies(String key) {
     if (this.policies == null) {
       return (A) this;
@@ -332,6 +489,41 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return (A) this;
   }
   
+  public A removeMatchingFromPodAllocations(Predicate<PodAllocationBuilder> predicate) {
+    if (podAllocations == null) {
+      return (A) this;
+    }
+    Iterator<PodAllocationBuilder> each = podAllocations.iterator();
+    List visitables = _visitables.get("podAllocations");
+    while (each.hasNext()) {
+        PodAllocationBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
+  public PodAllocationsNested<A> setNewPodAllocationLike(int index,PodAllocation item) {
+    return new PodAllocationsNested(index, item);
+  }
+  
+  public A setToPodAllocations(int index,PodAllocation item) {
+    if (this.podAllocations == null) {
+      this.podAllocations = new ArrayList();
+    }
+    PodAllocationBuilder builder = new PodAllocationBuilder(item);
+    if (index < 0 || index >= podAllocations.size()) {
+        _visitables.get("podAllocations").add(builder);
+        podAllocations.add(builder);
+    } else {
+        _visitables.get("podAllocations").add(builder);
+        podAllocations.set(index, builder);
+    }
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -343,6 +535,11 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     if (!(numares == null) && !(numares.isEmpty())) {
         sb.append("numares:");
         sb.append(numares);
+        sb.append(",");
+    }
+    if (!(podAllocations == null) && !(podAllocations.isEmpty())) {
+        sb.append("podAllocations:");
+        sb.append(podAllocations);
         sb.append(",");
     }
     if (!(policies == null) && !(policies.isEmpty())) {
@@ -390,6 +587,34 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     return (A) this;
   }
   
+  public A withPodAllocations(List<PodAllocation> podAllocations) {
+    if (this.podAllocations != null) {
+      this._visitables.get("podAllocations").clear();
+    }
+    if (podAllocations != null) {
+        this.podAllocations = new ArrayList();
+        for (PodAllocation item : podAllocations) {
+          this.addToPodAllocations(item);
+        }
+    } else {
+      this.podAllocations = null;
+    }
+    return (A) this;
+  }
+  
+  public A withPodAllocations(PodAllocation... podAllocations) {
+    if (this.podAllocations != null) {
+        this.podAllocations.clear();
+        _visitables.remove("podAllocations");
+    }
+    if (podAllocations != null) {
+      for (PodAllocation item : podAllocations) {
+        this.addToPodAllocations(item);
+      }
+    }
+    return (A) this;
+  }
+  
   public <K,V>A withPolicies(Map<String,String> policies) {
     if (policies == null) {
       this.policies = null;
@@ -407,5 +632,23 @@ public class NumatopoSpecFluent<A extends io.fabric8.volcano.api.model.nodeinfo.
     }
     return (A) this;
   }
+  public class PodAllocationsNested<N> extends PodAllocationFluent<PodAllocationsNested<N>> implements Nested<N>{
   
+    PodAllocationBuilder builder;
+    int index;
+  
+    PodAllocationsNested(int index,PodAllocation item) {
+      this.index = index;
+      this.builder = new PodAllocationBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) NumatopoSpecFluent.this.setToPodAllocations(index, builder.build());
+    }
+    
+    public N endPodAllocation() {
+      return and();
+    }
+    
+  }
 }

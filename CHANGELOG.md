@@ -3,15 +3,30 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #7041: (crd-generator) Files to scan that don't exist, like Gradle's `build/classes/java/main` in a Kotlin-only project, are skipped with a warning instead of failing with "Not a class file, JAR file or directory". The Gradle build-script recipes only pass existing class directories
+* Fix #8103: informer indexes no longer keep entries for objects a custom `ItemStore` does not retain
+* Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
+* Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
+* Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
 
 #### Improvements
+* Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
+* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`, also used by `@RequireK8sSupport` and `@RequireK8sVersionAtLeast`
+* Fix #5352: (kubernetes-server-mock) `@EnableKubernetesMockClient` `kubernetesClientBuilderCustomizer` no longer needs to be public
 
 #### Dependency Upgrade
+* Fix #8150: bump baremetal-operator/apis from 0.13.0 to 0.14.1
+* Fix #8150: bump cluster-api-provider-metal3 from 1.14.0 to 1.14.1
+* Fix #8147: bump ovn-kubernetes/go-controller from a68ef49 to 5ff49b3 (module moved from `github.com/ovn-org` to `github.com/ovn-kubernetes`)
+* Fix #8192: bump volcano.sh/apis from 1.15.2 to 1.16.0
 
 #### New Features
 * Fix #8111: Allow configuring the minimum watch lifetime per informer with `SharedIndexInformer#minWatchTimeout(Duration)`
+* Fix #8147: (open-virtual-networking) DSL support for `ClusterNetworkConnect`, `ClusterUserDefinedNetwork`, `RouteAdvertisements` and `VTEP` (`k8s.ovn.org/v1`)
+* Fix #8192: (volcano) DSL support for `NamespaceQueue` (`scheduling.volcano.sh/v1beta1`)
 
 #### _**Note**_: Breaking changes
+* Fix #8147: (open-virtual-networking) `Layer2Config` field `ipamLifecycle` replaced by `ipam` (`IPAMConfig`, the lifecycle moves to `ipam.lifecycle`)
 
 ### 8.0.0 (2026-09-24)
 

@@ -25,7 +25,7 @@ public class NumatopoSpecBuilder extends NumatopoSpecFluent<NumatopoSpecBuilder>
   }
 
   public NumatopoSpec build() {
-    NumatopoSpec buildable = new NumatopoSpec(fluent.getCpuDetail(), fluent.getNumares(), fluent.getPolicies(), fluent.getResReserved());
+    NumatopoSpec buildable = new NumatopoSpec(fluent.getCpuDetail(), fluent.getNumares(), fluent.buildPodAllocations(), fluent.getPolicies(), fluent.getResReserved());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

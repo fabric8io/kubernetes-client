@@ -28,6 +28,7 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
 
   private Map<String,Object> additionalProperties;
   private AffinityBuilder affinity;
+  private List<String> allowedNamespaces = new ArrayList<String>();
   private Map<String,Quantity> capability;
   private String dequeueStrategy;
   private Map<String,Quantity> deserved;
@@ -46,6 +47,16 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     this.copyInstance(instance);
   }
 
+  public A addAllToAllowedNamespaces(Collection<String> items) {
+    if (this.allowedNamespaces == null) {
+      this.allowedNamespaces = new ArrayList();
+    }
+    for (String item : items) {
+      this.allowedNamespaces.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addAllToExtendClusters(Collection<Cluster> items) {
     if (this.extendClusters == null) {
       this.extendClusters = new ArrayList();
@@ -83,6 +94,24 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
     }
+    return (A) this;
+  }
+  
+  public A addToAllowedNamespaces(String... items) {
+    if (this.allowedNamespaces == null) {
+      this.allowedNamespaces = new ArrayList();
+    }
+    for (String item : items) {
+      this.allowedNamespaces.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToAllowedNamespaces(int index,String item) {
+    if (this.allowedNamespaces == null) {
+      this.allowedNamespaces = new ArrayList();
+    }
+    this.allowedNamespaces.add(index, item);
     return (A) this;
   }
   
@@ -190,6 +219,7 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     instance = instance != null ? instance : new QueueSpec();
     if (instance != null) {
         this.withAffinity(instance.getAffinity());
+        this.withAllowedNamespaces(instance.getAllowedNamespaces());
         this.withCapability(instance.getCapability());
         this.withDequeueStrategy(instance.getDequeueStrategy());
         this.withDeserved(instance.getDeserved());
@@ -278,6 +308,9 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     if (!(Objects.equals(affinity, that.affinity))) {
       return false;
     }
+    if (!(Objects.equals(allowedNamespaces, that.allowedNamespaces))) {
+      return false;
+    }
     if (!(Objects.equals(capability, that.capability))) {
       return false;
     }
@@ -318,6 +351,14 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     return this.additionalProperties;
   }
   
+  public String getAllowedNamespace(int index) {
+    return this.allowedNamespaces.get(index);
+  }
+  
+  public List<String> getAllowedNamespaces() {
+    return this.allowedNamespaces;
+  }
+  
   public Map<String,Quantity> getCapability() {
     return this.capability;
   }
@@ -328,6 +369,23 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   
   public Map<String,Quantity> getDeserved() {
     return this.deserved;
+  }
+  
+  public String getFirstAllowedNamespace() {
+    return this.allowedNamespaces.get(0);
+  }
+  
+  public String getLastAllowedNamespace() {
+    return this.allowedNamespaces.get(allowedNamespaces.size() - 1);
+  }
+  
+  public String getMatchingAllowedNamespace(Predicate<String> predicate) {
+      for (String item : allowedNamespaces) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public String getParent() {
@@ -358,6 +416,10 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     return this.affinity != null;
   }
   
+  public boolean hasAllowedNamespaces() {
+    return this.allowedNamespaces != null && !(this.allowedNamespaces.isEmpty());
+  }
+  
   public boolean hasCapability() {
     return this.capability != null;
   }
@@ -376,6 +438,15 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   
   public boolean hasGuarantee() {
     return this.guarantee != null;
+  }
+  
+  public boolean hasMatchingAllowedNamespace(Predicate<String> predicate) {
+      for (String item : allowedNamespaces) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingExtendCluster(Predicate<ClusterBuilder> predicate) {
@@ -408,7 +479,17 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
   }
   
   public int hashCode() {
-    return Objects.hash(affinity, capability, dequeueStrategy, deserved, extendClusters, guarantee, parent, priority, reclaimable, type, weight, additionalProperties);
+    return Objects.hash(affinity, allowedNamespaces, capability, dequeueStrategy, deserved, extendClusters, guarantee, parent, priority, reclaimable, type, weight, additionalProperties);
+  }
+  
+  public A removeAllFromAllowedNamespaces(Collection<String> items) {
+    if (this.allowedNamespaces == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.allowedNamespaces.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeAllFromExtendClusters(Collection<Cluster> items) {
@@ -443,6 +524,16 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
           this.additionalProperties.remove(key);
         }
       }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAllowedNamespaces(String... items) {
+    if (this.allowedNamespaces == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.allowedNamespaces.remove(item);
     }
     return (A) this;
   }
@@ -527,6 +618,14 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     return new ExtendClustersNested(index, item);
   }
   
+  public A setToAllowedNamespaces(int index,String item) {
+    if (this.allowedNamespaces == null) {
+      this.allowedNamespaces = new ArrayList();
+    }
+    this.allowedNamespaces.set(index, item);
+    return (A) this;
+  }
+  
   public A setToExtendClusters(int index,Cluster item) {
     if (this.extendClusters == null) {
       this.extendClusters = new ArrayList();
@@ -548,6 +647,11 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     if (!(affinity == null)) {
         sb.append("affinity:");
         sb.append(affinity);
+        sb.append(",");
+    }
+    if (!(allowedNamespaces == null) && !(allowedNamespaces.isEmpty())) {
+        sb.append("allowedNamespaces:");
+        sb.append(allowedNamespaces);
         sb.append(",");
     }
     if (!(capability == null) && !(capability.isEmpty())) {
@@ -625,6 +729,31 @@ public class QueueSpecFluent<A extends io.fabric8.volcano.api.model.scheduling.v
     } else {
         this.affinity = null;
         this._visitables.get("affinity").remove(this.affinity);
+    }
+    return (A) this;
+  }
+  
+  public A withAllowedNamespaces(List<String> allowedNamespaces) {
+    if (allowedNamespaces != null) {
+        this.allowedNamespaces = new ArrayList();
+        for (String item : allowedNamespaces) {
+          this.addToAllowedNamespaces(item);
+        }
+    } else {
+      this.allowedNamespaces = null;
+    }
+    return (A) this;
+  }
+  
+  public A withAllowedNamespaces(String... allowedNamespaces) {
+    if (this.allowedNamespaces != null) {
+        this.allowedNamespaces.clear();
+        _visitables.remove("allowedNamespaces");
+    }
+    if (allowedNamespaces != null) {
+      for (String item : allowedNamespaces) {
+        this.addToAllowedNamespaces(item);
+      }
     }
     return (A) this;
   }

@@ -16,6 +16,7 @@
 package io.fabric8.crd.generator.collector;
 
 import org.jboss.jandex.Index;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -50,6 +51,23 @@ class JandexIndexerTest {
     JandexIndexer indexer = new JandexIndexer();
     Index index = indexer.createIndex(tempDir);
     assertEquals(0, index.getKnownClasses().size());
+  }
+
+  @Test
+  @DisplayName("non-existent file is skipped instead of failing the index")
+  void checkNonExistingFile(@TempDir File tempDir) {
+    JandexIndexer indexer = new JandexIndexer();
+    Index index = indexer.createIndex(new File(tempDir, "does-not-exist"));
+    assertEquals(0, index.getKnownClasses().size());
+  }
+
+  @Test
+  @DisplayName("existing file that is not a class file, JAR file or directory fails the index")
+  void checkUnsupportedFile(@TempDir File tempDir) throws IOException {
+    File file = new File(tempDir, "not-a-class.txt");
+    assertTrue(file.createNewFile());
+    JandexIndexer indexer = new JandexIndexer();
+    assertThrows(JandexException.class, () -> indexer.createIndex(file));
   }
 
   @Test

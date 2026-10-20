@@ -25,7 +25,7 @@ public class UserDefinedNetworkStatusBuilder extends UserDefinedNetworkStatusFlu
   }
 
   public UserDefinedNetworkStatus build() {
-    UserDefinedNetworkStatus buildable = new UserDefinedNetworkStatus(fluent.getConditions());
+    UserDefinedNetworkStatus buildable = new UserDefinedNetworkStatus(fluent.getConditions(), fluent.getVrfName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -136,7 +136,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   }
 
   /**
-   * Delete the object.
+   * Delete the object. Its index entries are removed even if the {@link ItemStore} no longer holds it.
    *
    * @param obj object
    * @return the old object
@@ -144,9 +144,7 @@ public class CacheImpl<T extends HasMetadata> implements Cache<T> {
   public synchronized T remove(T obj) {
     String key = getKey(obj);
     T old = this.items.remove(key);
-    if (old != null) {
-      this.updateIndices(old, null, key);
-    }
+    this.updateIndices(old != null ? old : obj, null, key);
     return old;
   }
 

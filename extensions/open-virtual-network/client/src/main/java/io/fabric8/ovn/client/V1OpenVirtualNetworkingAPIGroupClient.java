@@ -17,6 +17,10 @@ package io.fabric8.ovn.client;
 
 import io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRoute;
 import io.fabric8.kubernetes.api.model.ovn.v1.AdminPolicyBasedExternalRouteList;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnect;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterNetworkConnectList;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetwork;
+import io.fabric8.kubernetes.api.model.ovn.v1.ClusterUserDefinedNetworkList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewall;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressFirewallList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressIP;
@@ -25,6 +29,10 @@ import io.fabric8.kubernetes.api.model.ovn.v1.EgressQoS;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressQoSList;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressService;
 import io.fabric8.kubernetes.api.model.ovn.v1.EgressServiceList;
+import io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisements;
+import io.fabric8.kubernetes.api.model.ovn.v1.RouteAdvertisementsList;
+import io.fabric8.kubernetes.api.model.ovn.v1.VTEP;
+import io.fabric8.kubernetes.api.model.ovn.v1.VTEPList;
 import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
@@ -56,6 +64,26 @@ public class V1OpenVirtualNetworkingAPIGroupClient extends ClientAdapter<V1OpenV
   @Override
   public MixedOperation<EgressService, EgressServiceList, Resource<EgressService>> egressServices() {
     return resources(EgressService.class, EgressServiceList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterNetworkConnect, ClusterNetworkConnectList, Resource<ClusterNetworkConnect>> clusterNetworkConnects() {
+    return resources(ClusterNetworkConnect.class, ClusterNetworkConnectList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<ClusterUserDefinedNetwork, ClusterUserDefinedNetworkList, Resource<ClusterUserDefinedNetwork>> clusterUserDefinedNetworks() {
+    return resources(ClusterUserDefinedNetwork.class, ClusterUserDefinedNetworkList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<RouteAdvertisements, RouteAdvertisementsList, Resource<RouteAdvertisements>> routeAdvertisements() {
+    return resources(RouteAdvertisements.class, RouteAdvertisementsList.class);
+  }
+
+  @Override
+  public NonNamespaceOperation<VTEP, VTEPList, Resource<VTEP>> vteps() {
+    return resources(VTEP.class, VTEPList.class);
   }
 
   @Override
