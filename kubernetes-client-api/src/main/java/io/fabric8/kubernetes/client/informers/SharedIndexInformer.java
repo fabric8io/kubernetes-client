@@ -21,6 +21,7 @@ import io.fabric8.kubernetes.client.informers.cache.Indexer;
 import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import io.fabric8.kubernetes.client.informers.cache.Store;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletionStage;
@@ -181,16 +182,21 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
   SharedIndexInformer<T> itemStore(ItemStore<T> itemStore);
 
   /**
-   * Sets the lower bound for this informer's client-managed watch timeout in seconds. The watch request uses twice this
-   * value as its {@code timeoutSeconds}, while the client closes the watch after a randomized interval between one and
-   * two times this value. The default lower bound is 300 seconds. The server or network may close the watch earlier.
+   * Sets the lower bound for this informer's client-managed watch timeout. The duration is converted to whole seconds.
+   * The watch request uses twice this value as its {@code timeoutSeconds}, while the client closes the watch after a
+   * randomized interval between one and two times this value. The default lower bound is 5 minutes.
+   * The server or network may close the watch earlier.
    * <p>
-   * May only be called before the informer starts.
+   * May only be called before the informer starts. {@code inform(handler)} returns an already running informer, so use
+   * {@code client.pods().runnableInformer(0).addEventHandler(handler).minWatchTimeout(Duration.ofMinutes(30)).run()}
+   * or configure an informer obtained from {@link SharedInformerFactory} before starting it.
    *
-   * @param minTimeoutSeconds a positive value no greater than {@code Long.MAX_VALUE / 2}
+   * @param minWatchTimeout a duration of at least 5 minutes and no greater than {@code Long.MAX_VALUE / 2} whole seconds
    * @return this informer
+   * @throws IllegalArgumentException if the duration is outside the allowed range
+   * @throws io.fabric8.kubernetes.client.KubernetesClientException if the informer has already started
    */
-  SharedIndexInformer<T> setMinWatchTimeout(long minTimeoutSeconds);
+  SharedIndexInformer<T> minWatchTimeout(Duration minWatchTimeout);
 
   /**
    * A non-blocking alternative to run. Starts the shared informer, which will normally be stopped when {@link #stop()} is

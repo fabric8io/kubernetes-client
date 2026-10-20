@@ -78,6 +78,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.awaitility.Awaitility.await;
@@ -123,7 +124,7 @@ class DefaultSharedIndexInformerTest {
   }
 
   @Test
-  @DisplayName("Informer uses the configured minimum watch timeout for its watch request")
+  @DisplayName("Informer uses the configured watch timeout and rejects changes after starting")
   void testMinWatchTimeout() throws Exception {
     server.expect()
         .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
@@ -137,17 +138,24 @@ class DefaultSharedIndexInformerTest {
         .always();
 
     SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
-    informer.setMinWatchTimeout(1800).start().toCompletableFuture().get(10, TimeUnit.SECONDS);
-    assertThatIllegalStateException().isThrownBy(() -> informer.setMinWatchTimeout(1800));
+    informer.minWatchTimeout(Duration.ofMinutes(30)).start().toCompletableFuture().get(10, TimeUnit.SECONDS);
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> informer.minWatchTimeout(Duration.ofMinutes(30)));
   }
 
   @Test
-  @DisplayName("Informer rejects invalid watch timeouts")
+  @DisplayName("Informer accepts watch timeouts from 5 minutes through Long.MAX_VALUE / 2 whole seconds")
   void testMinWatchTimeoutValidation() {
     SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
 
-    assertThatIllegalArgumentException().isThrownBy(() -> informer.setMinWatchTimeout(0));
-    assertThatIllegalArgumentException().isThrownBy(() -> informer.setMinWatchTimeout(Long.MAX_VALUE));
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.minWatchTimeout(Duration.ofSeconds(-1)));
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.minWatchTimeout(Duration.ZERO));
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.minWatchTimeout(Duration.ofMinutes(5).minusNanos(1)));
+    assertThatIllegalArgumentException()
+        .isThrownBy(() -> informer.minWatchTimeout(Duration.ofSeconds(Long.MAX_VALUE / 2 + 1)));
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.minWatchTimeout(Duration.ofSeconds(Long.MAX_VALUE)));
+    assertThat(informer.minWatchTimeout(Duration.ofMinutes(5))).isSameAs(informer);
+    assertThat(informer.minWatchTimeout(Duration.ofSeconds(Long.MAX_VALUE / 2))).isSameAs(informer);
   }
 
   @Test
