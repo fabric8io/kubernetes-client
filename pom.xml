@@ -95,7 +95,7 @@
     <!-- jackson-annotations is shared between Jackson 2.x and 3.x, uses 2.x groupId and major.minor versioning -->
     <jackson.bundle.version.annotations>2.22</jackson.bundle.version.annotations>
     <!-- Jackson 2 for the internal openapi model generator/validator tooling (swagger-parser, swagger-request-validator) -->
-    <jackson2.version>2.22.3</jackson2.version>
+    <jackson2.version>2.22.4</jackson2.version>
     <jetty.version>12.1.14</jetty.version>
     <maven-core.version>3.10.0</maven-core.version>
     <maven-plugin-annotations.version>3.16.0</maven-plugin-annotations.version>
