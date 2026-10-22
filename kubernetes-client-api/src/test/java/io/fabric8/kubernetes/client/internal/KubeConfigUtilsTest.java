@@ -24,13 +24,14 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.api.condition.OS;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -216,10 +217,6 @@ class KubeConfigUtilsTest {
     // Then
     assertThat(processBuilderArgs)
         .isNotNull()
-        .hasSize(3);
-    assertPlatformPrefixes(processBuilderArgs);
-    List<String> commandParts = Arrays.asList(processBuilderArgs.get(2).split(" "));
-    assertThat(commandParts)
         .containsExactly(commandFile.toFile().getAbsolutePath(), "--region", "us-west2", "eks",
             "get-token", "--cluster-name", "api-eks.example.com");
   }
@@ -244,16 +241,57 @@ class KubeConfigUtilsTest {
     // Then
     assertThat(processBuilderArgs)
         .isNotNull()
-        .hasSize(3)
-        .satisfies(pb -> assertThat(pb.get(2)).isEqualTo(commandFile.toFile().getPath()));
-    assertPlatformPrefixes(processBuilderArgs);
+        .containsExactly(commandFile.toFile().getPath());
   }
 
-  private void assertPlatformPrefixes(List<String> processBuilderArgs) {
-    List<String> platformArgsExpected = Utils.getCommandPlatformPrefix();
+  @Test
+  @DisplayName("should pass authenticator args without shell interpretation")
+  void getAuthenticatorCommandFromExecConfig_whenArgsContainShellSyntax_thenUseLiteralArgs() throws IOException {
+    // Given
+    Path commandFile = Files.createFile(tempDir.resolve("kubelogin"));
+    String systemPathValue = getTestPathValue(tempDir.toFile());
+    ExecConfig execConfig = new ExecConfigBuilder()
+        .withApiVersion("client.authentication.k8s.io/v1")
+        .withCommand("kubelogin")
+        .addToArgs("ignored;touch${IFS}/tmp/fabric8-exec-owned", "$(touch /tmp/fabric8-exec-pwn)",
+            "$CLIENT_GO_ENV_PROBE")
+        .build();
+
+    // When
+    List<String> processBuilderArgs = KubeConfigUtils.getAuthenticatorCommandFromExecConfig(execConfig,
+        new File("~/.kube/config"), systemPathValue);
+
+    // Then
     assertThat(processBuilderArgs)
-        .satisfies(p -> assertThat(p.get(0)).isEqualTo(platformArgsExpected.get(0)))
-        .satisfies(p -> assertThat(p.get(1)).isEqualTo(platformArgsExpected.get(1)));
+        .containsExactly(commandFile.toFile().getAbsolutePath(), "ignored;touch${IFS}/tmp/fabric8-exec-owned",
+            "$(touch /tmp/fabric8-exec-pwn)", "$CLIENT_GO_ENV_PROBE");
+  }
+
+  @Test
+  @DisabledOnOs(OS.WINDOWS)
+  @DisplayName("should not evaluate authenticator args as shell syntax")
+  void getExecCredentialFromExecConfig_whenArgsContainShellSyntax_thenDoesNotEvaluateThem() throws IOException {
+    // Given
+    Path marker = tempDir.resolve("owned");
+    Path plugin = tempDir.resolve("credential-plugin");
+    Files.writeString(plugin,
+        "#!/usr/bin/env sh\n"
+            + "printf '%s\\n' '{\"apiVersion\":\"client.authentication.k8s.io/v1\","
+            + "\"kind\":\"ExecCredential\",\"status\":{\"token\":\"token\"}}'\n");
+    assertThat(plugin.toFile().setExecutable(true)).isTrue();
+    ExecConfig execConfig = new ExecConfigBuilder()
+        .withApiVersion("client.authentication.k8s.io/v1")
+        .withCommand(plugin.toString())
+        .addToArgs("ignored;touch${IFS}" + marker)
+        .build();
+
+    // When
+    io.fabric8.kubernetes.client.Config.ExecCredential credential = KubeConfigUtils.getExecCredentialFromExecConfig(execConfig,
+        null);
+
+    // Then
+    assertThat(credential.status.token).isEqualTo("token");
+    assertThat(marker).doesNotExist();
   }
 
   private String getTestPathValue(File commandFolder) {
