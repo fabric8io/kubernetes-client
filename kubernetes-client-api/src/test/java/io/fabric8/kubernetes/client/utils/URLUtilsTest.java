@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class URLUtilsTest {
 
@@ -88,6 +89,27 @@ class URLUtilsTest {
     // Then
     assertThat(fullUrl, is("images.openshift.io/api"));
 
+  }
+
+  @Test
+  void encodePathSegmentEncodesOnlyPathDelimiters() {
+    assertThat(URLUtils.encodePathSegment("bar1:1.0.12"), is("bar1:1.0.12"));
+    assertThat(URLUtils.encodePathSegment("sha256~token"), is("sha256~token"));
+    assertThat(URLUtils.encodePathSegment("pod name+1"), is("pod%20name+1"));
+    assertThat(URLUtils.encodePathSegment("pod?watch=true#fragment"), is("pod%3Fwatch=true%23fragment"));
+    assertThat(URLUtils.encodePathSegment("..\\secrets"), is("..%5Csecrets"));
+  }
+
+  @Test
+  void encodePathSegmentRejectsTraversalSyntax() {
+    assertThrows(IllegalArgumentException.class, () -> URLUtils.encodePathSegment("../secrets"));
+    assertThrows(IllegalArgumentException.class, () -> URLUtils.encodePathSegment(".."));
+    assertThrows(IllegalArgumentException.class, () -> URLUtils.encodePathSegment("."));
+    assertThrows(IllegalArgumentException.class,
+        () -> URLUtils.encodePathSegment("%2e%2e%2fsecrets"));
+    assertThrows(IllegalArgumentException.class,
+        () -> URLUtils.encodePathSegment("%252e%252e%252fsecrets"));
+    assertThrows(IllegalArgumentException.class, () -> URLUtils.encodePathSegment("pod%20name"));
   }
 
 }
