@@ -49,7 +49,7 @@ class PodUploadTest {
       // When
       String result = PodUpload.createExecCommandForUpload("/cp.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/' && cat - > '/cp.log' && echo $?");
+      assertThat(result).isEqualTo("mkdir -p -- '/' && cat - > '/cp.log' && echo $?");
     }
 
     @Test
@@ -57,16 +57,15 @@ class PodUploadTest {
       // When
       String result = PodUpload.createExecCommandForUpload("/tmp/foo/cp.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/tmp/foo/' && cat - > '/tmp/foo/cp.log' && echo $?");
+      assertThat(result).isEqualTo("mkdir -p -- '/tmp/foo/' && cat - > '/tmp/foo/cp.log' && echo $?");
     }
 
-    //
     @Test
     void withSingleQuoteInPath() {
       // When
       String result = PodUpload.createExecCommandForUpload("/tmp/fo'o/cp.log");
       // Then
-      assertThat(result).isEqualTo("mkdir -p '/tmp/fo\'\\'\'o/' && cat - > '/tmp/fo\'\\'\'o/cp.log' && echo $?");
+      assertThat(result).isEqualTo("mkdir -p -- '/tmp/fo\'\\'\'o/' && cat - > '/tmp/fo\'\\'\'o/cp.log' && echo $?");
     }
 
     @Test
@@ -75,7 +74,39 @@ class PodUploadTest {
       String result = PodUpload.createExecCommandForUpload("/tmp/f'o'o/c'p.log");
       // Then
       assertThat(result)
-          .isEqualTo("mkdir -p '/tmp/f\'\\'\'o\'\\'\'o/' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log' && echo $?");
+          .isEqualTo("mkdir -p -- '/tmp/f\'\\'\'o\'\\'\'o/' && cat - > '/tmp/f\'\\'\'o\'\\'\'o/c\'\\'\'p.log' && echo $?");
+    }
+
+    @Test
+    void withArgumentLikeDirectory_shouldCreateExecCommandWithOptionSeparator() {
+      // When
+      String result = PodUpload.createExecCommandForUpload("--checkpoint-action=exec=touch/cp.log");
+      // Then
+      assertThat(result).isEqualTo(
+          "mkdir -p -- '--checkpoint-action=exec=touch/' && cat - > '--checkpoint-action=exec=touch/cp.log' && echo $?");
+    }
+  }
+
+  @Nested
+  @DisplayName("extractTarCommand")
+  class ExtractTarCommand {
+
+    @Test
+    void withNormalDirectory_shouldCreateValidExtractCommand() {
+      // When
+      String result = PodUpload.extractTarCommand("/target-dir/", "/target-dir/fabric8-copy.tar");
+      // Then
+      assertThat(result).isEqualTo(
+          "mkdir -p -- '/target-dir/'; tar -C '/target-dir/' -xmf /target-dir/fabric8-copy.tar; e=$?; rm /target-dir/fabric8-copy.tar; exit $e");
+    }
+
+    @Test
+    void withArgumentLikeDirectory_shouldCreateExtractCommandWithOptionSeparator() {
+      // When
+      String result = PodUpload.extractTarCommand("--checkpoint-action=exec=touch/", "/tmp/fabric8-copy.tar");
+      // Then
+      assertThat(result).isEqualTo(
+          "mkdir -p -- '--checkpoint-action=exec=touch/'; tar -C '--checkpoint-action=exec=touch/' -xmf /tmp/fabric8-copy.tar; e=$?; rm /tmp/fabric8-copy.tar; exit $e");
     }
   }
 
