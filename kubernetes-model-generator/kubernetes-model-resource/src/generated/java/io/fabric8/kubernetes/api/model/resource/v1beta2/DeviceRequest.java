@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "exactly",
     "firstAvailable",
     "name"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class DeviceRequest implements Editable<DeviceRequestBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof DeviceRequest)) {
+            return false;
+        }
+        DeviceRequest other = (DeviceRequest) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$exactly = this.getExactly();
+        Object other$exactly = other.getExactly();
+        if (this$exactly == null ? other$exactly != null : !this$exactly.equals(other$exactly)) {
+            return false;
+        }
+        Object this$firstAvailable = this.getFirstAvailable();
+        Object other$firstAvailable = other.getFirstAvailable();
+        if (this$firstAvailable == null ? other$firstAvailable != null : !this$firstAvailable.equals(other$firstAvailable)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof DeviceRequest;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $exactly = this.getExactly();
+        result = result * prime + ($exactly == null ? 43 : $exactly.hashCode());
+        Object $firstAvailable = this.getFirstAvailable();
+        result = result * prime + ($firstAvailable == null ? 43 : $firstAvailable.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceRequest(" + "exactly=" + this.getExactly() + ", firstAvailable=" + this.getFirstAvailable() + ", name=" + this.getName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

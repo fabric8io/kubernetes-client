@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -44,12 +41,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "desiredRevision",
     "observedRevisionGeneration",
     "revisions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -184,6 +175,71 @@ public class ClusterAPIStatus implements Editable<ClusterAPIStatusBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterAPIStatus)) {
+            return false;
+        }
+        ClusterAPIStatus other = (ClusterAPIStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentRevision = this.getCurrentRevision();
+        Object other$currentRevision = other.getCurrentRevision();
+        if (this$currentRevision == null ? other$currentRevision != null : !this$currentRevision.equals(other$currentRevision)) {
+            return false;
+        }
+        Object this$desiredRevision = this.getDesiredRevision();
+        Object other$desiredRevision = other.getDesiredRevision();
+        if (this$desiredRevision == null ? other$desiredRevision != null : !this$desiredRevision.equals(other$desiredRevision)) {
+            return false;
+        }
+        Object this$observedRevisionGeneration = this.getObservedRevisionGeneration();
+        Object other$observedRevisionGeneration = other.getObservedRevisionGeneration();
+        if (this$observedRevisionGeneration == null ? other$observedRevisionGeneration != null : !this$observedRevisionGeneration.equals(other$observedRevisionGeneration)) {
+            return false;
+        }
+        Object this$revisions = this.getRevisions();
+        Object other$revisions = other.getRevisions();
+        if (this$revisions == null ? other$revisions != null : !this$revisions.equals(other$revisions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterAPIStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentRevision = this.getCurrentRevision();
+        result = result * prime + ($currentRevision == null ? 43 : $currentRevision.hashCode());
+        Object $desiredRevision = this.getDesiredRevision();
+        result = result * prime + ($desiredRevision == null ? 43 : $desiredRevision.hashCode());
+        Object $observedRevisionGeneration = this.getObservedRevisionGeneration();
+        result = result * prime + ($observedRevisionGeneration == null ? 43 : $observedRevisionGeneration.hashCode());
+        Object $revisions = this.getRevisions();
+        result = result * prime + ($revisions == null ? 43 : $revisions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterAPIStatus(" + "currentRevision=" + this.getCurrentRevision() + ", desiredRevision=" + this.getDesiredRevision() + ", observedRevisionGeneration=" + this.getObservedRevisionGeneration() + ", revisions=" + this.getRevisions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

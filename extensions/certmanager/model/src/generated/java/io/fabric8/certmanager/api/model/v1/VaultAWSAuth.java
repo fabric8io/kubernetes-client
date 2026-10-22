@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -44,12 +41,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "role",
     "serviceAccountRef",
     "vaultHeaderValue"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -220,6 +211,85 @@ public class VaultAWSAuth implements Editable<VaultAWSAuthBuilder>, KubernetesRe
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VaultAWSAuth)) {
+            return false;
+        }
+        VaultAWSAuth other = (VaultAWSAuth) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$iamRoleArn = this.getIamRoleArn();
+        Object other$iamRoleArn = other.getIamRoleArn();
+        if (this$iamRoleArn == null ? other$iamRoleArn != null : !this$iamRoleArn.equals(other$iamRoleArn)) {
+            return false;
+        }
+        Object this$mountPath = this.getMountPath();
+        Object other$mountPath = other.getMountPath();
+        if (this$mountPath == null ? other$mountPath != null : !this$mountPath.equals(other$mountPath)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$role = this.getRole();
+        Object other$role = other.getRole();
+        if (this$role == null ? other$role != null : !this$role.equals(other$role)) {
+            return false;
+        }
+        Object this$serviceAccountRef = this.getServiceAccountRef();
+        Object other$serviceAccountRef = other.getServiceAccountRef();
+        if (this$serviceAccountRef == null ? other$serviceAccountRef != null : !this$serviceAccountRef.equals(other$serviceAccountRef)) {
+            return false;
+        }
+        Object this$vaultHeaderValue = this.getVaultHeaderValue();
+        Object other$vaultHeaderValue = other.getVaultHeaderValue();
+        if (this$vaultHeaderValue == null ? other$vaultHeaderValue != null : !this$vaultHeaderValue.equals(other$vaultHeaderValue)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VaultAWSAuth;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $iamRoleArn = this.getIamRoleArn();
+        result = result * prime + ($iamRoleArn == null ? 43 : $iamRoleArn.hashCode());
+        Object $mountPath = this.getMountPath();
+        result = result * prime + ($mountPath == null ? 43 : $mountPath.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $role = this.getRole();
+        result = result * prime + ($role == null ? 43 : $role.hashCode());
+        Object $serviceAccountRef = this.getServiceAccountRef();
+        result = result * prime + ($serviceAccountRef == null ? 43 : $serviceAccountRef.hashCode());
+        Object $vaultHeaderValue = this.getVaultHeaderValue();
+        result = result * prime + ($vaultHeaderValue == null ? 43 : $vaultHeaderValue.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VaultAWSAuth(" + "iamRoleArn=" + this.getIamRoleArn() + ", mountPath=" + this.getMountPath() + ", region=" + this.getRegion() + ", role=" + this.getRole() + ", serviceAccountRef=" + this.getServiceAccountRef() + ", vaultHeaderValue=" + this.getVaultHeaderValue() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

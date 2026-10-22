@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "cron",
     "timezone",
     "windowDuration"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class CertificateRenewalWindows implements Editable<CertificateRenewalWin
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CertificateRenewalWindows)) {
+            return false;
+        }
+        CertificateRenewalWindows other = (CertificateRenewalWindows) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cron = this.getCron();
+        Object other$cron = other.getCron();
+        if (this$cron == null ? other$cron != null : !this$cron.equals(other$cron)) {
+            return false;
+        }
+        Object this$timezone = this.getTimezone();
+        Object other$timezone = other.getTimezone();
+        if (this$timezone == null ? other$timezone != null : !this$timezone.equals(other$timezone)) {
+            return false;
+        }
+        Object this$windowDuration = this.getWindowDuration();
+        Object other$windowDuration = other.getWindowDuration();
+        if (this$windowDuration == null ? other$windowDuration != null : !this$windowDuration.equals(other$windowDuration)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CertificateRenewalWindows;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cron = this.getCron();
+        result = result * prime + ($cron == null ? 43 : $cron.hashCode());
+        Object $timezone = this.getTimezone();
+        result = result * prime + ($timezone == null ? 43 : $timezone.hashCode());
+        Object $windowDuration = this.getWindowDuration();
+        result = result * prime + ($windowDuration == null ? 43 : $windowDuration.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CertificateRenewalWindows(" + "cron=" + this.getCron() + ", timezone=" + this.getTimezone() + ", windowDuration=" + this.getWindowDuration() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

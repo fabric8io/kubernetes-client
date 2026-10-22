@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -39,12 +36,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "manifestSelector",
     "patches"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -135,6 +126,57 @@ public class InstallerManifestPatch implements Editable<InstallerManifestPatchBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof InstallerManifestPatch)) {
+            return false;
+        }
+        InstallerManifestPatch other = (InstallerManifestPatch) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$manifestSelector = this.getManifestSelector();
+        Object other$manifestSelector = other.getManifestSelector();
+        if (this$manifestSelector == null ? other$manifestSelector != null : !this$manifestSelector.equals(other$manifestSelector)) {
+            return false;
+        }
+        Object this$patches = this.getPatches();
+        Object other$patches = other.getPatches();
+        if (this$patches == null ? other$patches != null : !this$patches.equals(other$patches)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof InstallerManifestPatch;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $manifestSelector = this.getManifestSelector();
+        result = result * prime + ($manifestSelector == null ? 43 : $manifestSelector.hashCode());
+        Object $patches = this.getPatches();
+        result = result * prime + ($patches == null ? 43 : $patches.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "InstallerManifestPatch(" + "manifestSelector=" + this.getManifestSelector() + ", patches=" + this.getPatches() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

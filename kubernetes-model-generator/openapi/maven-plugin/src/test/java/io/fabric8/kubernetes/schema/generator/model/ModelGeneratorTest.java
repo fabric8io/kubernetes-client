@@ -180,6 +180,23 @@ class ModelGeneratorTest {
     }
   }
 
+  @Nested
+  class GeneratedObjectMethods {
+
+    @Test
+    void emitsExplicitMethodsWithoutLombok() throws IOException {
+      final GeneratorSettings settings = settingsBuilder.build();
+      new ModelGenerator(settings).generate();
+      final Path generatedPod = settings.getGeneratedSourcesDirectory().toPath()
+          .resolve("io/fabric8/kubernetes/api/model/Pod.java");
+
+      assertThat(Files.readString(generatedPod))
+          .contains("public boolean equals(Object o)", "protected boolean canEqual(Object other)",
+              "public int hashCode()", "public String toString()")
+          .doesNotContain("lombok.", "@ToString", "@EqualsAndHashCode", "@Accessors");
+    }
+  }
+
   private static List<String> linesOf(Path path) throws IOException {
     return Files.readAllLines(path, StandardCharsets.UTF_8);
   }

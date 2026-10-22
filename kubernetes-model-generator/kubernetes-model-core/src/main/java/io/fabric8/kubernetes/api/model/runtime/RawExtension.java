@@ -19,14 +19,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
-import lombok.ToString;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
-@ToString(callSuper = true)
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 public class RawExtension extends AnyType implements KubernetesResource {
-
   public RawExtension() {
   }
 
@@ -35,4 +32,8 @@ public class RawExtension extends AnyType implements KubernetesResource {
     super(value);
   }
 
+  @java.lang.Override
+  public java.lang.String toString() {
+    return "RawExtension(super=" + super.toString() + ")";
+  }
 }

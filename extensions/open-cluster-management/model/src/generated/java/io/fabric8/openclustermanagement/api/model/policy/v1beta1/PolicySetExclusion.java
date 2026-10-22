@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "clusterNames",
     "policyName",
     "reason"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -164,6 +155,64 @@ public class PolicySetExclusion implements Editable<PolicySetExclusionBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PolicySetExclusion)) {
+            return false;
+        }
+        PolicySetExclusion other = (PolicySetExclusion) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$clusterNames = this.getClusterNames();
+        Object other$clusterNames = other.getClusterNames();
+        if (this$clusterNames == null ? other$clusterNames != null : !this$clusterNames.equals(other$clusterNames)) {
+            return false;
+        }
+        Object this$policyName = this.getPolicyName();
+        Object other$policyName = other.getPolicyName();
+        if (this$policyName == null ? other$policyName != null : !this$policyName.equals(other$policyName)) {
+            return false;
+        }
+        Object this$reason = this.getReason();
+        Object other$reason = other.getReason();
+        if (this$reason == null ? other$reason != null : !this$reason.equals(other$reason)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PolicySetExclusion;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $clusterNames = this.getClusterNames();
+        result = result * prime + ($clusterNames == null ? 43 : $clusterNames.hashCode());
+        Object $policyName = this.getPolicyName();
+        result = result * prime + ($policyName == null ? 43 : $policyName.hashCode());
+        Object $reason = this.getReason();
+        result = result * prime + ($reason == null ? 43 : $reason.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PolicySetExclusion(" + "clusterNames=" + this.getClusterNames() + ", policyName=" + this.getPolicyName() + ", reason=" + this.getReason() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

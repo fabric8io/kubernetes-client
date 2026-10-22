@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "servingCerts",
     "tlsAdherence",
     "tlsSecurityProfile"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -210,6 +201,92 @@ public class APIServerSpec implements Editable<APIServerSpecBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof APIServerSpec)) {
+            return false;
+        }
+        APIServerSpec other = (APIServerSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$additionalCORSAllowedOrigins = this.getAdditionalCORSAllowedOrigins();
+        Object other$additionalCORSAllowedOrigins = other.getAdditionalCORSAllowedOrigins();
+        if (this$additionalCORSAllowedOrigins == null ? other$additionalCORSAllowedOrigins != null : !this$additionalCORSAllowedOrigins.equals(other$additionalCORSAllowedOrigins)) {
+            return false;
+        }
+        Object this$audit = this.getAudit();
+        Object other$audit = other.getAudit();
+        if (this$audit == null ? other$audit != null : !this$audit.equals(other$audit)) {
+            return false;
+        }
+        Object this$clientCA = this.getClientCA();
+        Object other$clientCA = other.getClientCA();
+        if (this$clientCA == null ? other$clientCA != null : !this$clientCA.equals(other$clientCA)) {
+            return false;
+        }
+        Object this$encryption = this.getEncryption();
+        Object other$encryption = other.getEncryption();
+        if (this$encryption == null ? other$encryption != null : !this$encryption.equals(other$encryption)) {
+            return false;
+        }
+        Object this$servingCerts = this.getServingCerts();
+        Object other$servingCerts = other.getServingCerts();
+        if (this$servingCerts == null ? other$servingCerts != null : !this$servingCerts.equals(other$servingCerts)) {
+            return false;
+        }
+        Object this$tlsAdherence = this.getTlsAdherence();
+        Object other$tlsAdherence = other.getTlsAdherence();
+        if (this$tlsAdherence == null ? other$tlsAdherence != null : !this$tlsAdherence.equals(other$tlsAdherence)) {
+            return false;
+        }
+        Object this$tlsSecurityProfile = this.getTlsSecurityProfile();
+        Object other$tlsSecurityProfile = other.getTlsSecurityProfile();
+        if (this$tlsSecurityProfile == null ? other$tlsSecurityProfile != null : !this$tlsSecurityProfile.equals(other$tlsSecurityProfile)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof APIServerSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $additionalCORSAllowedOrigins = this.getAdditionalCORSAllowedOrigins();
+        result = result * prime + ($additionalCORSAllowedOrigins == null ? 43 : $additionalCORSAllowedOrigins.hashCode());
+        Object $audit = this.getAudit();
+        result = result * prime + ($audit == null ? 43 : $audit.hashCode());
+        Object $clientCA = this.getClientCA();
+        result = result * prime + ($clientCA == null ? 43 : $clientCA.hashCode());
+        Object $encryption = this.getEncryption();
+        result = result * prime + ($encryption == null ? 43 : $encryption.hashCode());
+        Object $servingCerts = this.getServingCerts();
+        result = result * prime + ($servingCerts == null ? 43 : $servingCerts.hashCode());
+        Object $tlsAdherence = this.getTlsAdherence();
+        result = result * prime + ($tlsAdherence == null ? 43 : $tlsAdherence.hashCode());
+        Object $tlsSecurityProfile = this.getTlsSecurityProfile();
+        result = result * prime + ($tlsSecurityProfile == null ? 43 : $tlsSecurityProfile.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "APIServerSpec(" + "additionalCORSAllowedOrigins=" + this.getAdditionalCORSAllowedOrigins() + ", audit=" + this.getAudit() + ", clientCA=" + this.getClientCA() + ", encryption=" + this.getEncryption() + ", servingCerts=" + this.getServingCerts() + ", tlsAdherence=" + this.getTlsAdherence() + ", tlsSecurityProfile=" + this.getTlsSecurityProfile() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -166,12 +166,7 @@ class ModelGenerator {
     if (!ret.getClassInformation().isInterface() && !ret.getClassInformation().isEnum()) {
       ret.addImport("com.fasterxml.jackson.annotation.JsonPropertyOrder");
       ret.put("propertyOrder", SchemaUtils.propertyOrder(ret.getClassSchema()));
-      ret.addImport("lombok.ToString");
-      ret.put("lombokToString", true);
-      ret.addImport("lombok.EqualsAndHashCode");
-      ret.put("lombokEqualsAndHashCode", true);
-      ret.addImport("lombok.experimental.Accessors");
-      ret.put("lombokAccessors", true);
+      ret.put("objectMethods", true);
     }
     ret.put("package", ret.getPackageName());
     if (settings.isGenerateJavadoc() && !sanitizeDescription(ret.getClassSchema().getDescription()).trim().isEmpty()) {
@@ -179,6 +174,7 @@ class ModelGenerator {
     }
     final List<Map<String, Object>> templateFields = templateFields(ret);
     ret.put("fields", templateFields);
+    final List<Map<String, Object>> objectMethodFields = new ArrayList<>(templateFields);
     if (!templateFields.isEmpty()) {
       ret.put("hasFields", true);
       ret.addImport("com.fasterxml.jackson.annotation.JsonProperty");
@@ -202,7 +198,13 @@ class ModelGenerator {
       ret.addImport("com.fasterxml.jackson.annotation.JsonIgnore");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnyGetter");
       ret.addImport("com.fasterxml.jackson.annotation.JsonAnySetter");
+      final Map<String, Object> additionalProperties = new HashMap<>();
+      additionalProperties.put("type", "Map<String, Object>");
+      additionalProperties.put("name", "additionalProperties");
+      additionalProperties.put("getterName", "getAdditionalProperties");
+      objectMethodFields.add(additionalProperties);
     }
+    ret.put("objectMethodFields", objectMethodFields);
   }
 
   private List<Map<String, Object>> templateFields(TemplateContext templateContext) {
