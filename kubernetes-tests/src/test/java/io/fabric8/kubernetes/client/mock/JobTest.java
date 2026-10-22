@@ -338,6 +338,36 @@ public class JobTest {
     assertEquals("hello", log);
   }
 
+  @Test
+  @DisplayName("Should encode container while getting logs for a multi-container job")
+  void testJobGetLogEncodesContainer() {
+    // Given
+    Pod jobPod = createJobPod();
+
+    server.expect().get().withPath("/apis/batch/v1/namespaces/ns1/jobs/job1")
+        .andReturn(HttpURLConnection.HTTP_OK, createJobBuilder().build())
+        .always();
+
+    server.expect().get()
+        .withPath("/api/v1/namespaces/ns1/pods?labelSelector=controller-uid%3D3Dc4c8746c-94fd-47a7-ac01-11047c0323b4")
+        .andReturn(HttpURLConnection.HTTP_OK, new PodListBuilder().withItems(jobPod).build())
+        .once();
+    server.expect().get()
+        .withPath("/api/v1/namespaces/ns1/pods/job1-hk9nf/log?pretty=false"
+            + "&container=c1%26previous%3Dtrue%26tailLines%3D100000")
+        .andReturn(HttpURLConnection.HTTP_OK, "hello")
+        .once();
+
+    // When
+    String log = client.batch().v1().jobs().inNamespace("ns1").withName("job1")
+        .inContainer("c1&previous=true&tailLines=100000")
+        .getLog();
+
+    // Then
+    assertNotNull(log);
+    assertEquals("hello", log);
+  }
+
   private Pod createJobPod() {
     return new PodBuilder()
         .withNewMetadata()
