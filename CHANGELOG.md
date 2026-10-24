@@ -8,6 +8,7 @@
 * Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
 * Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
 * Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
+* Fix #8203: (httpclient-jdk) WebSockets close with 1000 instead of failing with `IllegalArgumentException: statusCode` ("Queued close did not succeed") when a listener, like the watch, echoes a code the JDK can't send, such as the 1006 of a dropped connection
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
