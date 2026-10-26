@@ -88,7 +88,7 @@
     <argLine/>
 
     <!-- Core versions -->
-    <sundrio.version>0.230.2</sundrio.version>
+    <sundrio.version>0.400.1</sundrio.version>
     <okhttp.version>5.5.0</okhttp.version>
     <jackson.version>3.2.3</jackson.version>
     <jackson.bundle.version>${jackson.version}</jackson.bundle.version>
