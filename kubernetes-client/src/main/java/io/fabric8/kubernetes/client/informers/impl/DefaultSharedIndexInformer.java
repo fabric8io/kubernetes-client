@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -317,6 +318,20 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       throw new KubernetesClientException("Informer cannot be running when setting item store");
     }
     this.indexer.setItemStore(itemStore);
+    return this;
+  }
+
+  @Override
+  public synchronized SharedIndexInformer<T> minWatchTimeout(Duration minWatchTimeout) {
+    if (started.get()) {
+      throw new KubernetesClientException("Informer cannot be running when minimum watch timeout is set");
+    }
+    long minTimeoutSeconds = minWatchTimeout.getSeconds();
+    if (minTimeoutSeconds < 300 || minTimeoutSeconds > Long.MAX_VALUE / 2) {
+      throw new IllegalArgumentException(
+          "Minimum watch timeout must be at least 5 minutes and no greater than Long.MAX_VALUE / 2 seconds");
+    }
+    this.reflector.setMinTimeout(minTimeoutSeconds);
     return this;
   }
 
