@@ -22,6 +22,7 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
 
   private Map<String,Object> additionalProperties;
   private VaultAppRoleBuilder appRole;
+  private VaultAWSAuthBuilder aws;
   private VaultClientCertificateAuthBuilder clientCertificate;
   private VaultKubernetesAuthBuilder kubernetes;
   private SecretKeySelectorBuilder tokenSecretRef;
@@ -57,6 +58,10 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     return this.appRole != null ? this.appRole.build() : null;
   }
   
+  public VaultAWSAuth buildAws() {
+    return this.aws != null ? this.aws.build() : null;
+  }
+  
   public VaultClientCertificateAuth buildClientCertificate() {
     return this.clientCertificate != null ? this.clientCertificate.build() : null;
   }
@@ -73,6 +78,7 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     instance = instance != null ? instance : new VaultAuth();
     if (instance != null) {
         this.withAppRole(instance.getAppRole());
+        this.withAws(instance.getAws());
         this.withClientCertificate(instance.getClientCertificate());
         this.withKubernetes(instance.getKubernetes());
         this.withTokenSecretRef(instance.getTokenSecretRef());
@@ -82,6 +88,10 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
   
   public AppRoleNested<A> editAppRole() {
     return this.withNewAppRoleLike(Optional.ofNullable(this.buildAppRole()).orElse(null));
+  }
+  
+  public AwsNested<A> editAws() {
+    return this.withNewAwsLike(Optional.ofNullable(this.buildAws()).orElse(null));
   }
   
   public ClientCertificateNested<A> editClientCertificate() {
@@ -98,6 +108,14 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
   
   public AppRoleNested<A> editOrNewAppRoleLike(VaultAppRole item) {
     return this.withNewAppRoleLike(Optional.ofNullable(this.buildAppRole()).orElse(item));
+  }
+  
+  public AwsNested<A> editOrNewAws() {
+    return this.withNewAwsLike(Optional.ofNullable(this.buildAws()).orElse(new VaultAWSAuthBuilder().build()));
+  }
+  
+  public AwsNested<A> editOrNewAwsLike(VaultAWSAuth item) {
+    return this.withNewAwsLike(Optional.ofNullable(this.buildAws()).orElse(item));
   }
   
   public ClientCertificateNested<A> editOrNewClientCertificate() {
@@ -142,6 +160,9 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     if (!(Objects.equals(appRole, that.appRole))) {
       return false;
     }
+    if (!(Objects.equals(aws, that.aws))) {
+      return false;
+    }
     if (!(Objects.equals(clientCertificate, that.clientCertificate))) {
       return false;
     }
@@ -169,6 +190,10 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     return this.appRole != null;
   }
   
+  public boolean hasAws() {
+    return this.aws != null;
+  }
+  
   public boolean hasClientCertificate() {
     return this.clientCertificate != null;
   }
@@ -182,7 +207,7 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
   }
   
   public int hashCode() {
-    return Objects.hash(appRole, clientCertificate, kubernetes, tokenSecretRef, additionalProperties);
+    return Objects.hash(appRole, aws, clientCertificate, kubernetes, tokenSecretRef, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -215,6 +240,11 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     if (!(appRole == null)) {
         sb.append("appRole:");
         sb.append(appRole);
+        sb.append(",");
+    }
+    if (!(aws == null)) {
+        sb.append("aws:");
+        sb.append(aws);
         sb.append(",");
     }
     if (!(clientCertificate == null)) {
@@ -261,6 +291,18 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     return (A) this;
   }
   
+  public A withAws(VaultAWSAuth aws) {
+    this._visitables.remove("aws");
+    if (aws != null) {
+        this.aws = new VaultAWSAuthBuilder(aws);
+        this._visitables.get("aws").add(this.aws);
+    } else {
+        this.aws = null;
+        this._visitables.get("aws").remove(this.aws);
+    }
+    return (A) this;
+  }
+  
   public A withClientCertificate(VaultClientCertificateAuth clientCertificate) {
     this._visitables.remove("clientCertificate");
     if (clientCertificate != null) {
@@ -291,6 +333,14 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
   
   public AppRoleNested<A> withNewAppRoleLike(VaultAppRole item) {
     return new AppRoleNested(item);
+  }
+  
+  public AwsNested<A> withNewAws() {
+    return new AwsNested(null);
+  }
+  
+  public AwsNested<A> withNewAwsLike(VaultAWSAuth item) {
+    return new AwsNested(item);
   }
   
   public ClientCertificateNested<A> withNewClientCertificate() {
@@ -349,6 +399,23 @@ public class VaultAuthFluent<A extends io.fabric8.certmanager.api.model.v1.Vault
     }
     
     public N endAppRole() {
+      return and();
+    }
+    
+  }
+  public class AwsNested<N> extends VaultAWSAuthFluent<AwsNested<N>> implements Nested<N>{
+  
+    VaultAWSAuthBuilder builder;
+  
+    AwsNested(VaultAWSAuth item) {
+      this.builder = new VaultAWSAuthBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) VaultAuthFluent.this.withAws(builder.build());
+    }
+    
+    public N endAws() {
       return and();
     }
     

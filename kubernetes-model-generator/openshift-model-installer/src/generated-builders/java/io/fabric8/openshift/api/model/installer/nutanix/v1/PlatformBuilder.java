@@ -25,7 +25,7 @@ public class PlatformBuilder extends PlatformFluent<PlatformBuilder> implements 
   }
 
   public Platform build() {
-    Platform buildable = new Platform(fluent.getApiVIP(), fluent.getApiVIPs(), fluent.getClusterOSImage(), fluent.buildDefaultMachinePlatform(), fluent.buildFailureDomains(), fluent.getIngressVIP(), fluent.getIngressVIPs(), fluent.getLoadBalancer(), fluent.getPreloadedOSImageName(), fluent.getPrismAPICallTimeout(), fluent.buildPrismCentral(), fluent.buildPrismElements(), fluent.getSubnetUUIDs());
+    Platform buildable = new Platform(fluent.getApiVIP(), fluent.getApiVIPs(), fluent.getClusterOSImage(), fluent.buildDefaultMachinePlatform(), fluent.getDnsRecordsType(), fluent.buildFailureDomains(), fluent.getIngressVIP(), fluent.getIngressVIPs(), fluent.getLoadBalancer(), fluent.getPreloadedOSImageName(), fluent.getPrismAPICallTimeout(), fluent.buildPrismCentral(), fluent.buildPrismElements(), fluent.getSubnetUUIDs());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -45,6 +45,7 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
   private FailedProvisionConfigBuilder failedProvisionConfig;
   private FeatureGateSelectionBuilder featureGates;
   private LocalObjectReferenceBuilder globalPullSecretRef;
+  private LocalObjectReferenceBuilder hiveImagePullSecretRef;
   private String logLevel;
   private String machinePoolPollInterval;
   private Boolean maintenanceMode;
@@ -312,6 +313,10 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
     return this.globalPullSecretRef != null ? this.globalPullSecretRef.build() : null;
   }
   
+  public LocalObjectReference buildHiveImagePullSecretRef() {
+    return this.hiveImagePullSecretRef != null ? this.hiveImagePullSecretRef.build() : null;
+  }
+  
   public LocalObjectReference buildLastAdditionalCertificateAuthoritiesSecretRef() {
     return this.additionalCertificateAuthoritiesSecretRef.get(additionalCertificateAuthoritiesSecretRef.size() - 1).build();
   }
@@ -392,6 +397,7 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
         this.withFailedProvisionConfig(instance.getFailedProvisionConfig());
         this.withFeatureGates(instance.getFeatureGates());
         this.withGlobalPullSecretRef(instance.getGlobalPullSecretRef());
+        this.withHiveImagePullSecretRef(instance.getHiveImagePullSecretRef());
         this.withLogLevel(instance.getLogLevel());
         this.withMachinePoolPollInterval(instance.getMachinePoolPollInterval());
         this.withMaintenanceMode(instance.getMaintenanceMode());
@@ -467,6 +473,10 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
   
   public GlobalPullSecretRefNested<A> editGlobalPullSecretRef() {
     return this.withNewGlobalPullSecretRefLike(Optional.ofNullable(this.buildGlobalPullSecretRef()).orElse(null));
+  }
+  
+  public HiveImagePullSecretRefNested<A> editHiveImagePullSecretRef() {
+    return this.withNewHiveImagePullSecretRefLike(Optional.ofNullable(this.buildHiveImagePullSecretRef()).orElse(null));
   }
   
   public AdditionalCertificateAuthoritiesSecretRefNested<A> editLastAdditionalCertificateAuthoritiesSecretRef() {
@@ -602,6 +612,14 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
     return this.withNewGlobalPullSecretRefLike(Optional.ofNullable(this.buildGlobalPullSecretRef()).orElse(item));
   }
   
+  public HiveImagePullSecretRefNested<A> editOrNewHiveImagePullSecretRef() {
+    return this.withNewHiveImagePullSecretRefLike(Optional.ofNullable(this.buildHiveImagePullSecretRef()).orElse(new LocalObjectReferenceBuilder().build()));
+  }
+  
+  public HiveImagePullSecretRefNested<A> editOrNewHiveImagePullSecretRefLike(LocalObjectReference item) {
+    return this.withNewHiveImagePullSecretRefLike(Optional.ofNullable(this.buildHiveImagePullSecretRef()).orElse(item));
+  }
+  
   public MetricsConfigNested<A> editOrNewMetricsConfig() {
     return this.withNewMetricsConfigLike(Optional.ofNullable(this.buildMetricsConfig()).orElse(new MetricsConfigBuilder().build()));
   }
@@ -697,6 +715,9 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
       return false;
     }
     if (!(Objects.equals(globalPullSecretRef, that.globalPullSecretRef))) {
+      return false;
+    }
+    if (!(Objects.equals(hiveImagePullSecretRef, that.hiveImagePullSecretRef))) {
       return false;
     }
     if (!(Objects.equals(logLevel, that.logLevel))) {
@@ -860,6 +881,10 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
     return this.globalPullSecretRef != null;
   }
   
+  public boolean hasHiveImagePullSecretRef() {
+    return this.hiveImagePullSecretRef != null;
+  }
+  
   public boolean hasLogLevel() {
     return this.logLevel != null;
   }
@@ -937,7 +962,7 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
   }
   
   public int hashCode() {
-    return Objects.hash(additionalCertificateAuthoritiesSecretRef, argoCDConfig, awsPrivateLink, backup, clusterVersionPollInterval, controllersConfig, deleteProtection, deploymentConfig, deprovisionsDisabled, disabledControllers, exportMetrics, failedProvisionConfig, featureGates, globalPullSecretRef, logLevel, machinePoolPollInterval, maintenanceMode, managedDomains, metricsConfig, privateLink, releaseImageVerificationConfigMapRef, serviceProviderCredentialsConfig, syncSetReapplyInterval, targetNamespace, additionalProperties);
+    return Objects.hash(additionalCertificateAuthoritiesSecretRef, argoCDConfig, awsPrivateLink, backup, clusterVersionPollInterval, controllersConfig, deleteProtection, deploymentConfig, deprovisionsDisabled, disabledControllers, exportMetrics, failedProvisionConfig, featureGates, globalPullSecretRef, hiveImagePullSecretRef, logLevel, machinePoolPollInterval, maintenanceMode, managedDomains, metricsConfig, privateLink, releaseImageVerificationConfigMapRef, serviceProviderCredentialsConfig, syncSetReapplyInterval, targetNamespace, additionalProperties);
   }
   
   public A removeAllFromAdditionalCertificateAuthoritiesSecretRef(Collection<LocalObjectReference> items) {
@@ -1242,6 +1267,11 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
         sb.append(globalPullSecretRef);
         sb.append(",");
     }
+    if (!(hiveImagePullSecretRef == null)) {
+        sb.append("hiveImagePullSecretRef:");
+        sb.append(hiveImagePullSecretRef);
+        sb.append(",");
+    }
     if (!(logLevel == null)) {
         sb.append("logLevel:");
         sb.append(logLevel);
@@ -1502,6 +1532,18 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
     return (A) this;
   }
   
+  public A withHiveImagePullSecretRef(LocalObjectReference hiveImagePullSecretRef) {
+    this._visitables.remove("hiveImagePullSecretRef");
+    if (hiveImagePullSecretRef != null) {
+        this.hiveImagePullSecretRef = new LocalObjectReferenceBuilder(hiveImagePullSecretRef);
+        this._visitables.get("hiveImagePullSecretRef").add(this.hiveImagePullSecretRef);
+    } else {
+        this.hiveImagePullSecretRef = null;
+        this._visitables.get("hiveImagePullSecretRef").remove(this.hiveImagePullSecretRef);
+    }
+    return (A) this;
+  }
+  
   public A withLogLevel(String logLevel) {
     this.logLevel = logLevel;
     return (A) this;
@@ -1623,6 +1665,18 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
   
   public GlobalPullSecretRefNested<A> withNewGlobalPullSecretRefLike(LocalObjectReference item) {
     return new GlobalPullSecretRefNested(item);
+  }
+  
+  public HiveImagePullSecretRefNested<A> withNewHiveImagePullSecretRef() {
+    return new HiveImagePullSecretRefNested(null);
+  }
+  
+  public A withNewHiveImagePullSecretRef(String name) {
+    return (A) this.withHiveImagePullSecretRef(new LocalObjectReference(name));
+  }
+  
+  public HiveImagePullSecretRefNested<A> withNewHiveImagePullSecretRefLike(LocalObjectReference item) {
+    return new HiveImagePullSecretRefNested(item);
   }
   
   public MetricsConfigNested<A> withNewMetricsConfig() {
@@ -1859,6 +1913,23 @@ public class HiveConfigSpecFluent<A extends io.fabric8.openshift.api.model.hive.
     }
     
     public N endGlobalPullSecretRef() {
+      return and();
+    }
+    
+  }
+  public class HiveImagePullSecretRefNested<N> extends LocalObjectReferenceFluent<HiveImagePullSecretRefNested<N>> implements Nested<N>{
+  
+    LocalObjectReferenceBuilder builder;
+  
+    HiveImagePullSecretRefNested(LocalObjectReference item) {
+      this.builder = new LocalObjectReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) HiveConfigSpecFluent.this.withHiveImagePullSecretRef(builder.build());
+    }
+    
+    public N endHiveImagePullSecretRef() {
       return and();
     }
     

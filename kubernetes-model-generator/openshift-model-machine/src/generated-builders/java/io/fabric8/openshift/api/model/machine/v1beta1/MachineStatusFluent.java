@@ -39,6 +39,7 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
   private ObjectReferenceBuilder nodeRef;
   private String phase;
   private Object providerStatus;
+  private String synchronizedAPI;
   private Long synchronizedGeneration;
 
   public MachineStatusFluent() {
@@ -193,6 +194,7 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
         this.withNodeRef(instance.getNodeRef());
         this.withPhase(instance.getPhase());
         this.withProviderStatus(instance.getProviderStatus());
+        this.withSynchronizedAPI(instance.getSynchronizedAPI());
         this.withSynchronizedGeneration(instance.getSynchronizedGeneration());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -299,6 +301,9 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
     if (!(Objects.equals(providerStatus, that.providerStatus))) {
       return false;
     }
+    if (!(Objects.equals(synchronizedAPI, that.synchronizedAPI))) {
+      return false;
+    }
     if (!(Objects.equals(synchronizedGeneration, that.synchronizedGeneration))) {
       return false;
     }
@@ -359,6 +364,10 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
   
   public Object getProviderStatus() {
     return this.providerStatus;
+  }
+  
+  public String getSynchronizedAPI() {
+    return this.synchronizedAPI;
   }
   
   public Long getSynchronizedGeneration() {
@@ -427,12 +436,16 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
     return this.providerStatus != null;
   }
   
+  public boolean hasSynchronizedAPI() {
+    return this.synchronizedAPI != null;
+  }
+  
   public boolean hasSynchronizedGeneration() {
     return this.synchronizedGeneration != null;
   }
   
   public int hashCode() {
-    return Objects.hash(addresses, authoritativeAPI, conditions, errorMessage, errorReason, lastOperation, lastUpdated, nodeRef, phase, providerStatus, synchronizedGeneration, additionalProperties);
+    return Objects.hash(addresses, authoritativeAPI, conditions, errorMessage, errorReason, lastOperation, lastUpdated, nodeRef, phase, providerStatus, synchronizedAPI, synchronizedGeneration, additionalProperties);
   }
   
   public A removeAllFromAddresses(Collection<NodeAddress> items) {
@@ -599,6 +612,11 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
         sb.append(providerStatus);
         sb.append(",");
     }
+    if (!(synchronizedAPI == null)) {
+        sb.append("synchronizedAPI:");
+        sb.append(synchronizedAPI);
+        sb.append(",");
+    }
     if (!(synchronizedGeneration == null)) {
         sb.append("synchronizedGeneration:");
         sb.append(synchronizedGeneration);
@@ -745,6 +763,11 @@ public class MachineStatusFluent<A extends io.fabric8.openshift.api.model.machin
   
   public A withProviderStatus(Object providerStatus) {
     this.providerStatus = providerStatus;
+    return (A) this;
+  }
+  
+  public A withSynchronizedAPI(String synchronizedAPI) {
+    this.synchronizedAPI = synchronizedAPI;
     return (A) this;
   }
   

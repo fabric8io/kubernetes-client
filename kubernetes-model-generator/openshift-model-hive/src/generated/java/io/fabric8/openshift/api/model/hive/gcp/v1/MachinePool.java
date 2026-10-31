@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on GCP.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "networkProjectID",
@@ -45,6 +45,7 @@ import lombok.experimental.Accessors;
     "osDisk",
     "secureBoot",
     "serviceAccount",
+    "tags",
     "type",
     "userTags",
     "zones"
@@ -84,6 +85,9 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private String secureBoot;
     @JsonProperty("serviceAccount")
     private String serviceAccount;
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tags = new ArrayList<>();
     @JsonProperty("type")
     private String type;
     @JsonProperty("userTags")
@@ -101,13 +105,14 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String networkProjectID, String onHostMaintenance, OSDisk osDisk, String secureBoot, String serviceAccount, String type, List<UserTag> userTags, List<String> zones) {
+    public MachinePool(String networkProjectID, String onHostMaintenance, OSDisk osDisk, String secureBoot, String serviceAccount, List<String> tags, String type, List<UserTag> userTags, List<String> zones) {
         super();
         this.networkProjectID = networkProjectID;
         this.onHostMaintenance = onHostMaintenance;
         this.osDisk = osDisk;
         this.secureBoot = secureBoot;
         this.serviceAccount = serviceAccount;
+        this.tags = tags;
         this.type = type;
         this.userTags = userTags;
         this.zones = zones;
@@ -191,6 +196,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("serviceAccount")
     public void setServiceAccount(String serviceAccount) {
         this.serviceAccount = serviceAccount;
+    }
+
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset. Not to be confused with UserTags.
+     */
+    @JsonProperty("tags")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTags() {
+        return tags;
+    }
+
+    /**
+     * Tags defines a set of network tags which will be added to instances in the machineset. Not to be confused with UserTags.
+     */
+    @JsonProperty("tags")
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
 
     /**

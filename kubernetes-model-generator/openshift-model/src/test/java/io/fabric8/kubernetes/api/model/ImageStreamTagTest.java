@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.*;
 import io.fabric8.openshift.api.model.ImageBuilder;
 import io.fabric8.openshift.api.model.ImageLayerBuilder;
@@ -24,6 +23,8 @@ import io.fabric8.openshift.api.model.ImageStreamTagBuilder;
 import io.fabric8.openshift.api.model.TagReferenceBuilder;
 import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class ImageStreamTagTest {
 
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   public void imageStreamTagTest() throws Exception {

@@ -25,7 +25,7 @@ public class PhysicalMachineSelectorSpecBuilder extends PhysicalMachineSelectorS
   }
 
   public PhysicalMachineSelectorSpec build() {
-    PhysicalMachineSelectorSpec buildable = new PhysicalMachineSelectorSpec(fluent.getAnnotationSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces(), fluent.getPhysicalMachines());
+    PhysicalMachineSelectorSpec buildable = new PhysicalMachineSelectorSpec(fluent.getAnnotationSelectors(), fluent.getExpressionSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces(), fluent.getPhysicalMachines());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

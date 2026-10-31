@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * EC2RootVolume defines the storage for an ec2 instance.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "iops",
@@ -76,7 +76,7 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     @JsonProperty("size")
     private Integer size;
     @JsonProperty("throughput")
-    private Long throughput;
+    private Integer throughput;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -88,7 +88,7 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     public EC2RootVolume() {
     }
 
-    public EC2RootVolume(Integer iops, String kmsKeyARN, Integer size, Long throughput, String type) {
+    public EC2RootVolume(Integer iops, String kmsKeyARN, Integer size, Integer throughput, String type) {
         super();
         this.iops = iops;
         this.kmsKeyARN = kmsKeyARN;
@@ -146,18 +146,18 @@ public class EC2RootVolume implements Editable<EC2RootVolumeBuilder>, Kubernetes
     }
 
     /**
-     * Throughput to provision in MiB/s supported for the volume type. This is currently only applicable to volumes of type gp3.
+     * Throughput to provision in MiB/s supported for the volume type. Not applicable to all types.<br><p> <br><p> This parameter is valid only for gp3 volumes. Valid Range: Minimum value of 125. Maximum value of 2000.<br><p> <br><p> When omitted, this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 125.
      */
     @JsonProperty("throughput")
-    public Long getThroughput() {
+    public Integer getThroughput() {
         return throughput;
     }
 
     /**
-     * Throughput to provision in MiB/s supported for the volume type. This is currently only applicable to volumes of type gp3.
+     * Throughput to provision in MiB/s supported for the volume type. Not applicable to all types.<br><p> <br><p> This parameter is valid only for gp3 volumes. Valid Range: Minimum value of 125. Maximum value of 2000.<br><p> <br><p> When omitted, this means no opinion, and the platform is left to choose a reasonable default, which is subject to change over time. The current default is 125.
      */
     @JsonProperty("throughput")
-    public void setThroughput(Long throughput) {
+    public void setThroughput(Integer throughput) {
         this.throughput = throughput;
     }
 

@@ -15,14 +15,15 @@
  */
 package io.fabric8.java.generator.testing;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import com.github.difflib.text.DiffRow;
 import com.github.difflib.text.DiffRowGenerator;
 import io.fabric8.zjsonpatch.JsonDiff;
 import io.fabric8.zjsonpatch.JsonPatch;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.dataformat.yaml.YAMLFactory;
+import tools.jackson.dataformat.yaml.YAMLMapper;
+import tools.jackson.dataformat.yaml.YAMLWriteFeature;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -40,8 +41,8 @@ public class KubernetesResourceDiff {
   private final String source1;
   private final String source2;
 
-  private final ObjectMapper yamlMapper = new ObjectMapper(
-      new YAMLFactory().disable(YAMLGenerator.Feature.WRITE_DOC_START_MARKER));
+  private final ObjectMapper yamlMapper = YAMLMapper.builder(
+      YAMLFactory.builder().disable(YAMLWriteFeature.WRITE_DOC_START_MARKER).build()).build();
 
   public KubernetesResourceDiff(String source1, String source2) {
     this.source1 = source1;

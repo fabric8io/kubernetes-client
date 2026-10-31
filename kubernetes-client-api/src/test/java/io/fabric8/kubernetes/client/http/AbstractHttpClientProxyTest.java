@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.http.Headers;
 import io.fabric8.mockwebserver.http.RecordedRequest;
@@ -24,11 +25,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 
 @SuppressWarnings("HttpUrlsUsage")
 public abstract class AbstractHttpClientProxyTest {
@@ -86,6 +91,143 @@ public abstract class AbstractHttpClientProxyTest {
           .extracting(RecordedRequest::getHeaders)
           .returns("example.com", h -> h.get("Host"))
           .returns("Basic YXV0aDpjcmVk", h -> h.get("Proxy-Authorization"));
+    }
+  }
+
+  @Test
+  @DisplayName("Proxied HttpClient routes WebSocket connections through the proxy instead of dialing the origin directly")
+  protected void proxyConfigurationIsHonoredByWebSocketConnections() throws Exception {
+    // Given
+    // The origin host is deliberately unresolvable (reserved .test TLD, RFC 6761), so the client can only ever
+    // reach the proxy: were it to bypass the proxy, name resolution would fail and nothing would be recorded.
+    // Clients that forward the upgrade in absolute form match one of these expectations and complete the
+    // handshake (OkHttp keeps the http scheme, Jetty keeps the ws one); clients that tunnel with CONNECT match
+    // neither, but their CONNECT is still recorded, which is all this test asserts on.
+    for (String absoluteForm : new String[] { "http://ws.example.test/proxied-ws", "ws://ws.example.test/proxied-ws" }) {
+      proxyServer.expect().withPath(absoluteForm)
+          .andUpgradeToWebSocket()
+          .open()
+          .done()
+          .always();
+    }
+    final int requestsBeforeConnect = proxyServer.getRequestCount();
+    try (HttpClient client = getHttpClientFactory().newBuilder()
+        .proxyAddress(new InetSocketAddress("localhost", proxyServer.getPort()))
+        // The connection is expected to fail on the implementations that tunnel: DefaultMockServer does not
+        // implement CONNECT. Retrying it would keep the attempt pending for ~19 seconds (10 IOException retries
+        // at 100-3200ms), which makes both outcomes slow and makes the assertion below depend on the retry
+        // classifier for its timing. One attempt is all this test needs.
+        .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+        .build()) {
+      // When
+      final CompletableFuture<WebSocket> connected = client.newWebSocketBuilder()
+          .uri(URI.create("http://ws.example.test/proxied-ws"))
+          .buildAsync(new WebSocket.Listener() {
+          });
+      // Then
+      // Only the fact that the connection is addressed to the proxy is asserted, not that the upgrade completes:
+      // implementations legitimately differ here (Vert.x and the JDK tunnel with CONNECT, which DefaultMockServer
+      // does not implement, while OkHttp sends an absolute-form GET). What regressed, and what matters for an
+      // operator-mandated egress proxy, is whether the proxy is contacted at all.
+      awaitProxyContact(requestsBeforeConnect, connected);
+      assertThat(proxyServer.getLastRequest().getPath())
+          .as("the proxy should have been asked to reach the origin")
+          .contains("ws.example.test");
+      connected.cancel(true);
+    }
+    // proxyServer is shared by every test in this class, and DefaultMockServer#getLastRequest drains the recorded
+    // requests instead of peeking them, so anything left queued here would be handed to whichever test runs next.
+    proxyServer.getLastRequest();
+  }
+
+  /**
+   * Waits until the proxy has recorded the WebSocket connection attempt, giving up as soon as the attempt is
+   * over without the proxy having been contacted.
+   *
+   * <p>
+   * The fail-fast is gated on the request count too, not only on the attempt being finished: Awaitility
+   * evaluates it before the assertion on every poll and wins even when the assertion is already satisfiable,
+   * and the implementations that tunnel with CONNECT do reach the proxy before failing on it. The outcome of
+   * the attempt is folded into the error because Awaitility's own message carries none of it, which would
+   * leave a CI failure with nothing to go on.
+   * </p>
+   */
+  private static void awaitProxyContact(int requestsBeforeConnect, CompletableFuture<WebSocket> connected) {
+    try {
+      await().atMost(30L, TimeUnit.SECONDS)
+          .failFast("the WebSocket connection attempt ended without the proxy being contacted",
+              () -> connected.isDone() && proxyServer.getRequestCount() == requestsBeforeConnect)
+          .untilAsserted(() -> assertThat(proxyServer.getRequestCount())
+              .as("the WebSocket connection should have been addressed to the proxy, not to the origin")
+              .isGreaterThan(requestsBeforeConnect));
+    } catch (RuntimeException failure) {
+      throw new AssertionError(
+          "The WebSocket connection was not addressed to the proxy. The connection attempt " + describe(connected),
+          failure);
+    }
+  }
+
+  /** Describes the outcome of a connection attempt, for inclusion in an assertion failure. */
+  private static String describe(CompletableFuture<WebSocket> connected) {
+    return connected
+        .handle((webSocket, throwable) -> throwable == null ? "succeeded" : "failed with " + throwable)
+        .getNow("is still in progress");
+  }
+
+  @Test
+  @DisplayName("Proxied HttpClient with other authorization doesn't send it inside the CONNECT tunnel of a plain WebSocket (which the API server reads, not the proxy)")
+  protected void proxyConfigurationOtherAuthIsNotSentThroughWebSocketTunnel() throws Exception {
+    final DefaultMockServer origin = new DefaultMockServer(false);
+    origin.start();
+    try (TunnelingProxy proxy = new TunnelingProxy(origin.getPort())) {
+      // Given
+      // Some implementations tunnel the upgrade with CONNECT (Vert.x, JDK), others send it in absolute form to the proxy
+      final String url = origin.url("/tunneled-ws");
+      for (String path : new String[] { "/tunneled-ws", url, url.replaceFirst("^http", "ws") }) {
+        origin.expect().withPath(path).andUpgradeToWebSocket().open().done().always();
+      }
+      try (HttpClient client = getHttpClientFactory().newBuilder()
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort()))
+          .proxyAuthorization("Other kind of auth")
+          .build()) {
+        // When
+        client.newWebSocketBuilder()
+            .uri(URI.create(url))
+            .buildAsync(new WebSocket.Listener() {
+            }).get(10L, TimeUnit.SECONDS);
+      }
+      // Then
+      assertThat(proxy.getRequestHeads()).as("the upgrade should have gone through the proxy").isNotEmpty();
+      assertThat(proxy.getTunneledText()).doesNotContain("Other kind of auth");
+    } finally {
+      origin.shutdown();
+    }
+  }
+
+  @Test
+  @DisplayName("SOCKS5 proxied HttpClient with other authorization doesn't send it as a request header, which only the API server would read")
+  protected void socks5ProxyOtherAuthIsNotSentToServer() throws Exception {
+    final DefaultMockServer origin = new DefaultMockServer(false);
+    origin.start();
+    try (Socks5Relay proxy = new Socks5Relay(origin.getPort())) {
+      // Given
+      origin.expect().get().withPath("/through-socks").andReturn(200, "relayed").always();
+      try (HttpClient client = getHttpClientFactory().newBuilder()
+          .proxyType(HttpClient.ProxyType.SOCKS5)
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), proxy.getPort()))
+          .proxyAuthorization("Other kind of auth")
+          .build()) {
+        // When
+        final HttpResponse<String> response = client
+            .sendAsync(client.newHttpRequestBuilder().uri(origin.url("/through-socks")).build(), String.class)
+            .get(10L, TimeUnit.SECONDS);
+        // Then
+        assertThat(response.body()).isEqualTo("relayed");
+      }
+      assertThat(proxy.getConnectCount()).as("the request should have gone through the SOCKS proxy").isPositive();
+      assertThat(origin.getLastRequest().getHeader(StandardHttpHeaders.PROXY_AUTHORIZATION)).isNull();
+    } finally {
+      origin.shutdown();
     }
   }
 

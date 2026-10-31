@@ -43,12 +43,14 @@ spec:
           spec:
             properties:
               actuatorPort:
+                format: "int32"
                 type: "integer"
               configMapName:
                 type: "string"
               metricsPath:
                 type: "string"
               metricsPort:
+                format: "int32"
                 type: "integer"
               services:
                 items:
@@ -63,6 +65,7 @@ spec:
                         creationTimestamp:
                           type: "string"
                         deletionGracePeriodSeconds:
+                          format: "int64"
                           type: "integer"
                         deletionTimestamp:
                           type: "string"
@@ -73,6 +76,7 @@ spec:
                         generateName:
                           type: "string"
                         generation:
+                          format: "int64"
                           type: "integer"
                         labels:
                           additionalProperties:
@@ -110,6 +114,7 @@ spec:
                         externalTrafficPolicy:
                           type: "string"
                         healthCheckNodePort:
+                          format: "int32"
                           type: "integer"
                         internalTrafficPolicy:
                           type: "string"
@@ -152,6 +157,7 @@ spec:
                       creationTimestamp:
                         type: "string"
                       deletionGracePeriodSeconds:
+                        format: "int64"
                         type: "integer"
                       deletionTimestamp:
                         type: "string"
@@ -162,6 +168,7 @@ spec:
                       generateName:
                         type: "string"
                       generation:
+                        format: "int64"
                         type: "integer"
                       labels:
                         additionalProperties:
@@ -182,12 +189,15 @@ spec:
                     description: "The spec of this StatefulSet"
                     properties:
                       minReadySeconds:
+                        format: "int32"
                         type: "integer"
                       podManagementPolicy:
                         type: "string"
                       replicas:
+                        format: "int32"
                         type: "integer"
                       revisionHistoryLimit:
+                        format: "int32"
                         type: "integer"
                       serviceName:
                         type: "string"

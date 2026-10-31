@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,17 +32,19 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MultiClusterHubStatus defines the observed state of MultiClusterHub
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "components",
     "conditions",
     "currentVersion",
     "desiredVersion",
+    "mceVersionCompliance",
     "phase"
 })
 @ToString
@@ -81,6 +82,8 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     private String currentVersion;
     @JsonProperty("desiredVersion")
     private String desiredVersion;
+    @JsonProperty("mceVersionCompliance")
+    private MCEVersionComplianceStatus mceVersionCompliance;
     @JsonProperty("phase")
     private String phase;
     @JsonIgnore
@@ -92,12 +95,13 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     public MultiClusterHubStatus() {
     }
 
-    public MultiClusterHubStatus(Map<String, StatusCondition> components, List<HubCondition> conditions, String currentVersion, String desiredVersion, String phase) {
+    public MultiClusterHubStatus(Map<String, StatusCondition> components, List<HubCondition> conditions, String currentVersion, String desiredVersion, MCEVersionComplianceStatus mceVersionCompliance, String phase) {
         super();
         this.components = components;
         this.conditions = conditions;
         this.currentVersion = currentVersion;
         this.desiredVersion = desiredVersion;
+        this.mceVersionCompliance = mceVersionCompliance;
         this.phase = phase;
     }
 
@@ -165,6 +169,22 @@ public class MultiClusterHubStatus implements Editable<MultiClusterHubStatusBuil
     @JsonProperty("desiredVersion")
     public void setDesiredVersion(String desiredVersion) {
         this.desiredVersion = desiredVersion;
+    }
+
+    /**
+     * MultiClusterHubStatus defines the observed state of MultiClusterHub
+     */
+    @JsonProperty("mceVersionCompliance")
+    public MCEVersionComplianceStatus getMceVersionCompliance() {
+        return mceVersionCompliance;
+    }
+
+    /**
+     * MultiClusterHubStatus defines the observed state of MultiClusterHub
+     */
+    @JsonProperty("mceVersionCompliance")
+    public void setMceVersionCompliance(MCEVersionComplianceStatus mceVersionCompliance) {
+        this.mceVersionCompliance = mceVersionCompliance;
     }
 
     /**

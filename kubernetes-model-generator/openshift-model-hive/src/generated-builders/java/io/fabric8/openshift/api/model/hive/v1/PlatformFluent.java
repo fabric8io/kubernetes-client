@@ -30,8 +30,8 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
   private io.fabric8.openshift.api.model.hive.gcp.v1.PlatformBuilder gcp;
   private io.fabric8.openshift.api.model.hive.ibmcloud.v1.PlatformBuilder ibmcloud;
   private io.fabric8.openshift.api.model.hive.none.v1.PlatformBuilder none;
+  private io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformBuilder nutanix;
   private io.fabric8.openshift.api.model.hive.openstack.v1.PlatformBuilder openstack;
-  private io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformBuilder ovirt;
   private io.fabric8.openshift.api.model.hive.vsphere.v1.PlatformBuilder vsphere;
 
   public PlatformFluent() {
@@ -89,12 +89,12 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return this.none != null ? this.none.build() : null;
   }
   
-  public io.fabric8.openshift.api.model.hive.openstack.v1.Platform buildOpenstack() {
-    return this.openstack != null ? this.openstack.build() : null;
+  public io.fabric8.openshift.api.model.hive.nutanix.v1.Platform buildNutanix() {
+    return this.nutanix != null ? this.nutanix.build() : null;
   }
   
-  public io.fabric8.openshift.api.model.hive.ovirt.v1.Platform buildOvirt() {
-    return this.ovirt != null ? this.ovirt.build() : null;
+  public io.fabric8.openshift.api.model.hive.openstack.v1.Platform buildOpenstack() {
+    return this.openstack != null ? this.openstack.build() : null;
   }
   
   public io.fabric8.openshift.api.model.hive.vsphere.v1.Platform buildVsphere() {
@@ -111,8 +111,8 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
         this.withGcp(instance.getGcp());
         this.withIbmcloud(instance.getIbmcloud());
         this.withNone(instance.getNone());
+        this.withNutanix(instance.getNutanix());
         this.withOpenstack(instance.getOpenstack());
-        this.withOvirt(instance.getOvirt());
         this.withVsphere(instance.getVsphere());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -144,6 +144,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
   
   public NoneNested<A> editNone() {
     return this.withNewNoneLike(Optional.ofNullable(this.buildNone()).orElse(null));
+  }
+  
+  public NutanixNested<A> editNutanix() {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(null));
   }
   
   public OpenstackNested<A> editOpenstack() {
@@ -206,6 +210,14 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return this.withNewNoneLike(Optional.ofNullable(this.buildNone()).orElse(item));
   }
   
+  public NutanixNested<A> editOrNewNutanix() {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(new io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformBuilder().build()));
+  }
+  
+  public NutanixNested<A> editOrNewNutanixLike(io.fabric8.openshift.api.model.hive.nutanix.v1.Platform item) {
+    return this.withNewNutanixLike(Optional.ofNullable(this.buildNutanix()).orElse(item));
+  }
+  
   public OpenstackNested<A> editOrNewOpenstack() {
     return this.withNewOpenstackLike(Optional.ofNullable(this.buildOpenstack()).orElse(new io.fabric8.openshift.api.model.hive.openstack.v1.PlatformBuilder().build()));
   }
@@ -214,24 +226,12 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return this.withNewOpenstackLike(Optional.ofNullable(this.buildOpenstack()).orElse(item));
   }
   
-  public OvirtNested<A> editOrNewOvirt() {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(new io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformBuilder().build()));
-  }
-  
-  public OvirtNested<A> editOrNewOvirtLike(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform item) {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(item));
-  }
-  
   public VsphereNested<A> editOrNewVsphere() {
     return this.withNewVsphereLike(Optional.ofNullable(this.buildVsphere()).orElse(new io.fabric8.openshift.api.model.hive.vsphere.v1.PlatformBuilder().build()));
   }
   
   public VsphereNested<A> editOrNewVsphereLike(io.fabric8.openshift.api.model.hive.vsphere.v1.Platform item) {
     return this.withNewVsphereLike(Optional.ofNullable(this.buildVsphere()).orElse(item));
-  }
-  
-  public OvirtNested<A> editOvirt() {
-    return this.withNewOvirtLike(Optional.ofNullable(this.buildOvirt()).orElse(null));
   }
   
   public VsphereNested<A> editVsphere() {
@@ -270,10 +270,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     if (!(Objects.equals(none, that.none))) {
       return false;
     }
-    if (!(Objects.equals(openstack, that.openstack))) {
+    if (!(Objects.equals(nutanix, that.nutanix))) {
       return false;
     }
-    if (!(Objects.equals(ovirt, that.ovirt))) {
+    if (!(Objects.equals(openstack, that.openstack))) {
       return false;
     }
     if (!(Objects.equals(vsphere, that.vsphere))) {
@@ -321,12 +321,12 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return this.none != null;
   }
   
-  public boolean hasOpenstack() {
-    return this.openstack != null;
+  public boolean hasNutanix() {
+    return this.nutanix != null;
   }
   
-  public boolean hasOvirt() {
-    return this.ovirt != null;
+  public boolean hasOpenstack() {
+    return this.openstack != null;
   }
   
   public boolean hasVsphere() {
@@ -334,7 +334,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
   }
   
   public int hashCode() {
-    return Objects.hash(agentBareMetal, aws, azure, baremetal, gcp, ibmcloud, none, openstack, ovirt, vsphere, additionalProperties);
+    return Objects.hash(agentBareMetal, aws, azure, baremetal, gcp, ibmcloud, none, nutanix, openstack, vsphere, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -399,14 +399,14 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
         sb.append(none);
         sb.append(",");
     }
+    if (!(nutanix == null)) {
+        sb.append("nutanix:");
+        sb.append(nutanix);
+        sb.append(",");
+    }
     if (!(openstack == null)) {
         sb.append("openstack:");
         sb.append(openstack);
-        sb.append(",");
-    }
-    if (!(ovirt == null)) {
-        sb.append("ovirt:");
-        sb.append(ovirt);
         sb.append(",");
     }
     if (!(vsphere == null)) {
@@ -559,20 +559,20 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return new NoneNested(item);
   }
   
+  public NutanixNested<A> withNewNutanix() {
+    return new NutanixNested(null);
+  }
+  
+  public NutanixNested<A> withNewNutanixLike(io.fabric8.openshift.api.model.hive.nutanix.v1.Platform item) {
+    return new NutanixNested(item);
+  }
+  
   public OpenstackNested<A> withNewOpenstack() {
     return new OpenstackNested(null);
   }
   
   public OpenstackNested<A> withNewOpenstackLike(io.fabric8.openshift.api.model.hive.openstack.v1.Platform item) {
     return new OpenstackNested(item);
-  }
-  
-  public OvirtNested<A> withNewOvirt() {
-    return new OvirtNested(null);
-  }
-  
-  public OvirtNested<A> withNewOvirtLike(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform item) {
-    return new OvirtNested(item);
   }
   
   public VsphereNested<A> withNewVsphere() {
@@ -595,6 +595,18 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     return (A) this;
   }
   
+  public A withNutanix(io.fabric8.openshift.api.model.hive.nutanix.v1.Platform nutanix) {
+    this._visitables.remove("nutanix");
+    if (nutanix != null) {
+        this.nutanix = new io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformBuilder(nutanix);
+        this._visitables.get("nutanix").add(this.nutanix);
+    } else {
+        this.nutanix = null;
+        this._visitables.get("nutanix").remove(this.nutanix);
+    }
+    return (A) this;
+  }
+  
   public A withOpenstack(io.fabric8.openshift.api.model.hive.openstack.v1.Platform openstack) {
     this._visitables.remove("openstack");
     if (openstack != null) {
@@ -603,18 +615,6 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     } else {
         this.openstack = null;
         this._visitables.get("openstack").remove(this.openstack);
-    }
-    return (A) this;
-  }
-  
-  public A withOvirt(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform ovirt) {
-    this._visitables.remove("ovirt");
-    if (ovirt != null) {
-        this.ovirt = new io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformBuilder(ovirt);
-        this._visitables.get("ovirt").add(this.ovirt);
-    } else {
-        this.ovirt = null;
-        this._visitables.get("ovirt").remove(this.ovirt);
     }
     return (A) this;
   }
@@ -749,6 +749,23 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     }
     
   }
+  public class NutanixNested<N> extends io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformFluent<NutanixNested<N>> implements Nested<N>{
+  
+    io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformBuilder builder;
+  
+    NutanixNested(io.fabric8.openshift.api.model.hive.nutanix.v1.Platform item) {
+      this.builder = new io.fabric8.openshift.api.model.hive.nutanix.v1.PlatformBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PlatformFluent.this.withNutanix(builder.build());
+    }
+    
+    public N endNutanix() {
+      return and();
+    }
+    
+  }
   public class OpenstackNested<N> extends io.fabric8.openshift.api.model.hive.openstack.v1.PlatformFluent<OpenstackNested<N>> implements Nested<N>{
   
     io.fabric8.openshift.api.model.hive.openstack.v1.PlatformBuilder builder;
@@ -762,23 +779,6 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.v1.Pla
     }
     
     public N endOpenstack() {
-      return and();
-    }
-    
-  }
-  public class OvirtNested<N> extends io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformFluent<OvirtNested<N>> implements Nested<N>{
-  
-    io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformBuilder builder;
-  
-    OvirtNested(io.fabric8.openshift.api.model.hive.ovirt.v1.Platform item) {
-      this.builder = new io.fabric8.openshift.api.model.hive.ovirt.v1.PlatformBuilder(this, item);
-    }
-  
-    public N and() {
-      return (N) PlatformFluent.this.withOvirt(builder.build());
-    }
-    
-    public N endOvirt() {
       return and();
     }
     

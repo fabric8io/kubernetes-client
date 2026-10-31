@@ -25,7 +25,7 @@ public class SelectorSyncSetSpecBuilder extends SelectorSyncSetSpecFluent<Select
   }
 
   public SelectorSyncSetSpec build() {
-    SelectorSyncSetSpec buildable = new SelectorSyncSetSpec(fluent.getApplyBehavior(), fluent.buildClusterDeploymentSelector(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
+    SelectorSyncSetSpec buildable = new SelectorSyncSetSpec(fluent.getApplyBehavior(), fluent.buildClusterDeploymentSelector(), fluent.getEnablePatchTemplates(), fluent.getEnableResourceTemplates(), fluent.buildPatches(), fluent.getResourceApplyMode(), fluent.getResources(), fluent.buildSecretMappings());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -15,10 +15,11 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
@@ -32,7 +33,7 @@ class MicroTimeTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   private static final class MicroTimeHolder {
@@ -40,7 +41,7 @@ class MicroTimeTest {
   }
 
   @Test
-  void testSerialization() throws JsonProcessingException {
+  void testSerialization() throws JacksonException {
     // Given
     String timeFormat = OffsetDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
     MicroTime microTime = new MicroTimeBuilder()
@@ -55,7 +56,7 @@ class MicroTimeTest {
   }
 
   @Test
-  void testDeserialization() throws JsonProcessingException {
+  void testDeserialization() throws JacksonException {
     String microTimeAsStr = "1998-05-05T05:05:05.000000Z";
     String input = "{\"microTime\": \"" + microTimeAsStr + "\"}";
 

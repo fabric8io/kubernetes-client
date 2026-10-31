@@ -25,7 +25,7 @@ public class DownwardAPIVolumeSourceBuilder extends DownwardAPIVolumeSourceFluen
   }
 
   public DownwardAPIVolumeSource build() {
-    DownwardAPIVolumeSource buildable = new DownwardAPIVolumeSource(fluent.getDefaultMode(), fluent.buildItems());
+    DownwardAPIVolumeSource buildable = new DownwardAPIVolumeSource(fluent.getDefaultMode(), fluent.getDefaultUser(), fluent.buildItems());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

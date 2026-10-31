@@ -16,8 +16,6 @@
 package io.fabric8.kubernetes.schema.generator.schema;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.core.util.Json;
 import io.swagger.v3.oas.models.Components;
@@ -71,10 +69,6 @@ public class SchemaFlattener {
     preservedNames.add("openID");
   }
   private static final ObjectMapper structureMapper = Json.mapper().copy();
-  static {
-    structureMapper.getSerializationConfig().with(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
-    structureMapper.writer(new DefaultPrettyPrinter());
-  }
 
   private SchemaFlattener() {
   }

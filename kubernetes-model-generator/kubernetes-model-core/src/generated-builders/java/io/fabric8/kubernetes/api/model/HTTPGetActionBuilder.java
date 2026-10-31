@@ -25,7 +25,7 @@ public class HTTPGetActionBuilder extends HTTPGetActionFluent<HTTPGetActionBuild
   }
 
   public HTTPGetAction build() {
-    HTTPGetAction buildable = new HTTPGetAction(fluent.getHost(), fluent.buildHttpHeaders(), fluent.getPath(), fluent.buildPort(), fluent.getScheme());
+    HTTPGetAction buildable = new HTTPGetAction(fluent.getHost(), fluent.buildHttpHeaders(), fluent.getPath(), fluent.buildPort(), fluent.getProtocol(), fluent.getScheme());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

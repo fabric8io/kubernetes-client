@@ -49,6 +49,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -62,7 +63,9 @@ public class KubernetesResourceUtil {
       .compile("[a-z0-9]([-a-z0-9]*[a-z0-9])?+(\\.[a-z0-9]([-a-z0-9]*[a-z0-9])?+)*+");
   public static final Pattern KUBERNETES_DNS1123_LABEL_REGEX = Pattern.compile("[a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?");
   public static final Pattern KUBERNETES_KEY_REGEX = Pattern
-      .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[a-z0-9]([-_.a-z0-9]{0,61}[a-z0-9])?");
+      .compile("(" + KUBERNETES_SUBDOMAIN_REGEX.toString() + "/)?[A-Za-z0-9]([-_.A-Za-z0-9]{0,61}[A-Za-z0-9])?");
+  public static final Pattern KUBERNETES_LABEL_VALUE_REGEX = Pattern
+      .compile("(([A-Za-z0-9][-A-Za-z0-9_.]{0,61})?[A-Za-z0-9])?");
 
   private static final Pattern INVALID_LABEL_CHARS_PATTERN = Pattern.compile("[^-A-Za-z0-9]+");
   private static final String DEFAULT_CONTAINER_IMAGE_REGISTRY_SECRET_NAME = "container-image-registry-secret";
@@ -259,10 +262,10 @@ public class KubernetesResourceUtil {
    * if necessary, which may affect uniqueness.
    *
    * @param name which needs to be sanitized
-   * @return sanitized name
+   * @return sanitized name, or the given name if it's null or empty
    */
   public static String sanitizeName(String name) {
-    if (name != null) {
+    if (Utils.isNotNullOrEmpty(name)) {
       name = INVALID_LABEL_CHARS_PATTERN.matcher(name).replaceAll("-");
       if (!Character.isLetterOrDigit(name.charAt(0))) {
         name = "a" + name;
@@ -270,14 +273,13 @@ public class KubernetesResourceUtil {
       if (name.length() > 63) {
         name = name.substring(0, 63);
       }
-      name = name.toLowerCase();
+      name = name.toLowerCase(Locale.ROOT);
       final int lastChar = name.length() - 1;
       if (!Character.isLetterOrDigit(name.charAt(lastChar))) {
         name = name.substring(0, lastChar - 1) + "a";
       }
-      return name;
     }
-    return null;
+    return name;
   }
 
   /**
@@ -331,17 +333,17 @@ public class KubernetesResourceUtil {
   }
 
   /**
-   * Validates name of a Kubernetes Resource name, label key/value or annotation key based on RFC 1123 Label Names.
+   * Validates a Kubernetes resource name based on RFC 1123 Label Names.
    * <p>
-   * Note: this is more restrictive than what is allowed for annotation names or most resource names, however some resource
-   * types have additional restrictions on their names.
+   * Note: this is more restrictive than what is allowed for most resource names, however some resource types have
+   * additional restrictions on their names.
    * <p>
    * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/">Kubernetes Naming
    * Conventions</a>
    * <p>
    * See also {@link #isValidKey(String)} and {@link #isValidSubdomainName(String)}
    *
-   * @param name Name of resource/label/annotation
+   * @param name Name of resource
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidName(String name) {
@@ -349,22 +351,43 @@ public class KubernetesResourceUtil {
   }
 
   /**
+   * Validates a label value.
+   * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set">
+   * Syntax and character set</a>
+   *
+   * @param value the label value
+   * @return true if the value is valid
+   */
+  public static boolean isValidLabelValue(String value) {
+    return value != null && KUBERNETES_LABEL_VALUE_REGEX.matcher(value).matches();
+  }
+
+  /**
    * Validates annotation or label key.
+   * <p>
+   * A valid key is a name of at most 63 characters, optionally prefixed by a DNS subdomain of at most 253 characters and
+   * a {@code /}.
+   * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/#syntax-and-character-set">
+   * Syntax and character set</a>
    *
    * @param key the annotation or label key
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidKey(String key) {
-    return Utils.isNotNullOrEmpty(key) && key.length() < 254 && KUBERNETES_KEY_REGEX.matcher(key).matches();
+    if (Utils.isNullOrEmpty(key) || !KUBERNETES_KEY_REGEX.matcher(key).matches()) {
+      return false;
+    }
+    final int prefixEnd = key.indexOf('/');
+    return prefixEnd < 0 || isValidSubdomainName(key.substring(0, prefixEnd));
   }
 
   /**
-   * Validates name of an resource according to DNS Subdomain rules.
+   * Validates a Kubernetes resource name according to RFC 1123 DNS Subdomain Names.
    * <p>
    * Refer to <a href="https://kubernetes.io/docs/concepts/overview/working-with-objects/names/">Kubernetes Naming
    * Conventions</a>
    *
-   * @param name Name of annotation
+   * @param name Name of resource
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean isValidSubdomainName(String name) {
@@ -393,7 +416,7 @@ public class KubernetesResourceUtil {
    * @return returns a boolean value indicating whether it's valid or not
    */
   public static boolean areLabelsValid(Map<String, String> map) {
-    return map.entrySet().stream().allMatch(e -> isValidKey(e.getKey()) && isValidName(e.getValue()));
+    return map.entrySet().stream().allMatch(e -> isValidKey(e.getKey()) && isValidLabelValue(e.getValue()));
   }
 
   /**

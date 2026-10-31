@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * JobFlowStatus defines the observed state of JobFlow
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "completedJobs",
@@ -192,7 +192,7 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
     }
 
     /**
-     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     * JobFlowStatus defines the observed state of JobFlow
      */
     @JsonProperty("pendingJobs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -201,7 +201,7 @@ public class JobFlowStatus implements Editable<JobFlowStatusBuilder>, Kubernetes
     }
 
     /**
-     * INSERT ADDITIONAL STATUS FIELD - define observed state of cluster Important: Run "make" to regenerate code after modifying this file
+     * JobFlowStatus defines the observed state of JobFlow
      */
     @JsonProperty("pendingJobs")
     public void setPendingJobs(List<String> pendingJobs) {

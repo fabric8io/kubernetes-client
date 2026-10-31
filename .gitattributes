@@ -1,6 +1,8 @@
 # eol style
 *.sh    text eol=lf
 *.bat   text eol=crlf
+# Renovate cannot parse a pom.xml with CRLF endings
+*.xml   text eol=lf
 
 # Generated source trees (openapi POJOs + sundrio Builders/Fluents): collapse diffs in PR review
 **/src/generated/java/** linguist-generated=true

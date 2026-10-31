@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
 import io.fabric8.zjsonpatch.JsonDiff;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.HashMap;
 
@@ -33,7 +34,7 @@ class SecretTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   @Test

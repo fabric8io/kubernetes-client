@@ -18,11 +18,17 @@ package io.fabric8.crd.generator.approvaltests.printercolum;
 import io.fabric8.crd.generator.annotation.PrinterColumn;
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class PrinterColumnSpec {
 
   @PrinterColumn
   private String id;
+
+  /** A string column, a date column shows the age of an RFC 3339 timestamp, see AbstractCustomResourceHandler. */
+  @PrinterColumn
+  private LocalDate since;
 
   private DeepLevel1 deepLevel1;
 

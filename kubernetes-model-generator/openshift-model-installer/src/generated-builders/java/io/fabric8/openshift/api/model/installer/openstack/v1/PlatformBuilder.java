@@ -25,7 +25,7 @@ public class PlatformBuilder extends PlatformFluent<PlatformBuilder> implements 
   }
 
   public Platform build() {
-    Platform buildable = new Platform(fluent.getApiFloatingIP(), fluent.getApiVIP(), fluent.getApiVIPs(), fluent.getCloud(), fluent.getClusterOSImage(), fluent.getClusterOSImageProperties(), fluent.getComputeFlavor(), fluent.buildControlPlanePort(), fluent.buildDefaultMachinePlatform(), fluent.getExternalDNS(), fluent.getExternalNetwork(), fluent.getIngressFloatingIP(), fluent.getIngressVIP(), fluent.getIngressVIPs(), fluent.getLbFloatingIP(), fluent.getLoadBalancer(), fluent.getMachinesSubnet(), fluent.getOctaviaSupport(), fluent.getRegion(), fluent.getTrunkSupport());
+    Platform buildable = new Platform(fluent.getApiFloatingIP(), fluent.getApiVIP(), fluent.getApiVIPs(), fluent.getCloud(), fluent.getClusterOSImage(), fluent.getClusterOSImageProperties(), fluent.getComputeFlavor(), fluent.buildControlPlanePort(), fluent.buildDefaultMachinePlatform(), fluent.getDnsRecordsType(), fluent.getExternalDNS(), fluent.getExternalNetwork(), fluent.getIngressFloatingIP(), fluent.getIngressVIP(), fluent.getIngressVIPs(), fluent.getLbFloatingIP(), fluent.getLoadBalancer(), fluent.getMachinesSubnet(), fluent.getOctaviaSupport(), fluent.getRegion(), fluent.getTrunkSupport());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

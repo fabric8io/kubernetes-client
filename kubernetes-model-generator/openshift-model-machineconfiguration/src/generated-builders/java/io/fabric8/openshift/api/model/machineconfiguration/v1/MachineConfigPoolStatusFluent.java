@@ -32,6 +32,7 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
   private Integer degradedMachineCount;
   private Integer machineCount;
   private Long observedGeneration;
+  private OSImageStreamReferenceBuilder osImageStream;
   private ArrayList<PoolSynchronizerStatusBuilder> poolSynchronizersStatus = new ArrayList<PoolSynchronizerStatusBuilder>();
   private Integer readyMachineCount;
   private Integer unavailableMachineCount;
@@ -284,6 +285,10 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
       return null;
   }
   
+  public OSImageStreamReference buildOsImageStream() {
+    return this.osImageStream != null ? this.osImageStream.build() : null;
+  }
+  
   public List<PoolSynchronizerStatus> buildPoolSynchronizersStatus() {
     return this.poolSynchronizersStatus != null ? build(poolSynchronizersStatus) : null;
   }
@@ -301,6 +306,7 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
         this.withDegradedMachineCount(instance.getDegradedMachineCount());
         this.withMachineCount(instance.getMachineCount());
         this.withObservedGeneration(instance.getObservedGeneration());
+        this.withOsImageStream(instance.getOsImageStream());
         this.withPoolSynchronizersStatus(instance.getPoolSynchronizersStatus());
         this.withReadyMachineCount(instance.getReadyMachineCount());
         this.withUnavailableMachineCount(instance.getUnavailableMachineCount());
@@ -422,6 +428,18 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
     return this.withNewConfigurationLike(Optional.ofNullable(this.buildConfiguration()).orElse(item));
   }
   
+  public OsImageStreamNested<A> editOrNewOsImageStream() {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(new OSImageStreamReferenceBuilder().build()));
+  }
+  
+  public OsImageStreamNested<A> editOrNewOsImageStreamLike(OSImageStreamReference item) {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(item));
+  }
+  
+  public OsImageStreamNested<A> editOsImageStream() {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(null));
+  }
+  
   public PoolSynchronizersStatusNested<A> editPoolSynchronizersStatus(int index) {
     if (poolSynchronizersStatus.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "poolSynchronizersStatus"));
@@ -456,6 +474,9 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
       return false;
     }
     if (!(Objects.equals(observedGeneration, that.observedGeneration))) {
+      return false;
+    }
+    if (!(Objects.equals(osImageStream, that.osImageStream))) {
       return false;
     }
     if (!(Objects.equals(poolSynchronizersStatus, that.poolSynchronizersStatus))) {
@@ -559,6 +580,10 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
     return this.observedGeneration != null;
   }
   
+  public boolean hasOsImageStream() {
+    return this.osImageStream != null;
+  }
+  
   public boolean hasPoolSynchronizersStatus() {
     return this.poolSynchronizersStatus != null && !(this.poolSynchronizersStatus.isEmpty());
   }
@@ -576,7 +601,7 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(certExpirys, conditions, configuration, degradedMachineCount, machineCount, observedGeneration, poolSynchronizersStatus, readyMachineCount, unavailableMachineCount, updatedMachineCount, additionalProperties);
+    return Objects.hash(certExpirys, conditions, configuration, degradedMachineCount, machineCount, observedGeneration, osImageStream, poolSynchronizersStatus, readyMachineCount, unavailableMachineCount, updatedMachineCount, additionalProperties);
   }
   
   public A removeAllFromCertExpirys(Collection<CertExpiry> items) {
@@ -813,6 +838,11 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
         sb.append(observedGeneration);
         sb.append(",");
     }
+    if (!(osImageStream == null)) {
+        sb.append("osImageStream:");
+        sb.append(osImageStream);
+        sb.append(",");
+    }
     if (!(poolSynchronizersStatus == null) && !(poolSynchronizersStatus.isEmpty())) {
         sb.append("poolSynchronizersStatus:");
         sb.append(poolSynchronizersStatus);
@@ -936,8 +966,32 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
     return new ConfigurationNested(item);
   }
   
+  public OsImageStreamNested<A> withNewOsImageStream() {
+    return new OsImageStreamNested(null);
+  }
+  
+  public A withNewOsImageStream(String name) {
+    return (A) this.withOsImageStream(new OSImageStreamReference(name));
+  }
+  
+  public OsImageStreamNested<A> withNewOsImageStreamLike(OSImageStreamReference item) {
+    return new OsImageStreamNested(item);
+  }
+  
   public A withObservedGeneration(Long observedGeneration) {
     this.observedGeneration = observedGeneration;
+    return (A) this;
+  }
+  
+  public A withOsImageStream(OSImageStreamReference osImageStream) {
+    this._visitables.remove("osImageStream");
+    if (osImageStream != null) {
+        this.osImageStream = new OSImageStreamReferenceBuilder(osImageStream);
+        this._visitables.get("osImageStream").add(this.osImageStream);
+    } else {
+        this.osImageStream = null;
+        this._visitables.get("osImageStream").remove(this.osImageStream);
+    }
     return (A) this;
   }
   
@@ -1034,6 +1088,23 @@ public class MachineConfigPoolStatusFluent<A extends io.fabric8.openshift.api.mo
     }
     
     public N endConfiguration() {
+      return and();
+    }
+    
+  }
+  public class OsImageStreamNested<N> extends OSImageStreamReferenceFluent<OsImageStreamNested<N>> implements Nested<N>{
+  
+    OSImageStreamReferenceBuilder builder;
+  
+    OsImageStreamNested(OSImageStreamReference item) {
+      this.builder = new OSImageStreamReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigPoolStatusFluent.this.withOsImageStream(builder.build());
+    }
+    
+    public N endOsImageStream() {
       return and();
     }
     

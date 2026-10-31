@@ -25,7 +25,7 @@ public class OIDCProviderBuilder extends OIDCProviderFluent<OIDCProviderBuilder>
   }
 
   public OIDCProvider build() {
-    OIDCProvider buildable = new OIDCProvider(fluent.buildClaimMappings(), fluent.buildClaimValidationRules(), fluent.buildIssuer(), fluent.getName(), fluent.buildOidcClients());
+    OIDCProvider buildable = new OIDCProvider(fluent.buildClaimMappings(), fluent.buildClaimValidationRules(), fluent.buildIssuer(), fluent.getName(), fluent.buildOidcClients(), fluent.buildUserValidationRules());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

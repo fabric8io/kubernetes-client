@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * EgressIPSpec is a desired state description of EgressIP.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "egressIPs",
+    "egressNodeSelector",
     "namespaceSelector",
     "podSelector"
 })
@@ -72,6 +73,8 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
     @JsonProperty("egressIPs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> egressIPs = new ArrayList<>();
+    @JsonProperty("egressNodeSelector")
+    private LabelSelector egressNodeSelector;
     @JsonProperty("namespaceSelector")
     private LabelSelector namespaceSelector;
     @JsonProperty("podSelector")
@@ -85,9 +88,10 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
     public EgressIPSpec() {
     }
 
-    public EgressIPSpec(List<String> egressIPs, LabelSelector namespaceSelector, LabelSelector podSelector) {
+    public EgressIPSpec(List<String> egressIPs, LabelSelector egressNodeSelector, LabelSelector namespaceSelector, LabelSelector podSelector) {
         super();
         this.egressIPs = egressIPs;
+        this.egressNodeSelector = egressNodeSelector;
         this.namespaceSelector = namespaceSelector;
         this.podSelector = podSelector;
     }
@@ -107,6 +111,22 @@ public class EgressIPSpec implements Editable<EgressIPSpecBuilder>, KubernetesRe
     @JsonProperty("egressIPs")
     public void setEgressIPs(List<String> egressIPs) {
         this.egressIPs = egressIPs;
+    }
+
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
+    @JsonProperty("egressNodeSelector")
+    public LabelSelector getEgressNodeSelector() {
+        return egressNodeSelector;
+    }
+
+    /**
+     * EgressIPSpec is a desired state description of EgressIP.
+     */
+    @JsonProperty("egressNodeSelector")
+    public void setEgressNodeSelector(LabelSelector egressNodeSelector) {
+        this.egressNodeSelector = egressNodeSelector;
     }
 
     /**

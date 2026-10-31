@@ -27,6 +27,7 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
   private Map<String,Object> additionalProperties;
   private ArrayList<ReleaseBuilder> availableUpdates = new ArrayList<ReleaseBuilder>();
   private ClusterVersionCapabilitiesStatusBuilder capabilities;
+  private ArrayList<ConditionalUpdateRiskBuilder> conditionalUpdateRisks = new ArrayList<ConditionalUpdateRiskBuilder>();
   private ArrayList<ConditionalUpdateBuilder> conditionalUpdates = new ArrayList<ConditionalUpdateBuilder>();
   private ArrayList<ClusterOperatorStatusConditionBuilder> conditions = new ArrayList<ClusterOperatorStatusConditionBuilder>();
   private ReleaseBuilder desired;
@@ -49,6 +50,18 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
         ReleaseBuilder builder = new ReleaseBuilder(item);
         _visitables.get("availableUpdates").add(builder);
         this.availableUpdates.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToConditionalUpdateRisks(Collection<ConditionalUpdateRisk> items) {
+    if (this.conditionalUpdateRisks == null) {
+      this.conditionalUpdateRisks = new ArrayList();
+    }
+    for (ConditionalUpdateRisk item : items) {
+        ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        this.conditionalUpdateRisks.add(builder);
     }
     return (A) this;
   }
@@ -117,6 +130,14 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return new ConditionalUpdatesNested(-1, item);
   }
   
+  public ConditionalUpdateRisksNested<A> addNewConditionalUpdateRisk() {
+    return new ConditionalUpdateRisksNested(-1, null);
+  }
+  
+  public ConditionalUpdateRisksNested<A> addNewConditionalUpdateRiskLike(ConditionalUpdateRisk item) {
+    return new ConditionalUpdateRisksNested(-1, item);
+  }
+  
   public HistoryNested<A> addNewHistory() {
     return new HistoryNested(-1, null);
   }
@@ -168,6 +189,33 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     } else {
         _visitables.get("availableUpdates").add(builder);
         availableUpdates.add(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToConditionalUpdateRisks(ConditionalUpdateRisk... items) {
+    if (this.conditionalUpdateRisks == null) {
+      this.conditionalUpdateRisks = new ArrayList();
+    }
+    for (ConditionalUpdateRisk item : items) {
+        ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        this.conditionalUpdateRisks.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToConditionalUpdateRisks(int index,ConditionalUpdateRisk item) {
+    if (this.conditionalUpdateRisks == null) {
+      this.conditionalUpdateRisks = new ArrayList();
+    }
+    ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+    if (index < 0 || index >= conditionalUpdateRisks.size()) {
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        conditionalUpdateRisks.add(builder);
+    } else {
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        conditionalUpdateRisks.add(index, builder);
     }
     return (A) this;
   }
@@ -273,6 +321,14 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return this.conditionalUpdates.get(index).build();
   }
   
+  public ConditionalUpdateRisk buildConditionalUpdateRisk(int index) {
+    return this.conditionalUpdateRisks.get(index).build();
+  }
+  
+  public List<ConditionalUpdateRisk> buildConditionalUpdateRisks() {
+    return this.conditionalUpdateRisks != null ? build(conditionalUpdateRisks) : null;
+  }
+  
   public List<ConditionalUpdate> buildConditionalUpdates() {
     return this.conditionalUpdates != null ? build(conditionalUpdates) : null;
   }
@@ -297,6 +353,10 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return this.conditionalUpdates.get(0).build();
   }
   
+  public ConditionalUpdateRisk buildFirstConditionalUpdateRisk() {
+    return this.conditionalUpdateRisks.get(0).build();
+  }
+  
   public UpdateHistory buildFirstHistory() {
     return this.history.get(0).build();
   }
@@ -319,6 +379,10 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
   
   public ConditionalUpdate buildLastConditionalUpdate() {
     return this.conditionalUpdates.get(conditionalUpdates.size() - 1).build();
+  }
+  
+  public ConditionalUpdateRisk buildLastConditionalUpdateRisk() {
+    return this.conditionalUpdateRisks.get(conditionalUpdateRisks.size() - 1).build();
   }
   
   public UpdateHistory buildLastHistory() {
@@ -352,6 +416,15 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
       return null;
   }
   
+  public ConditionalUpdateRisk buildMatchingConditionalUpdateRisk(Predicate<ConditionalUpdateRiskBuilder> predicate) {
+      for (ConditionalUpdateRiskBuilder item : conditionalUpdateRisks) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
   public UpdateHistory buildMatchingHistory(Predicate<UpdateHistoryBuilder> predicate) {
       for (UpdateHistoryBuilder item : history) {
         if (predicate.test(item)) {
@@ -366,6 +439,7 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     if (instance != null) {
         this.withAvailableUpdates(instance.getAvailableUpdates());
         this.withCapabilities(instance.getCapabilities());
+        this.withConditionalUpdateRisks(instance.getConditionalUpdateRisks());
         this.withConditionalUpdates(instance.getConditionalUpdates());
         this.withConditions(instance.getConditions());
         this.withDesired(instance.getDesired());
@@ -401,6 +475,13 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return this.setNewConditionalUpdateLike(index, this.buildConditionalUpdate(index));
   }
   
+  public ConditionalUpdateRisksNested<A> editConditionalUpdateRisk(int index) {
+    if (conditionalUpdateRisks.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "conditionalUpdateRisks"));
+    }
+    return this.setNewConditionalUpdateRiskLike(index, this.buildConditionalUpdateRisk(index));
+  }
+  
   public DesiredNested<A> editDesired() {
     return this.withNewDesiredLike(Optional.ofNullable(this.buildDesired()).orElse(null));
   }
@@ -424,6 +505,13 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "conditionalUpdates"));
     }
     return this.setNewConditionalUpdateLike(0, this.buildConditionalUpdate(0));
+  }
+  
+  public ConditionalUpdateRisksNested<A> editFirstConditionalUpdateRisk() {
+    if (conditionalUpdateRisks.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "conditionalUpdateRisks"));
+    }
+    return this.setNewConditionalUpdateRiskLike(0, this.buildConditionalUpdateRisk(0));
   }
   
   public HistoryNested<A> editFirstHistory() {
@@ -462,6 +550,14 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "conditionalUpdates"));
     }
     return this.setNewConditionalUpdateLike(index, this.buildConditionalUpdate(index));
+  }
+  
+  public ConditionalUpdateRisksNested<A> editLastConditionalUpdateRisk() {
+    int index = conditionalUpdateRisks.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "conditionalUpdateRisks"));
+    }
+    return this.setNewConditionalUpdateRiskLike(index, this.buildConditionalUpdateRisk(index));
   }
   
   public HistoryNested<A> editLastHistory() {
@@ -514,6 +610,20 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return this.setNewConditionalUpdateLike(index, this.buildConditionalUpdate(index));
   }
   
+  public ConditionalUpdateRisksNested<A> editMatchingConditionalUpdateRisk(Predicate<ConditionalUpdateRiskBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < conditionalUpdateRisks.size();i++) {
+      if (predicate.test(conditionalUpdateRisks.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "conditionalUpdateRisks"));
+    }
+    return this.setNewConditionalUpdateRiskLike(index, this.buildConditionalUpdateRisk(index));
+  }
+  
   public HistoryNested<A> editMatchingHistory(Predicate<UpdateHistoryBuilder> predicate) {
     int index = -1;
     for (int i = 0;i < history.size();i++) {
@@ -559,6 +669,9 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
       return false;
     }
     if (!(Objects.equals(capabilities, that.capabilities))) {
+      return false;
+    }
+    if (!(Objects.equals(conditionalUpdateRisks, that.conditionalUpdateRisks))) {
       return false;
     }
     if (!(Objects.equals(conditionalUpdates, that.conditionalUpdates))) {
@@ -609,6 +722,10 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return this.capabilities != null;
   }
   
+  public boolean hasConditionalUpdateRisks() {
+    return this.conditionalUpdateRisks != null && !(this.conditionalUpdateRisks.isEmpty());
+  }
+  
   public boolean hasConditionalUpdates() {
     return this.conditionalUpdates != null && !(this.conditionalUpdates.isEmpty());
   }
@@ -652,6 +769,15 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
       return false;
   }
   
+  public boolean hasMatchingConditionalUpdateRisk(Predicate<ConditionalUpdateRiskBuilder> predicate) {
+      for (ConditionalUpdateRiskBuilder item : conditionalUpdateRisks) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMatchingHistory(Predicate<UpdateHistoryBuilder> predicate) {
       for (UpdateHistoryBuilder item : history) {
         if (predicate.test(item)) {
@@ -670,7 +796,7 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
   }
   
   public int hashCode() {
-    return Objects.hash(availableUpdates, capabilities, conditionalUpdates, conditions, desired, history, observedGeneration, versionHash, additionalProperties);
+    return Objects.hash(availableUpdates, capabilities, conditionalUpdateRisks, conditionalUpdates, conditions, desired, history, observedGeneration, versionHash, additionalProperties);
   }
   
   public A removeAllFromAvailableUpdates(Collection<Release> items) {
@@ -681,6 +807,18 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
         ReleaseBuilder builder = new ReleaseBuilder(item);
         _visitables.get("availableUpdates").remove(builder);
         this.availableUpdates.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromConditionalUpdateRisks(Collection<ConditionalUpdateRisk> items) {
+    if (this.conditionalUpdateRisks == null) {
+      return (A) this;
+    }
+    for (ConditionalUpdateRisk item : items) {
+        ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+        _visitables.get("conditionalUpdateRisks").remove(builder);
+        this.conditionalUpdateRisks.remove(builder);
     }
     return (A) this;
   }
@@ -757,6 +895,18 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return (A) this;
   }
   
+  public A removeFromConditionalUpdateRisks(ConditionalUpdateRisk... items) {
+    if (this.conditionalUpdateRisks == null) {
+      return (A) this;
+    }
+    for (ConditionalUpdateRisk item : items) {
+        ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+        _visitables.get("conditionalUpdateRisks").remove(builder);
+        this.conditionalUpdateRisks.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromConditionalUpdates(ConditionalUpdate... items) {
     if (this.conditionalUpdates == null) {
       return (A) this;
@@ -801,6 +951,22 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     List visitables = _visitables.get("availableUpdates");
     while (each.hasNext()) {
         ReleaseBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromConditionalUpdateRisks(Predicate<ConditionalUpdateRiskBuilder> predicate) {
+    if (conditionalUpdateRisks == null) {
+      return (A) this;
+    }
+    Iterator<ConditionalUpdateRiskBuilder> each = conditionalUpdateRisks.iterator();
+    List visitables = _visitables.get("conditionalUpdateRisks");
+    while (each.hasNext()) {
+        ConditionalUpdateRiskBuilder builder = each.next();
         if (predicate.test(builder)) {
             visitables.remove(builder);
             each.remove();
@@ -869,6 +1035,10 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     return new ConditionalUpdatesNested(index, item);
   }
   
+  public ConditionalUpdateRisksNested<A> setNewConditionalUpdateRiskLike(int index,ConditionalUpdateRisk item) {
+    return new ConditionalUpdateRisksNested(index, item);
+  }
+  
   public HistoryNested<A> setNewHistoryLike(int index,UpdateHistory item) {
     return new HistoryNested(index, item);
   }
@@ -884,6 +1054,21 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     } else {
         _visitables.get("availableUpdates").add(builder);
         availableUpdates.set(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A setToConditionalUpdateRisks(int index,ConditionalUpdateRisk item) {
+    if (this.conditionalUpdateRisks == null) {
+      this.conditionalUpdateRisks = new ArrayList();
+    }
+    ConditionalUpdateRiskBuilder builder = new ConditionalUpdateRiskBuilder(item);
+    if (index < 0 || index >= conditionalUpdateRisks.size()) {
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        conditionalUpdateRisks.add(builder);
+    } else {
+        _visitables.get("conditionalUpdateRisks").add(builder);
+        conditionalUpdateRisks.set(index, builder);
     }
     return (A) this;
   }
@@ -944,6 +1129,11 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     if (!(capabilities == null)) {
         sb.append("capabilities:");
         sb.append(capabilities);
+        sb.append(",");
+    }
+    if (!(conditionalUpdateRisks == null) && !(conditionalUpdateRisks.isEmpty())) {
+        sb.append("conditionalUpdateRisks:");
+        sb.append(conditionalUpdateRisks);
         sb.append(",");
     }
     if (!(conditionalUpdates == null) && !(conditionalUpdates.isEmpty())) {
@@ -1029,6 +1219,34 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     } else {
         this.capabilities = null;
         this._visitables.get("capabilities").remove(this.capabilities);
+    }
+    return (A) this;
+  }
+  
+  public A withConditionalUpdateRisks(List<ConditionalUpdateRisk> conditionalUpdateRisks) {
+    if (this.conditionalUpdateRisks != null) {
+      this._visitables.get("conditionalUpdateRisks").clear();
+    }
+    if (conditionalUpdateRisks != null) {
+        this.conditionalUpdateRisks = new ArrayList();
+        for (ConditionalUpdateRisk item : conditionalUpdateRisks) {
+          this.addToConditionalUpdateRisks(item);
+        }
+    } else {
+      this.conditionalUpdateRisks = null;
+    }
+    return (A) this;
+  }
+  
+  public A withConditionalUpdateRisks(ConditionalUpdateRisk... conditionalUpdateRisks) {
+    if (this.conditionalUpdateRisks != null) {
+        this.conditionalUpdateRisks.clear();
+        _visitables.remove("conditionalUpdateRisks");
+    }
+    if (conditionalUpdateRisks != null) {
+      for (ConditionalUpdateRisk item : conditionalUpdateRisks) {
+        this.addToConditionalUpdateRisks(item);
+      }
     }
     return (A) this;
   }
@@ -1186,6 +1404,25 @@ public class ClusterVersionStatusFluent<A extends io.fabric8.openshift.api.model
     }
     
     public N endCapabilities() {
+      return and();
+    }
+    
+  }
+  public class ConditionalUpdateRisksNested<N> extends ConditionalUpdateRiskFluent<ConditionalUpdateRisksNested<N>> implements Nested<N>{
+  
+    ConditionalUpdateRiskBuilder builder;
+    int index;
+  
+    ConditionalUpdateRisksNested(int index,ConditionalUpdateRisk item) {
+      this.index = index;
+      this.builder = new ConditionalUpdateRiskBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterVersionStatusFluent.this.setToConditionalUpdateRisks(index, builder.build());
+    }
+    
+    public N endConditionalUpdateRisk() {
       return and();
     }
     

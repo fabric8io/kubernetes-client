@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Metadata contains GCP metadata (e.g. for uninstalling the cluster).
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "networkProjectID"
@@ -82,7 +82,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * NetworkProjectID is used for shared VPC setups
+     * NetworkProjectID is used for shared VPC setups Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("networkProjectID")
     public String getNetworkProjectID() {
@@ -90,7 +90,7 @@ public class Metadata implements Editable<MetadataBuilder>, KubernetesResource
     }
 
     /**
-     * NetworkProjectID is used for shared VPC setups
+     * NetworkProjectID is used for shared VPC setups Deprecated. Use the Secret referenced by ClusterMetadata.MetadataJSONSecretRef instead. We may stop populating this section in the future.
      */
     @JsonProperty("networkProjectID")
     public void setNetworkProjectID(String networkProjectID) {

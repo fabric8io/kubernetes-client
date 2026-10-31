@@ -25,7 +25,7 @@ public class CompliancePerClusterStatusBuilder extends CompliancePerClusterStatu
   }
 
   public CompliancePerClusterStatus build() {
-    CompliancePerClusterStatus buildable = new CompliancePerClusterStatus(fluent.getClustername(), fluent.getClusternamespace(), fluent.getCompliant());
+    CompliancePerClusterStatus buildable = new CompliancePerClusterStatus(fluent.getClustername(), fluent.getClusternamespace(), fluent.getCompliant(), fluent.buildRemainingBindings());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

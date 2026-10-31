@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * GCESDConfig configures scrape targets from GCP GCE instances. The private IP address is used by default, but may be changed to the public IP address with relabeling. See https://prometheus.io/docs/prometheus/latest/configuration/configuration/#gce_sd_config<br><p> <br><p> The GCE service discovery will load the Google Cloud credentials from the file specified by the GOOGLE_APPLICATION_CREDENTIALS environment variable. See https://cloud.google.com/kubernetes-engine/docs/tutorials/authenticating-to-cloud-platform<br><p> <br><p> A pre-requisite for using GCESDConfig is that a Secret containing valid Google Cloud credentials is mounted into the Prometheus or PrometheusAgent pod via the `.spec.secrets` field and that the GOOGLE_APPLICATION_CREDENTIALS environment variable is set to /etc/prometheus/secrets/&lt;secret-name&gt;/&lt;credentials-filename.json&gt;.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "filter",

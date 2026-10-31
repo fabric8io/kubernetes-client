@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ClusterDeploymentCustomizationSpec defines the desired state of ClusterDeploymentCustomization.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "installConfigPatches"
+    "installConfigPatches",
+    "installerManifestPatches"
 })
 @ToString
 @EqualsAndHashCode
@@ -70,6 +71,9 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     @JsonProperty("installConfigPatches")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PatchEntity> installConfigPatches = new ArrayList<>();
+    @JsonProperty("installerManifestPatches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<InstallerManifestPatch> installerManifestPatches = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -79,9 +83,10 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     public ClusterDeploymentCustomizationSpec() {
     }
 
-    public ClusterDeploymentCustomizationSpec(List<PatchEntity> installConfigPatches) {
+    public ClusterDeploymentCustomizationSpec(List<PatchEntity> installConfigPatches, List<InstallerManifestPatch> installerManifestPatches) {
         super();
         this.installConfigPatches = installConfigPatches;
+        this.installerManifestPatches = installerManifestPatches;
     }
 
     /**
@@ -99,6 +104,23 @@ public class ClusterDeploymentCustomizationSpec implements Editable<ClusterDeplo
     @JsonProperty("installConfigPatches")
     public void setInstallConfigPatches(List<PatchEntity> installConfigPatches) {
         this.installConfigPatches = installConfigPatches;
+    }
+
+    /**
+     * InstallerManifestPatches is a list of patches to be applied to installer-generated manifests.
+     */
+    @JsonProperty("installerManifestPatches")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<InstallerManifestPatch> getInstallerManifestPatches() {
+        return installerManifestPatches;
+    }
+
+    /**
+     * InstallerManifestPatches is a list of patches to be applied to installer-generated manifests.
+     */
+    @JsonProperty("installerManifestPatches")
+    public void setInstallerManifestPatches(List<InstallerManifestPatch> installerManifestPatches) {
+        this.installerManifestPatches = installerManifestPatches;
     }
 
     @JsonIgnore

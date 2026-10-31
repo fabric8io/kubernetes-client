@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,11 +31,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * GCPPlatformStatus holds the current status of the Google Cloud Platform infrastructure provider.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cloudLoadBalancerConfig",
@@ -44,7 +44,7 @@ import lombok.experimental.Accessors;
     "region",
     "resourceLabels",
     "resourceTags",
-    "serviceEndpoints"
+    "universeDomain"
 })
 @ToString
 @EqualsAndHashCode
@@ -83,9 +83,8 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     @JsonProperty("resourceTags")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<GCPResourceTag> resourceTags = new ArrayList<>();
-    @JsonProperty("serviceEndpoints")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    private List<GCPServiceEndpoint> serviceEndpoints = new ArrayList<>();
+    @JsonProperty("universeDomain")
+    private String universeDomain;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -95,14 +94,14 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     public GCPPlatformStatus() {
     }
 
-    public GCPPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String projectID, String region, List<GCPResourceLabel> resourceLabels, List<GCPResourceTag> resourceTags, List<GCPServiceEndpoint> serviceEndpoints) {
+    public GCPPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String projectID, String region, List<GCPResourceLabel> resourceLabels, List<GCPResourceTag> resourceTags, String universeDomain) {
         super();
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
         this.projectID = projectID;
         this.region = region;
         this.resourceLabels = resourceLabels;
         this.resourceTags = resourceTags;
-        this.serviceEndpoints = serviceEndpoints;
+        this.universeDomain = universeDomain;
     }
 
     /**
@@ -188,20 +187,19 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
     }
 
     /**
-     * serviceEndpoints specifies endpoints that override the default endpoints used when creating clients to interact with GCP services. When not specified, the default endpoint for the GCP region will be used. Only 1 endpoint override is permitted for each GCP service. The maximum number of endpoint overrides allowed is 11.
+     * universeDomain is the GCP universe domain for the cluster, detected from the installer credentials. Components with their own GCP credentials should read the universe domain from those credentials, as they are the authoritative source. This field is provided for components that do not have GCP credentials and for general observability.<br><p> <br><p> When omitted, standard public GCP (googleapis.com) is assumed.<br><p> <br><p> universeDomain is an optional field that, when specified, must be non-empty and at most 253 characters. It must be a valid DNS subdomain: containing only lowercase alphanumeric characters, '-' or '.', and starting and ending with an alphanumeric character.
      */
-    @JsonProperty("serviceEndpoints")
-    @JsonInclude(JsonInclude.Include.NON_EMPTY)
-    public List<GCPServiceEndpoint> getServiceEndpoints() {
-        return serviceEndpoints;
+    @JsonProperty("universeDomain")
+    public String getUniverseDomain() {
+        return universeDomain;
     }
 
     /**
-     * serviceEndpoints specifies endpoints that override the default endpoints used when creating clients to interact with GCP services. When not specified, the default endpoint for the GCP region will be used. Only 1 endpoint override is permitted for each GCP service. The maximum number of endpoint overrides allowed is 11.
+     * universeDomain is the GCP universe domain for the cluster, detected from the installer credentials. Components with their own GCP credentials should read the universe domain from those credentials, as they are the authoritative source. This field is provided for components that do not have GCP credentials and for general observability.<br><p> <br><p> When omitted, standard public GCP (googleapis.com) is assumed.<br><p> <br><p> universeDomain is an optional field that, when specified, must be non-empty and at most 253 characters. It must be a valid DNS subdomain: containing only lowercase alphanumeric characters, '-' or '.', and starting and ending with an alphanumeric character.
      */
-    @JsonProperty("serviceEndpoints")
-    public void setServiceEndpoints(List<GCPServiceEndpoint> serviceEndpoints) {
-        this.serviceEndpoints = serviceEndpoints;
+    @JsonProperty("universeDomain")
+    public void setUniverseDomain(String universeDomain) {
+        this.universeDomain = universeDomain;
     }
 
     @JsonIgnore

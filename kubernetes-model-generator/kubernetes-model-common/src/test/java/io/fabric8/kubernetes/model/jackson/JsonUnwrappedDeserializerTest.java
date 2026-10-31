@@ -18,9 +18,6 @@ package io.fabric8.kubernetes.model.jackson;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.assertj.core.api.InstanceOfAssertFactories;
@@ -28,6 +25,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.json.JsonMapper;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.DEDUCTION;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NONE;
@@ -39,7 +40,7 @@ class JsonUnwrappedDeserializerTest {
 
   @BeforeEach
   void initMapper() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   @Nested
@@ -47,7 +48,7 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Single @JsonUnwrapped polymorphic type")
-    void singleJsonWrappedPolymorphicField() throws JsonProcessingException {
+    void singleJsonWrappedPolymorphicField() throws JacksonException {
       final RootClass result = mapper.readValue("{" +
           "\"stringField\": \"string-field-value\", " +
           "\"extendedField\": \"extended-field-value\", " +
@@ -70,7 +71,7 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Single @JsonUnwrapped polymorphic field with missing data")
-    void singleJsonWrappedPolymorphicFieldWithMissingDataForUnwrapped() throws JsonProcessingException {
+    void singleJsonWrappedPolymorphicFieldWithMissingDataForUnwrapped() throws JacksonException {
       final RootClass result = mapper.readValue("{" +
           "\"stringField\": \"string-field-value\"" +
           "}", RootClass.class);
@@ -84,7 +85,7 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Multiple @JsonUnwrapped fields")
-    void multipleJsonUnwrappedFields() throws JsonProcessingException {
+    void multipleJsonUnwrappedFields() throws JacksonException {
       final MultipleJsonUnwrapped result = mapper.readValue("{" +
           "\"foo\": \"foo-value\"," +
           "\"bar\": \"bar-value\"," +
@@ -98,7 +99,7 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Multiple polymorphic fields")
-    void multiplePolymorphicFields() throws JsonProcessingException {
+    void multiplePolymorphicFields() throws JacksonException {
       final MultiplePolymorphicFields result = mapper.readValue("{" +
           "\"foo\": {\"foo\": \"foo-value\"}," +
           "\"bar\": {\"bar\": \"bar-value\"}," +
@@ -112,7 +113,7 @@ class JsonUnwrappedDeserializerTest {
 
     @Test
     @DisplayName("Multiple @JsonUnwrapped polymorphic fields")
-    void multipleJsonUnwrappedPolymorphicFields() throws JsonProcessingException {
+    void multipleJsonUnwrappedPolymorphicFields() throws JacksonException {
       final MultipleJsonUnwrappedPolymorphicFields result = mapper.readValue("{" +
           "\"foo\": \"foo-value\"," +
           "\"bar\": \"bar-value\"," +

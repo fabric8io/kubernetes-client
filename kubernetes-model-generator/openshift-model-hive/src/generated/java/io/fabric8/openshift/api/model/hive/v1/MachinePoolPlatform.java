@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,19 +31,20 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "aws",
     "azure",
     "gcp",
     "ibmcloud",
+    "nutanix",
     "openstack",
-    "ovirt",
     "vsphere"
 })
 @ToString
@@ -80,10 +80,10 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     private io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp;
     @JsonProperty("ibmcloud")
     private io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud;
+    @JsonProperty("nutanix")
+    private io.fabric8.openshift.api.model.hive.nutanix.v1.MachinePool nutanix;
     @JsonProperty("openstack")
     private io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack;
-    @JsonProperty("ovirt")
-    private io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt;
     @JsonProperty("vsphere")
     private io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere;
     @JsonIgnore
@@ -95,14 +95,14 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
+    public MachinePoolPlatform(io.fabric8.openshift.api.model.hive.aws.v1.MachinePoolPlatform aws, MachinePool azure, io.fabric8.openshift.api.model.hive.gcp.v1.MachinePool gcp, io.fabric8.openshift.api.model.hive.ibmcloud.v1.MachinePool ibmcloud, io.fabric8.openshift.api.model.hive.nutanix.v1.MachinePool nutanix, io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack, io.fabric8.openshift.api.model.hive.vsphere.v1.MachinePool vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
+        this.nutanix = nutanix;
         this.openstack = openstack;
-        this.ovirt = ovirt;
         this.vsphere = vsphere;
     }
 
@@ -173,6 +173,22 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     /**
      * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
      */
+    @JsonProperty("nutanix")
+    public io.fabric8.openshift.api.model.hive.nutanix.v1.MachinePool getNutanix() {
+        return nutanix;
+    }
+
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
+    @JsonProperty("nutanix")
+    public void setNutanix(io.fabric8.openshift.api.model.hive.nutanix.v1.MachinePool nutanix) {
+        this.nutanix = nutanix;
+    }
+
+    /**
+     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
+     */
     @JsonProperty("openstack")
     public io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool getOpenstack() {
         return openstack;
@@ -184,22 +200,6 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("openstack")
     public void setOpenstack(io.fabric8.openshift.api.model.hive.openstack.v1.MachinePool openstack) {
         this.openstack = openstack;
-    }
-
-    /**
-     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
-     */
-    @JsonProperty("ovirt")
-    public io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool getOvirt() {
-        return ovirt;
-    }
-
-    /**
-     * MachinePoolPlatform is the platform-specific configuration for a machine pool. Only one of the platforms should be set.
-     */
-    @JsonProperty("ovirt")
-    public void setOvirt(io.fabric8.openshift.api.model.hive.ovirt.v1.MachinePool ovirt) {
-        this.ovirt = ovirt;
     }
 
     /**

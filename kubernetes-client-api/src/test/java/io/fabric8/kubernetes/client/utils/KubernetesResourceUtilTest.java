@@ -15,13 +15,13 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.ConfigMapList;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
 import io.fabric8.kubernetes.api.model.Event;
 import io.fabric8.kubernetes.api.model.EventBuilder;
+import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.api.model.PodList;
@@ -35,9 +35,13 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.assertj.core.data.MapEntry;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import tools.jackson.core.JacksonException;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +53,9 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static io.fabric8.kubernetes.client.utils.KubernetesResourceUtil.inferListType;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +65,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.argumentSet;
 
 class KubernetesResourceUtilTest {
   private ConfigMap configMap1;
@@ -119,30 +126,219 @@ class KubernetesResourceUtilTest {
     assertEquals(Collections.singletonMap("foo", "bar"), annos);
   }
 
-  @Test
-  void testNames() {
-    assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.getName(configMap1)));
-    assertFalse(KubernetesResourceUtil.isValidName("test.invalid.name"));
-    assertTrue(KubernetesResourceUtil.areLabelsValid(KubernetesResourceUtil.getOrCreateAnnotations(configMap1)));
-    assertFalse(KubernetesResourceUtil
-        .areLabelsValid(Collections.singletonMap("NoUppercaseOrSpecialCharsLike=Equals", "bar")));
+  @Nested
+  @DisplayName("isValidName")
+  class IsValidName {
 
-    assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("test.invalid.name")));
-    assertTrue(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("90notcool-n@me")));
-    assertTrue(KubernetesResourceUtil.isValidName(
-        KubernetesResourceUtil.sanitizeName("90notcool-n@me_______waytoooooooooolooooooooongand should be shorten for sure")));
+    @ParameterizedTest
+    @MethodSource("validNames")
+    @DisplayName("name validation passes when the name is up to 63 lowercase alphanumeric characters or '-', starting and ending with an alphanumeric character")
+    void passesForValidName(String name) {
+      assertThat(KubernetesResourceUtil.isValidName(name)).isTrue();
+    }
+
+    static Stream<Arguments> validNames() {
+      return Stream.of(
+          argumentSet("lowercase with digits", "configmap1"),
+          argumentSet("63 characters", "a".repeat(63)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidNames")
+    @DisplayName("name validation fails when the name is too long or has characters other than lowercase alphanumerics and '-'")
+    void failsForInvalidName(String name) {
+      assertThat(KubernetesResourceUtil.isValidName(name)).isFalse();
+    }
+
+    static Stream<Arguments> invalidNames() {
+      return Stream.of(
+          argumentSet("contains '.'", "test.invalid.name"),
+          argumentSet("64 characters", "a".repeat(64)));
+    }
   }
 
-  @Test
-  void testSubdomainValidation() {
-    assertTrue(KubernetesResourceUtil.isValidSubdomainName("a.b"));
-    assertFalse(KubernetesResourceUtil.isValidSubdomainName("a..b"));
+  @Nested
+  @DisplayName("isValidSubdomainName")
+  class IsValidSubdomainName {
+
+    @ParameterizedTest
+    @MethodSource("validSubdomainNames")
+    @DisplayName("subdomain name validation passes when the name is up to 253 characters of '.'-separated DNS labels")
+    void passesForValidSubdomainName(String name) {
+      assertThat(KubernetesResourceUtil.isValidSubdomainName(name)).isTrue();
+    }
+
+    static Stream<Arguments> validSubdomainNames() {
+      return Stream.of(
+          argumentSet("two labels", "a.b"),
+          argumentSet("253 characters",
+              String.join(".", "a".repeat(63), "b".repeat(63), "c".repeat(63), "d".repeat(61))));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidSubdomainNames")
+    @DisplayName("subdomain name validation fails when the name is too long or has an empty label")
+    void failsForInvalidSubdomainName(String name) {
+      assertThat(KubernetesResourceUtil.isValidSubdomainName(name)).isFalse();
+    }
+
+    static Stream<Arguments> invalidSubdomainNames() {
+      return Stream.of(
+          argumentSet("empty label", "a..b"),
+          argumentSet("254 characters",
+              String.join(".", "a".repeat(63), "b".repeat(63), "c".repeat(63), "d".repeat(62))));
+    }
   }
 
-  @Test
-  void testKeyValidation() {
-    assertTrue(KubernetesResourceUtil.isValidKey("domain.prefix.io/label.key"));
-    assertFalse(KubernetesResourceUtil.isValidKey("domain.prefix.io?label.key"));
+  @Nested
+  @DisplayName("sanitizeName")
+  class SanitizeName {
+
+    @ParameterizedTest
+    @MethodSource("namesToSanitize")
+    @DisplayName("sanitized name is a valid name")
+    void sanitizedNameIsValidName(String name) {
+      assertThat(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName(name))).isTrue();
+    }
+
+    static Stream<Arguments> namesToSanitize() {
+      return Stream.of(
+          argumentSet("contains '.'", "test.invalid.name"),
+          argumentSet("contains '@'", "90notcool-n@me"),
+          argumentSet("longer than 63 characters with '_' and spaces",
+              "90notcool-n@me_______waytoooooooooolooooooooongand should be shorten for sure"),
+          argumentSet("starts with '-'", "-name"),
+          argumentSet("ends with '-'", "name-"));
+    }
+
+    @Test
+    @DisplayName("sanitizeName returns an empty name unchanged")
+    void returnsEmptyNameUnchanged() {
+      assertThat(KubernetesResourceUtil.sanitizeName("")).isEmpty();
+    }
+
+    @Test
+    @DisplayName("sanitized name is a valid name regardless of the default locale")
+    void sanitizedNameIsValidNameInAnyLocale() {
+      final Locale defaultLocale = Locale.getDefault();
+      try {
+        // Turkish lowercases 'I' to the dotless 'ı'
+        Locale.setDefault(Locale.forLanguageTag("tr"));
+        assertThat(KubernetesResourceUtil.isValidName(KubernetesResourceUtil.sanitizeName("MyIngress"))).isTrue();
+      } finally {
+        Locale.setDefault(defaultLocale);
+      }
+    }
+  }
+
+  @Nested
+  @DisplayName("isValidKey")
+  class IsValidKey {
+
+    @ParameterizedTest
+    @MethodSource("validKeys")
+    @DisplayName("label key validation passes when the key is a name of up to 63 characters, optionally prefixed by a DNS subdomain of up to 253 characters and '/'")
+    void passesForValidKey(String key) {
+      assertThat(KubernetesResourceUtil.isValidKey(key)).isTrue();
+    }
+
+    static Stream<Arguments> validKeys() {
+      return Stream.of(
+          argumentSet("prefix and name with dots", "domain.prefix.io/label.key"),
+          argumentSet("name with uppercase and '_'", "domain.prefix.io/MyLabel_Key"),
+          argumentSet("name of 63 characters", "a".repeat(63)),
+          argumentSet("prefix and name of 63 characters", "example.com/" + "a".repeat(63)),
+          argumentSet("prefix of 200 characters and name of 53 characters",
+              String.join(".", "a".repeat(63), "b".repeat(63), "c".repeat(63), "d".repeat(8)) + "/" + "e".repeat(53)),
+          argumentSet("prefix of 253 characters",
+              String.join(".", "a".repeat(63), "b".repeat(63), "c".repeat(63), "d".repeat(61)) + "/name"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidKeys")
+    @DisplayName("label key validation fails when the name or the prefix is too long or has invalid characters")
+    void failsForInvalidKey(String key) {
+      assertThat(KubernetesResourceUtil.isValidKey(key)).isFalse();
+    }
+
+    static Stream<Arguments> invalidKeys() {
+      return Stream.of(
+          argumentSet("'?' instead of '/'", "domain.prefix.io?label.key"),
+          argumentSet("uppercase prefix", "UPPER.PREFIX.IO/key"),
+          argumentSet("name of 64 characters", "a".repeat(64)),
+          argumentSet("prefix and name of 64 characters", "example.com/" + "a".repeat(64)),
+          argumentSet("prefix of 254 characters",
+              String.join(".", "a".repeat(63), "b".repeat(63), "c".repeat(63), "d".repeat(62)) + "/name"));
+    }
+  }
+
+  @Nested
+  @DisplayName("isValidLabelValue")
+  class IsValidLabelValue {
+
+    @ParameterizedTest
+    @MethodSource("validValues")
+    @DisplayName("label value validation passes when the value is empty or up to 63 alphanumeric characters with '-', '_' or '.' inside")
+    void passesForValidValue(String value) {
+      assertThat(KubernetesResourceUtil.isValidLabelValue(value)).isTrue();
+    }
+
+    static Stream<Arguments> validValues() {
+      return Stream.of(
+          argumentSet("uppercase", "MyValue"),
+          argumentSet("'_' and '.' inside", "My_Value.1"),
+          argumentSet("empty", ""),
+          argumentSet("63 characters", "a".repeat(63)));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidValues")
+    @DisplayName("label value validation fails when the value is null, too long, has invalid characters or doesn't start and end with an alphanumeric character")
+    void failsForInvalidValue(String value) {
+      assertThat(KubernetesResourceUtil.isValidLabelValue(value)).isFalse();
+    }
+
+    static Stream<Arguments> invalidValues() {
+      return Stream.of(
+          argumentSet("null", (Object) null),
+          argumentSet("starts with '-'", "-bad"),
+          argumentSet("ends with '_'", "bad_"),
+          argumentSet("contains a space", "a b"),
+          argumentSet("64 characters", "a".repeat(64)));
+    }
+  }
+
+  @Nested
+  @DisplayName("areLabelsValid")
+  class AreLabelsValid {
+
+    @ParameterizedTest
+    @MethodSource("validLabels")
+    @DisplayName("labels validation passes when every key and value is valid")
+    void passesForValidLabels(Map<String, String> labels) {
+      assertThat(KubernetesResourceUtil.areLabelsValid(labels)).isTrue();
+    }
+
+    static Stream<Arguments> validLabels() {
+      return Stream.of(
+          argumentSet("lowercase key and value", Map.of("foo", "bar")),
+          argumentSet("uppercase key and value", Map.of("MyApp", "MyValue")),
+          argumentSet("value with '_' and '.'", Map.of("app", "My_Value.1")),
+          argumentSet("empty value", Map.of("app", "")));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidLabels")
+    @DisplayName("labels validation fails when a key or a value is invalid")
+    void failsForInvalidLabels(Map<String, String> labels) {
+      assertThat(KubernetesResourceUtil.areLabelsValid(labels)).isFalse();
+    }
+
+    static Stream<Arguments> invalidLabels() {
+      return Stream.of(
+          argumentSet("'=' in key", Map.of("special=char-in-key", "bar")),
+          argumentSet("value starting with '-'", Map.of("app", "-bad")));
+    }
   }
 
   @Test
@@ -263,16 +459,33 @@ class KubernetesResourceUtilTest {
     assertFalse(duration.isNegative());
   }
 
-  @Test
-  void testInferListType() {
-    assertEquals(PodList.class, KubernetesResourceUtil.inferListType(Pod.class));
-    assertEquals(ConfigMapList.class, KubernetesResourceUtil.inferListType(ConfigMap.class));
-    assertEquals(CronJobList.class, KubernetesResourceUtil.inferListType(CronJob.class));
-    assertEquals(DefaultKubernetesResourceList.class, KubernetesResourceUtil.inferListType(Good.class));
+  @Nested
+  @DisplayName("inferListType")
+  class InferListType {
+
+    @ParameterizedTest
+    @MethodSource("typesWithList")
+    @DisplayName("infers the list type as the resource class name suffixed with 'List'")
+    void infersListClassByName(Class<? extends HasMetadata> type, Class<?> expectedListType) {
+      assertThat(KubernetesResourceUtil.inferListType(type)).isEqualTo(expectedListType);
+    }
+
+    static Stream<Arguments> typesWithList() {
+      return Stream.of(
+          argumentSet("Pod", Pod.class, PodList.class),
+          argumentSet("ConfigMap", ConfigMap.class, ConfigMapList.class),
+          argumentSet("batch/v1beta1 CronJob", CronJob.class, CronJobList.class));
+    }
+
+    @Test
+    @DisplayName("falls back to DefaultKubernetesResourceList when there is no class named after the resource class with 'List'")
+    void fallsBackToDefaultList() {
+      assertThat(KubernetesResourceUtil.inferListType(Good.class)).isEqualTo(DefaultKubernetesResourceList.class);
+    }
   }
 
   @Test
-  void testCreateDefaultDockerRegistrySecret() throws JsonProcessingException {
+  void testCreateDefaultDockerRegistrySecret() throws JacksonException {
     Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
         "TestingSecret");
 
@@ -285,7 +498,7 @@ class KubernetesResourceUtilTest {
   }
 
   @Test
-  void testCreateDockerRegistrySecret() throws JsonProcessingException {
+  void testCreateDockerRegistrySecret() throws JacksonException {
     Secret secret = KubernetesResourceUtil.createDockerRegistrySecret("http://harbor.inner.com", "SecretAdmin",
         "TestingSecret", "TestSecretName");
 

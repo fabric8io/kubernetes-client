@@ -30,6 +30,7 @@
 
   <properties>
     <jpms.module.name>io.fabric8.kubernetes.client.vertx</jpms.module.name>
+    <vertx.version>${vertx4.version}</vertx.version>
     <osgi.require-capability>
       osgi.extender;
       filter:="(osgi.extender=osgi.serviceloader.registrar)",
@@ -48,6 +49,48 @@
     <osgi.private>
     </osgi.private>
   </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Pin Vert.x 4.x for this module (root POM now manages Vert.x 5.x) -->
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-core</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-client</artifactId>
+        <version>${vertx4.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-uri-template</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-web-common</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-auth-common</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>io.vertx</groupId>
+        <artifactId>vertx-bridge-common</artifactId>
+        <version>${vertx4.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
     <dependency>

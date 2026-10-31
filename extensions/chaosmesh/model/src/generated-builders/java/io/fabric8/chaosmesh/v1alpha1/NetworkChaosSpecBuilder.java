@@ -25,7 +25,7 @@ public class NetworkChaosSpecBuilder extends NetworkChaosSpecFluent<NetworkChaos
   }
 
   public NetworkChaosSpec build() {
-    NetworkChaosSpec buildable = new NetworkChaosSpec(fluent.getAction(), fluent.buildBandwidth(), fluent.buildCorrupt(), fluent.buildDelay(), fluent.getDevice(), fluent.getDirection(), fluent.buildDuplicate(), fluent.getDuration(), fluent.getExternalTargets(), fluent.buildLoss(), fluent.getMode(), fluent.buildRate(), fluent.getRemoteCluster(), fluent.buildSelector(), fluent.buildTarget(), fluent.getTargetDevice(), fluent.getValue());
+    NetworkChaosSpec buildable = new NetworkChaosSpec(fluent.getAction(), fluent.buildBandwidth(), fluent.buildCorrupt(), fluent.buildDelay(), fluent.getDevice(), fluent.getDirection(), fluent.buildDuplicate(), fluent.getDuration(), fluent.getExternalTargets(), fluent.buildLoss(), fluent.getMode(), fluent.getPartitionBehavior(), fluent.buildRate(), fluent.getRemoteCluster(), fluent.buildSelector(), fluent.buildTarget(), fluent.getTargetDevice(), fluent.getValue());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

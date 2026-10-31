@@ -32,6 +32,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
   private String computeFlavor;
   private PortTargetBuilder controlPlanePort;
   private MachinePoolBuilder defaultMachinePlatform;
+  private String dnsRecordsType;
   private List<String> externalDNS = new ArrayList<String>();
   private String externalNetwork;
   private String ingressFloatingIP;
@@ -195,6 +196,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
         this.withComputeFlavor(instance.getComputeFlavor());
         this.withControlPlanePort(instance.getControlPlanePort());
         this.withDefaultMachinePlatform(instance.getDefaultMachinePlatform());
+        this.withDnsRecordsType(instance.getDnsRecordsType());
         this.withExternalDNS(instance.getExternalDNS());
         this.withExternalNetwork(instance.getExternalNetwork());
         this.withIngressFloatingIP(instance.getIngressFloatingIP());
@@ -272,6 +274,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
     if (!(Objects.equals(defaultMachinePlatform, that.defaultMachinePlatform))) {
       return false;
     }
+    if (!(Objects.equals(dnsRecordsType, that.dnsRecordsType))) {
+      return false;
+    }
     if (!(Objects.equals(externalDNS, that.externalDNS))) {
       return false;
     }
@@ -345,6 +350,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
   
   public String getComputeFlavor() {
     return this.computeFlavor;
+  }
+  
+  public String getDnsRecordsType() {
+    return this.dnsRecordsType;
   }
   
   public String getExternalDN(int index) {
@@ -490,6 +499,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
     return this.defaultMachinePlatform != null;
   }
   
+  public boolean hasDnsRecordsType() {
+    return this.dnsRecordsType != null;
+  }
+  
   public boolean hasExternalDNS() {
     return this.externalDNS != null && !(this.externalDNS.isEmpty());
   }
@@ -562,7 +575,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
   }
   
   public int hashCode() {
-    return Objects.hash(apiFloatingIP, apiVIP, apiVIPs, cloud, clusterOSImage, clusterOSImageProperties, computeFlavor, controlPlanePort, defaultMachinePlatform, externalDNS, externalNetwork, ingressFloatingIP, ingressVIP, ingressVIPs, lbFloatingIP, loadBalancer, machinesSubnet, octaviaSupport, region, trunkSupport, additionalProperties);
+    return Objects.hash(apiFloatingIP, apiVIP, apiVIPs, cloud, clusterOSImage, clusterOSImageProperties, computeFlavor, controlPlanePort, defaultMachinePlatform, dnsRecordsType, externalDNS, externalNetwork, ingressFloatingIP, ingressVIP, ingressVIPs, lbFloatingIP, loadBalancer, machinesSubnet, octaviaSupport, region, trunkSupport, additionalProperties);
   }
   
   public A removeAllFromApiVIPs(Collection<String> items) {
@@ -745,6 +758,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
         sb.append(defaultMachinePlatform);
         sb.append(",");
     }
+    if (!(dnsRecordsType == null)) {
+        sb.append("dnsRecordsType:");
+        sb.append(dnsRecordsType);
+        sb.append(",");
+    }
     if (!(externalDNS == null) && !(externalDNS.isEmpty())) {
         sb.append("externalDNS:");
         sb.append(externalDNS);
@@ -897,6 +915,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.o
         this.defaultMachinePlatform = null;
         this._visitables.get("defaultMachinePlatform").remove(this.defaultMachinePlatform);
     }
+    return (A) this;
+  }
+  
+  public A withDnsRecordsType(String dnsRecordsType) {
+    this.dnsRecordsType = dnsRecordsType;
     return (A) this;
   }
   

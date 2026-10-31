@@ -24,7 +24,9 @@ import io.fabric8.kubernetes.client.http.StandardHttpRequest.InputStreamBodyCont
 import io.fabric8.kubernetes.client.http.StandardHttpRequest.StringBodyContent;
 import io.vertx.core.Future;
 import io.vertx.core.MultiMap;
+import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxException;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
@@ -115,6 +117,8 @@ class Vertx5HttpRequestTest {
 
     // Mock the new request flow: response() returns Future, end() sends the body
     when(httpClientRequest.response()).thenReturn(Future.succeededFuture(httpClientResponse));
+    when(httpClientRequest.end()).thenReturn(Future.succeededFuture());
+    when(httpClientRequest.end(any(Buffer.class))).thenReturn(Future.succeededFuture());
   }
 
   @Test
@@ -334,5 +338,54 @@ class Vertx5HttpRequestTest {
 
     verify(httpClientResponse).pause();
     verify(httpClientRequest).end(any(Buffer.class));
+  }
+
+  @Test
+  @DisplayName("A request that can't be written (connection closed before the request was created), fails with a retryable IOException instead of hanging: Vert.x never completes its response")
+  void consumeBytes_writeFailureWithoutResponseFailsWithIOException() {
+    final VertxException closed = new VertxException("Connection was closed", true);
+    when(httpClient.request(options)).thenReturn(Future.succeededFuture(httpClientRequest));
+    when(request.body()).thenReturn(null);
+    when(httpClientRequest.response()).thenReturn(Promise.<HttpClientResponse> promise().future());
+    when(httpClientRequest.end()).thenReturn(Future.failedFuture(closed));
+
+    CompletableFuture<HttpResponse<AsyncBody>> result = vertxHttpRequest.consumeBytes(httpClient, consumer);
+
+    assertThatThrownBy(() -> result.get(1, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(IOException.class)
+        .hasCause(closed);
+  }
+
+  @Test
+  @DisplayName("A request body that can't be written, fails the request with a retryable IOException instead of hanging")
+  void consumeBytes_bodyWriteFailureWithoutResponseFailsWithIOException() {
+    final VertxException closed = new VertxException("Connection was closed", true);
+    when(httpClient.request(options)).thenReturn(Future.succeededFuture(httpClientRequest));
+    when(request.body()).thenReturn(stringBodyContent);
+    when(stringBodyContent.getContent()).thenReturn("test content");
+    when(httpClientRequest.response()).thenReturn(Promise.<HttpClientResponse> promise().future());
+    when(httpClientRequest.end(any(Buffer.class))).thenReturn(Future.failedFuture(closed));
+
+    CompletableFuture<HttpResponse<AsyncBody>> result = vertxHttpRequest.consumeBytes(httpClient, consumer);
+
+    assertThatThrownBy(() -> result.get(1, TimeUnit.SECONDS))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(IOException.class)
+        .hasCause(closed);
+  }
+
+  @Test
+  @DisplayName("A write that fails after the response arrived (e.g. the server answered early and closed), keeps the response")
+  void consumeBytes_writeFailureAfterResponseKeepsResponse() throws Exception {
+    when(httpClient.request(options)).thenReturn(Future.succeededFuture(httpClientRequest));
+    when(request.body()).thenReturn(null);
+    when(httpClientRequest.end()).thenReturn(Future.failedFuture(new VertxException("Connection was closed", true)));
+
+    CompletableFuture<HttpResponse<AsyncBody>> result = vertxHttpRequest.consumeBytes(httpClient, consumer);
+
+    assertThat(result.get(1, TimeUnit.SECONDS)).isInstanceOf(Vertx5HttpResponse.class);
   }
 }

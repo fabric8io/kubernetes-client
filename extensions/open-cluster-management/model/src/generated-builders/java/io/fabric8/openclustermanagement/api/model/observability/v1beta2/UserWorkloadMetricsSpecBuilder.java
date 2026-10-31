@@ -25,7 +25,7 @@ public class UserWorkloadMetricsSpecBuilder extends UserWorkloadMetricsSpecFluen
   }
 
   public UserWorkloadMetricsSpec build() {
-    UserWorkloadMetricsSpec buildable = new UserWorkloadMetricsSpec(fluent.buildCollection());
+    UserWorkloadMetricsSpec buildable = new UserWorkloadMetricsSpec(fluent.buildAlerts(), fluent.buildDefault());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

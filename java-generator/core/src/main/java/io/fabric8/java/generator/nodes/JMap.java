@@ -15,9 +15,9 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import io.fabric8.java.generator.Config;
+import tools.jackson.databind.JsonNode;
 
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_LANG_STRING;
 import static io.fabric8.java.generator.nodes.Keywords.JAVA_UTIL_MAP;

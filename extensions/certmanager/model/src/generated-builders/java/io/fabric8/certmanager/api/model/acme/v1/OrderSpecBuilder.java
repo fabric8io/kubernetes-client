@@ -25,7 +25,7 @@ public class OrderSpecBuilder extends OrderSpecFluent<OrderSpecBuilder> implemen
   }
 
   public OrderSpec build() {
-    OrderSpec buildable = new OrderSpec(fluent.getCommonName(), fluent.getDnsNames(), fluent.getDuration(), fluent.getIpAddresses(), fluent.buildIssuerRef(), fluent.getProfile(), fluent.getRequest());
+    OrderSpec buildable = new OrderSpec(fluent.getCommonName(), fluent.getDnsNames(), fluent.getDuration(), fluent.getIpAddresses(), fluent.buildIssuerRef(), fluent.getProfile(), fluent.getReplaces(), fluent.getRequest());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

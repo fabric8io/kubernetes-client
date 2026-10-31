@@ -137,6 +137,7 @@ public abstract class AbstractHttpPostTest {
   }
 
   @Test
+  @DisplayName("expectContinue, sends the Expect: 100-continue header")
   public void expectContinue() throws Exception {
     server.expect().post().withPath("/post-expect-continue").andReturn(200, "").always();
 
@@ -144,7 +145,8 @@ public abstract class AbstractHttpPostTest {
     try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
       final CompletableFuture<HttpResponse<String>> response = client
           .sendAsync(client.newHttpRequestBuilder()
-              .post(Collections.emptyMap())
+              // RFC 9110 ties Expect: 100-continue to a request body, clients may drop it for an empty one (Jetty 12 does)
+              .post(Collections.singletonMap("field", "value"))
               .uri(server.url("/post-expect-continue"))
               .expectContinue()
               .build(), String.class);

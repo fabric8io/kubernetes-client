@@ -37,6 +37,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
 
   protected LinkedHashMap<String, Interceptor> interceptors = new LinkedHashMap<>();
   protected Duration connectTimeout;
+  protected Duration websocketPingInterval;
   protected SSLContext sslContext;
   protected String proxyAuthorization;
   protected InetSocketAddress proxyAddress;
@@ -63,6 +64,15 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   @Override
   public T connectTimeout(long connectTimeout, TimeUnit unit) {
     this.connectTimeout = Duration.ofNanos(unit.toNanos(connectTimeout));
+    return (T) this;
+  }
+
+  @Override
+  public T websocketPingInterval(long websocketPingInterval, TimeUnit unit) {
+    // whole milliseconds, at least one: the clients schedule the pings in milliseconds
+    this.websocketPingInterval = websocketPingInterval > 0
+        ? Duration.ofMillis(Math.max(1L, unit.toMillis(websocketPingInterval)))
+        : null;
     return (T) this;
   }
 
@@ -150,6 +160,7 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
   public T copy(C client) {
     T copy = newInstance(clientFactory);
     copy.connectTimeout = this.connectTimeout;
+    copy.websocketPingInterval = this.websocketPingInterval;
     copy.sslContext = this.sslContext;
     copy.trustManagers = this.trustManagers;
     copy.keyManagers = this.keyManagers;
@@ -174,6 +185,33 @@ public abstract class StandardHttpClientBuilder<C extends HttpClient, F extends 
         @Override
         public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
           builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+        }
+
+      });
+    }
+  }
+
+  /**
+   * Like {@link #addProxyAuthInterceptor()}, but only on the requests an HTTP proxy reads. Not on the ones it tunnels
+   * with CONNECT, where the header would reach the API server instead, and not at all for SOCKS proxies, which don't
+   * read HTTP headers.
+   * <p>
+   * For clients that don't move the header to the CONNECT request themselves.
+   *
+   * @param webSocketsTunneled whether the client tunnels WebSocket upgrades with CONNECT even without TLS
+   */
+  protected void addPlainHttpProxyAuthInterceptor(boolean webSocketsTunneled) {
+    if (proxyAuthorization != null && proxyType == ProxyType.HTTP) {
+      this.interceptors.put("PROXY-AUTH", new Interceptor() {
+
+        @Override
+        public void before(BasicBuilder builder, HttpRequest httpRequest, RequestTags tags) {
+          final String scheme = httpRequest.uri().getScheme();
+          final boolean tunneled = "https".equalsIgnoreCase(scheme) || "wss".equalsIgnoreCase(scheme)
+              || (webSocketsTunneled && builder instanceof WebSocket.Builder);
+          if (!tunneled) {
+            builder.setHeader(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization);
+          }
         }
 
       });

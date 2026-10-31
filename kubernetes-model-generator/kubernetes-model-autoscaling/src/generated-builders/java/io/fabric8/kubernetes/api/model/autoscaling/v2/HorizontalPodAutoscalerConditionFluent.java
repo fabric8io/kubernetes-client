@@ -1,6 +1,7 @@
 package io.fabric8.kubernetes.api.model.autoscaling.v2;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -18,6 +19,7 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
   private Map<String,Object> additionalProperties;
   private String lastTransitionTime;
   private String message;
+  private Long observedGeneration;
   private String reason;
   private String status;
   private String type;
@@ -54,6 +56,7 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
     if (instance != null) {
         this.withLastTransitionTime(instance.getLastTransitionTime());
         this.withMessage(instance.getMessage());
+        this.withObservedGeneration(instance.getObservedGeneration());
         this.withReason(instance.getReason());
         this.withStatus(instance.getStatus());
         this.withType(instance.getType());
@@ -76,6 +79,9 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
       return false;
     }
     if (!(Objects.equals(message, that.message))) {
+      return false;
+    }
+    if (!(Objects.equals(observedGeneration, that.observedGeneration))) {
       return false;
     }
     if (!(Objects.equals(reason, that.reason))) {
@@ -105,6 +111,10 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
     return this.message;
   }
   
+  public Long getObservedGeneration() {
+    return this.observedGeneration;
+  }
+  
   public String getReason() {
     return this.reason;
   }
@@ -129,6 +139,10 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
     return this.message != null;
   }
   
+  public boolean hasObservedGeneration() {
+    return this.observedGeneration != null;
+  }
+  
   public boolean hasReason() {
     return this.reason != null;
   }
@@ -142,7 +156,7 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
   }
   
   public int hashCode() {
-    return Objects.hash(lastTransitionTime, message, reason, status, type, additionalProperties);
+    return Objects.hash(lastTransitionTime, message, observedGeneration, reason, status, type, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -180,6 +194,11 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
     if (!(message == null)) {
         sb.append("message:");
         sb.append(message);
+        sb.append(",");
+    }
+    if (!(observedGeneration == null)) {
+        sb.append("observedGeneration:");
+        sb.append(observedGeneration);
         sb.append(",");
     }
     if (!(reason == null)) {
@@ -221,6 +240,11 @@ public class HorizontalPodAutoscalerConditionFluent<A extends io.fabric8.kuberne
   
   public A withMessage(String message) {
     this.message = message;
+    return (A) this;
+  }
+  
+  public A withObservedGeneration(Long observedGeneration) {
+    this.observedGeneration = observedGeneration;
     return (A) this;
   }
   

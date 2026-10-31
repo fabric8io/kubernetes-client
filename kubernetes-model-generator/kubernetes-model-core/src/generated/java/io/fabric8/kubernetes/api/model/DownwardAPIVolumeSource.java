@@ -12,20 +12,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * DownwardAPIVolumeSource represents a volume containing downward API info. Downward API volumes support ownership management and SELinux relabeling.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "defaultMode",
+    "defaultUser",
     "items"
 })
 @ToString
@@ -41,6 +42,8 @@ public class DownwardAPIVolumeSource implements Editable<DownwardAPIVolumeSource
 
     @JsonProperty("defaultMode")
     private Integer defaultMode;
+    @JsonProperty("defaultUser")
+    private Long defaultUser;
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<DownwardAPIVolumeFile> items = new ArrayList<>();
@@ -53,9 +56,10 @@ public class DownwardAPIVolumeSource implements Editable<DownwardAPIVolumeSource
     public DownwardAPIVolumeSource() {
     }
 
-    public DownwardAPIVolumeSource(Integer defaultMode, List<DownwardAPIVolumeFile> items) {
+    public DownwardAPIVolumeSource(Integer defaultMode, Long defaultUser, List<DownwardAPIVolumeFile> items) {
         super();
         this.defaultMode = defaultMode;
+        this.defaultUser = defaultUser;
         this.items = items;
     }
 
@@ -73,6 +77,22 @@ public class DownwardAPIVolumeSource implements Editable<DownwardAPIVolumeSource
     @JsonProperty("defaultMode")
     public void setDefaultMode(Integer defaultMode) {
         this.defaultMode = defaultMode;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public Long getDefaultUser() {
+        return defaultUser;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public void setDefaultUser(Long defaultUser) {
+        this.defaultUser = defaultUser;
     }
 
     /**

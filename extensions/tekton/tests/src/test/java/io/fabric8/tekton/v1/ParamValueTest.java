@@ -15,11 +15,14 @@
  */
 package io.fabric8.tekton.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -28,7 +31,7 @@ class ParamValueTest {
   @Test
   void testParamValueJson() throws IOException {
     ParamValue is = new ParamValue("string-value");
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new JsonMapper();
     String json = mapper.writeValueAsString(is);
     ParamValue is2 = mapper.readValue(json, ParamValue.class);
     assertEquals(is, is2);
@@ -37,6 +40,16 @@ class ParamValueTest {
     json = mapper.writeValueAsString(is);
     is2 = mapper.readValue(json, ParamValue.class);
     assertEquals(is, is2);
+  }
+
+  @Test
+  @DisplayName("object-typed values are deserialized into objectVal and serialized back as a JSON object")
+  void objectValueRoundTrip() {
+    final ObjectMapper mapper = new JsonMapper();
+    final String json = "{\"url\":\"https://example.com/repo.git\",\"commit\":\"abc123\"}";
+    final ParamValue value = mapper.readValue(json, ParamValue.class);
+    assertEquals(new ParamValue(Map.of("url", "https://example.com/repo.git", "commit", "abc123")), value);
+    assertEquals(json, mapper.writeValueAsString(value));
   }
 
 }

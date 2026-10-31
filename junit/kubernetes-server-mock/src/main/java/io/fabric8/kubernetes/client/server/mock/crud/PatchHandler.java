@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.server.mock.crud;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.fabric8.kubernetes.api.model.GenericKubernetesResource;
 import io.fabric8.kubernetes.client.dsl.base.PatchType;
 import io.fabric8.kubernetes.client.utils.Serialization;
@@ -25,6 +23,8 @@ import io.fabric8.mockwebserver.crud.AttributeSet;
 import io.fabric8.mockwebserver.http.MediaType;
 import io.fabric8.mockwebserver.http.MockResponse;
 import io.fabric8.zjsonpatch.JsonPatch;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.ObjectNode;
 
 import java.net.HttpURLConnection;
 import java.util.Iterator;
@@ -115,7 +115,7 @@ public class PatchHandler implements KubernetesCrudDispatcherHandler {
 
   // Ensure resource contains all paths affected by the provided patch
   private JsonNode initPaths(JsonNode resource, JsonNode patch) {
-    for (Iterator<JsonNode> it = patch.elements(); it.hasNext();) {
+    for (Iterator<JsonNode> it = patch.values().iterator(); it.hasNext();) {
       final String fullPath = it.next().get(PATH).asText();
       final String[] paths = fullPath.replaceAll("^/", "").split("/");
       JsonNode node = resource;

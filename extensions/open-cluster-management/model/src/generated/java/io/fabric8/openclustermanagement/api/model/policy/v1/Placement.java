@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Placement reports how and what managed cluster placement resources are attached to the policy.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "decisions",
+    "exclusions",
     "placement",
     "placementBinding",
     "placementRule",
@@ -74,6 +75,9 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     @JsonProperty("decisions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PlacementDecision> decisions = new ArrayList<>();
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PolicyExclusion> exclusions = new ArrayList<>();
     @JsonProperty("placement")
     private String placement;
     @JsonProperty("placementBinding")
@@ -91,9 +95,10 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     public Placement() {
     }
 
-    public Placement(List<PlacementDecision> decisions, String placement, String placementBinding, String placementRule, String policySet) {
+    public Placement(List<PlacementDecision> decisions, List<PolicyExclusion> exclusions, String placement, String placementBinding, String placementRule, String policySet) {
         super();
         this.decisions = decisions;
+        this.exclusions = exclusions;
         this.placement = placement;
         this.placementBinding = placementBinding;
         this.placementRule = placementRule;
@@ -115,6 +120,23 @@ public class Placement implements Editable<PlacementBuilder>, KubernetesResource
     @JsonProperty("decisions")
     public void setDecisions(List<PlacementDecision> decisions) {
         this.decisions = decisions;
+    }
+
+    /**
+     * Exclusions lists managed clusters where the policy is excluded from propagation.
+     */
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PolicyExclusion> getExclusions() {
+        return exclusions;
+    }
+
+    /**
+     * Exclusions lists managed clusters where the policy is excluded from propagation.
+     */
+    @JsonProperty("exclusions")
+    public void setExclusions(List<PolicyExclusion> exclusions) {
+        this.exclusions = exclusions;
     }
 
     /**

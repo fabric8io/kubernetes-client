@@ -15,11 +15,18 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
+import io.fabric8.kubernetes.client.RequestConfigBuilder;
+import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.mockwebserver.DefaultMockServer;
 import io.fabric8.mockwebserver.utils.ResponseProviders;
 import org.assertj.core.api.InstanceOfAssertFactories;
+import org.eclipse.jetty.client.Authentication;
 import org.eclipse.jetty.client.HttpClient;
+import org.eclipse.jetty.client.HttpProxy;
+import org.eclipse.jetty.client.ProxyConfiguration;
+import org.eclipse.jetty.client.Socks4Proxy;
+import org.eclipse.jetty.client.Socks5Proxy;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.junit.jupiter.api.AfterAll;
@@ -27,14 +34,30 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class JettyHttpClientBuilderTest {
+
+  private static final String PROXY_ORIGIN = "localhost:3128";
+  private static final InetSocketAddress PROXY_ADDRESS = new InetSocketAddress("localhost", 3128);
 
   private static DefaultMockServer server;
   private static JettyHttpClientFactory factory;
@@ -53,15 +76,10 @@ class JettyHttpClientBuilderTest {
   }
 
   @Test
-  @DisplayName("build, creates a WS client and an HTTP client with different underlying connector instances")
-  void underlyingHttpAndWsClientsDifferentTransports() {
+  @DisplayName("build, creates a WS client that runs on the HTTP client, so both share its transport, proxy and TLS configuration")
+  void webSocketClientRunsOnHttpClient() {
     try (var client = factory.newBuilder().build()) {
-      assertThat(client)
-          .satisfies(c -> assertThat(c.getJetty())
-              .isNotSameAs(c.getJettyWs().getHttpClient())
-              .returns(c.getJettyWs().getSslContextFactory(), HttpClient::getSslContextFactory)
-              .extracting(HttpClient::getTransport)
-              .isNotSameAs(c.getJettyWs().getHttpClient().getTransport()));
+      assertThat(client.getJettyWs().getHttpClient()).isSameAs(client.getJetty());
     }
   }
 
@@ -73,6 +91,16 @@ class JettyHttpClientBuilderTest {
           .extracting(JettyHttpClient::getJettyWs)
           .extracting(WebSocketClient::getIdleTimeout)
           .isEqualTo(Duration.ZERO);
+    }
+  }
+
+  @Test
+  @DisplayName("build, keeps the default HTTP idle timeout although the WS idle timeout (which writes through to the HTTP client) is disabled")
+  void httpIdleTimeoutNotDisabled() {
+    try (var client = factory.newBuilder().build()) {
+      assertThat(client.getJetty().getIdleTimeout())
+          .isPositive()
+          .isEqualTo(new HttpClient().getIdleTimeout());
     }
   }
 
@@ -182,5 +210,121 @@ class JettyHttpClientBuilderTest {
       SslContextFactory.Client sslContextFactory = client.getJetty().getSslContextFactory();
       assertThat(sslContextFactory).isNotNull();
     }
+  }
+
+  @Test
+  @DisplayName("proxyAddress, configures the HTTP proxy once on the transport shared by HTTP and WebSocket")
+  void httpProxyIsConfiguredOnSharedTransport() {
+    try (var client = factory.newBuilder().proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient()))
+          .as("exec/attach/portForward would otherwise bypass the configured egress proxy")
+          .singleElement().isInstanceOf(HttpProxy.class)
+          .returns(PROXY_ORIGIN, proxy -> proxy.getAddress().asString());
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType SOCKS4, configures the SOCKS4 proxy once on the transport shared by HTTP and WebSocket")
+  void socks4ProxyIsConfiguredOnSharedTransport() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS4).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks4Proxy.class);
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType SOCKS5, configures the SOCKS5 proxy once on the transport shared by HTTP and WebSocket")
+  void socks5ProxyIsConfiguredOnSharedTransport() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.SOCKS5).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).singleElement().isInstanceOf(Socks5Proxy.class);
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType SOCKS5 with proxyAuthorization, authenticates with the SOCKS5 proxy using the username and password (RFC 1929), UTF-8 encoded like Basic credentials")
+  void socks5ProxySendsCredentials() throws Exception {
+    final ExecutorService socks5Executor = Executors.newSingleThreadExecutor();
+    try (var socks5Server = new ServerSocket(0, 1, InetAddress.getLoopbackAddress())) {
+      // Given
+      final CompletableFuture<String> sentCredentials = CompletableFuture.supplyAsync(() -> {
+        try (Socket socket = socks5Server.accept()) {
+          final var in = new DataInputStream(socket.getInputStream());
+          final var out = socket.getOutputStream();
+          in.readUnsignedByte(); // version
+          final byte[] methods = new byte[in.readUnsignedByte()];
+          in.readFully(methods);
+          if (!new String(methods, StandardCharsets.ISO_8859_1).contains("\u0002")) {
+            out.write(new byte[] { 0x05, (byte) 0xFF }); // no acceptable method
+            return "username/password not offered";
+          }
+          out.write(new byte[] { 0x05, 0x02 });
+          in.readUnsignedByte(); // sub-negotiation version
+          final byte[] user = new byte[in.readUnsignedByte()];
+          in.readFully(user);
+          final byte[] password = new byte[in.readUnsignedByte()];
+          in.readFully(password);
+          out.write(new byte[] { 0x01, 0x01 }); // failure, the request itself isn't needed
+          return new String(user, StandardCharsets.UTF_8) + "/" + new String(password, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+          throw new UncheckedIOException(e);
+        }
+      }, socks5Executor);
+      try (var client = factory.newBuilder()
+          .proxyType(ProxyType.SOCKS5)
+          .proxyAddress(new InetSocketAddress(InetAddress.getLoopbackAddress(), socks5Server.getLocalPort()))
+          .proxyAuthorization(basicCredentials("usér", "pa:ss"))
+          .tag(new RequestConfigBuilder().withRequestRetryBackoffLimit(0).build())
+          .build()) {
+        // When
+        client.sendAsync(client.newHttpRequestBuilder().uri("http://example.test/socks5").build(), String.class)
+            .exceptionally(t -> null);
+        // Then
+        assertThat(sentCredentials).succeedsWithin(10, TimeUnit.SECONDS).isEqualTo("usér/pa:ss");
+      }
+    } finally {
+      socks5Executor.shutdownNow();
+    }
+  }
+
+  @Test
+  @DisplayName("proxyAuthorization, registers the proxy credentials once on the transport shared by HTTP and WebSocket")
+  void proxyAuthenticationIsRegisteredOnSharedTransport() {
+    try (var client = factory.newBuilder()
+        .proxyAddress(PROXY_ADDRESS)
+        .proxyAuthorization(basicCredentials("user", "pass"))
+        .build()) {
+      final URI proxyUri = URI.create("http://" + PROXY_ORIGIN);
+      final var store = client.getJettyWs().getHttpClient().getAuthenticationStore();
+      final var authentication = store.findAuthentication("Basic", proxyUri, Authentication.ANY_REALM);
+      assertThat(authentication)
+          .as("the HTTP and WebSocket requests should be able to answer the proxy's 407")
+          .isNotNull();
+      store.removeAuthentication(authentication);
+      assertThat(store.findAuthentication("Basic", proxyUri, Authentication.ANY_REALM))
+          .as("the credentials should be registered once")
+          .isNull();
+    }
+  }
+
+  @Test
+  @DisplayName("proxyAuthorization with decodable Basic credentials, doesn't add a Proxy-Authorization request header, which HTTPS requests would carry through the tunnel")
+  void decodableProxyCredentialsAddNoProxyAuthorizationInterceptor() {
+    final var builder = factory.newBuilder()
+        .proxyAddress(PROXY_ADDRESS)
+        .proxyAuthorization(basicCredentials("user", "pa:ss"));
+    try (var ignored = builder.build()) {
+      assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
+    }
+  }
+
+  @Test
+  @DisplayName("proxyType DIRECT, leaves the shared transport unproxied even when an address is set")
+  void directProxyLeavesSharedTransportUnproxied() {
+    try (var client = factory.newBuilder().proxyType(ProxyType.DIRECT).proxyAddress(PROXY_ADDRESS).build()) {
+      assertThat(proxiesOf(client.getJettyWs().getHttpClient())).isEmpty();
+    }
+  }
+
+  private static List<ProxyConfiguration.Proxy> proxiesOf(HttpClient httpClient) {
+    return httpClient.getProxyConfiguration().getProxies();
   }
 }

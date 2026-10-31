@@ -25,7 +25,7 @@ public class SessionPersistenceBuilder extends SessionPersistenceFluent<SessionP
   }
 
   public SessionPersistence build() {
-    SessionPersistence buildable = new SessionPersistence(fluent.getAbsoluteTimeout(), fluent.buildCookieConfig(), fluent.getIdleTimeout(), fluent.getSessionName(), fluent.getType());
+    SessionPersistence buildable = new SessionPersistence(fluent.getAbsoluteTimeout(), fluent.buildCookieConfig(), fluent.getSessionName(), fluent.getType());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

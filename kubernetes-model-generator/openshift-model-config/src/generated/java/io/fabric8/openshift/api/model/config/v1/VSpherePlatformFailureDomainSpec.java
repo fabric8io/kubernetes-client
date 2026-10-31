@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,11 +29,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * VSpherePlatformFailureDomainSpec holds the region and zone failure domain and the vCenter topology of that failure domain.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
@@ -153,7 +153,7 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     }
 
     /**
-     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     * server is the fully-qualified domain name or the IP address of the vCenter server. This must match the server field of an entry in the vcenters list. The match is case-sensitive; the value must be specified exactly as it appears in the vcenters entry. The value must be between 1 and 255 characters long.
      */
     @JsonProperty("server")
     public String getServer() {
@@ -161,7 +161,7 @@ public class VSpherePlatformFailureDomainSpec implements Editable<VSpherePlatfor
     }
 
     /**
-     * server is the fully-qualified domain name or the IP address of the vCenter server.
+     * server is the fully-qualified domain name or the IP address of the vCenter server. This must match the server field of an entry in the vcenters list. The match is case-sensitive; the value must be specified exactly as it appears in the vcenters entry. The value must be between 1 and 255 characters long.
      */
     @JsonProperty("server")
     public void setServer(String server) {

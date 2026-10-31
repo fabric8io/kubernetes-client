@@ -29,6 +29,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   private ArrayList<DiskBuilder> diskSetup = new ArrayList<DiskBuilder>();
   private FencingBuilder fencing;
   private String hyperthreading;
+  private String management;
   private String name;
   private MachinePoolPlatformBuilder platform;
   private Long replicas;
@@ -147,6 +148,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
         this.withDiskSetup(instance.getDiskSetup());
         this.withFencing(instance.getFencing());
         this.withHyperthreading(instance.getHyperthreading());
+        this.withManagement(instance.getManagement());
         this.withName(instance.getName());
         this.withPlatform(instance.getPlatform());
         this.withReplicas(instance.getReplicas());
@@ -237,6 +239,9 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     if (!(Objects.equals(hyperthreading, that.hyperthreading))) {
       return false;
     }
+    if (!(Objects.equals(management, that.management))) {
+      return false;
+    }
     if (!(Objects.equals(name, that.name))) {
       return false;
     }
@@ -262,6 +267,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   
   public String getHyperthreading() {
     return this.hyperthreading;
+  }
+  
+  public String getManagement() {
+    return this.management;
   }
   
   public String getName() {
@@ -292,6 +301,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return this.hyperthreading != null;
   }
   
+  public boolean hasManagement() {
+    return this.management != null;
+  }
+  
   public boolean hasMatchingDiskSetup(Predicate<DiskBuilder> predicate) {
       for (DiskBuilder item : diskSetup) {
         if (predicate.test(item)) {
@@ -314,7 +327,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   }
   
   public int hashCode() {
-    return Objects.hash(architecture, diskSetup, fencing, hyperthreading, name, platform, replicas, additionalProperties);
+    return Objects.hash(architecture, diskSetup, fencing, hyperthreading, management, name, platform, replicas, additionalProperties);
   }
   
   public A removeAllFromDiskSetup(Collection<Disk> items) {
@@ -423,6 +436,11 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
         sb.append(hyperthreading);
         sb.append(",");
     }
+    if (!(management == null)) {
+        sb.append("management:");
+        sb.append(management);
+        sb.append(",");
+    }
     if (!(name == null)) {
         sb.append("name:");
         sb.append(name);
@@ -502,6 +520,11 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   
   public A withHyperthreading(String hyperthreading) {
     this.hyperthreading = hyperthreading;
+    return (A) this;
+  }
+  
+  public A withManagement(String management) {
+    this.management = management;
     return (A) this;
   }
   

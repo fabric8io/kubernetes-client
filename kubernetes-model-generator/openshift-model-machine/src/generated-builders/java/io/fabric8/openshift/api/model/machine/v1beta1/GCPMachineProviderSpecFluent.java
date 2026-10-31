@@ -48,6 +48,7 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
   private String onHostMaintenance;
   private Boolean preemptible;
   private String projectID;
+  private String provisioningModel;
   private String region;
   private ArrayList<ResourceManagerTagBuilder> resourceManagerTags = new ArrayList<ResourceManagerTagBuilder>();
   private String restartPolicy;
@@ -644,6 +645,7 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
         this.withOnHostMaintenance(instance.getOnHostMaintenance());
         this.withPreemptible(instance.getPreemptible());
         this.withProjectID(instance.getProjectID());
+        this.withProvisioningModel(instance.getProvisioningModel());
         this.withRegion(instance.getRegion());
         this.withResourceManagerTags(instance.getResourceManagerTags());
         this.withRestartPolicy(instance.getRestartPolicy());
@@ -980,6 +982,9 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
     if (!(Objects.equals(projectID, that.projectID))) {
       return false;
     }
+    if (!(Objects.equals(provisioningModel, that.provisioningModel))) {
+      return false;
+    }
     if (!(Objects.equals(region, that.region))) {
       return false;
     }
@@ -1089,6 +1094,10 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
   
   public String getProjectID() {
     return this.projectID;
+  }
+  
+  public String getProvisioningModel() {
+    return this.provisioningModel;
   }
   
   public String getRegion() {
@@ -1259,6 +1268,10 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
     return this.projectID != null;
   }
   
+  public boolean hasProvisioningModel() {
+    return this.provisioningModel != null;
+  }
+  
   public boolean hasRegion() {
     return this.region != null;
   }
@@ -1296,7 +1309,7 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
   }
   
   public int hashCode() {
-    return Objects.hash(apiVersion, canIPForward, confidentialCompute, credentialsSecret, deletionProtection, disks, gcpMetadata, gpus, kind, labels, machineType, metadata, networkInterfaces, onHostMaintenance, preemptible, projectID, region, resourceManagerTags, restartPolicy, serviceAccounts, shieldedInstanceConfig, tags, targetPools, userDataSecret, zone, additionalProperties);
+    return Objects.hash(apiVersion, canIPForward, confidentialCompute, credentialsSecret, deletionProtection, disks, gcpMetadata, gpus, kind, labels, machineType, metadata, networkInterfaces, onHostMaintenance, preemptible, projectID, provisioningModel, region, resourceManagerTags, restartPolicy, serviceAccounts, shieldedInstanceConfig, tags, targetPools, userDataSecret, zone, additionalProperties);
   }
   
   public A removeAllFromDisks(Collection<GCPDisk> items) {
@@ -1840,6 +1853,11 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
         sb.append(projectID);
         sb.append(",");
     }
+    if (!(provisioningModel == null)) {
+        sb.append("provisioningModel:");
+        sb.append(provisioningModel);
+        sb.append(",");
+    }
     if (!(region == null)) {
         sb.append("region:");
         sb.append(region);
@@ -2145,6 +2163,11 @@ public class GCPMachineProviderSpecFluent<A extends io.fabric8.openshift.api.mod
   
   public A withProjectID(String projectID) {
     this.projectID = projectID;
+    return (A) this;
+  }
+  
+  public A withProvisioningModel(String provisioningModel) {
+    this.provisioningModel = provisioningModel;
     return (A) this;
   }
   

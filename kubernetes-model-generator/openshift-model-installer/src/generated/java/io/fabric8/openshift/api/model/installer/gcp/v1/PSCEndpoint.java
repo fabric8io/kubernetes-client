@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,16 +30,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PSCEndpoint contains the information to describe a Private Service Connect endpoint.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterUseOnly",
-    "name",
-    "region"
+    "name"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,8 +70,6 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     private Boolean clusterUseOnly;
     @JsonProperty("name")
     private String name;
-    @JsonProperty("region")
-    private String region;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +79,10 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     public PSCEndpoint() {
     }
 
-    public PSCEndpoint(Boolean clusterUseOnly, String name, String region) {
+    public PSCEndpoint(Boolean clusterUseOnly, String name) {
         super();
         this.clusterUseOnly = clusterUseOnly;
         this.name = name;
-        this.region = region;
     }
 
     /**
@@ -119,22 +115,6 @@ public class PSCEndpoint implements Editable<PSCEndpointBuilder>, KubernetesReso
     @JsonProperty("name")
     public void setName(String name) {
         this.name = name;
-    }
-
-    /**
-     * Region is the region where the endpoint resides. When the region is empty, the location is assumed to be global.
-     */
-    @JsonProperty("region")
-    public String getRegion() {
-        return region;
-    }
-
-    /**
-     * Region is the region where the endpoint resides. When the region is empty, the location is assumed to be global.
-     */
-    @JsonProperty("region")
-    public void setRegion(String region) {
-        this.region = region;
     }
 
     @JsonIgnore

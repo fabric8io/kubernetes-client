@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PersistentVolumeClaimStatus is the current status of a persistent volume claim.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "accessModes",
@@ -31,6 +31,7 @@ import lombok.experimental.Accessors;
     "capacity",
     "conditions",
     "currentVolumeAttributesClassName",
+    "healthStatus",
     "modifyVolumeStatus",
     "phase"
 })
@@ -62,6 +63,8 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     private List<PersistentVolumeClaimCondition> conditions = new ArrayList<>();
     @JsonProperty("currentVolumeAttributesClassName")
     private String currentVolumeAttributesClassName;
+    @JsonProperty("healthStatus")
+    private VolumeHealthStatus healthStatus;
     @JsonProperty("modifyVolumeStatus")
     private ModifyVolumeStatus modifyVolumeStatus;
     @JsonProperty("phase")
@@ -75,7 +78,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     public PersistentVolumeClaimStatus() {
     }
 
-    public PersistentVolumeClaimStatus(List<String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, Quantity> allocatedResources, Map<String, Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, String currentVolumeAttributesClassName, ModifyVolumeStatus modifyVolumeStatus, String phase) {
+    public PersistentVolumeClaimStatus(List<String> accessModes, Map<String, String> allocatedResourceStatuses, Map<String, Quantity> allocatedResources, Map<String, Quantity> capacity, List<PersistentVolumeClaimCondition> conditions, String currentVolumeAttributesClassName, VolumeHealthStatus healthStatus, ModifyVolumeStatus modifyVolumeStatus, String phase) {
         super();
         this.accessModes = accessModes;
         this.allocatedResourceStatuses = allocatedResourceStatuses;
@@ -83,6 +86,7 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
         this.capacity = capacity;
         this.conditions = conditions;
         this.currentVolumeAttributesClassName = currentVolumeAttributesClassName;
+        this.healthStatus = healthStatus;
         this.modifyVolumeStatus = modifyVolumeStatus;
         this.phase = phase;
     }
@@ -186,6 +190,22 @@ public class PersistentVolumeClaimStatus implements Editable<PersistentVolumeCla
     @JsonProperty("currentVolumeAttributesClassName")
     public void setCurrentVolumeAttributesClassName(String currentVolumeAttributesClassName) {
         this.currentVolumeAttributesClassName = currentVolumeAttributesClassName;
+    }
+
+    /**
+     * PersistentVolumeClaimStatus is the current status of a persistent volume claim.
+     */
+    @JsonProperty("healthStatus")
+    public VolumeHealthStatus getHealthStatus() {
+        return healthStatus;
+    }
+
+    /**
+     * PersistentVolumeClaimStatus is the current status of a persistent volume claim.
+     */
+    @JsonProperty("healthStatus")
+    public void setHealthStatus(VolumeHealthStatus healthStatus) {
+        this.healthStatus = healthStatus;
     }
 
     /**

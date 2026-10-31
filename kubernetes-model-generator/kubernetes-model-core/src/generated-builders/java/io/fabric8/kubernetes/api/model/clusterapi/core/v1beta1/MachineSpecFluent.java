@@ -37,6 +37,7 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
   private Duration nodeVolumeDetachTimeout;
   private String providerID;
   private ArrayList<MachineReadinessGateBuilder> readinessGates = new ArrayList<MachineReadinessGateBuilder>();
+  private ArrayList<MachineTaintBuilder> taints = new ArrayList<MachineTaintBuilder>();
   private String version;
 
   public MachineSpecFluent() {
@@ -58,6 +59,18 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return (A) this;
   }
   
+  public A addAllToTaints(Collection<MachineTaint> items) {
+    if (this.taints == null) {
+      this.taints = new ArrayList();
+    }
+    for (MachineTaint item : items) {
+        MachineTaintBuilder builder = new MachineTaintBuilder(item);
+        _visitables.get("taints").add(builder);
+        this.taints.add(builder);
+    }
+    return (A) this;
+  }
+  
   public ReadinessGatesNested<A> addNewReadinessGate() {
     return new ReadinessGatesNested(-1, null);
   }
@@ -68,6 +81,18 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
   
   public ReadinessGatesNested<A> addNewReadinessGateLike(MachineReadinessGate item) {
     return new ReadinessGatesNested(-1, item);
+  }
+  
+  public TaintsNested<A> addNewTaint() {
+    return new TaintsNested(-1, null);
+  }
+  
+  public A addNewTaint(String effect,String key,String propagation,String value) {
+    return (A) this.addToTaints(new MachineTaint(effect, key, propagation, value));
+  }
+  
+  public TaintsNested<A> addNewTaintLike(MachineTaint item) {
+    return new TaintsNested(-1, item);
   }
   
   public A addToAdditionalProperties(Map<String,Object> map) {
@@ -117,12 +142,43 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return (A) this;
   }
   
+  public A addToTaints(MachineTaint... items) {
+    if (this.taints == null) {
+      this.taints = new ArrayList();
+    }
+    for (MachineTaint item : items) {
+        MachineTaintBuilder builder = new MachineTaintBuilder(item);
+        _visitables.get("taints").add(builder);
+        this.taints.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToTaints(int index,MachineTaint item) {
+    if (this.taints == null) {
+      this.taints = new ArrayList();
+    }
+    MachineTaintBuilder builder = new MachineTaintBuilder(item);
+    if (index < 0 || index >= taints.size()) {
+        _visitables.get("taints").add(builder);
+        taints.add(builder);
+    } else {
+        _visitables.get("taints").add(builder);
+        taints.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public Bootstrap buildBootstrap() {
     return this.bootstrap != null ? this.bootstrap.build() : null;
   }
   
   public MachineReadinessGate buildFirstReadinessGate() {
     return this.readinessGates.get(0).build();
+  }
+  
+  public MachineTaint buildFirstTaint() {
+    return this.taints.get(0).build();
   }
   
   public ObjectReference buildInfrastructureRef() {
@@ -133,8 +189,21 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return this.readinessGates.get(readinessGates.size() - 1).build();
   }
   
+  public MachineTaint buildLastTaint() {
+    return this.taints.get(taints.size() - 1).build();
+  }
+  
   public MachineReadinessGate buildMatchingReadinessGate(Predicate<MachineReadinessGateBuilder> predicate) {
       for (MachineReadinessGateBuilder item : readinessGates) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public MachineTaint buildMatchingTaint(Predicate<MachineTaintBuilder> predicate) {
+      for (MachineTaintBuilder item : taints) {
         if (predicate.test(item)) {
           return item.build();
         }
@@ -150,6 +219,14 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return this.readinessGates != null ? build(readinessGates) : null;
   }
   
+  public MachineTaint buildTaint(int index) {
+    return this.taints.get(index).build();
+  }
+  
+  public List<MachineTaint> buildTaints() {
+    return this.taints != null ? build(taints) : null;
+  }
+  
   protected void copyInstance(MachineSpec instance) {
     instance = instance != null ? instance : new MachineSpec();
     if (instance != null) {
@@ -162,6 +239,7 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
         this.withNodeVolumeDetachTimeout(instance.getNodeVolumeDetachTimeout());
         this.withProviderID(instance.getProviderID());
         this.withReadinessGates(instance.getReadinessGates());
+        this.withTaints(instance.getTaints());
         this.withVersion(instance.getVersion());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -178,6 +256,13 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return this.setNewReadinessGateLike(0, this.buildReadinessGate(0));
   }
   
+  public TaintsNested<A> editFirstTaint() {
+    if (taints.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "taints"));
+    }
+    return this.setNewTaintLike(0, this.buildTaint(0));
+  }
+  
   public InfrastructureRefNested<A> editInfrastructureRef() {
     return this.withNewInfrastructureRefLike(Optional.ofNullable(this.buildInfrastructureRef()).orElse(null));
   }
@@ -188,6 +273,14 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "readinessGates"));
     }
     return this.setNewReadinessGateLike(index, this.buildReadinessGate(index));
+  }
+  
+  public TaintsNested<A> editLastTaint() {
+    int index = taints.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "taints"));
+    }
+    return this.setNewTaintLike(index, this.buildTaint(index));
   }
   
   public ReadinessGatesNested<A> editMatchingReadinessGate(Predicate<MachineReadinessGateBuilder> predicate) {
@@ -202,6 +295,20 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
       throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "readinessGates"));
     }
     return this.setNewReadinessGateLike(index, this.buildReadinessGate(index));
+  }
+  
+  public TaintsNested<A> editMatchingTaint(Predicate<MachineTaintBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < taints.size();i++) {
+      if (predicate.test(taints.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "taints"));
+    }
+    return this.setNewTaintLike(index, this.buildTaint(index));
   }
   
   public BootstrapNested<A> editOrNewBootstrap() {
@@ -225,6 +332,13 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "readinessGates"));
     }
     return this.setNewReadinessGateLike(index, this.buildReadinessGate(index));
+  }
+  
+  public TaintsNested<A> editTaint(int index) {
+    if (taints.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "taints"));
+    }
+    return this.setNewTaintLike(index, this.buildTaint(index));
   }
   
   public boolean equals(Object o) {
@@ -263,6 +377,9 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
       return false;
     }
     if (!(Objects.equals(readinessGates, that.readinessGates))) {
+      return false;
+    }
+    if (!(Objects.equals(taints, that.taints))) {
       return false;
     }
     if (!(Objects.equals(version, that.version))) {
@@ -335,6 +452,15 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
       return false;
   }
   
+  public boolean hasMatchingTaint(Predicate<MachineTaintBuilder> predicate) {
+      for (MachineTaintBuilder item : taints) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasNodeDeletionTimeout() {
     return this.nodeDeletionTimeout != null;
   }
@@ -355,12 +481,16 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return this.readinessGates != null && !(this.readinessGates.isEmpty());
   }
   
+  public boolean hasTaints() {
+    return this.taints != null && !(this.taints.isEmpty());
+  }
+  
   public boolean hasVersion() {
     return this.version != null;
   }
   
   public int hashCode() {
-    return Objects.hash(bootstrap, clusterName, failureDomain, infrastructureRef, nodeDeletionTimeout, nodeDrainTimeout, nodeVolumeDetachTimeout, providerID, readinessGates, version, additionalProperties);
+    return Objects.hash(bootstrap, clusterName, failureDomain, infrastructureRef, nodeDeletionTimeout, nodeDrainTimeout, nodeVolumeDetachTimeout, providerID, readinessGates, taints, version, additionalProperties);
   }
   
   public A removeAllFromReadinessGates(Collection<MachineReadinessGate> items) {
@@ -371,6 +501,18 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
         MachineReadinessGateBuilder builder = new MachineReadinessGateBuilder(item);
         _visitables.get("readinessGates").remove(builder);
         this.readinessGates.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromTaints(Collection<MachineTaint> items) {
+    if (this.taints == null) {
+      return (A) this;
+    }
+    for (MachineTaint item : items) {
+        MachineTaintBuilder builder = new MachineTaintBuilder(item);
+        _visitables.get("taints").remove(builder);
+        this.taints.remove(builder);
     }
     return (A) this;
   }
@@ -411,6 +553,18 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return (A) this;
   }
   
+  public A removeFromTaints(MachineTaint... items) {
+    if (this.taints == null) {
+      return (A) this;
+    }
+    for (MachineTaint item : items) {
+        MachineTaintBuilder builder = new MachineTaintBuilder(item);
+        _visitables.get("taints").remove(builder);
+        this.taints.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeMatchingFromReadinessGates(Predicate<MachineReadinessGateBuilder> predicate) {
     if (readinessGates == null) {
       return (A) this;
@@ -427,8 +581,28 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return (A) this;
   }
   
+  public A removeMatchingFromTaints(Predicate<MachineTaintBuilder> predicate) {
+    if (taints == null) {
+      return (A) this;
+    }
+    Iterator<MachineTaintBuilder> each = taints.iterator();
+    List visitables = _visitables.get("taints");
+    while (each.hasNext()) {
+        MachineTaintBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
   public ReadinessGatesNested<A> setNewReadinessGateLike(int index,MachineReadinessGate item) {
     return new ReadinessGatesNested(index, item);
+  }
+  
+  public TaintsNested<A> setNewTaintLike(int index,MachineTaint item) {
+    return new TaintsNested(index, item);
   }
   
   public A setToReadinessGates(int index,MachineReadinessGate item) {
@@ -442,6 +616,21 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     } else {
         _visitables.get("readinessGates").add(builder);
         readinessGates.set(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A setToTaints(int index,MachineTaint item) {
+    if (this.taints == null) {
+      this.taints = new ArrayList();
+    }
+    MachineTaintBuilder builder = new MachineTaintBuilder(item);
+    if (index < 0 || index >= taints.size()) {
+        _visitables.get("taints").add(builder);
+        taints.add(builder);
+    } else {
+        _visitables.get("taints").add(builder);
+        taints.set(index, builder);
     }
     return (A) this;
   }
@@ -492,6 +681,11 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     if (!(readinessGates == null) && !(readinessGates.isEmpty())) {
         sb.append("readinessGates:");
         sb.append(readinessGates);
+        sb.append(",");
+    }
+    if (!(taints == null) && !(taints.isEmpty())) {
+        sb.append("taints:");
+        sb.append(taints);
         sb.append(",");
     }
     if (!(version == null)) {
@@ -614,6 +808,34 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     return (A) this;
   }
   
+  public A withTaints(List<MachineTaint> taints) {
+    if (this.taints != null) {
+      this._visitables.get("taints").clear();
+    }
+    if (taints != null) {
+        this.taints = new ArrayList();
+        for (MachineTaint item : taints) {
+          this.addToTaints(item);
+        }
+    } else {
+      this.taints = null;
+    }
+    return (A) this;
+  }
+  
+  public A withTaints(MachineTaint... taints) {
+    if (this.taints != null) {
+        this.taints.clear();
+        _visitables.remove("taints");
+    }
+    if (taints != null) {
+      for (MachineTaint item : taints) {
+        this.addToTaints(item);
+      }
+    }
+    return (A) this;
+  }
+  
   public A withVersion(String version) {
     this.version = version;
     return (A) this;
@@ -667,6 +889,25 @@ public class MachineSpecFluent<A extends io.fabric8.kubernetes.api.model.cluster
     }
     
     public N endReadinessGate() {
+      return and();
+    }
+    
+  }
+  public class TaintsNested<N> extends MachineTaintFluent<TaintsNested<N>> implements Nested<N>{
+  
+    MachineTaintBuilder builder;
+    int index;
+  
+    TaintsNested(int index,MachineTaint item) {
+      this.index = index;
+      this.builder = new MachineTaintBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineSpecFluent.this.setToTaints(index, builder.build());
+    }
+    
+    public N endTaint() {
       return and();
     }
     

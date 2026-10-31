@@ -57,7 +57,7 @@
     <dependency>
       <groupId>io.github.java-diff-utils</groupId>
       <artifactId>java-diff-utils</artifactId>
-      <version>4.17</version>
+      <version>4.18</version>
     </dependency>
     <dependency>
       <groupId>io.sundr</groupId>
@@ -158,7 +158,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>templating-maven-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>3.1.1</version>
         <executions>
           <execution>
             <id>filtering-java-templates</id>

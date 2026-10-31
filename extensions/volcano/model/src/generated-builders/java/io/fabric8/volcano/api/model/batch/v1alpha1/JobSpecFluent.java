@@ -16,6 +16,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -28,6 +29,7 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
   private Integer maxRetry;
   private Integer minAvailable;
   private Integer minSuccess;
+  private NetworkTopologySpecBuilder networkTopology;
   private Map<String,List<String>> plugins;
   private ArrayList<LifecyclePolicyBuilder> policies = new ArrayList<LifecyclePolicyBuilder>();
   private String priorityClassName;
@@ -277,6 +279,10 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
       return null;
   }
   
+  public NetworkTopologySpec buildNetworkTopology() {
+    return this.networkTopology != null ? this.networkTopology.build() : null;
+  }
+  
   public List<LifecyclePolicy> buildPolicies() {
     return this.policies != null ? build(policies) : null;
   }
@@ -307,6 +313,7 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
         this.withMaxRetry(instance.getMaxRetry());
         this.withMinAvailable(instance.getMinAvailable());
         this.withMinSuccess(instance.getMinSuccess());
+        this.withNetworkTopology(instance.getNetworkTopology());
         this.withPlugins(instance.getPlugins());
         this.withPolicies(instance.getPolicies());
         this.withPriorityClassName(instance.getPriorityClassName());
@@ -407,6 +414,18 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
     return this.setNewVolumeLike(index, this.buildVolume(index));
   }
   
+  public NetworkTopologyNested<A> editNetworkTopology() {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(null));
+  }
+  
+  public NetworkTopologyNested<A> editOrNewNetworkTopology() {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(new NetworkTopologySpecBuilder().build()));
+  }
+  
+  public NetworkTopologyNested<A> editOrNewNetworkTopologyLike(NetworkTopologySpec item) {
+    return this.withNewNetworkTopologyLike(Optional.ofNullable(this.buildNetworkTopology()).orElse(item));
+  }
+  
   public PoliciesNested<A> editPolicy(int index) {
     if (policies.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "policies"));
@@ -446,6 +465,9 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
       return false;
     }
     if (!(Objects.equals(minSuccess, that.minSuccess))) {
+      return false;
+    }
+    if (!(Objects.equals(networkTopology, that.networkTopology))) {
       return false;
     }
     if (!(Objects.equals(plugins, that.plugins))) {
@@ -564,6 +586,10 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
     return this.minSuccess != null;
   }
   
+  public boolean hasNetworkTopology() {
+    return this.networkTopology != null;
+  }
+  
   public boolean hasPlugins() {
     return this.plugins != null;
   }
@@ -601,7 +627,7 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
   }
   
   public int hashCode() {
-    return Objects.hash(maxRetry, minAvailable, minSuccess, plugins, policies, priorityClassName, queue, runningEstimate, schedulerName, tasks, ttlSecondsAfterFinished, volumes, additionalProperties);
+    return Objects.hash(maxRetry, minAvailable, minSuccess, networkTopology, plugins, policies, priorityClassName, queue, runningEstimate, schedulerName, tasks, ttlSecondsAfterFinished, volumes, additionalProperties);
   }
   
   public A removeAllFromPolicies(Collection<LifecyclePolicy> items) {
@@ -847,6 +873,11 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
         sb.append(minSuccess);
         sb.append(",");
     }
+    if (!(networkTopology == null)) {
+        sb.append("networkTopology:");
+        sb.append(networkTopology);
+        sb.append(",");
+    }
     if (!(plugins == null) && !(plugins.isEmpty())) {
         sb.append("plugins:");
         sb.append(plugins);
@@ -922,6 +953,30 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
   public A withMinSuccess(Integer minSuccess) {
     this.minSuccess = minSuccess;
     return (A) this;
+  }
+  
+  public A withNetworkTopology(NetworkTopologySpec networkTopology) {
+    this._visitables.remove("networkTopology");
+    if (networkTopology != null) {
+        this.networkTopology = new NetworkTopologySpecBuilder(networkTopology);
+        this._visitables.get("networkTopology").add(this.networkTopology);
+    } else {
+        this.networkTopology = null;
+        this._visitables.get("networkTopology").remove(this.networkTopology);
+    }
+    return (A) this;
+  }
+  
+  public NetworkTopologyNested<A> withNewNetworkTopology() {
+    return new NetworkTopologyNested(null);
+  }
+  
+  public A withNewNetworkTopology(Integer highestTierAllowed,String highestTierName,String mode) {
+    return (A) this.withNetworkTopology(new NetworkTopologySpec(highestTierAllowed, highestTierName, mode));
+  }
+  
+  public NetworkTopologyNested<A> withNewNetworkTopologyLike(NetworkTopologySpec item) {
+    return new NetworkTopologyNested(item);
   }
   
   public <K,V>A withPlugins(Map<String,List<String>> plugins) {
@@ -1040,6 +1095,23 @@ public class JobSpecFluent<A extends io.fabric8.volcano.api.model.batch.v1alpha1
       }
     }
     return (A) this;
+  }
+  public class NetworkTopologyNested<N> extends NetworkTopologySpecFluent<NetworkTopologyNested<N>> implements Nested<N>{
+  
+    NetworkTopologySpecBuilder builder;
+  
+    NetworkTopologyNested(NetworkTopologySpec item) {
+      this.builder = new NetworkTopologySpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) JobSpecFluent.this.withNetworkTopology(builder.build());
+    }
+    
+    public N endNetworkTopology() {
+      return and();
+    }
+    
   }
   public class PoliciesNested<N> extends LifecyclePolicyFluent<PoliciesNested<N>> implements Nested<N>{
   

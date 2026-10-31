@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
+import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
 import io.fabric8.kubernetes.api.model.EnvVar;
@@ -32,13 +32,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ConditionalUpdateRisk represents a reason and cluster-state for not recommending a conditional update.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "conditions",
     "matchingRules",
     "message",
     "name",
@@ -69,6 +71,9 @@ import lombok.experimental.Accessors;
 public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuilder>, KubernetesResource
 {
 
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("matchingRules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ClusterCondition> matchingRules = new ArrayList<>();
@@ -87,12 +92,30 @@ public class ConditionalUpdateRisk implements Editable<ConditionalUpdateRiskBuil
     public ConditionalUpdateRisk() {
     }
 
-    public ConditionalUpdateRisk(List<ClusterCondition> matchingRules, String message, String name, String url) {
+    public ConditionalUpdateRisk(List<Condition> conditions, List<ClusterCondition> matchingRules, String message, String name, String url) {
         super();
+        this.conditions = conditions;
         this.matchingRules = matchingRules;
         this.message = message;
         this.name = name;
         this.url = url;
+    }
+
+    /**
+     * conditions represents the observations of the conditional update risk's current status. Known types are: &#42; Applies, for whether the risk applies to the current cluster. The condition's types in the list must be unique. conditions must not contain more than one entry.
+     */
+    @JsonProperty("conditions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<Condition> getConditions() {
+        return conditions;
+    }
+
+    /**
+     * conditions represents the observations of the conditional update risk's current status. Known types are: &#42; Applies, for whether the risk applies to the current cluster. The condition's types in the list must be unique. conditions must not contain more than one entry.
+     */
+    @JsonProperty("conditions")
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
     }
 
     /**

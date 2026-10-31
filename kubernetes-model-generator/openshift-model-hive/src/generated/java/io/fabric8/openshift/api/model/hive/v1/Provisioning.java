@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,13 +32,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Provisioning contains settings used only for initial cluster provisioning.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "customizationRef",
     "imageSetRef",
     "installConfigSecretRef",
     "installerEnv",
@@ -75,6 +76,8 @@ import lombok.experimental.Accessors;
 public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesResource
 {
 
+    @JsonProperty("customizationRef")
+    private LocalObjectReference customizationRef;
     @JsonProperty("imageSetRef")
     private ClusterImageSetReference imageSetRef;
     @JsonProperty("installConfigSecretRef")
@@ -104,8 +107,9 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
     public Provisioning() {
     }
 
-    public Provisioning(ClusterImageSetReference imageSetRef, LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, LocalObjectReference manifestsConfigMapRef, LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, LocalObjectReference sshPrivateKeySecretRef) {
+    public Provisioning(LocalObjectReference customizationRef, ClusterImageSetReference imageSetRef, LocalObjectReference installConfigSecretRef, List<EnvVar> installerEnv, String installerImageOverride, LocalObjectReference manifestsConfigMapRef, LocalObjectReference manifestsSecretRef, String releaseImage, List<String> sshKnownHosts, LocalObjectReference sshPrivateKeySecretRef) {
         super();
+        this.customizationRef = customizationRef;
         this.imageSetRef = imageSetRef;
         this.installConfigSecretRef = installConfigSecretRef;
         this.installerEnv = installerEnv;
@@ -115,6 +119,22 @@ public class Provisioning implements Editable<ProvisioningBuilder>, KubernetesRe
         this.releaseImage = releaseImage;
         this.sshKnownHosts = sshKnownHosts;
         this.sshPrivateKeySecretRef = sshPrivateKeySecretRef;
+    }
+
+    /**
+     * Provisioning contains settings used only for initial cluster provisioning.
+     */
+    @JsonProperty("customizationRef")
+    public LocalObjectReference getCustomizationRef() {
+        return customizationRef;
+    }
+
+    /**
+     * Provisioning contains settings used only for initial cluster provisioning.
+     */
+    @JsonProperty("customizationRef")
+    public void setCustomizationRef(LocalObjectReference customizationRef) {
+        this.customizationRef = customizationRef;
     }
 
     /**

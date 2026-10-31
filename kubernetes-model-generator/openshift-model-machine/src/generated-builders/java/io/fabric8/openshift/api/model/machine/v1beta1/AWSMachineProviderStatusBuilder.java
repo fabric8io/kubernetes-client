@@ -25,7 +25,7 @@ public class AWSMachineProviderStatusBuilder extends AWSMachineProviderStatusFlu
   }
 
   public AWSMachineProviderStatus build() {
-    AWSMachineProviderStatus buildable = new AWSMachineProviderStatus(fluent.getApiVersion(), fluent.getConditions(), fluent.getInstanceId(), fluent.getInstanceState(), fluent.getKind());
+    AWSMachineProviderStatus buildable = new AWSMachineProviderStatus(fluent.getApiVersion(), fluent.getConditions(), fluent.buildDedicatedHost(), fluent.getInstanceId(), fluent.getInstanceState(), fluent.getKind());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -1,6 +1,7 @@
 package io.fabric8.openshift.api.model.machine.v1beta1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -8,6 +9,7 @@ import java.lang.SuppressWarnings;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Generated
@@ -17,6 +19,7 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
 
   private Map<String,Object> additionalProperties;
   private String availabilityZone;
+  private HostPlacementBuilder host;
   private String region;
   private String tenancy;
 
@@ -47,14 +50,31 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
     return (A) this;
   }
   
+  public HostPlacement buildHost() {
+    return this.host != null ? this.host.build() : null;
+  }
+  
   protected void copyInstance(Placement instance) {
     instance = instance != null ? instance : new Placement();
     if (instance != null) {
         this.withAvailabilityZone(instance.getAvailabilityZone());
+        this.withHost(instance.getHost());
         this.withRegion(instance.getRegion());
         this.withTenancy(instance.getTenancy());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public HostNested<A> editHost() {
+    return this.withNewHostLike(Optional.ofNullable(this.buildHost()).orElse(null));
+  }
+  
+  public HostNested<A> editOrNewHost() {
+    return this.withNewHostLike(Optional.ofNullable(this.buildHost()).orElse(new HostPlacementBuilder().build()));
+  }
+  
+  public HostNested<A> editOrNewHostLike(HostPlacement item) {
+    return this.withNewHostLike(Optional.ofNullable(this.buildHost()).orElse(item));
   }
   
   public boolean equals(Object o) {
@@ -69,6 +89,9 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
     }
     PlacementFluent that = (PlacementFluent) o;
     if (!(Objects.equals(availabilityZone, that.availabilityZone))) {
+      return false;
+    }
+    if (!(Objects.equals(host, that.host))) {
       return false;
     }
     if (!(Objects.equals(region, that.region))) {
@@ -107,6 +130,10 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
     return this.availabilityZone != null;
   }
   
+  public boolean hasHost() {
+    return this.host != null;
+  }
+  
   public boolean hasRegion() {
     return this.region != null;
   }
@@ -116,7 +143,7 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
   }
   
   public int hashCode() {
-    return Objects.hash(availabilityZone, region, tenancy, additionalProperties);
+    return Objects.hash(availabilityZone, host, region, tenancy, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -151,6 +178,11 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
         sb.append(availabilityZone);
         sb.append(",");
     }
+    if (!(host == null)) {
+        sb.append("host:");
+        sb.append(host);
+        sb.append(",");
+    }
     if (!(region == null)) {
         sb.append("region:");
         sb.append(region);
@@ -183,6 +215,26 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
     return (A) this;
   }
   
+  public A withHost(HostPlacement host) {
+    this._visitables.remove("host");
+    if (host != null) {
+        this.host = new HostPlacementBuilder(host);
+        this._visitables.get("host").add(this.host);
+    } else {
+        this.host = null;
+        this._visitables.get("host").remove(this.host);
+    }
+    return (A) this;
+  }
+  
+  public HostNested<A> withNewHost() {
+    return new HostNested(null);
+  }
+  
+  public HostNested<A> withNewHostLike(HostPlacement item) {
+    return new HostNested(item);
+  }
+  
   public A withRegion(String region) {
     this.region = region;
     return (A) this;
@@ -192,5 +244,21 @@ public class PlacementFluent<A extends io.fabric8.openshift.api.model.machine.v1
     this.tenancy = tenancy;
     return (A) this;
   }
+  public class HostNested<N> extends HostPlacementFluent<HostNested<N>> implements Nested<N>{
   
+    HostPlacementBuilder builder;
+  
+    HostNested(HostPlacement item) {
+      this.builder = new HostPlacementBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PlacementFluent.this.withHost(builder.build());
+    }
+    
+    public N endHost() {
+      return and();
+    }
+    
+  }
 }

@@ -47,6 +47,18 @@
       <groupId>io.fabric8</groupId>
       <artifactId>openshift-model</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-installer</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-machine</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.fabric8</groupId>
+      <artifactId>openshift-model-operator</artifactId>
+    </dependency>
   </dependencies>
 
   <profiles>
@@ -72,8 +84,8 @@
                   <com.github.openshift.hive.apis.hive.v1.ibmcloud>io.fabric8.openshift.api.model.hive.ibmcloud.v1</com.github.openshift.hive.apis.hive.v1.ibmcloud>
                   <com.github.openshift.hive.apis.hive.v1.metricsconfig>io.fabric8.openshift.api.model.hive.metricsconfig.v1</com.github.openshift.hive.apis.hive.v1.metricsconfig>
                   <com.github.openshift.hive.apis.hive.v1.none>io.fabric8.openshift.api.model.hive.none.v1</com.github.openshift.hive.apis.hive.v1.none>
+                  <com.github.openshift.hive.apis.hive.v1.nutanix>io.fabric8.openshift.api.model.hive.nutanix.v1</com.github.openshift.hive.apis.hive.v1.nutanix>
                   <com.github.openshift.hive.apis.hive.v1.openstack>io.fabric8.openshift.api.model.hive.openstack.v1</com.github.openshift.hive.apis.hive.v1.openstack>
-                  <com.github.openshift.hive.apis.hive.v1.ovirt>io.fabric8.openshift.api.model.hive.ovirt.v1</com.github.openshift.hive.apis.hive.v1.ovirt>
                   <com.github.openshift.hive.apis.hive.v1.vsphere>io.fabric8.openshift.api.model.hive.vsphere.v1</com.github.openshift.hive.apis.hive.v1.vsphere>
                 </packageMappings>
                 <includeGenerationRegexes>

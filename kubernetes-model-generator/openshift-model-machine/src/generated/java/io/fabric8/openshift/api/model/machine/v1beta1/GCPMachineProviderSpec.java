@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -36,11 +35,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * GCPMachineProviderSpec is the type that will be embedded in a Machine.Spec.ProviderSpec field for an GCP virtual machine. It is used by the GCP machine actuator to create a single Machine. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
@@ -59,6 +59,7 @@ import lombok.experimental.Accessors;
     "onHostMaintenance",
     "preemptible",
     "projectID",
+    "provisioningModel",
     "region",
     "resourceManagerTags",
     "restartPolicy",
@@ -133,6 +134,8 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     private Boolean preemptible;
     @JsonProperty("projectID")
     private String projectID;
+    @JsonProperty("provisioningModel")
+    private String provisioningModel;
     @JsonProperty("region")
     private String region;
     @JsonProperty("resourceManagerTags")
@@ -164,7 +167,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     public GCPMachineProviderSpec() {
     }
 
-    public GCPMachineProviderSpec(String apiVersion, Boolean canIPForward, String confidentialCompute, LocalObjectReference credentialsSecret, Boolean deletionProtection, List<GCPDisk> disks, List<GCPMetadata> gcpMetadata, List<GCPGPUConfig> gpus, String kind, Map<String, String> labels, String machineType, ObjectMeta metadata, List<GCPNetworkInterface> networkInterfaces, String onHostMaintenance, Boolean preemptible, String projectID, String region, List<ResourceManagerTag> resourceManagerTags, String restartPolicy, List<GCPServiceAccount> serviceAccounts, GCPShieldedInstanceConfig shieldedInstanceConfig, List<String> tags, List<String> targetPools, LocalObjectReference userDataSecret, String zone) {
+    public GCPMachineProviderSpec(String apiVersion, Boolean canIPForward, String confidentialCompute, LocalObjectReference credentialsSecret, Boolean deletionProtection, List<GCPDisk> disks, List<GCPMetadata> gcpMetadata, List<GCPGPUConfig> gpus, String kind, Map<String, String> labels, String machineType, ObjectMeta metadata, List<GCPNetworkInterface> networkInterfaces, String onHostMaintenance, Boolean preemptible, String projectID, String provisioningModel, String region, List<ResourceManagerTag> resourceManagerTags, String restartPolicy, List<GCPServiceAccount> serviceAccounts, GCPShieldedInstanceConfig shieldedInstanceConfig, List<String> tags, List<String> targetPools, LocalObjectReference userDataSecret, String zone) {
         super();
         this.apiVersion = apiVersion;
         this.canIPForward = canIPForward;
@@ -182,6 +185,7 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
         this.onHostMaintenance = onHostMaintenance;
         this.preemptible = preemptible;
         this.projectID = projectID;
+        this.provisioningModel = provisioningModel;
         this.region = region;
         this.resourceManagerTags = resourceManagerTags;
         this.restartPolicy = restartPolicy;
@@ -452,6 +456,22 @@ public class GCPMachineProviderSpec implements Editable<GCPMachineProviderSpecBu
     @JsonProperty("projectID")
     public void setProjectID(String projectID) {
         this.projectID = projectID;
+    }
+
+    /**
+     * provisioningModel is an optional field that determines the provisioning model for the GCP machine instance. Valid values are "Spot" and omitted. When set to Spot, the instance runs as a Google Cloud Spot instance which provides significant cost savings but may be preempted by Google Cloud Platform when resources are needed elsewhere. When omitted, the machine will be provisioned as a standard on-demand instance. This field cannot be used together with the preemptible field.
+     */
+    @JsonProperty("provisioningModel")
+    public String getProvisioningModel() {
+        return provisioningModel;
+    }
+
+    /**
+     * provisioningModel is an optional field that determines the provisioning model for the GCP machine instance. Valid values are "Spot" and omitted. When set to Spot, the instance runs as a Google Cloud Spot instance which provides significant cost savings but may be preempted by Google Cloud Platform when resources are needed elsewhere. When omitted, the machine will be provisioned as a standard on-demand instance. This field cannot be used together with the preemptible field.
+     */
+    @JsonProperty("provisioningModel")
+    public void setProvisioningModel(String provisioningModel) {
+        this.provisioningModel = provisioningModel;
     }
 
     /**

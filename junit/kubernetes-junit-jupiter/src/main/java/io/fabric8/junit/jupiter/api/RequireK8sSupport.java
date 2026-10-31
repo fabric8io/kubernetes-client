@@ -25,6 +25,10 @@ import java.lang.annotation.RetentionPolicy;
 
 /**
  * Annotation to mark a test class as requiring support for a specific Kubernetes resource type.
+ * <p>
+ * The cluster is probed with the client configured by the enclosing {@link KubernetesTest}
+ * {@link KubernetesTest#kubernetesClientBuilderCustomizer() kubernetesClientBuilderCustomizer}, if any, or else with the
+ * default configuration.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @ExtendWith(RequireK8sSupportCondition.class)

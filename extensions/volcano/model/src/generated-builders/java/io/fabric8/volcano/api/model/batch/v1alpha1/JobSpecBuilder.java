@@ -25,7 +25,7 @@ public class JobSpecBuilder extends JobSpecFluent<JobSpecBuilder> implements Vis
   }
 
   public JobSpec build() {
-    JobSpec buildable = new JobSpec(fluent.getMaxRetry(), fluent.getMinAvailable(), fluent.getMinSuccess(), fluent.getPlugins(), fluent.buildPolicies(), fluent.getPriorityClassName(), fluent.getQueue(), fluent.getRunningEstimate(), fluent.getSchedulerName(), fluent.buildTasks(), fluent.getTtlSecondsAfterFinished(), fluent.buildVolumes());
+    JobSpec buildable = new JobSpec(fluent.getMaxRetry(), fluent.getMinAvailable(), fluent.getMinSuccess(), fluent.buildNetworkTopology(), fluent.getPlugins(), fluent.buildPolicies(), fluent.getPriorityClassName(), fluent.getQueue(), fluent.getRunningEstimate(), fluent.getSchedulerName(), fluent.buildTasks(), fluent.getTtlSecondsAfterFinished(), fluent.buildVolumes());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

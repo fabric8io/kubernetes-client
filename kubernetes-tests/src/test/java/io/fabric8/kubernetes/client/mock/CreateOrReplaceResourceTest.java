@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.mock;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
 import io.fabric8.kubernetes.api.model.DeleteOptions;
@@ -42,6 +41,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.net.HttpURLConnection;
 import java.util.List;
@@ -167,7 +167,7 @@ class CreateOrReplaceResourceTest {
 
     RecordedRequest request = server.takeRequest();
     assertEquals("/api/v1/namespaces/test/pods", request.getPath());
-    Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
+    Pod requestPod = new JsonMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
 
@@ -190,7 +190,7 @@ class CreateOrReplaceResourceTest {
     assertEquals("12345", pod.getMetadata().getResourceVersion());
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
-    Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
+    Pod requestPod = new JsonMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
 
@@ -204,7 +204,7 @@ class CreateOrReplaceResourceTest {
     assertNotNull(pod);
     assertEquals("12345", pod.getMetadata().getResourceVersion());
 
-    Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(server.getLastRequest().getBody().inputStream());
+    Pod requestPod = new JsonMapper().readerFor(Pod.class).readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
 
@@ -225,7 +225,7 @@ class CreateOrReplaceResourceTest {
 
     RecordedRequest request = server.getLastRequest();
     assertEquals("/api/v1/namespaces/test/pods/nginx", request.getPath());
-    Pod requestPod = new ObjectMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
+    Pod requestPod = new JsonMapper().readerFor(Pod.class).readValue(request.getBody().inputStream());
     assertEquals("nginx", requestPod.getMetadata().getName());
   }
 
@@ -242,7 +242,7 @@ class CreateOrReplaceResourceTest {
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+    ConfigMap replacedMap = new JsonMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
   }
@@ -269,7 +269,7 @@ class CreateOrReplaceResourceTest {
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+    ConfigMap replacedMap = new JsonMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
   }
@@ -294,7 +294,7 @@ class CreateOrReplaceResourceTest {
     assertEquals("1001", map.getMetadata().getResourceVersion());
     assertNull(original.getMetadata().getResourceVersion());
 
-    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+    ConfigMap replacedMap = new JsonMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("1000", replacedMap.getMetadata().getResourceVersion());
   }
@@ -313,13 +313,13 @@ class CreateOrReplaceResourceTest {
     assertNotNull(map);
     assertEquals("1001", map.getMetadata().getResourceVersion());
 
-    ConfigMap replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+    ConfigMap replacedMap = new JsonMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
 
     client.configMaps().resource(replacedMap).lockResourceVersion().replace();
 
-    replacedMap = new ObjectMapper().readerFor(ConfigMap.class)
+    replacedMap = new JsonMapper().readerFor(ConfigMap.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("900", replacedMap.getMetadata().getResourceVersion());
   }
@@ -337,7 +337,7 @@ class CreateOrReplaceResourceTest {
         .delete().size() == 1;
     assertTrue(deleted);
 
-    DeleteOptions options = new ObjectMapper().readerFor(DeleteOptions.class)
+    DeleteOptions options = new JsonMapper().readerFor(DeleteOptions.class)
         .readValue(server.getLastRequest().getBody().inputStream());
     assertEquals("800", options.getPreconditions().getResourceVersion());
   }

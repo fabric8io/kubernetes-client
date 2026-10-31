@@ -30,6 +30,7 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
   private Map<String,Object> additionalProperties;
   private String applyBehavior;
   private LabelSelectorBuilder clusterDeploymentSelector;
+  private Boolean enablePatchTemplates;
   private Boolean enableResourceTemplates;
   private ArrayList<SyncObjectPatchBuilder> patches = new ArrayList<SyncObjectPatchBuilder>();
   private String resourceApplyMode;
@@ -244,6 +245,7 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
     if (instance != null) {
         this.withApplyBehavior(instance.getApplyBehavior());
         this.withClusterDeploymentSelector(instance.getClusterDeploymentSelector());
+        this.withEnablePatchTemplates(instance.getEnablePatchTemplates());
         this.withEnableResourceTemplates(instance.getEnableResourceTemplates());
         this.withPatches(instance.getPatches());
         this.withResourceApplyMode(instance.getResourceApplyMode());
@@ -354,6 +356,9 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(clusterDeploymentSelector, that.clusterDeploymentSelector))) {
       return false;
     }
+    if (!(Objects.equals(enablePatchTemplates, that.enablePatchTemplates))) {
+      return false;
+    }
     if (!(Objects.equals(enableResourceTemplates, that.enableResourceTemplates))) {
       return false;
     }
@@ -381,6 +386,10 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
   
   public String getApplyBehavior() {
     return this.applyBehavior;
+  }
+  
+  public Boolean getEnablePatchTemplates() {
+    return this.enablePatchTemplates;
   }
   
   public Boolean getEnableResourceTemplates() {
@@ -426,6 +435,10 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
   
   public boolean hasClusterDeploymentSelector() {
     return this.clusterDeploymentSelector != null;
+  }
+  
+  public boolean hasEnablePatchTemplates() {
+    return this.enablePatchTemplates != null;
   }
   
   public boolean hasEnableResourceTemplates() {
@@ -476,7 +489,7 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(applyBehavior, clusterDeploymentSelector, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
+    return Objects.hash(applyBehavior, clusterDeploymentSelector, enablePatchTemplates, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
   }
   
   public A removeAllFromPatches(Collection<SyncObjectPatch> items) {
@@ -662,6 +675,11 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
         sb.append(clusterDeploymentSelector);
         sb.append(",");
     }
+    if (!(enablePatchTemplates == null)) {
+        sb.append("enablePatchTemplates:");
+        sb.append(enablePatchTemplates);
+        sb.append(",");
+    }
     if (!(enableResourceTemplates == null)) {
         sb.append("enableResourceTemplates:");
         sb.append(enableResourceTemplates);
@@ -718,6 +736,15 @@ public class SelectorSyncSetSpecFluent<A extends io.fabric8.openshift.api.model.
         this.clusterDeploymentSelector = null;
         this._visitables.get("clusterDeploymentSelector").remove(this.clusterDeploymentSelector);
     }
+    return (A) this;
+  }
+  
+  public A withEnablePatchTemplates() {
+    return withEnablePatchTemplates(true);
+  }
+  
+  public A withEnablePatchTemplates(Boolean enablePatchTemplates) {
+    this.enablePatchTemplates = enablePatchTemplates;
     return (A) this;
   }
   

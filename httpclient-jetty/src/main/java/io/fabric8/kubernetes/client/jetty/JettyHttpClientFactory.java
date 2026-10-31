@@ -28,6 +28,8 @@ public class JettyHttpClientFactory implements HttpClient.Factory {
 
   /**
    * Additional configuration to be applied to the clients after the {@link Config} has been processed.
+   * <p>
+   * The WebSocket client runs on the given HTTP client, settings made on either apply to both.
    */
   protected void additionalConfig(org.eclipse.jetty.client.HttpClient httpClient, WebSocketClient webSocketClient) {
     // no default implementation

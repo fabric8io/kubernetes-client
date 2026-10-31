@@ -25,7 +25,7 @@ public class IngressControllerSpecBuilder extends IngressControllerSpecFluent<In
   }
 
   public IngressControllerSpec build() {
-    IngressControllerSpec buildable = new IngressControllerSpec(fluent.buildClientTLS(), fluent.getClosedClientConnectionPolicy(), fluent.buildDefaultCertificate(), fluent.getDomain(), fluent.buildEndpointPublishingStrategy(), fluent.buildHttpCompression(), fluent.getHttpEmptyRequestsPolicy(), fluent.getHttpErrorCodePages(), fluent.buildHttpHeaders(), fluent.getIdleConnectionTerminationPolicy(), fluent.buildLogging(), fluent.buildNamespaceSelector(), fluent.buildNodePlacement(), fluent.getReplicas(), fluent.buildRouteAdmission(), fluent.buildRouteSelector(), fluent.getTlsSecurityProfile(), fluent.buildTuningOptions(), fluent.getUnsupportedConfigOverrides());
+    IngressControllerSpec buildable = new IngressControllerSpec(fluent.buildClientTLS(), fluent.getClosedClientConnectionPolicy(), fluent.buildDefaultCertificate(), fluent.getDomain(), fluent.buildEndpointPublishingStrategy(), fluent.getHaproxyVersion(), fluent.buildHttpCompression(), fluent.getHttpEmptyRequestsPolicy(), fluent.getHttpErrorCodePages(), fluent.buildHttpHeaders(), fluent.getIdleConnectionTerminationPolicy(), fluent.buildLogging(), fluent.buildNamespaceSelector(), fluent.buildNodePlacement(), fluent.getReplicas(), fluent.buildRouteAdmission(), fluent.buildRouteSelector(), fluent.getTlsSecurityProfile(), fluent.buildTuningOptions(), fluent.getUnsupportedConfigOverrides());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

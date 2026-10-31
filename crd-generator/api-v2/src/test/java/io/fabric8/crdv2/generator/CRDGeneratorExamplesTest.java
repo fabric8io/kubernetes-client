@@ -25,6 +25,7 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 import static io.fabric8.crdv2.generator.CRDGeneratorAssertions.assertCRDOutputEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CRDGeneratorExamplesTest {
@@ -45,8 +46,9 @@ class CRDGeneratorExamplesTest {
   @Test
   void multipleStorage_thenFail() {
     CRDGenerator crdGenerator = newCRDGenerator();
-    assertThrows(IllegalStateException.class, () -> assertCRDOutputEquals(crdGenerator,
-        io.fabric8.crdv2.example.multiple.v2.Multiple.class, Multiple.class));
+    assertThat(assertThrows(IllegalStateException.class, () -> assertCRDOutputEquals(crdGenerator,
+        io.fabric8.crdv2.example.multiple.v2.Multiple.class, Multiple.class)))
+        .hasMessageContaining("Only one version can be marked as storage per custom resource.");
   }
 
   @Test

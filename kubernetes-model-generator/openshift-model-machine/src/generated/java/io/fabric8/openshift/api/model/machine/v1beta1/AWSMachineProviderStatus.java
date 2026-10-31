@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
@@ -36,16 +35,18 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * AWSMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains AWS-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
     "kind",
     "conditions",
+    "dedicatedHost",
     "instanceId",
     "instanceState"
 })
@@ -81,6 +82,8 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("dedicatedHost")
+    private DedicatedHostStatus dedicatedHost;
     @JsonProperty("instanceId")
     private String instanceId;
     @JsonProperty("instanceState")
@@ -96,10 +99,11 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     public AWSMachineProviderStatus() {
     }
 
-    public AWSMachineProviderStatus(String apiVersion, List<Condition> conditions, String instanceId, String instanceState, String kind) {
+    public AWSMachineProviderStatus(String apiVersion, List<Condition> conditions, DedicatedHostStatus dedicatedHost, String instanceId, String instanceState, String kind) {
         super();
         this.apiVersion = apiVersion;
         this.conditions = conditions;
+        this.dedicatedHost = dedicatedHost;
         this.instanceId = instanceId;
         this.instanceState = instanceState;
         this.kind = kind;
@@ -136,6 +140,22 @@ public class AWSMachineProviderStatus implements Editable<AWSMachineProviderStat
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * AWSMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains AWS-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
+    @JsonProperty("dedicatedHost")
+    public DedicatedHostStatus getDedicatedHost() {
+        return dedicatedHost;
+    }
+
+    /**
+     * AWSMachineProviderStatus is the type that will be embedded in a Machine.Status.ProviderStatus field. It contains AWS-specific status information. Compatibility level 2: Stable within a major release for a minimum of 9 months or 3 minor releases (whichever is longer).
+     */
+    @JsonProperty("dedicatedHost")
+    public void setDedicatedHost(DedicatedHostStatus dedicatedHost) {
+        this.dedicatedHost = dedicatedHost;
     }
 
     /**

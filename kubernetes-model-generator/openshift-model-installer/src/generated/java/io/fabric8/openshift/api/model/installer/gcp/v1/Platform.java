@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Platform stores all the global configuration that all machinesets use.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "computeSubnet",
@@ -214,7 +214,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * FirewallRulesManagement specifies the management policy for the cluster. Managed indicates that the firewall rules will be created and destroyed by the cluster. Unmanaged indicates that the user should create and destroy the firewall rules.
+     * FirewallRulesManagement specifies the management policy for the cluster. "Managed" indicates that the firewall rules will be created and destroyed by the cluster. "Unmanaged" indicates that the user should create and destroy the firewall rules. For Shared VPC installation, if the installer credential doesn't have firewall rules management permissions, the "firewallRulesManagement" settings can be absent or set to "Unmanaged" explicitly. For non-Shared VPC installation, if the installer credential doesn't have firewall rules management permissions, the "firewallRulesManagement" settings must be set to "Unmanaged" explicitly. And in this case, the user needs to pre-configure the VPC network and the firewall rules before the installation.
      */
     @JsonProperty("firewallRulesManagement")
     public String getFirewallRulesManagement() {
@@ -222,7 +222,7 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     }
 
     /**
-     * FirewallRulesManagement specifies the management policy for the cluster. Managed indicates that the firewall rules will be created and destroyed by the cluster. Unmanaged indicates that the user should create and destroy the firewall rules.
+     * FirewallRulesManagement specifies the management policy for the cluster. "Managed" indicates that the firewall rules will be created and destroyed by the cluster. "Unmanaged" indicates that the user should create and destroy the firewall rules. For Shared VPC installation, if the installer credential doesn't have firewall rules management permissions, the "firewallRulesManagement" settings can be absent or set to "Unmanaged" explicitly. For non-Shared VPC installation, if the installer credential doesn't have firewall rules management permissions, the "firewallRulesManagement" settings must be set to "Unmanaged" explicitly. And in this case, the user needs to pre-configure the VPC network and the firewall rules before the installation.
      */
     @JsonProperty("firewallRulesManagement")
     public void setFirewallRulesManagement(String firewallRulesManagement) {

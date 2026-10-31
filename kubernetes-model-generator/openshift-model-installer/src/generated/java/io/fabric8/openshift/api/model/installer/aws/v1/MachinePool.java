@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,16 +32,18 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on AWS.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "additionalSecurityGroupIDs",
     "amiID",
     "cpuOptions",
+    "hostPlacement",
     "iamProfile",
     "iamRole",
     "metadataService",
@@ -82,6 +83,8 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private String amiID;
     @JsonProperty("cpuOptions")
     private CPUOptions cpuOptions;
+    @JsonProperty("hostPlacement")
+    private HostPlacement hostPlacement;
     @JsonProperty("iamProfile")
     private String iamProfile;
     @JsonProperty("iamRole")
@@ -104,11 +107,12 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(List<String> additionalSecurityGroupIDs, String amiID, CPUOptions cpuOptions, String iamProfile, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
+    public MachinePool(List<String> additionalSecurityGroupIDs, String amiID, CPUOptions cpuOptions, HostPlacement hostPlacement, String iamProfile, String iamRole, EC2Metadata metadataService, EC2RootVolume rootVolume, String type, List<String> zones) {
         super();
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
         this.amiID = amiID;
         this.cpuOptions = cpuOptions;
+        this.hostPlacement = hostPlacement;
         this.iamProfile = iamProfile;
         this.iamRole = iamRole;
         this.metadataService = metadataService;
@@ -164,6 +168,22 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("cpuOptions")
     public void setCpuOptions(CPUOptions cpuOptions) {
         this.cpuOptions = cpuOptions;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
+    @JsonProperty("hostPlacement")
+    public HostPlacement getHostPlacement() {
+        return hostPlacement;
+    }
+
+    /**
+     * MachinePool stores the configuration for a machine pool installed on AWS.
+     */
+    @JsonProperty("hostPlacement")
+    public void setHostPlacement(HostPlacement hostPlacement) {
+        this.hostPlacement = hostPlacement;
     }
 
     /**

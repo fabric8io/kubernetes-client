@@ -8,6 +8,7 @@ import io.fabric8.kubernetes.api.model.ContainerFluent;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.ResourceRequirementsBuilder;
 import io.fabric8.kubernetes.api.model.ResourceRequirementsFluent;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -31,6 +32,7 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
 
   private Map<String,Object> additionalProperties;
   private ArrayList<ContainerBuilder> containers = new ArrayList<ContainerBuilder>();
+  private CompactDebugSpecBuilder debug;
   private ResourceRequirementsBuilder resources;
   private Map<String,String> serviceAccountAnnotations;
 
@@ -136,6 +138,10 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.containers != null ? build(containers) : null;
   }
   
+  public CompactDebugSpec buildDebug() {
+    return this.debug != null ? this.debug.build() : null;
+  }
+  
   public Container buildFirstContainer() {
     return this.containers.get(0).build();
   }
@@ -161,6 +167,7 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     instance = instance != null ? instance : new CompactSpec();
     if (instance != null) {
         this.withContainers(instance.getContainers());
+        this.withDebug(instance.getDebug());
         this.withResources(instance.getResources());
         this.withServiceAccountAnnotations(instance.getServiceAccountAnnotations());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -172,6 +179,10 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "containers"));
     }
     return this.setNewContainerLike(index, this.buildContainer(index));
+  }
+  
+  public DebugNested<A> editDebug() {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(null));
   }
   
   public ContainersNested<A> editFirstContainer() {
@@ -203,6 +214,14 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.setNewContainerLike(index, this.buildContainer(index));
   }
   
+  public DebugNested<A> editOrNewDebug() {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(new CompactDebugSpecBuilder().build()));
+  }
+  
+  public DebugNested<A> editOrNewDebugLike(CompactDebugSpec item) {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(item));
+  }
+  
   public ResourcesNested<A> editOrNewResources() {
     return this.withNewResourcesLike(Optional.ofNullable(this.buildResources()).orElse(new ResourceRequirementsBuilder().build()));
   }
@@ -227,6 +246,9 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     }
     CompactSpecFluent that = (CompactSpecFluent) o;
     if (!(Objects.equals(containers, that.containers))) {
+      return false;
+    }
+    if (!(Objects.equals(debug, that.debug))) {
       return false;
     }
     if (!(Objects.equals(resources, that.resources))) {
@@ -257,6 +279,10 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.containers != null && !(this.containers.isEmpty());
   }
   
+  public boolean hasDebug() {
+    return this.debug != null;
+  }
+  
   public boolean hasMatchingContainer(Predicate<ContainerBuilder> predicate) {
       for (ContainerBuilder item : containers) {
         if (predicate.test(item)) {
@@ -275,7 +301,7 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(containers, resources, serviceAccountAnnotations, additionalProperties);
+    return Objects.hash(containers, debug, resources, serviceAccountAnnotations, additionalProperties);
   }
   
   public A removeAllFromContainers(Collection<Container> items) {
@@ -393,6 +419,11 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
         sb.append(containers);
         sb.append(",");
     }
+    if (!(debug == null)) {
+        sb.append("debug:");
+        sb.append(debug);
+        sb.append(",");
+    }
     if (!(resources == null)) {
         sb.append("resources:");
         sb.append(resources);
@@ -448,6 +479,30 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return (A) this;
   }
   
+  public A withDebug(CompactDebugSpec debug) {
+    this._visitables.remove("debug");
+    if (debug != null) {
+        this.debug = new CompactDebugSpecBuilder(debug);
+        this._visitables.get("debug").add(this.debug);
+    } else {
+        this.debug = null;
+        this._visitables.get("debug").remove(this.debug);
+    }
+    return (A) this;
+  }
+  
+  public DebugNested<A> withNewDebug() {
+    return new DebugNested(null);
+  }
+  
+  public A withNewDebug(Integer blockMetaFetchConcurrency,Integer downsampleConcurrency,String logLevel,String waitInterval) {
+    return (A) this.withDebug(new CompactDebugSpec(blockMetaFetchConcurrency, downsampleConcurrency, logLevel, waitInterval));
+  }
+  
+  public DebugNested<A> withNewDebugLike(CompactDebugSpec item) {
+    return new DebugNested(item);
+  }
+  
   public ResourcesNested<A> withNewResources() {
     return new ResourcesNested(null);
   }
@@ -491,6 +546,23 @@ public class CompactSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     }
     
     public N endContainer() {
+      return and();
+    }
+    
+  }
+  public class DebugNested<N> extends CompactDebugSpecFluent<DebugNested<N>> implements Nested<N>{
+  
+    CompactDebugSpecBuilder builder;
+  
+    DebugNested(CompactDebugSpec item) {
+      this.builder = new CompactDebugSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) CompactSpecFluent.this.withDebug(builder.build());
+    }
+    
+    public N endDebug() {
       return and();
     }
     

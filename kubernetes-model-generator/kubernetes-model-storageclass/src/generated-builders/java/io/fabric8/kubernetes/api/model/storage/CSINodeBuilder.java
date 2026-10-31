@@ -25,7 +25,7 @@ public class CSINodeBuilder extends CSINodeFluent<CSINodeBuilder> implements Vis
   }
 
   public CSINode build() {
-    CSINode buildable = new CSINode(fluent.getApiVersion(), fluent.getKind(), fluent.buildMetadata(), fluent.buildSpec());
+    CSINode buildable = new CSINode(fluent.getApiVersion(), fluent.getKind(), fluent.buildMetadata(), fluent.buildSpec(), fluent.buildStatus());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

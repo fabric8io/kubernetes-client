@@ -25,7 +25,7 @@ public class MachineConfigurationSpecBuilder extends MachineConfigurationSpecFlu
   }
 
   public MachineConfigurationSpec build() {
-    MachineConfigurationSpec buildable = new MachineConfigurationSpec(fluent.getFailedRevisionLimit(), fluent.getForceRedeploymentReason(), fluent.buildIrreconcilableValidationOverrides(), fluent.getLogLevel(), fluent.buildManagedBootImages(), fluent.getManagementState(), fluent.buildNodeDisruptionPolicy(), fluent.getObservedConfig(), fluent.getOperatorLogLevel(), fluent.getSucceededRevisionLimit(), fluent.getUnsupportedConfigOverrides());
+    MachineConfigurationSpec buildable = new MachineConfigurationSpec(fluent.buildBootImageSkewEnforcement(), fluent.getFailedRevisionLimit(), fluent.getForceRedeploymentReason(), fluent.buildIrreconcilableValidationOverrides(), fluent.getLogLevel(), fluent.buildManagedBootImages(), fluent.getManagementState(), fluent.buildNodeDisruptionPolicy(), fluent.getObservedConfig(), fluent.getOperatorLogLevel(), fluent.getSucceededRevisionLimit(), fluent.getUnsupportedConfigOverrides());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

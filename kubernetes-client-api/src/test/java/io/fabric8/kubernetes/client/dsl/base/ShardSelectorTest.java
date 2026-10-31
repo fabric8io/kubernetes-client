@@ -1,0 +1,291 @@
+/*
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.kubernetes.client.dsl.base;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import java.math.BigInteger;
+import java.util.Arrays;
+import java.util.Collections;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
+
+class ShardSelectorTest {
+
+  @Nested
+  class Expression {
+
+    @Test
+    @DisplayName("ranges are ORed together in insertion order, matching the shardSelector CEL grammar")
+    void combinesRangesWithOr() {
+      ShardSelector selector = ShardSelector.builder()
+          .addShard(0, 4)
+          .addShard(2, 4)
+          .build();
+
+      assertThat(selector.toExpression()).isEqualTo(
+          "shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000') || " +
+              "shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')");
+    }
+
+    @Test
+    @DisplayName("a single range is rendered without an OR")
+    void rendersSingleRange() {
+      assertThat(ShardSelector.ofShard(0, 2).toExpression())
+          .isEqualTo("shardRange(object.metadata.uid, '0x0000000000000000', '0x8000000000000000')");
+    }
+
+    @Test
+    @DisplayName("bounds are lower case hexadecimal, zero padded to the 16 digits of the 64 bit hash space")
+    void padsBoundsTo16HexDigits() {
+      assertThat(ShardRange.of(ShardField.UID, "0x0", "0xC000000000000000").toExpression())
+          .isEqualTo("shardRange(object.metadata.uid, '0x0000000000000000', '0xc000000000000000')");
+    }
+
+    @Test
+    @DisplayName("the exclusive end of the hash space is rendered as 2^64, which does not fit in a long")
+    void rendersMaxHashAsTwoToThe64() {
+      assertThat(ShardRange.ofShard(1, 2).toExpression())
+          .isEqualTo("shardRange(object.metadata.uid, '0x8000000000000000', '0x10000000000000000')");
+    }
+
+    @Test
+    @DisplayName("the namespace field path is emitted in CEL object-rooted syntax, not fieldSelector syntax")
+    void supportsNamespaceField() {
+      assertThat(ShardSelector.ofShard(ShardField.NAMESPACE, 0, 2).toExpression())
+          .isEqualTo("shardRange(object.metadata.namespace, '0x0000000000000000', '0x8000000000000000')");
+    }
+
+    @Test
+    @DisplayName("the field of a range is the one it was built with, not the UID default of the shorthands")
+    void honoursTheRequestedField() {
+      assertThat(ShardSelector.builder()
+          .addShard(ShardField.NAMESPACE, 1, 2)
+          .build()
+          .toExpression())
+          .isEqualTo("shardRange(object.metadata.namespace, '0x8000000000000000', '0x10000000000000000')");
+      assertThat(ShardSelector.builder()
+          .addRange(ShardField.NAMESPACE, BigInteger.ZERO, BigInteger.valueOf(255))
+          .build()
+          .toExpression())
+          .isEqualTo("shardRange(object.metadata.namespace, '0x0000000000000000', '0x00000000000000ff')");
+    }
+
+    @Test
+    @DisplayName("toString is the expression, so a selector can be interpolated where a string is expected")
+    void toStringIsTheExpression() {
+      ShardSelector selector = ShardSelector.ofShard(0, 2);
+      assertThat(selector).hasToString(selector.toExpression());
+      assertThat(selector.getRanges().get(0)).hasToString(selector.getRanges().get(0).toExpression());
+    }
+  }
+
+  @Nested
+  class EvenSplit {
+
+    @ParameterizedTest(name = "{0} shards")
+    @ValueSource(ints = { 1, 2, 3, 4, 8, 16, 1000 })
+    @DisplayName("an n-way split covers the whole hash space without gaps or overlaps")
+    void coversTheWholeHashSpace(int totalShards) {
+      BigInteger previousEnd = ShardRange.MIN_HASH;
+      for (int shard = 0; shard < totalShards; shard++) {
+        ShardRange range = ShardRange.ofShard(shard, totalShards);
+        assertThat(range.getStart()).isEqualTo(previousEnd);
+        assertThat(range.getEnd()).isGreaterThan(range.getStart());
+        previousEnd = range.getEnd();
+      }
+      assertThat(previousEnd).isEqualTo(ShardRange.MAX_HASH);
+    }
+
+    @Test
+    @DisplayName("the documented 4-shard split is reproduced bound for bound")
+    void matchesTheDocumentedFourShardSplit() {
+      assertThat(Arrays.asList(
+          ShardRange.ofShard(0, 4).toExpression(),
+          ShardRange.ofShard(1, 4).toExpression(),
+          ShardRange.ofShard(2, 4).toExpression(),
+          ShardRange.ofShard(3, 4).toExpression()))
+          .containsExactly(
+              "shardRange(object.metadata.uid, '0x0000000000000000', '0x4000000000000000')",
+              "shardRange(object.metadata.uid, '0x4000000000000000', '0x8000000000000000')",
+              "shardRange(object.metadata.uid, '0x8000000000000000', '0xc000000000000000')",
+              "shardRange(object.metadata.uid, '0xc000000000000000', '0x10000000000000000')");
+    }
+
+    @Test
+    @DisplayName("a split that does not divide the hash space evenly rounds the bounds down")
+    void roundsUnevenSplitsDown() {
+      assertThat(Arrays.asList(
+          ShardRange.ofShard(0, 3).toExpression(),
+          ShardRange.ofShard(1, 3).toExpression(),
+          ShardRange.ofShard(2, 3).toExpression()))
+          .containsExactly(
+              "shardRange(object.metadata.uid, '0x0000000000000000', '0x5555555555555555')",
+              "shardRange(object.metadata.uid, '0x5555555555555555', '0xaaaaaaaaaaaaaaaa')",
+              "shardRange(object.metadata.uid, '0xaaaaaaaaaaaaaaaa', '0x10000000000000000')");
+    }
+
+    @Test
+    @DisplayName("a shard index outside [0, totalShards) is reported as such, not as a bad bound")
+    void rejectsOutOfRangeShardIndex() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(2, 2))
+          .withMessageContaining("shard index");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(-1, 2))
+          .withMessageContaining("shard index");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.ofShard(0, 0))
+          .withMessageContaining("total number of shards");
+    }
+  }
+
+  @Nested
+  class Bounds {
+
+    @ParameterizedTest
+    @ValueSource(strings = { "0x8000000000000000", "0X8000000000000000", "8000000000000000", " 0x8000000000000000 " })
+    @DisplayName("hexadecimal bounds are accepted with or without the 0x prefix, in any case, and trimmed")
+    void parsesHexBounds(String hexStart) {
+      assertThat(ShardRange.of(ShardField.UID, hexStart, "0x10000000000000000").getStart())
+          .isEqualTo(BigInteger.ONE.shiftLeft(63));
+    }
+
+    @Test
+    @DisplayName("BigInteger bounds skip hexadecimal parsing, but are still rendered as padded hexadecimal")
+    void acceptsBigIntegerBounds() {
+      assertThat(ShardRange.of(ShardField.UID, BigInteger.ZERO, BigInteger.valueOf(255)).toExpression())
+          .isEqualTo("shardRange(object.metadata.uid, '0x0000000000000000', '0x00000000000000ff')");
+    }
+
+    @Test
+    @DisplayName("an empty or inverted range is rejected, since it would silently select nothing")
+    void rejectsEmptyRange() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, "0x1", "0x1"))
+          .withMessageContaining("lower than the end bound");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, "0x2", "0x1"));
+    }
+
+    @Test
+    @DisplayName("a start outside [0, 2^64) or an end beyond 2^64 is rejected")
+    void rejectsBoundsOutsideTheHashSpace() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, ShardRange.MAX_HASH, ShardRange.MAX_HASH))
+          .withMessageContaining("start bound must be within");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.valueOf(-1), BigInteger.ONE))
+          .withMessageContaining("start bound must be within");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.ZERO, ShardRange.MAX_HASH.add(BigInteger.ONE)))
+          .withMessageContaining("end bound must not exceed");
+    }
+
+    @Test
+    @DisplayName("a bound that is not hexadecimal is reported as such rather than as a NumberFormatException")
+    void rejectsNonHexBounds() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, "0xnope", "0x1"))
+          .withMessageContaining("hexadecimal");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, "", "0x1"));
+    }
+
+    @Test
+    @DisplayName("a missing field or bound is rejected at construction, not when the request is sent")
+    void rejectsMissingFieldOrBound() {
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.of(null, BigInteger.ZERO, BigInteger.ONE));
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.ofShard(null, 0, 2));
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, null, BigInteger.ONE));
+      assertThatNullPointerException()
+          .isThrownBy(() -> ShardRange.of(ShardField.UID, BigInteger.ZERO, (BigInteger) null));
+    }
+  }
+
+  @Nested
+  class SelectorValue {
+
+    @Test
+    @DisplayName("a selector without ranges is rejected, since an empty expression is not valid CEL")
+    void rejectsEmptySelector() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardSelector.builder().build())
+          .withMessageContaining("at least one shard range");
+      assertThatIllegalArgumentException().isThrownBy(() -> new ShardSelector(Collections.emptyList()));
+      assertThatIllegalArgumentException().isThrownBy(() -> new ShardSelector(null));
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> new ShardSelector(Collections.singletonList(null)));
+      assertThatIllegalArgumentException().isThrownBy(() -> ShardSelector.builder().addRange(null));
+    }
+
+    @Test
+    @DisplayName("ranges using different fields are rejected, as the API server only evaluates one field")
+    void rejectsMixedFields() {
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardSelector.builder()
+              .addShard(ShardField.NAMESPACE, 0, 4)
+              .addShard(2, 4)
+              .build())
+          .withMessageContaining("same field");
+      assertThatIllegalArgumentException()
+          .isThrownBy(() -> ShardSelector.of(
+              ShardRange.ofShard(ShardField.UID, 0, 4),
+              ShardRange.ofShard(ShardField.NAMESPACE, 2, 4)));
+    }
+
+    @Test
+    @DisplayName("the ranges of a built selector cannot be mutated through the builder or the returned list")
+    void isImmutable() {
+      ShardSelector.Builder builder = ShardSelector.builder().addShard(0, 2);
+      ShardSelector selector = builder.build();
+      builder.addShard(1, 2);
+
+      assertThat(selector.getRanges()).hasSize(1).isUnmodifiable();
+    }
+
+    @Test
+    @DisplayName("selectors and ranges compare by value, so they can be used as map keys or asserted on")
+    void comparesByValue() {
+      assertThat(ShardSelector.ofShard(0, 2))
+          .isEqualTo(ShardSelector.builder().addRange(ShardField.UID, "0x0", "0x8000000000000000").build())
+          .hasSameHashCodeAs(ShardSelector.builder().addShard(0, 2).build())
+          .isNotEqualTo(ShardSelector.ofShard(1, 2))
+          .isNotEqualTo(ShardSelector.ofShard(ShardField.NAMESPACE, 0, 2));
+    }
+
+    @Test
+    @DisplayName("a selector can be copied and extended through the builder")
+    void copiesExistingSelector() {
+      ShardSelector selector = ShardSelector.builder(ShardSelector.ofShard(0, 4))
+          .addShard(2, 4)
+          .build();
+
+      assertThat(selector.getRanges())
+          .containsExactly(ShardRange.ofShard(0, 4), ShardRange.ofShard(2, 4));
+    }
+  }
+
+}

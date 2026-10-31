@@ -37,6 +37,7 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
   private String apiVersion;
   private ArrayList<BlockDeviceMappingSpecBuilder> blockDevices = new ArrayList<BlockDeviceMappingSpecBuilder>();
   private String capacityReservationId;
+  private CPUOptionsBuilder cpuOptions;
   private LocalObjectReferenceBuilder credentialsSecret;
   private Long deviceIndex;
   private AWSResourceReferenceBuilder iamInstanceProfile;
@@ -293,6 +294,10 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     return this.blockDevices != null ? build(blockDevices) : null;
   }
   
+  public CPUOptions buildCpuOptions() {
+    return this.cpuOptions != null ? this.cpuOptions.build() : null;
+  }
+  
   public LocalObjectReference buildCredentialsSecret() {
     return this.credentialsSecret != null ? this.credentialsSecret.build() : null;
   }
@@ -424,6 +429,7 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
         this.withApiVersion(instance.getApiVersion());
         this.withBlockDevices(instance.getBlockDevices());
         this.withCapacityReservationId(instance.getCapacityReservationId());
+        this.withCpuOptions(instance.getCpuOptions());
         this.withCredentialsSecret(instance.getCredentialsSecret());
         this.withDeviceIndex(instance.getDeviceIndex());
         this.withIamInstanceProfile(instance.getIamInstanceProfile());
@@ -457,6 +463,10 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "blockDevices"));
     }
     return this.setNewBlockDeviceLike(index, this.buildBlockDevice(index));
+  }
+  
+  public CpuOptionsNested<A> editCpuOptions() {
+    return this.withNewCpuOptionsLike(Optional.ofNullable(this.buildCpuOptions()).orElse(null));
   }
   
   public CredentialsSecretNested<A> editCredentialsSecret() {
@@ -606,6 +616,14 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     return this.withNewAmiLike(Optional.ofNullable(this.buildAmi()).orElse(item));
   }
   
+  public CpuOptionsNested<A> editOrNewCpuOptions() {
+    return this.withNewCpuOptionsLike(Optional.ofNullable(this.buildCpuOptions()).orElse(new CPUOptionsBuilder().build()));
+  }
+  
+  public CpuOptionsNested<A> editOrNewCpuOptionsLike(CPUOptions item) {
+    return this.withNewCpuOptionsLike(Optional.ofNullable(this.buildCpuOptions()).orElse(item));
+  }
+  
   public CredentialsSecretNested<A> editOrNewCredentialsSecret() {
     return this.withNewCredentialsSecretLike(Optional.ofNullable(this.buildCredentialsSecret()).orElse(new LocalObjectReferenceBuilder().build()));
   }
@@ -721,6 +739,9 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
       return false;
     }
     if (!(Objects.equals(capacityReservationId, that.capacityReservationId))) {
+      return false;
+    }
+    if (!(Objects.equals(cpuOptions, that.cpuOptions))) {
       return false;
     }
     if (!(Objects.equals(credentialsSecret, that.credentialsSecret))) {
@@ -857,6 +878,10 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     return this.capacityReservationId != null;
   }
   
+  public boolean hasCpuOptions() {
+    return this.cpuOptions != null;
+  }
+  
   public boolean hasCredentialsSecret() {
     return this.credentialsSecret != null;
   }
@@ -974,7 +999,7 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
   }
   
   public int hashCode() {
-    return Objects.hash(ami, apiVersion, blockDevices, capacityReservationId, credentialsSecret, deviceIndex, iamInstanceProfile, instanceType, keyName, kind, loadBalancers, marketType, metadata, metadataServiceOptions, networkInterfaceType, placement, placementGroupName, placementGroupPartition, publicIp, securityGroups, spotMarketOptions, subnet, tags, userDataSecret, additionalProperties);
+    return Objects.hash(ami, apiVersion, blockDevices, capacityReservationId, cpuOptions, credentialsSecret, deviceIndex, iamInstanceProfile, instanceType, keyName, kind, loadBalancers, marketType, metadata, metadataServiceOptions, networkInterfaceType, placement, placementGroupName, placementGroupPartition, publicIp, securityGroups, spotMarketOptions, subnet, tags, userDataSecret, additionalProperties);
   }
   
   public A removeAllFromBlockDevices(Collection<BlockDeviceMappingSpec> items) {
@@ -1260,6 +1285,11 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
         sb.append(capacityReservationId);
         sb.append(",");
     }
+    if (!(cpuOptions == null)) {
+        sb.append("cpuOptions:");
+        sb.append(cpuOptions);
+        sb.append(",");
+    }
     if (!(credentialsSecret == null)) {
         sb.append("credentialsSecret:");
         sb.append(credentialsSecret);
@@ -1427,6 +1457,18 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public A withCpuOptions(CPUOptions cpuOptions) {
+    this._visitables.remove("cpuOptions");
+    if (cpuOptions != null) {
+        this.cpuOptions = new CPUOptionsBuilder(cpuOptions);
+        this._visitables.get("cpuOptions").add(this.cpuOptions);
+    } else {
+        this.cpuOptions = null;
+        this._visitables.get("cpuOptions").remove(this.cpuOptions);
+    }
+    return (A) this;
+  }
+  
   public A withCredentialsSecret(LocalObjectReference credentialsSecret) {
     this._visitables.remove("credentialsSecret");
     if (credentialsSecret != null) {
@@ -1541,6 +1583,18 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     return new AmiNested(item);
   }
   
+  public CpuOptionsNested<A> withNewCpuOptions() {
+    return new CpuOptionsNested(null);
+  }
+  
+  public A withNewCpuOptions(String confidentialCompute) {
+    return (A) this.withCpuOptions(new CPUOptions(confidentialCompute));
+  }
+  
+  public CpuOptionsNested<A> withNewCpuOptionsLike(CPUOptions item) {
+    return new CpuOptionsNested(item);
+  }
+  
   public CredentialsSecretNested<A> withNewCredentialsSecret() {
     return new CredentialsSecretNested(null);
   }
@@ -1583,10 +1637,6 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
   
   public PlacementNested<A> withNewPlacement() {
     return new PlacementNested(null);
-  }
-  
-  public A withNewPlacement(String availabilityZone,String region,String tenancy) {
-    return (A) this.withPlacement(new Placement(availabilityZone, region, tenancy));
   }
   
   public PlacementNested<A> withNewPlacementLike(Placement item) {
@@ -1779,6 +1829,23 @@ public class AWSMachineProviderConfigFluent<A extends io.fabric8.openshift.api.m
     }
     
     public N endBlockDevice() {
+      return and();
+    }
+    
+  }
+  public class CpuOptionsNested<N> extends CPUOptionsFluent<CpuOptionsNested<N>> implements Nested<N>{
+  
+    CPUOptionsBuilder builder;
+  
+    CpuOptionsNested(CPUOptions item) {
+      this.builder = new CPUOptionsBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) AWSMachineProviderConfigFluent.this.withCpuOptions(builder.build());
+    }
+    
+    public N endCpuOptions() {
       return and();
     }
     

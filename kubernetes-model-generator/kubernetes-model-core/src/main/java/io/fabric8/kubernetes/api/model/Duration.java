@@ -17,18 +17,17 @@ package io.fabric8.kubernetes.api.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
-import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
+import tools.jackson.databind.ser.std.StdSerializer;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.Temporal;
@@ -188,12 +187,12 @@ public class Duration implements KubernetesResource {
     }
 
     @Override
-    public void serialize(Duration duration, JsonGenerator jgen, SerializerProvider provider) throws IOException {
+    public void serialize(Duration duration, JsonGenerator jgen, SerializationContext provider) {
       jgen.writeString(String.format("%sns", duration.getValue()));
     }
 
     @Override
-    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) throws JsonMappingException {
+    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) throws DatabindException {
       visitor.expectStringFormat(typeHint);
     }
   }

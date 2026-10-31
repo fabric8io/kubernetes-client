@@ -25,7 +25,7 @@ public class VaultAuthBuilder extends VaultAuthFluent<VaultAuthBuilder> implemen
   }
 
   public VaultAuth build() {
-    VaultAuth buildable = new VaultAuth(fluent.buildAppRole(), fluent.buildClientCertificate(), fluent.buildKubernetes(), fluent.buildTokenSecretRef());
+    VaultAuth buildable = new VaultAuth(fluent.buildAppRole(), fluent.buildAws(), fluent.buildClientCertificate(), fluent.buildKubernetes(), fluent.buildTokenSecretRef());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Each routing rule is associated with one or more service versions (see glossary in beginning of document). Weights associated with the version determine the proportion of traffic it receives. For example, the following rule will route 25% of traffic for the "reviews" service to instances with the "v2" tag and the remaining traffic (i.e., 75%) to "v1".<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.prod.svc.cluster.local<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v2<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.prod.svc.cluster.local<br><p> 	      subset: v1<br><p> 	    weight: 75<br><p> <br><p> ```<br><p> <br><p> # And the associated DestinationRule<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: DestinationRule metadata:<br><p> <br><p> 	name: reviews-destination<br><p> <br><p> spec:<br><p> <br><p> 	host: reviews.prod.svc.cluster.local<br><p> 	subsets:<br><p> 	- name: v1<br><p> 	  labels:<br><p> 	    version: v1<br><p> 	- name: v2<br><p> 	  labels:<br><p> 	    version: v2<br><p> <br><p> ```<br><p> <br><p> Traffic can also be split across two entirely different services without having to define new subsets. For example, the following rule forwards 25% of traffic to reviews.com to dev.reviews.com<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: VirtualService metadata:<br><p> <br><p> 	name: reviews-route-two-domains<br><p> <br><p> spec:<br><p> <br><p> 	hosts:<br><p> 	- reviews.com<br><p> 	http:<br><p> 	- route:<br><p> 	  - destination:<br><p> 	      host: dev.reviews.com<br><p> 	    weight: 25<br><p> 	  - destination:<br><p> 	      host: reviews.com<br><p> 	    weight: 75<br><p> <br><p> ```
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "destination",

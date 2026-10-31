@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,8 +31,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "extra",
@@ -93,7 +93,7 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     }
 
     /**
-     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity.<br><p> <br><p> key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
      */
     @JsonProperty("extra")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -102,7 +102,7 @@ public class TokenClaimMappings implements Editable<TokenClaimMappingsBuilder>, 
     }
 
     /**
-     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity. key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
+     * extra is an optional field for configuring the mappings used to construct the extra attribute for the cluster identity. When omitted, no extra attributes will be present on the cluster identity.<br><p> <br><p> key values for extra mappings must be unique. A maximum of 32 extra attribute mappings may be provided.
      */
     @JsonProperty("extra")
     public void setExtra(List<ExtraMapping> extra) {

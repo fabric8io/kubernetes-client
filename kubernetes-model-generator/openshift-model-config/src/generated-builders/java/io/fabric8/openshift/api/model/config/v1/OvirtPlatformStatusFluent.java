@@ -24,6 +24,7 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   private Map<String,Object> additionalProperties;
   private String apiServerInternalIP;
   private List<String> apiServerInternalIPs = new ArrayList<String>();
+  private String dnsRecordsType;
   private String ingressIP;
   private List<String> ingressIPs = new ArrayList<String>();
   private OvirtPlatformLoadBalancerBuilder loadBalancer;
@@ -121,6 +122,7 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     if (instance != null) {
         this.withApiServerInternalIP(instance.getApiServerInternalIP());
         this.withApiServerInternalIPs(instance.getApiServerInternalIPs());
+        this.withDnsRecordsType(instance.getDnsRecordsType());
         this.withIngressIP(instance.getIngressIP());
         this.withIngressIPs(instance.getIngressIPs());
         this.withLoadBalancer(instance.getLoadBalancer());
@@ -158,6 +160,9 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     if (!(Objects.equals(apiServerInternalIPs, that.apiServerInternalIPs))) {
       return false;
     }
+    if (!(Objects.equals(dnsRecordsType, that.dnsRecordsType))) {
+      return false;
+    }
     if (!(Objects.equals(ingressIP, that.ingressIP))) {
       return false;
     }
@@ -190,6 +195,10 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   
   public List<String> getApiServerInternalIPs() {
     return this.apiServerInternalIPs;
+  }
+  
+  public String getDnsRecordsType() {
+    return this.dnsRecordsType;
   }
   
   public String getFirstApiServerInternalIP() {
@@ -254,6 +263,10 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
     return this.apiServerInternalIPs != null && !(this.apiServerInternalIPs.isEmpty());
   }
   
+  public boolean hasDnsRecordsType() {
+    return this.dnsRecordsType != null;
+  }
+  
   public boolean hasIngressIP() {
     return this.ingressIP != null;
   }
@@ -289,7 +302,7 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(apiServerInternalIP, apiServerInternalIPs, ingressIP, ingressIPs, loadBalancer, nodeDNSIP, additionalProperties);
+    return Objects.hash(apiServerInternalIP, apiServerInternalIPs, dnsRecordsType, ingressIP, ingressIPs, loadBalancer, nodeDNSIP, additionalProperties);
   }
   
   public A removeAllFromApiServerInternalIPs(Collection<String> items) {
@@ -385,6 +398,11 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
         sb.append(apiServerInternalIPs);
         sb.append(",");
     }
+    if (!(dnsRecordsType == null)) {
+        sb.append("dnsRecordsType:");
+        sb.append(dnsRecordsType);
+        sb.append(",");
+    }
     if (!(ingressIP == null)) {
         sb.append("ingressIP:");
         sb.append(ingressIP);
@@ -449,6 +467,11 @@ public class OvirtPlatformStatusFluent<A extends io.fabric8.openshift.api.model.
         this.addToApiServerInternalIPs(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withDnsRecordsType(String dnsRecordsType) {
+    this.dnsRecordsType = dnsRecordsType;
     return (A) this;
   }
   

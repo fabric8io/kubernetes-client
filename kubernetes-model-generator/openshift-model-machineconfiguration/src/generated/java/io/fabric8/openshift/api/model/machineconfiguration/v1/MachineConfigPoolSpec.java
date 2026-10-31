@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,17 +31,19 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "configuration",
     "machineConfigSelector",
     "maxUnavailable",
     "nodeSelector",
+    "osImageStream",
     "paused",
     "pinnedImageSets"
 })
@@ -79,6 +80,8 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
     private IntOrString maxUnavailable;
     @JsonProperty("nodeSelector")
     private LabelSelector nodeSelector;
+    @JsonProperty("osImageStream")
+    private OSImageStreamReference osImageStream;
     @JsonProperty("paused")
     private Boolean paused;
     @JsonProperty("pinnedImageSets")
@@ -93,12 +96,13 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
     public MachineConfigPoolSpec() {
     }
 
-    public MachineConfigPoolSpec(MachineConfigPoolStatusConfiguration configuration, LabelSelector machineConfigSelector, IntOrString maxUnavailable, LabelSelector nodeSelector, Boolean paused, List<PinnedImageSetRef> pinnedImageSets) {
+    public MachineConfigPoolSpec(MachineConfigPoolStatusConfiguration configuration, LabelSelector machineConfigSelector, IntOrString maxUnavailable, LabelSelector nodeSelector, OSImageStreamReference osImageStream, Boolean paused, List<PinnedImageSetRef> pinnedImageSets) {
         super();
         this.configuration = configuration;
         this.machineConfigSelector = machineConfigSelector;
         this.maxUnavailable = maxUnavailable;
         this.nodeSelector = nodeSelector;
+        this.osImageStream = osImageStream;
         this.paused = paused;
         this.pinnedImageSets = pinnedImageSets;
     }
@@ -165,6 +169,22 @@ public class MachineConfigPoolSpec implements Editable<MachineConfigPoolSpecBuil
     @JsonProperty("nodeSelector")
     public void setNodeSelector(LabelSelector nodeSelector) {
         this.nodeSelector = nodeSelector;
+    }
+
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
+    @JsonProperty("osImageStream")
+    public OSImageStreamReference getOsImageStream() {
+        return osImageStream;
+    }
+
+    /**
+     * MachineConfigPoolSpec is the spec for MachineConfigPool resource.
+     */
+    @JsonProperty("osImageStream")
+    public void setOsImageStream(OSImageStreamReference osImageStream) {
+        this.osImageStream = osImageStream;
     }
 
     /**

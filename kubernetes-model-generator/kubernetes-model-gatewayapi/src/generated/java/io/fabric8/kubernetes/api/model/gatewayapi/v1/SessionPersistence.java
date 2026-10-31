@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -29,16 +28,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SessionPersistence defines the desired state of SessionPersistence.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "absoluteTimeout",
     "cookieConfig",
-    "idleTimeout",
     "sessionName",
     "type"
 })
@@ -71,8 +70,6 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     private String absoluteTimeout;
     @JsonProperty("cookieConfig")
     private CookieConfig cookieConfig;
-    @JsonProperty("idleTimeout")
-    private String idleTimeout;
     @JsonProperty("sessionName")
     private String sessionName;
     @JsonProperty("type")
@@ -86,11 +83,10 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     public SessionPersistence() {
     }
 
-    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String idleTimeout, String sessionName, String type) {
+    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String sessionName, String type) {
         super();
         this.absoluteTimeout = absoluteTimeout;
         this.cookieConfig = cookieConfig;
-        this.idleTimeout = idleTimeout;
         this.sessionName = sessionName;
         this.type = type;
     }
@@ -125,22 +121,6 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     @JsonProperty("cookieConfig")
     public void setCookieConfig(CookieConfig cookieConfig) {
         this.cookieConfig = cookieConfig;
-    }
-
-    /**
-     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
-     */
-    @JsonProperty("idleTimeout")
-    public String getIdleTimeout() {
-        return idleTimeout;
-    }
-
-    /**
-     * IdleTimeout defines the idle timeout of the persistent session. Once the session has been idle for more than the specified IdleTimeout duration, the session becomes invalid.<br><p> <br><p> Support: Extended
-     */
-    @JsonProperty("idleTimeout")
-    public void setIdleTimeout(String idleTimeout) {
-        this.idleTimeout = idleTimeout;
     }
 
     /**

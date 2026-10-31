@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -35,11 +34,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ClusterRole is a cluster level, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding or ClusterRoleBinding.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
@@ -169,7 +169,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * Rules holds all the PolicyRules for this ClusterRole
+     * rules holds all the PolicyRules for this ClusterRole
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -178,7 +178,7 @@ public class ClusterRole implements Editable<ClusterRoleBuilder>, HasMetadata
     }
 
     /**
-     * Rules holds all the PolicyRules for this ClusterRole
+     * rules holds all the PolicyRules for this ClusterRole
      */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {

@@ -12,20 +12,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Represents a projected volume source
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "defaultMode",
+    "defaultUser",
     "sources"
 })
 @ToString
@@ -41,6 +42,8 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
 
     @JsonProperty("defaultMode")
     private Integer defaultMode;
+    @JsonProperty("defaultUser")
+    private Long defaultUser;
     @JsonProperty("sources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<VolumeProjection> sources = new ArrayList<>();
@@ -53,9 +56,10 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
     public ProjectedVolumeSource() {
     }
 
-    public ProjectedVolumeSource(Integer defaultMode, List<VolumeProjection> sources) {
+    public ProjectedVolumeSource(Integer defaultMode, Long defaultUser, List<VolumeProjection> sources) {
         super();
         this.defaultMode = defaultMode;
+        this.defaultUser = defaultUser;
         this.sources = sources;
     }
 
@@ -73,6 +77,22 @@ public class ProjectedVolumeSource implements Editable<ProjectedVolumeSourceBuil
     @JsonProperty("defaultMode")
     public void setDefaultMode(Integer defaultMode) {
         this.defaultMode = defaultMode;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public Long getDefaultUser() {
+        return defaultUser;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public void setDefaultUser(Long defaultUser) {
+        this.defaultUser = defaultUser;
     }
 
     /**

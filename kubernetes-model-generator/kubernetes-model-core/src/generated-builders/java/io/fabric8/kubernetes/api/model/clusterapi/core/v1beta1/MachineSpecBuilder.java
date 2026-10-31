@@ -25,7 +25,7 @@ public class MachineSpecBuilder extends MachineSpecFluent<MachineSpecBuilder> im
   }
 
   public MachineSpec build() {
-    MachineSpec buildable = new MachineSpec(fluent.buildBootstrap(), fluent.getClusterName(), fluent.getFailureDomain(), fluent.buildInfrastructureRef(), fluent.getNodeDeletionTimeout(), fluent.getNodeDrainTimeout(), fluent.getNodeVolumeDetachTimeout(), fluent.getProviderID(), fluent.buildReadinessGates(), fluent.getVersion());
+    MachineSpec buildable = new MachineSpec(fluent.buildBootstrap(), fluent.getClusterName(), fluent.getFailureDomain(), fluent.buildInfrastructureRef(), fluent.getNodeDeletionTimeout(), fluent.getNodeDrainTimeout(), fluent.getNodeVolumeDetachTimeout(), fluent.getProviderID(), fluent.buildReadinessGates(), fluent.buildTaints(), fluent.getVersion());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

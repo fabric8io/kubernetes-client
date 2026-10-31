@@ -898,8 +898,8 @@ public class MachineStatusFluent<A extends io.fabric8.kubernetes.api.model.clust
     return new DeletionNested(null);
   }
   
-  public A withNewDeletion(String nodeDrainStartTime,String waitForNodeVolumeDetachStartTime) {
-    return (A) this.withDeletion(new MachineDeletionStatus(nodeDrainStartTime, waitForNodeVolumeDetachStartTime));
+  public A withNewDeletion(String nodeDrainStartTime,String waitForNodeVolumeDetachStartTime,String waitForPreDrainHookStartTime,String waitForPreTerminateHookStartTime) {
+    return (A) this.withDeletion(new MachineDeletionStatus(nodeDrainStartTime, waitForNodeVolumeDetachStartTime, waitForPreDrainHookStartTime, waitForPreTerminateHookStartTime));
   }
   
   public DeletionNested<A> withNewDeletionLike(MachineDeletionStatus item) {

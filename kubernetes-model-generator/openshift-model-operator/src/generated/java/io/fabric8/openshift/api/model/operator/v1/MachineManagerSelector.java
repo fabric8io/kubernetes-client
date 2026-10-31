@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,8 +30,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "mode",
@@ -83,7 +83,7 @@ public class MachineManagerSelector implements Editable<MachineManagerSelectorBu
     }
 
     /**
-     * mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated.
+     * mode determines how machine managers will be selected for updates. Valid values are All, Partial and None. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. Partial is not permitted for the controlplanemachinesets resource type as they are a singleton within the cluster. None means that every resource matched by the machine manager will not be updated.
      */
     @JsonProperty("mode")
     public String getMode() {
@@ -91,7 +91,7 @@ public class MachineManagerSelector implements Editable<MachineManagerSelectorBu
     }
 
     /**
-     * mode determines how machine managers will be selected for updates. Valid values are All and Partial. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. None means that every resource matched by the machine manager will not be updated.
+     * mode determines how machine managers will be selected for updates. Valid values are All, Partial and None. All means that every resource matched by the machine manager will be updated. Partial requires specified selector(s) and allows customisation of which resources matched by the machine manager will be updated. Partial is not permitted for the controlplanemachinesets resource type as they are a singleton within the cluster. None means that every resource matched by the machine manager will not be updated.
      */
     @JsonProperty("mode")
     public void setMode(String mode) {

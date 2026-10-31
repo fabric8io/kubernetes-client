@@ -16,7 +16,7 @@
 
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import tools.jackson.databind.JsonNode;
 
 import java.util.List;
 

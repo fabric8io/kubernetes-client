@@ -2,6 +2,9 @@ package io.fabric8.openshift.api.model.hive.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import io.fabric8.kubernetes.api.model.LocalObjectReference;
+import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
+import io.fabric8.kubernetes.api.model.LocalObjectReferenceFluent;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -22,6 +25,7 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
   private String clusterID;
   private String clusterName;
   private String infraID;
+  private LocalObjectReferenceBuilder metadataJSONSecretRef;
   private ClusterDeprovisionPlatformBuilder platform;
 
   public ClusterDeprovisionSpecFluent() {
@@ -51,6 +55,10 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
     return (A) this;
   }
   
+  public LocalObjectReference buildMetadataJSONSecretRef() {
+    return this.metadataJSONSecretRef != null ? this.metadataJSONSecretRef.build() : null;
+  }
+  
   public ClusterDeprovisionPlatform buildPlatform() {
     return this.platform != null ? this.platform.build() : null;
   }
@@ -62,9 +70,22 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
         this.withClusterID(instance.getClusterID());
         this.withClusterName(instance.getClusterName());
         this.withInfraID(instance.getInfraID());
+        this.withMetadataJSONSecretRef(instance.getMetadataJSONSecretRef());
         this.withPlatform(instance.getPlatform());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public MetadataJSONSecretRefNested<A> editMetadataJSONSecretRef() {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(null));
+  }
+  
+  public MetadataJSONSecretRefNested<A> editOrNewMetadataJSONSecretRef() {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(new LocalObjectReferenceBuilder().build()));
+  }
+  
+  public MetadataJSONSecretRefNested<A> editOrNewMetadataJSONSecretRefLike(LocalObjectReference item) {
+    return this.withNewMetadataJSONSecretRefLike(Optional.ofNullable(this.buildMetadataJSONSecretRef()).orElse(item));
   }
   
   public PlatformNested<A> editOrNewPlatform() {
@@ -100,6 +121,9 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
       return false;
     }
     if (!(Objects.equals(infraID, that.infraID))) {
+      return false;
+    }
+    if (!(Objects.equals(metadataJSONSecretRef, that.metadataJSONSecretRef))) {
       return false;
     }
     if (!(Objects.equals(platform, that.platform))) {
@@ -151,12 +175,16 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
     return this.infraID != null;
   }
   
+  public boolean hasMetadataJSONSecretRef() {
+    return this.metadataJSONSecretRef != null;
+  }
+  
   public boolean hasPlatform() {
     return this.platform != null;
   }
   
   public int hashCode() {
-    return Objects.hash(baseDomain, clusterID, clusterName, infraID, platform, additionalProperties);
+    return Objects.hash(baseDomain, clusterID, clusterName, infraID, metadataJSONSecretRef, platform, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -206,6 +234,11 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
         sb.append(infraID);
         sb.append(",");
     }
+    if (!(metadataJSONSecretRef == null)) {
+        sb.append("metadataJSONSecretRef:");
+        sb.append(metadataJSONSecretRef);
+        sb.append(",");
+    }
     if (!(platform == null)) {
         sb.append("platform:");
         sb.append(platform);
@@ -248,6 +281,30 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
     return (A) this;
   }
   
+  public A withMetadataJSONSecretRef(LocalObjectReference metadataJSONSecretRef) {
+    this._visitables.remove("metadataJSONSecretRef");
+    if (metadataJSONSecretRef != null) {
+        this.metadataJSONSecretRef = new LocalObjectReferenceBuilder(metadataJSONSecretRef);
+        this._visitables.get("metadataJSONSecretRef").add(this.metadataJSONSecretRef);
+    } else {
+        this.metadataJSONSecretRef = null;
+        this._visitables.get("metadataJSONSecretRef").remove(this.metadataJSONSecretRef);
+    }
+    return (A) this;
+  }
+  
+  public MetadataJSONSecretRefNested<A> withNewMetadataJSONSecretRef() {
+    return new MetadataJSONSecretRefNested(null);
+  }
+  
+  public A withNewMetadataJSONSecretRef(String name) {
+    return (A) this.withMetadataJSONSecretRef(new LocalObjectReference(name));
+  }
+  
+  public MetadataJSONSecretRefNested<A> withNewMetadataJSONSecretRefLike(LocalObjectReference item) {
+    return new MetadataJSONSecretRefNested(item);
+  }
+  
   public PlatformNested<A> withNewPlatform() {
     return new PlatformNested(null);
   }
@@ -266,6 +323,23 @@ public class ClusterDeprovisionSpecFluent<A extends io.fabric8.openshift.api.mod
         this._visitables.get("platform").remove(this.platform);
     }
     return (A) this;
+  }
+  public class MetadataJSONSecretRefNested<N> extends LocalObjectReferenceFluent<MetadataJSONSecretRefNested<N>> implements Nested<N>{
+  
+    LocalObjectReferenceBuilder builder;
+  
+    MetadataJSONSecretRefNested(LocalObjectReference item) {
+      this.builder = new LocalObjectReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterDeprovisionSpecFluent.this.withMetadataJSONSecretRef(builder.build());
+    }
+    
+    public N endMetadataJSONSecretRef() {
+      return and();
+    }
+    
   }
   public class PlatformNested<N> extends ClusterDeprovisionPlatformFluent<PlatformNested<N>> implements Nested<N>{
   

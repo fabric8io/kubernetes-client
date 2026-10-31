@@ -18,6 +18,7 @@ import java.util.Optional;
 public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.model.config.v1.TokenClaimValidationRuleFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private TokenClaimValidationCELRuleBuilder cel;
   private TokenRequiredClaimBuilder requiredClaim;
   private String type;
 
@@ -48,6 +49,10 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
     return (A) this;
   }
   
+  public TokenClaimValidationCELRule buildCel() {
+    return this.cel != null ? this.cel.build() : null;
+  }
+  
   public TokenRequiredClaim buildRequiredClaim() {
     return this.requiredClaim != null ? this.requiredClaim.build() : null;
   }
@@ -55,10 +60,23 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
   protected void copyInstance(TokenClaimValidationRule instance) {
     instance = instance != null ? instance : new TokenClaimValidationRule();
     if (instance != null) {
+        this.withCel(instance.getCel());
         this.withRequiredClaim(instance.getRequiredClaim());
         this.withType(instance.getType());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public CelNested<A> editCel() {
+    return this.withNewCelLike(Optional.ofNullable(this.buildCel()).orElse(null));
+  }
+  
+  public CelNested<A> editOrNewCel() {
+    return this.withNewCelLike(Optional.ofNullable(this.buildCel()).orElse(new TokenClaimValidationCELRuleBuilder().build()));
+  }
+  
+  public CelNested<A> editOrNewCelLike(TokenClaimValidationCELRule item) {
+    return this.withNewCelLike(Optional.ofNullable(this.buildCel()).orElse(item));
   }
   
   public RequiredClaimNested<A> editOrNewRequiredClaim() {
@@ -84,6 +102,9 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
       return false;
     }
     TokenClaimValidationRuleFluent that = (TokenClaimValidationRuleFluent) o;
+    if (!(Objects.equals(cel, that.cel))) {
+      return false;
+    }
     if (!(Objects.equals(requiredClaim, that.requiredClaim))) {
       return false;
     }
@@ -108,6 +129,10 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
     return this.additionalProperties != null;
   }
   
+  public boolean hasCel() {
+    return this.cel != null;
+  }
+  
   public boolean hasRequiredClaim() {
     return this.requiredClaim != null;
   }
@@ -117,7 +142,7 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
   }
   
   public int hashCode() {
-    return Objects.hash(requiredClaim, type, additionalProperties);
+    return Objects.hash(cel, requiredClaim, type, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -147,6 +172,11 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(cel == null)) {
+        sb.append("cel:");
+        sb.append(cel);
+        sb.append(",");
+    }
     if (!(requiredClaim == null)) {
         sb.append("requiredClaim:");
         sb.append(requiredClaim);
@@ -172,6 +202,30 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
     return (A) this;
+  }
+  
+  public A withCel(TokenClaimValidationCELRule cel) {
+    this._visitables.remove("cel");
+    if (cel != null) {
+        this.cel = new TokenClaimValidationCELRuleBuilder(cel);
+        this._visitables.get("cel").add(this.cel);
+    } else {
+        this.cel = null;
+        this._visitables.get("cel").remove(this.cel);
+    }
+    return (A) this;
+  }
+  
+  public CelNested<A> withNewCel() {
+    return new CelNested(null);
+  }
+  
+  public A withNewCel(String expression,String message) {
+    return (A) this.withCel(new TokenClaimValidationCELRule(expression, message));
+  }
+  
+  public CelNested<A> withNewCelLike(TokenClaimValidationCELRule item) {
+    return new CelNested(item);
   }
   
   public RequiredClaimNested<A> withNewRequiredClaim() {
@@ -201,6 +255,23 @@ public class TokenClaimValidationRuleFluent<A extends io.fabric8.openshift.api.m
   public A withType(String type) {
     this.type = type;
     return (A) this;
+  }
+  public class CelNested<N> extends TokenClaimValidationCELRuleFluent<CelNested<N>> implements Nested<N>{
+  
+    TokenClaimValidationCELRuleBuilder builder;
+  
+    CelNested(TokenClaimValidationCELRule item) {
+      this.builder = new TokenClaimValidationCELRuleBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) TokenClaimValidationRuleFluent.this.withCel(builder.build());
+    }
+    
+    public N endCel() {
+      return and();
+    }
+    
   }
   public class RequiredClaimNested<N> extends TokenRequiredClaimFluent<RequiredClaimNested<N>> implements Nested<N>{
   

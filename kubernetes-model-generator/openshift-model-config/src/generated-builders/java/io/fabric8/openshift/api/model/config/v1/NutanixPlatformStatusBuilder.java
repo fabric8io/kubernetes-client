@@ -25,7 +25,7 @@ public class NutanixPlatformStatusBuilder extends NutanixPlatformStatusFluent<Nu
   }
 
   public NutanixPlatformStatus build() {
-    NutanixPlatformStatus buildable = new NutanixPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer());
+    NutanixPlatformStatus buildable = new NutanixPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getDnsRecordsType(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

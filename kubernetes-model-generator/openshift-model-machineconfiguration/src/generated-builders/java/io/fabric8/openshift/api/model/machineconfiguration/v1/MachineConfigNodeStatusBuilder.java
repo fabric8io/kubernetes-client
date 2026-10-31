@@ -25,7 +25,7 @@ public class MachineConfigNodeStatusBuilder extends MachineConfigNodeStatusFluen
   }
 
   public MachineConfigNodeStatus build() {
-    MachineConfigNodeStatus buildable = new MachineConfigNodeStatus(fluent.getConditions(), fluent.buildConfigVersion(), fluent.buildIrreconcilableChanges(), fluent.getObservedGeneration(), fluent.buildPinnedImageSets());
+    MachineConfigNodeStatus buildable = new MachineConfigNodeStatus(fluent.getConditions(), fluent.buildConfigImage(), fluent.buildConfigVersion(), fluent.buildInternalReleaseImage(), fluent.buildIrreconcilableChanges(), fluent.getObservedGeneration(), fluent.buildPinnedImageSets());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

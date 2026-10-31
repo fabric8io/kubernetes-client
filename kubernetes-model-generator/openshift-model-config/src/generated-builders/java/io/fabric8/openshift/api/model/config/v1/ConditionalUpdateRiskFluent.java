@@ -2,6 +2,7 @@ package io.fabric8.openshift.api.model.config.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import io.fabric8.kubernetes.api.model.Condition;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -23,6 +24,7 @@ import java.util.function.Predicate;
 public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.model.config.v1.ConditionalUpdateRiskFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private List<Condition> conditions = new ArrayList<Condition>();
   private ArrayList<ClusterConditionBuilder> matchingRules = new ArrayList<ClusterConditionBuilder>();
   private String message;
   private String name;
@@ -35,6 +37,16 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
     this.copyInstance(instance);
   }
 
+  public A addAllToConditions(Collection<Condition> items) {
+    if (this.conditions == null) {
+      this.conditions = new ArrayList();
+    }
+    for (Condition item : items) {
+      this.conditions.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addAllToMatchingRules(Collection<ClusterCondition> items) {
     if (this.matchingRules == null) {
       this.matchingRules = new ArrayList();
@@ -72,6 +84,24 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
     }
+    return (A) this;
+  }
+  
+  public A addToConditions(Condition... items) {
+    if (this.conditions == null) {
+      this.conditions = new ArrayList();
+    }
+    for (Condition item : items) {
+      this.conditions.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToConditions(int index,Condition item) {
+    if (this.conditions == null) {
+      this.conditions = new ArrayList();
+    }
+    this.conditions.add(index, item);
     return (A) this;
   }
   
@@ -130,6 +160,7 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
   protected void copyInstance(ConditionalUpdateRisk instance) {
     instance = instance != null ? instance : new ConditionalUpdateRisk();
     if (instance != null) {
+        this.withConditions(instance.getConditions());
         this.withMatchingRules(instance.getMatchingRules());
         this.withMessage(instance.getMessage());
         this.withName(instance.getName());
@@ -185,6 +216,9 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
       return false;
     }
     ConditionalUpdateRiskFluent that = (ConditionalUpdateRiskFluent) o;
+    if (!(Objects.equals(conditions, that.conditions))) {
+      return false;
+    }
     if (!(Objects.equals(matchingRules, that.matchingRules))) {
       return false;
     }
@@ -207,6 +241,31 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
     return this.additionalProperties;
   }
   
+  public Condition getCondition(int index) {
+    return this.conditions.get(index);
+  }
+  
+  public List<Condition> getConditions() {
+    return this.conditions;
+  }
+  
+  public Condition getFirstCondition() {
+    return this.conditions.get(0);
+  }
+  
+  public Condition getLastCondition() {
+    return this.conditions.get(conditions.size() - 1);
+  }
+  
+  public Condition getMatchingCondition(Predicate<Condition> predicate) {
+      for (Condition item : conditions) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
   public String getMessage() {
     return this.message;
   }
@@ -221,6 +280,19 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasConditions() {
+    return this.conditions != null && !(this.conditions.isEmpty());
+  }
+  
+  public boolean hasMatchingCondition(Predicate<Condition> predicate) {
+      for (Condition item : conditions) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingMatchingRule(Predicate<ClusterConditionBuilder> predicate) {
@@ -249,7 +321,17 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(matchingRules, message, name, url, additionalProperties);
+    return Objects.hash(conditions, matchingRules, message, name, url, additionalProperties);
+  }
+  
+  public A removeAllFromConditions(Collection<Condition> items) {
+    if (this.conditions == null) {
+      return (A) this;
+    }
+    for (Condition item : items) {
+      this.conditions.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeAllFromMatchingRules(Collection<ClusterCondition> items) {
@@ -288,6 +370,16 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
     return (A) this;
   }
   
+  public A removeFromConditions(Condition... items) {
+    if (this.conditions == null) {
+      return (A) this;
+    }
+    for (Condition item : items) {
+      this.conditions.remove(item);
+    }
+    return (A) this;
+  }
+  
   public A removeFromMatchingRules(ClusterCondition... items) {
     if (this.matchingRules == null) {
       return (A) this;
@@ -320,6 +412,14 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
     return new MatchingRulesNested(index, item);
   }
   
+  public A setToConditions(int index,Condition item) {
+    if (this.conditions == null) {
+      this.conditions = new ArrayList();
+    }
+    this.conditions.set(index, item);
+    return (A) this;
+  }
+  
   public A setToMatchingRules(int index,ClusterCondition item) {
     if (this.matchingRules == null) {
       this.matchingRules = new ArrayList();
@@ -338,6 +438,11 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(conditions == null) && !(conditions.isEmpty())) {
+        sb.append("conditions:");
+        sb.append(conditions);
+        sb.append(",");
+    }
     if (!(matchingRules == null) && !(matchingRules.isEmpty())) {
         sb.append("matchingRules:");
         sb.append(matchingRules);
@@ -371,6 +476,31 @@ public class ConditionalUpdateRiskFluent<A extends io.fabric8.openshift.api.mode
       this.additionalProperties = null;
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withConditions(List<Condition> conditions) {
+    if (conditions != null) {
+        this.conditions = new ArrayList();
+        for (Condition item : conditions) {
+          this.addToConditions(item);
+        }
+    } else {
+      this.conditions = null;
+    }
+    return (A) this;
+  }
+  
+  public A withConditions(Condition... conditions) {
+    if (this.conditions != null) {
+        this.conditions.clear();
+        _visitables.remove("conditions");
+    }
+    if (conditions != null) {
+      for (Condition item : conditions) {
+        this.addToConditions(item);
+      }
     }
     return (A) this;
   }

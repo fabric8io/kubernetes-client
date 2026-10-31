@@ -15,7 +15,6 @@
  */
 package io.fabric8.kubernetes.client.dsl.internal;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.builder.TypedVisitor;
 import io.fabric8.kubernetes.api.builder.Visitor;
 import io.fabric8.kubernetes.api.model.DefaultKubernetesResourceList;
@@ -70,6 +69,7 @@ import io.fabric8.kubernetes.client.utils.internal.CreateOrReplaceHelper;
 import io.fabric8.kubernetes.client.utils.internal.WatcherToggle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.FileInputStream;

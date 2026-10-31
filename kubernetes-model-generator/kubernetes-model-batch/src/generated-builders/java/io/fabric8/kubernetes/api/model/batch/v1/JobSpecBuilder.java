@@ -25,7 +25,7 @@ public class JobSpecBuilder extends JobSpecFluent<JobSpecBuilder> implements Vis
   }
 
   public JobSpec build() {
-    JobSpec buildable = new JobSpec(fluent.getActiveDeadlineSeconds(), fluent.getBackoffLimit(), fluent.getBackoffLimitPerIndex(), fluent.getCompletionMode(), fluent.getCompletions(), fluent.getManagedBy(), fluent.getManualSelector(), fluent.getMaxFailedIndexes(), fluent.getParallelism(), fluent.buildPodFailurePolicy(), fluent.getPodReplacementPolicy(), fluent.buildSelector(), fluent.buildSuccessPolicy(), fluent.getSuspend(), fluent.buildTemplate(), fluent.getTtlSecondsAfterFinished());
+    JobSpec buildable = new JobSpec(fluent.getActiveDeadlineSeconds(), fluent.getBackoffLimit(), fluent.getBackoffLimitPerIndex(), fluent.getCompletionMode(), fluent.getCompletions(), fluent.getManagedBy(), fluent.getManualSelector(), fluent.getMaxFailedIndexes(), fluent.getParallelism(), fluent.buildPodFailurePolicy(), fluent.getPodReplacementPolicy(), fluent.buildScheduling(), fluent.buildSelector(), fluent.buildSuccessPolicy(), fluent.getSuspend(), fluent.buildTemplate(), fluent.getTtlSecondsAfterFinished());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -16,23 +16,21 @@
 package io.fabric8.kubernetes.model.jackson;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.BeanProperty;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.deser.ContextualDeserializer;
-import com.fasterxml.jackson.databind.deser.ResolvableDeserializer;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.fasterxml.jackson.databind.node.TreeTraversingParser;
-import com.fasterxml.jackson.databind.util.NameTransformer;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.BeanProperty;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.deser.BeanDeserializerFactory;
+import tools.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.jsontype.NamedType;
+import tools.jackson.databind.node.ObjectNode;
+import tools.jackson.databind.node.TreeTraversingParser;
+import tools.jackson.databind.util.NameTransformer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -49,7 +47,7 @@ import java.util.stream.Stream;
  * polymorphism (@JsonTypeInfo)
  * Adapted from https://stackoverflow.com/questions/37423848/deserializing-polymorphic-types-with-jsonunwrapped-using-jackson
  */
-public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements ContextualDeserializer {
+public class JsonUnwrappedDeserializer<T> extends ValueDeserializer<T> {
 
   private static final JsonUnwrapped cancelUnwrappedAnnotation;
 
@@ -62,7 +60,7 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
     }
   }
 
-  private JsonDeserializer<T> beanDeserializer;
+  private ValueDeserializer<T> beanDeserializer;
   private Set<String> ownPropertyNames;
   private List<UnwrappedInfo> unwrappedInfos;
 
@@ -72,19 +70,16 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
   public JsonUnwrappedDeserializer() {
   }
 
-  public JsonUnwrappedDeserializer(DeserializationContext deserializationContext) throws JsonMappingException {
+  public JsonUnwrappedDeserializer(DeserializationContext deserializationContext) throws DatabindException {
     JavaType type = deserializationContext.getContextualType();
 
-    BeanDescription description = deserializationContext.getConfig().introspect(type);
+    BeanDescription description = deserializationContext.introspectBeanDescriptionForCreation(type);
 
     List<BeanPropertyDefinition> unwrappedProperties = description.findProperties().stream()
         .filter(prop -> Stream.of(prop.getConstructorParameter(), prop.getMutator(), prop.getField())
             .filter(Objects::nonNull)
             .anyMatch(member -> {
               JsonUnwrapped unwrappedAnnotation = member.getAnnotation(JsonUnwrapped.class);
-              if (unwrappedAnnotation != null) {
-                member.getAllAnnotations().add(cancelUnwrappedAnnotation);
-              }
               return unwrappedAnnotation != null;
             }))
         .collect(Collectors.toList());
@@ -98,10 +93,17 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
         .collect(Collectors.toSet());
     ownPropertyNames.removeAll(description.getIgnoredPropertyNames());
 
-    JsonDeserializer<Object> rawBeanDeserializer = deserializationContext.getFactory()
-        .createBeanDeserializer(deserializationContext, type, description);
-    ((ResolvableDeserializer) rawBeanDeserializer).resolve(deserializationContext);
-    beanDeserializer = (JsonDeserializer<T>) rawBeanDeserializer;
+    // Build the bean deserializer directly from the factory to avoid infinite recursion.
+    // findContextualValueDeserializer would resolve @JsonDeserialize(using=JsonUnwrappedDeserializer.class)
+    // and re-enter createContextual, causing StackOverflow.
+    @SuppressWarnings("unchecked")
+    ValueDeserializer<Object> rawBeanDeserializer = BeanDeserializerFactory.instance
+        .createBeanDeserializer(deserializationContext, type, description.supplier());
+    rawBeanDeserializer.resolve(deserializationContext);
+    @SuppressWarnings("unchecked")
+    ValueDeserializer<T> contextual = (ValueDeserializer<T>) rawBeanDeserializer
+        .createContextual(deserializationContext, null);
+    beanDeserializer = contextual;
 
     unwrappedInfos = new ArrayList<>();
     for (BeanPropertyDefinition unwrappedProperty : unwrappedProperties) {
@@ -127,15 +129,15 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
 
     private static void extractPropertiesDeep(DeserializationContext context, Set<Class<?>> processedTypes,
         Set<String> properties, BeanPropertyDefinition bean) {
+      BeanDescription beanDesc = context.introspectBeanDescriptionForCreation(bean.getPrimaryType());
       final Collection<NamedType> types = context.getConfig().getSubtypeResolver()
-          .collectAndResolveSubtypesByClass(context.getConfig(),
-              context.getConfig().introspect(bean.getPrimaryType()).getClassInfo());
+          .collectAndResolveSubtypesByClass(context.getConfig(), beanDesc.getClassInfo());
       for (NamedType type : types) {
         if (!processedTypes.add(type.getType())) {
           continue;
         }
-        for (BeanPropertyDefinition property : context.getConfig().introspect(context.constructType(type.getType()))
-            .findProperties()) {
+        for (BeanPropertyDefinition property : context.introspectBeanDescriptionForCreation(
+            context.constructType(type.getType())).findProperties()) {
           properties.add(property.getName());
           extractPropertiesDeep(context, processedTypes, properties, property);
         }
@@ -145,18 +147,18 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
   }
 
   @Override
-  public JsonDeserializer<?> createContextual(DeserializationContext deserializationContext, BeanProperty beanProperty)
-      throws JsonMappingException {
+  public ValueDeserializer<?> createContextual(DeserializationContext deserializationContext, BeanProperty beanProperty)
+      throws DatabindException {
     return new JsonUnwrappedDeserializer<>(deserializationContext);
   }
 
   @Override
-  public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
+  public T deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) {
     final ObjectNode node = jsonParser.readValueAsTree();
     final ObjectNode ownNode = deserializationContext.getNodeFactory().objectNode();
     final Map<UnwrappedInfo, ObjectNode> unwrappedNodes = new HashMap<>();
 
-    node.fields().forEachRemaining(entry -> {
+    node.properties().forEach(entry -> {
       final String key = entry.getKey();
       final JsonNode value = entry.getValue();
 
@@ -180,7 +182,7 @@ public class JsonUnwrappedDeserializer<T> extends JsonDeserializer<T> implements
       ownNode.replace(entry.getKey().propertyName, entry.getValue());
     }
 
-    try (TreeTraversingParser syntheticParser = new TreeTraversingParser(ownNode, jsonParser.getCodec())) {
+    try (TreeTraversingParser syntheticParser = new TreeTraversingParser(ownNode, jsonParser.objectReadContext())) {
       syntheticParser.nextToken();
       return beanDeserializer.deserialize(syntheticParser, deserializationContext);
     }

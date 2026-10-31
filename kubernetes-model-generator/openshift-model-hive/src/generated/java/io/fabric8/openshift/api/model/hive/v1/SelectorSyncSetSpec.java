@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,15 +32,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SelectorSyncSetSpec defines the SyncSetCommonSpec resources and patches to sync along with a ClusterDeploymentSelector indicating which clusters the SelectorSyncSet applies to in any namespace.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "applyBehavior",
     "clusterDeploymentSelector",
+    "enablePatchTemplates",
     "enableResourceTemplates",
     "patches",
     "resourceApplyMode",
@@ -77,6 +78,8 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     private String applyBehavior;
     @JsonProperty("clusterDeploymentSelector")
     private LabelSelector clusterDeploymentSelector;
+    @JsonProperty("enablePatchTemplates")
+    private Boolean enablePatchTemplates;
     @JsonProperty("enableResourceTemplates")
     private Boolean enableResourceTemplates;
     @JsonProperty("patches")
@@ -100,10 +103,11 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     public SelectorSyncSetSpec() {
     }
 
-    public SelectorSyncSetSpec(String applyBehavior, LabelSelector clusterDeploymentSelector, Boolean enableResourceTemplates, List<SyncObjectPatch> patches, String resourceApplyMode, List<Object> resources, List<SecretMapping> secretMappings) {
+    public SelectorSyncSetSpec(String applyBehavior, LabelSelector clusterDeploymentSelector, Boolean enablePatchTemplates, Boolean enableResourceTemplates, List<SyncObjectPatch> patches, String resourceApplyMode, List<Object> resources, List<SecretMapping> secretMappings) {
         super();
         this.applyBehavior = applyBehavior;
         this.clusterDeploymentSelector = clusterDeploymentSelector;
+        this.enablePatchTemplates = enablePatchTemplates;
         this.enableResourceTemplates = enableResourceTemplates;
         this.patches = patches;
         this.resourceApplyMode = resourceApplyMode;
@@ -141,6 +145,22 @@ public class SelectorSyncSetSpec implements Editable<SelectorSyncSetSpecBuilder>
     @JsonProperty("clusterDeploymentSelector")
     public void setClusterDeploymentSelector(LabelSelector clusterDeploymentSelector) {
         this.clusterDeploymentSelector = clusterDeploymentSelector;
+    }
+
+    /**
+     * EnablePatchTemplates, if True, causes hive to honor golang text/templates in Patches[].Patch strings. While the standard syntax is supported, it won't do you a whole lot of good as the parser does not pass a data object (i.e. there is no "dot" for you to use). This currently exists to expose a single function: {{ fromCDLabel "some.label/key" }} will be substituted with the string value of ClusterDeployment.Labels["some.label/key"]. The empty string is interpolated if there are no labels, or if the indicated key does not exist. Note that the patch string must be valid JSON after interpolation. This may make for odd-looking quoting in the uninterpolated string.
+     */
+    @JsonProperty("enablePatchTemplates")
+    public Boolean getEnablePatchTemplates() {
+        return enablePatchTemplates;
+    }
+
+    /**
+     * EnablePatchTemplates, if True, causes hive to honor golang text/templates in Patches[].Patch strings. While the standard syntax is supported, it won't do you a whole lot of good as the parser does not pass a data object (i.e. there is no "dot" for you to use). This currently exists to expose a single function: {{ fromCDLabel "some.label/key" }} will be substituted with the string value of ClusterDeployment.Labels["some.label/key"]. The empty string is interpolated if there are no labels, or if the indicated key does not exist. Note that the patch string must be valid JSON after interpolation. This may make for odd-looking quoting in the uninterpolated string.
+     */
+    @JsonProperty("enablePatchTemplates")
+    public void setEnablePatchTemplates(Boolean enablePatchTemplates) {
+        this.enablePatchTemplates = enablePatchTemplates;
     }
 
     /**

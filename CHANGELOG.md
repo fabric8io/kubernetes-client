@@ -1,20 +1,165 @@
 ## CHANGELOG
 
-### 7.9-SNAPSHOT
+### 8.1-SNAPSHOT
 
 #### Bugs
 * Fix #8022: (kubernetes-client-api) Client key algorithm is now detected from key material returned by kubeconfig exec credential plugins. Previously only static `client-key-data` / `client-key` entries ran `getKeyAlgorithm` (see #3535); exec-provided ECDSA keys left `clientKeyAlgo` unset so `CertUtils` defaulted to RSA and failed with `Invalid DER: object is not integer`
+* Fix #7041: (crd-generator) Files to scan that don't exist, like Gradle's `build/classes/java/main` in a Kotlin-only project, are skipped with a warning instead of failing with "Not a class file, JAR file or directory". The Gradle build-script recipes only pass existing class directories
+* Fix #8103: informer indexes no longer keep entries for objects a custom `ItemStore` does not retain
+* Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
+* Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
+* Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
+
+#### Improvements
+* Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
+* Fix #5352: (kubernetes-junit-jupiter) `@KubernetesTest` supports `KubernetesClientBuilder` customization through `kubernetesClientBuilderCustomizer`, also used by `@RequireK8sSupport` and `@RequireK8sVersionAtLeast`
+* Fix #5352: (kubernetes-server-mock) `@EnableKubernetesMockClient` `kubernetesClientBuilderCustomizer` no longer needs to be public
+
+#### Dependency Upgrade
+* Fix #8150: bump baremetal-operator/apis from 0.13.0 to 0.14.1
+* Fix #8150: bump cluster-api-provider-metal3 from 1.14.0 to 1.14.1
+* Fix #8147: bump ovn-kubernetes/go-controller from a68ef49 to 5ff49b3 (module moved from `github.com/ovn-org` to `github.com/ovn-kubernetes`)
+* Fix #8192: bump volcano.sh/apis from 1.15.2 to 1.16.0
+
+#### New Features
+* Fix #8147: (open-virtual-networking) DSL support for `ClusterNetworkConnect`, `ClusterUserDefinedNetwork`, `RouteAdvertisements` and `VTEP` (`k8s.ovn.org/v1`)
+* Fix #8192: (volcano) DSL support for `NamespaceQueue` (`scheduling.volcano.sh/v1beta1`)
+
+#### _**Note**_: Breaking changes
+* Fix #8147: (open-virtual-networking) `Layer2Config` field `ipamLifecycle` replaced by `ipam` (`IPAMConfig`, the lifecycle moves to `ipam.lifecycle`)
+
+### 8.0.0 (2026-09-24)
+
+#### Bugs
+* Fix #8105: requests hanging when a retry action, retry decision, or response cleanup throws an exception.
+* Fix #7374: (crd-generator) Generated CRDs no longer prune or reject what the client writes: `Object`, raw `Map`, `List<Object>`, raw collection, `@JsonUnwrapped` and polymorphic properties keep their content, and date and time types only declare a format their values match (`Duration`, `LocalDateTime` and the partial types lose `date-time`). `Optional` properties get their value type's schema instead of preserving unknown fields, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3-crd-generator)
+* Fix #6779: (httpclient-jetty) 401 responses without a `WWW-Authenticate` header, which is how the API server sends them, are returned with their body instead of failing with "HTTP protocol violation: Authentication challenge without WWW-Authenticate header"
+* Fix #6779: (httpclient-jetty, httpclient-vertx, httpclient-vertx-5) A proxy password containing a colon, or a proxy URL with a user and no password, is now used to authenticate with the proxy, instead of falling back to a `Proxy-Authorization` request header that HTTPS requests carry through the proxy tunnel to the API server
+* Fix #6779: A proxy username configured without a password is sent with an empty password instead of `null`, and a proxy URL with a user and no password as `user:` instead of `user` (RFC 7617)
+* Fix #8134: (httpclient-jetty) A failed WebSocket handshake no longer calls the listener's `onError`, the returned future already fails with it. When the handshake was retried, this ended watches and exec/attach sessions before the retry could open them
+* Fix #8134: (httpclient-jetty) Credentials for a SOCKS5 proxy are sent to it
+* Fix #8134: (httpclient-jetty, httpclient-vertx) Proxy credentials that aren't `Basic user:password` are only added as a `Proxy-Authorization` header to the requests an HTTP proxy reads. HTTPS and WSS requests, WebSockets that Vert.x tunnels, and requests through a SOCKS proxy carried them to the API server
+* Fix #8134: (httpclient-vertx-5) Proxy credentials that aren't `Basic user:password` are sent to the HTTP proxy by Vert.x, on the CONNECT too, so HTTPS and WebSocket requests through a proxy that requires them work, and they no longer reach the API server
+* Fix #8134: (httpclient-okhttp) A 407 from the API server (through `pods/proxy` for example) is no longer answered with the proxy credentials, which went through the proxy tunnel to it, and credentials the proxy rejected aren't sent again
+* Fix #8140: (httpclient-vertx-5) A request whose connection is closed before it could be written fails with an `IOException`, and is retried, instead of hanging until the request timeout (seen on Windows)
+* Fix #8134: (httpclient-jetty) Cookies set by a response are no longer sent back on later requests and WebSocket upgrades, like with the other HttpClient implementations
+* Fix #8109: A `java.sql.Date` written as `yyyy-MM-dd` is read as a local date instead of the previous day west of UTC. `Year`, `Month`, `java.sql.Date` and `Locale` keep their 7.x wire format, mappers you build yourself need the new `Jackson2JdkTypesModule`, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
+* Fix #8109: (crd-generator) `byte[]`, `ByteBuffer`, `char[]`, `Year` and `java.sql.Date` schemas match what the client writes (`byte[]` and `ByteBuffer` are `format: byte` strings), so the API server no longer rejects them. `@PrinterColumn` on a `LocalDate` is a `string` column instead of a `date` column that showed `<invalid>`
+* Fix #8008: (httpclient-vertx-5) Requests with an `InputStream` body and `Expect: 100-continue` (binary builds) no longer hang, and an `InputStream` body of known length is sent with `Content-Length` instead of chunked
+* Fix #8139: (httpclient-okhttp) WebSockets answer the server's Close frame even when the listener doesn't, so port forwarding and custom listeners release the connection instead of waiting for the server to drop it
+* Fix #8152: (httpclient-vertx, httpclient-vertx-5, httpclient-jetty, httpclient-jdk) WebSockets send a ping every `Config#websocketPingInterval` (30s by default), like OkHttp already did, so load balancers that close idle connections no longer drop quiet watches
+
+#### Improvements
+* Fix #8109: (crd-generator) `int`/`Integer` and `long`/`Long` properties get `format: int32` and `format: int64`, like controller-gen
+* Fix #7987: (kubernetes-client-api) `withShardSelector` accepts a typed `ShardSelector` (`ShardSelector.builder().addShard(0, 4).addShard(2, 4).build()`) next to the raw expression `String`, so the `shardRange(...)` CEL grammar and its hexadecimal bounds don't have to be written by hand
+
+#### Dependency Upgrade
+* Fix #7374: Upgrade Jackson from 2.x to 3.2.1
+* Fix #8096: bump cert-manager from 1.20.2 to 1.21.2
+* Fix #8098: bump chaos-mesh api from 4db47f5 to d70b66a
+* Fix #8086: bump cluster-api from 1.12.2 to 1.13.6
+* Fix #8101: bump cluster-api from 1.13.6 to 1.14.2
+* Fix #8101: bump cluster-api-provider-metal3 from 1.13.0 to 1.14.0
+* Fix #8133: bump controller-runtime from 0.19.7 to 0.23.3
+* Fix #8142: bump controller-runtime from 0.23.3 to 0.25.1
+* Fix #8086: bump gateway-api from 1.6.1 to 1.6.2
+* Fix #8127: bump istio.io/client-go from 1.30.0 to 1.31.0
+* Fix #8148: bump openshift/api from 1cb53e3 (release-4.19) to 231177c (release-4.22)
+* Fix #8148: bump openshift/cloud-credential-operator from 0e03b7a to 5c4a396
+* Fix #8148: bump openshift/cluster-network-operator from 698e349 to 61de77e
+* Fix #8148: bump openshift/cluster-node-tuning-operator from 2ed182b to 039bae9
+* Fix #8148: bump openshift/hive/apis from 2d25383 to 8104fcf
+* Fix #8148: bump openshift/installer from 1.4.21-pre to 1.4.22-ec5
+* Fix #6779: bump Jetty from 11.0.26 to 12.1.13
+* Fix #8086: bump k8s.io/api from 0.35.2 to 0.35.8
+* Fix #8142: bump k8s.io/api from 0.35.8 to 0.37.0
+* Fix #8086: bump k8s.io/apiextensions-apiserver from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/apimachinery from 0.36.1 to 0.37.0
+* Fix #8086: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.7.0 to 1.7.1
+* Fix #8086: bump k8s.io/client-go from 0.35.2 to 0.35.8
+* Fix #8142: bump k8s.io/client-go from 0.35.8 to 0.37.0
+* Fix #8142: bump k8s.io/cloud-provider from 0.35.8 to 0.37.0
+* Fix #8142: bump k8s.io/csi-translation-lib from 0.35.8 to 0.37.0
+* Fix #8086: bump k8s.io/kube-openapi from 0.0.0-20260501160325-927ab1f70cd6 to 0.0.0-20260821135717-be32def86098
+* Fix #8142: bump k8s.io/kube-scheduler from 0.35.8 to 0.37.0
+* Fix #8086: bump k8s.io/metrics from 0.36.1 to 0.37.0
+* Fix #8142: bump k8s.io/mount-utils from 0.35.8 to 0.37.0
+* Fix #8118: bump knative.dev/caching from 0.0.0-20260422140616-453ad996bbe2 to 0.0.0-20260821014320-af6341f3ab2b
+* Fix #8118: bump knative.dev/eventing from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-github from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-gitlab from 0.49.1 to 0.50.0
+* Fix #8118: bump knative.dev/eventing-kafka-broker from 0.49.1 to 0.50.1
+* Fix #8118: bump knative.dev/networking from 0.0.0-20260529061306-c8de379770b9 to 0.0.0-20260921014731-e39778429a0f
+* Fix #8118: bump knative.dev/pkg from 0.0.0-20260422015212-ec452872dcc1 to 0.0.0-20260918182429-5dc1978f0042
+* Fix #8118: bump knative.dev/serving from 0.49.1 to 0.50.0
+* Fix #8133: bump open-cluster-management.io/governance-policy-propagator from 0.18.0 to 0.20.0
+* Fix #8126: bump prometheus-operator from 0.91.0 to 0.94.0
+* Fix #8133: bump stolostron/discovery from 6a13204 to ea34ca3
+* Fix #8133: bump stolostron/klusterlet-addon-controller from 0d7e21c to 5341d76
+* Fix #8133: bump stolostron/multicluster-observability-operator from 3a17a1a to 553f19c
+* Fix #8133: bump stolostron/multiclusterhub-operator from c3e46b4 to 30a5420
+* Fix #8133: bump stolostron/search-v2-operator from 030a382 to 8d84710
+* Fix #8100: bump tektoncd/pipeline from 1.12.0 to 1.16.0
+* Fix #8100: bump tektoncd/triggers from 0.36.0 to 0.37.0
+* Fix #8097: bump volcano.sh/apis from 1.11.0 to 1.15.2
+* Fix #8050: (karaf) The Karaf feature bundles Aries SPI-Fly 1.3.7 (from 1.3.0) and ASM 9.10.1 (from 8.0.1), the versions required to weave Java 17 bytecode
+
+#### New Features
+* Fix #8041: Typed DSL for the resources added in Kubernetes 1.37: `certificates().v1().podCertificateRequests()`, `dynamicResourceAllocation().v1().deviceTaintRules()`, `storageMigration().v1().storageVersionMigrations()` and `scheduling().v1beta1()` `podGroups()` and `workloads()`, plus `certificates().v1beta1().podCertificateRequests()` and `storageMigration().v1beta1().storageVersionMigrations()`. `kubernetes-model-policy` also ships the `lifecycle.k8s.io/v1alpha1` model (`Eviction` and `EvictionRequest`)
+
+#### _**Note**_: Breaking changes
+* Check detailed migration documentation for breaking changes in [8.0.0](./doc/MIGRATION-v8.md)
+* Fix #8041: (kubernetes-client-api) `runtimeClasses()` and `network().ingresses()` (and `network().ingress()`) use the `v1` models instead of `v1beta1` ones Kubernetes no longer serves, see the [migration guide](./doc/MIGRATION-v8.md#unversioned-dsl-v1)
+* Fix #7374: Moved to Jackson 3 (`tools.jackson` coordinates and packages). The default serialization keeps the Jackson 2 behavior for custom types, see the [migration guide](./doc/MIGRATION-v8.md#jackson-3)
+* Fix #7987: (kubernetes-client-api) `Filterable#withShardSelector` also accepts a typed `ShardSelector`, so a literal `withShardSelector(null)` no longer compiles, see the [migration guide](./doc/MIGRATION-v8.md#shard-selector-null)
+* Fix #8031: (crd-generator) Removed the deprecated CRD Generator v1 (`crd-generator-api` and `crd-generator-apt`). Migrate to `crd-generator-api-v2` with the [Maven plugin](./crd-generator/maven-plugin/README.md), the [CLI tool](./crd-generator/cli/README.md), or the [Gradle build script recipe](./crd-generator/gradle/README.md), see the [migration guide](./doc/CRD-generator-migration-v2.md)
+* Fix #8009: Moved Java baseline from 11 to 17. In addition to the runtime requirement, the Maven plugins, the Gradle plugin and the annotation processor now require a Java 17+ JVM to run the build, and the OSGi bundles declare `osgi.ee=JavaSE 17`
+* Fix #8050: (karaf) The `kubernetes-karaf` feature repository no longer defines its own `scr` feature. `kubernetes-client` now depends on the `scr` feature provided by the Karaf distribution, which supplies the Declarative Services API bundles and the `scr:*` shell commands
+* Fix #8142: (knative) Serving `RevisionSpec` replaces `workloadRef` with `schedulingGroup` and adds `evictionResponders`, like the core `PodSpec` since Kubernetes 1.37
+* Fix #8133: (open-cluster-management) `DiscoveredClusterSpec` drops `owner` and `DiscoveredClusterCondition` drops `lastUpdateTime`
+* Fix #8148: (openshift-model) Model class `io.fabric8.openshift.api.model.customresourcestatus.conditions.v1.Condition` removed, Hive `ClusterDeploymentCustomizationStatus` conditions use the Kubernetes `Condition`
+* Fix #8148: (openshift-model-config) `ClusterImagePolicySpec` and `ImagePolicySpec` policies are `ImageSigstoreVerificationPolicy` and their roots of trust `ImagePolicyFulcioCAWithRekorRootOfTrust`, `ImagePolicyPKIRootOfTrust` and `ImagePolicyPublicKeyRootOfTrust`. Model classes `FulcioCAWithRekor`, `PKI`, `Policy` and `PublicKey` removed
+* Fix #8148: (openshift-model-config) `GCPPlatformStatus` drops `serviceEndpoints`, model class `GCPServiceEndpoint` removed
+* Fix #8148: (openshift-model-hive) oVirt support removed: `ClusterDeprovisionPlatform`, `MachinePoolPlatform` and `Platform` drop `ovirt`, model classes `OvirtClusterDeprovision` and the `io.fabric8.openshift.api.model.hive.ovirt.v1` package removed
+* Fix #8148: (openshift-model-hive) vSphere `MachinePool.osDisk` uses the installer `io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk`, model class `io.fabric8.openshift.api.model.hive.vsphere.v1.OSDisk` removed. The module now depends on `openshift-model-installer`, `openshift-model-machine` and `openshift-model-operator`
+* Fix #8148: (openshift-model-installer) GCP `PSCEndpoint` drops `region`
+* Fix #8148: (openshift-model-machineconfiguration) `v1alpha1` model classes `MachineConfigNode`, `PinnedImageSet` and their related types removed, use the `v1` ones
+* Fix #8133: (open-cluster-management) `MultiClusterHubSpec` drops `customCAConfigmap`, `enableClusterBackup`, `enableClusterProxyAddon`, `hive`, `ingress` and `separateCertificateManagement`. Model classes `BackupConfig`, `ExternalDNSAWSConfig`, `ExternalDNSConfig`, `ExternalDNSGCPConfig`, `FailedProvisionConfig`, `HiveConfigSpec`, `HiveConfigStatus`, `IngressSpec` and `VeleroBackupConfig` removed
+* Fix #8133: (open-cluster-management) Observability `PlatformMetricsSpec` and `UserWorkloadMetricsSpec` replace `collection` with `default` (`PlatformMetricsCollectionSpec` and `UserWorkloadMetricsCollectionSpec` removed), and `PlatformNamespaceRightSizingRecommendationSpec` is renamed to `PlatformRightSizingRecommendationSpec`
+* Fix #8100: (tekton) Model classes `Template` and `AffinityAssistantTemplate` moved from package `io.fabric8.tekton.pod` to `io.fabric8.tekton.unversioned`, since tekton pipeline 1.16.0 declares them as `+versionName=unversioned`
+* Fix #6779: (httpclient-jetty) Moved from Jetty 11 to Jetty 12.1, see the [migration guide](./doc/MIGRATION-v8.md#jetty-12)
+* Fix #8008: `kubernetes-client` and `openshift-client` default to the Vert.x 5 HttpClient (`kubernetes-httpclient-vertx-5`) instead of Vert.x 4 (`kubernetes-httpclient-vertx`), see the [migration guide](./doc/MIGRATION-v8.md#vertx5-httpclient)
+
+### 7.9.0 (2026-09-04)
+
+#### Bugs
+* Fix #8024: (httpclient-vertx-5) WebSocket operations (`exec`/`attach`/`portForward`/WebSocket-backed watches) on a *derived* client - one produced by calling `newBuilder()`/`build()` on an already-built `HttpClient` - no longer fall back to Vert.x's bare `WebSocketClient` defaults. `Vertx5HttpClientBuilder.build()`'s short-circuit path for derived clients reused the original client's plain HTTP connection (with its configuration intact) but always created a brand-new `WebSocketClient` with no options at all, discarding both the trust/key material (so TLS verified against the JVM default trust store instead of the configured cluster CA) and the configured limits (`maxFrameSize`/`maxMessageSize` fell back to 64 KiB/256 KiB instead of unlimited, and `maxConnections` to 50 instead of 8192, so oversized `exec`/`attach` messages were silently dropped even on plain HTTP). This affects `kubernetes-httpclient-vertx-5` only, which is opt-in - the bundled default `kubernetes-httpclient-vertx` (Vert.x 4) serves WebSockets from the same client it reuses when deriving and was never affected - and it is present in 7.6.0 through 7.8.0. Derivation happens more often than it looks: `OpenShiftClientImpl` derives on every `adapt(OpenShiftClient.class)` to install its OAuth token-refresh interceptor, `OpenShiftOAuthInterceptor` derives on every token refresh, and `BaseClient#newClient` derives whenever a differing `RequestConfig` is set. Derived clients now reuse the original's `WebSocketClient` outright, the same way they already reused its HTTP client, so they can no longer drift from it and no second transport is allocated per derivation. Note that sharing the transport also means closing any client in a derived family closes it for the whole family: `close()` on a client obtained from `adapt(OpenShiftClient.class)` now ends WebSocket operations on the client it was derived from as well, which is already what happened to that client's HTTP requests and what the other four implementations do. Nothing usable is lost, since the original's HTTP client was closed regardless; what changes is that the per-derivation `WebSocketClient` is no longer left behind unclosed
+* Fix #8029: (httpclient-vertx-5, httpclient-jetty) WebSocket connections now honor the configured proxy, so `exec`/`attach`/`portForward` and WebSocket-backed watches no longer connect straight to the API server and bypass a mandated egress proxy. Both implementations serve WebSockets from a transport separate from the HTTP client (a Vert.x 5 `WebSocketClient`, and a second Jetty `HttpClient` behind the `WebSocketClient`) and neither was given the proxy configuration; Jetty's WebSocket transport now also receives the proxy `BasicAuthentication` entry. The OkHttp, JDK and Vert.x 4 modules were unaffected because a single client serves both. On `httpclient-vertx-5` the configured connect timeout was not applied to the WebSocket client either, so a WebSocket connect could hang well past it. One consequence worth calling out: when the proxy credentials cannot be decoded - `HttpClientUtils.decodeBasicCredentials` returns `null` for anything that is not `Basic`, or whose decoded value does not split into exactly two `:`-separated parts, so a proxy password containing a colon is enough - the client falls back to stamping `Proxy-Authorization` on the request instead of configuring it on the transport. Such WebSocket connections now reach the proxy and are rejected with a 407 rather than silently completing straight to the API server, so a setup that appeared to work only because it was bypassing the proxy will now fail
 * Fix #7807: (kube-api-test) The `KUBE_API_TEST_STARTUP_TIMEOUT` environment variable is now parsed instead of throwing `ClassCastException` on every use — the value (always a `String`) was passed to `Class.cast()` for an `Integer`/`Boolean` target, which only widens reference types and never parses, so the timeout could not be configured via environment at all. A new `startupTimeout` attribute on `@EnableKubeAPIServer` (e.g. `@EnableKubeAPIServer(startupTimeout = 180000)`) allows overriding it declaratively, and all three configuration paths (annotation, builder, env var) now reject non-positive values
 * Fix #7983: (mockwebserver) WebSocket upgrades are now performed synchronously from the Vert.x request handler instead of from the asynchronous `HttpServerRequest#body()` callback. Deferring the upgrade let the request end event be processed first, so `HttpServerRequest#toWebSocket()` intermittently threw `IllegalStateException: Request has already been read` and the upgrade was lost (surfacing as flaky `exec`/`attach` mock-server tests). Upgrade requests carry no body, so they are detected via the `Upgrade` header and upgraded before the request is read; the asynchronous path is unchanged for regular HTTP requests
 * Fix #7955: (java-generator) Malicious CRD schema values can no longer inject executable code into the generated Java sources. Schema-controlled values (enum values, CRD group/version/names, property names, descriptions and defaults) are emitted as fully escaped Java string literals, so a value carrying a Unicode-escaped quote cannot break out of its literal once `javac` decodes it. As a defense in depth, each generated class is also re-parsed and structurally validated before it is written (with Java Unicode escape preprocessing enabled to match `javac`), aborting generation on any residual structural mismatch
+* Fix #8028: (openshift-model, kube-api-test) No package is shipped by two artifacts anymore, so each pair can be placed on the JPMS module path together. `openshift-model` no longer bundles the `io.fabric8.openshift.api.model.config.*` classes that `openshift-model-config` owns (its `Export-Package` wildcard inlined them from that dependency); they still reach consumers through it. `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`
 
 #### Improvements
 
 #### Dependency Upgrade
+* Fix #8033: bump gateway-api from 1.5.1 to 1.6.1
 
 #### New Features
+* Fix #7752: Support for Kubernetes v1.37.0 (Garhwal)
+* Fix #8033: gateway-api model gains `v1.TCPRoute` and `v1.UDPRoute` (both graduated from `v1alpha2` upstream in gateway-api v1.6.0). The `v1alpha2` types remain available, but upstream has deprecated them and will remove them in a future release, so new code should use the `v1` types
 
 #### _**Note**_: Breaking changes
+* Fix #7752: Kubernetes model API removals (removed upstream in Kubernetes v1.37.0). The following API versions have been completely removed from Kubernetes and are no longer available in the client:
+  - `certificates.k8s.io/v1alpha1/ClusterTrustBundle` → use `certificates.k8s.io/v1` or `v1beta1`
+  - `networking.k8s.io/v1beta1/IPAddress` → use `networking.k8s.io/v1`
+  - `networking.k8s.io/v1beta1/ServiceCIDR` → use `networking.k8s.io/v1`
+  - `storage.k8s.io/v1beta1/VolumeAttributesClass` → use `storage.k8s.io/v1`
+  - `scheduling.k8s.io/v1alpha2` (entire API version, 28 types) → use `v1alpha3` or `v1beta1`
+* Fix #7752: `VolumeMount` constructor signature changed (Kubernetes v1.37.0 added `bindMountOptions` field). The canonical constructor now takes `bindMountOptions` (List<String>) as its first parameter. Builder usage (`new VolumeMountBuilder().with...()`) is unaffected
+* Fix #8033: gateway-api model `v1.SessionPersistence` no longer exposes `idleTimeout` (removed upstream in gateway-api v1.6.0). Besides the field, this removes `getIdleTimeout()`/`setIdleTimeout()`, collapses the canonical constructor from five arguments to four, and drops `SessionPersistenceFluent.withIdleTimeout()`/`getIdleTimeout()`/`hasIdleTimeout()`, so the builder form (`withNewSessionPersistence().withIdleTimeout(...)`) no longer compiles. There is no runtime data loss: the class keeps its `@JsonAnyGetter`/`@JsonAnySetter`, and both the fluent and the builder carry `additionalProperties` through, so JSON or YAML still containing `idleTimeout` continues to deserialize and re-serialize intact
+* Fix #8028: (kube-api-test) `Fabric8ClientInjectionHandler` moved to `io.fabric8.kubeapitest.junit.inject`. It is resolved through `ServiceLoader`, so only code naming the class directly is affected
+* Fix #8028: (openshift-model) The bundle no longer exports or contains `io.fabric8.openshift.api.model.config.*`. Maven consumers are unaffected (`openshift-model-config` is a compile dependency), but OSGi deployments importing those packages must install the `openshift-model-config` bundle, which the `openshift-client` Karaf feature already does
 
 ### 7.8.0 (2026-06-29)
 

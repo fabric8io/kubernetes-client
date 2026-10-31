@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,11 +29,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TagSpecification is the name/value pair for a tag
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
@@ -85,7 +85,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * name of the tag
+     * name of the tag. This field is required and must be a non-empty string. Must be between 1 and 128 characters in length.
      */
     @JsonProperty("name")
     public String getName() {
@@ -93,7 +93,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * name of the tag
+     * name of the tag. This field is required and must be a non-empty string. Must be between 1 and 128 characters in length.
      */
     @JsonProperty("name")
     public void setName(String name) {
@@ -101,7 +101,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * value of the tag
+     * value of the tag. When omitted, this creates a tag with an empty string as the value.
      */
     @JsonProperty("value")
     public String getValue() {
@@ -109,7 +109,7 @@ public class TagSpecification implements Editable<TagSpecificationBuilder>, Kube
     }
 
     /**
-     * value of the tag
+     * value of the tag. When omitted, this creates a tag with an empty string as the value.
      */
     @JsonProperty("value")
     public void setValue(String value) {

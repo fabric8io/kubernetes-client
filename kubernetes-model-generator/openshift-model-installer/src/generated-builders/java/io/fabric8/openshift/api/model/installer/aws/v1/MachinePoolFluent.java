@@ -3,7 +3,6 @@ package io.fabric8.openshift.api.model.installer.aws.v1;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -27,6 +26,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   private List<String> additionalSecurityGroupIDs = new ArrayList<String>();
   private String amiID;
   private CPUOptionsBuilder cpuOptions;
+  private HostPlacementBuilder hostPlacement;
   private String iamProfile;
   private String iamRole;
   private EC2MetadataBuilder metadataService;
@@ -121,6 +121,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return this.cpuOptions != null ? this.cpuOptions.build() : null;
   }
   
+  public HostPlacement buildHostPlacement() {
+    return this.hostPlacement != null ? this.hostPlacement.build() : null;
+  }
+  
   public EC2Metadata buildMetadataService() {
     return this.metadataService != null ? this.metadataService.build() : null;
   }
@@ -135,6 +139,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
         this.withAdditionalSecurityGroupIDs(instance.getAdditionalSecurityGroupIDs());
         this.withAmiID(instance.getAmiID());
         this.withCpuOptions(instance.getCpuOptions());
+        this.withHostPlacement(instance.getHostPlacement());
         this.withIamProfile(instance.getIamProfile());
         this.withIamRole(instance.getIamRole());
         this.withMetadataService(instance.getMetadataService());
@@ -149,6 +154,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return this.withNewCpuOptionsLike(Optional.ofNullable(this.buildCpuOptions()).orElse(null));
   }
   
+  public HostPlacementNested<A> editHostPlacement() {
+    return this.withNewHostPlacementLike(Optional.ofNullable(this.buildHostPlacement()).orElse(null));
+  }
+  
   public MetadataServiceNested<A> editMetadataService() {
     return this.withNewMetadataServiceLike(Optional.ofNullable(this.buildMetadataService()).orElse(null));
   }
@@ -159,6 +168,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   
   public CpuOptionsNested<A> editOrNewCpuOptionsLike(CPUOptions item) {
     return this.withNewCpuOptionsLike(Optional.ofNullable(this.buildCpuOptions()).orElse(item));
+  }
+  
+  public HostPlacementNested<A> editOrNewHostPlacement() {
+    return this.withNewHostPlacementLike(Optional.ofNullable(this.buildHostPlacement()).orElse(new HostPlacementBuilder().build()));
+  }
+  
+  public HostPlacementNested<A> editOrNewHostPlacementLike(HostPlacement item) {
+    return this.withNewHostPlacementLike(Optional.ofNullable(this.buildHostPlacement()).orElse(item));
   }
   
   public MetadataServiceNested<A> editOrNewMetadataService() {
@@ -199,6 +216,9 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
       return false;
     }
     if (!(Objects.equals(cpuOptions, that.cpuOptions))) {
+      return false;
+    }
+    if (!(Objects.equals(hostPlacement, that.hostPlacement))) {
       return false;
     }
     if (!(Objects.equals(iamProfile, that.iamProfile))) {
@@ -311,6 +331,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return this.cpuOptions != null;
   }
   
+  public boolean hasHostPlacement() {
+    return this.hostPlacement != null;
+  }
+  
   public boolean hasIamProfile() {
     return this.iamProfile != null;
   }
@@ -354,7 +378,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
   }
   
   public int hashCode() {
-    return Objects.hash(additionalSecurityGroupIDs, amiID, cpuOptions, iamProfile, iamRole, metadataService, rootVolume, type, zones, additionalProperties);
+    return Objects.hash(additionalSecurityGroupIDs, amiID, cpuOptions, hostPlacement, iamProfile, iamRole, metadataService, rootVolume, type, zones, additionalProperties);
   }
   
   public A removeAllFromAdditionalSecurityGroupIDs(Collection<String> items) {
@@ -455,6 +479,11 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
         sb.append(cpuOptions);
         sb.append(",");
     }
+    if (!(hostPlacement == null)) {
+        sb.append("hostPlacement:");
+        sb.append(hostPlacement);
+        sb.append(",");
+    }
     if (!(iamProfile == null)) {
         sb.append("iamProfile:");
         sb.append(iamProfile);
@@ -544,6 +573,18 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return (A) this;
   }
   
+  public A withHostPlacement(HostPlacement hostPlacement) {
+    this._visitables.remove("hostPlacement");
+    if (hostPlacement != null) {
+        this.hostPlacement = new HostPlacementBuilder(hostPlacement);
+        this._visitables.get("hostPlacement").add(this.hostPlacement);
+    } else {
+        this.hostPlacement = null;
+        this._visitables.get("hostPlacement").remove(this.hostPlacement);
+    }
+    return (A) this;
+  }
+  
   public A withIamProfile(String iamProfile) {
     this.iamProfile = iamProfile;
     return (A) this;
@@ -578,6 +619,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return new CpuOptionsNested(item);
   }
   
+  public HostPlacementNested<A> withNewHostPlacement() {
+    return new HostPlacementNested(null);
+  }
+  
+  public HostPlacementNested<A> withNewHostPlacementLike(HostPlacement item) {
+    return new HostPlacementNested(item);
+  }
+  
   public MetadataServiceNested<A> withNewMetadataService() {
     return new MetadataServiceNested(null);
   }
@@ -594,7 +643,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     return new RootVolumeNested(null);
   }
   
-  public A withNewRootVolume(Integer iops,String kmsKeyARN,Integer size,Long throughput,String type) {
+  public A withNewRootVolume(Integer iops,String kmsKeyARN,Integer size,Integer throughput,String type) {
     return (A) this.withRootVolume(new EC2RootVolume(iops, kmsKeyARN, size, throughput, type));
   }
   
@@ -656,6 +705,23 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.installe
     }
     
     public N endCpuOptions() {
+      return and();
+    }
+    
+  }
+  public class HostPlacementNested<N> extends HostPlacementFluent<HostPlacementNested<N>> implements Nested<N>{
+  
+    HostPlacementBuilder builder;
+  
+    HostPlacementNested(HostPlacement item) {
+      this.builder = new HostPlacementBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachinePoolFluent.this.withHostPlacement(builder.build());
+    }
+    
+    public N endHostPlacement() {
       return and();
     }
     

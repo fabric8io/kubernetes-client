@@ -25,7 +25,7 @@ public class APIServerSpecBuilder extends APIServerSpecFluent<APIServerSpecBuild
   }
 
   public APIServerSpec build() {
-    APIServerSpec buildable = new APIServerSpec(fluent.getAdditionalCORSAllowedOrigins(), fluent.buildAudit(), fluent.buildClientCA(), fluent.buildEncryption(), fluent.buildServingCerts(), fluent.buildTlsSecurityProfile());
+    APIServerSpec buildable = new APIServerSpec(fluent.getAdditionalCORSAllowedOrigins(), fluent.buildAudit(), fluent.buildClientCA(), fluent.buildEncryption(), fluent.buildServingCerts(), fluent.getTlsAdherence(), fluent.buildTlsSecurityProfile());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -15,12 +15,14 @@
  */
 package io.fabric8.crdv2.generator;
 
-import com.fasterxml.jackson.databind.BeanDescription;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationConfig;
-import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition;
 import io.fabric8.crd.generator.annotation.Annotations;
 import io.fabric8.crd.generator.annotation.Labels;
+import tools.jackson.databind.BeanDescription;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationConfig;
+import tools.jackson.databind.introspect.BeanPropertyDefinition;
+import tools.jackson.databind.introspect.ClassIntrospector;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,8 +66,8 @@ public class CRDUtils {
    * then this logic will need to change
    */
   public static SpecAndStatus resolveSpecAndStatusTypes(Class<?> definition) {
-    SerializationConfig config = new ObjectMapper().getSerializationConfig();
-    BeanDescription description = config.introspect(config.constructType(definition));
+    SerializationConfig config = JsonMapper.builderWithJackson2Defaults().build().serializationConfig();
+    BeanDescription description = introspectForSerialization(config, config.constructType(definition));
     String specClassName = null;
     String statusClassName = null;
     for (BeanPropertyDefinition bpd : description.findProperties()) {
@@ -76,6 +78,15 @@ public class CRDUtils {
       }
     }
     return new SpecAndStatus(specClassName, statusClassName);
+  }
+
+  /**
+   * {@link SerializationConfig#classIntrospectorInstance()} already scopes the introspector to the given
+   * config, so it only needs the class annotations to describe the type.
+   */
+  static BeanDescription introspectForSerialization(SerializationConfig config, JavaType type) {
+    ClassIntrospector introspector = config.classIntrospectorInstance();
+    return introspector.introspectForSerialization(type, introspector.introspectClassAnnotations(type));
   }
 
   public static Map<String, String> toMap(String[] arr) {

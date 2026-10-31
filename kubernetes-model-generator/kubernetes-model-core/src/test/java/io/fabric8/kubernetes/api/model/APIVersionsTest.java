@@ -15,11 +15,12 @@
  */
 package io.fabric8.kubernetes.api.model;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.model.util.Helper;
 import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,7 +33,7 @@ class APIVersionsTest {
 
   @BeforeEach
   void setUp() {
-    mapper = new ObjectMapper();
+    mapper = new JsonMapper();
   }
 
   @Test

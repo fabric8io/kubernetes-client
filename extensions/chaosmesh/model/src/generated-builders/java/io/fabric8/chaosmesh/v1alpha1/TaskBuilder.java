@@ -25,7 +25,7 @@ public class TaskBuilder extends TaskFluent<TaskBuilder> implements VisitableBui
   }
 
   public Task build() {
-    Task buildable = new Task(fluent.buildContainer(), fluent.buildVolumes());
+    Task buildable = new Task(fluent.buildContainer(), fluent.getLabels(), fluent.buildVolumes());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

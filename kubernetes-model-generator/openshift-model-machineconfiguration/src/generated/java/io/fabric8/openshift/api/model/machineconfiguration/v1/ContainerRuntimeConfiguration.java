@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.machineconfiguration.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,13 +32,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ContainerRuntimeConfiguration defines the tuneables of the container runtime
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "additionalArtifactStores",
+    "additionalImageStores",
+    "additionalLayerStores",
     "defaultRuntime",
     "logLevel",
     "logSizeMax",
@@ -69,6 +74,15 @@ import lombok.experimental.Accessors;
 public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeConfigurationBuilder>, KubernetesResource
 {
 
+    @JsonProperty("additionalArtifactStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AdditionalArtifactStore> additionalArtifactStores = new ArrayList<>();
+    @JsonProperty("additionalImageStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AdditionalImageStore> additionalImageStores = new ArrayList<>();
+    @JsonProperty("additionalLayerStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<AdditionalLayerStore> additionalLayerStores = new ArrayList<>();
     @JsonProperty("defaultRuntime")
     private String defaultRuntime;
     @JsonProperty("logLevel")
@@ -88,13 +102,67 @@ public class ContainerRuntimeConfiguration implements Editable<ContainerRuntimeC
     public ContainerRuntimeConfiguration() {
     }
 
-    public ContainerRuntimeConfiguration(String defaultRuntime, String logLevel, Quantity logSizeMax, Quantity overlaySize, Long pidsLimit) {
+    public ContainerRuntimeConfiguration(List<AdditionalArtifactStore> additionalArtifactStores, List<AdditionalImageStore> additionalImageStores, List<AdditionalLayerStore> additionalLayerStores, String defaultRuntime, String logLevel, Quantity logSizeMax, Quantity overlaySize, Long pidsLimit) {
         super();
+        this.additionalArtifactStores = additionalArtifactStores;
+        this.additionalImageStores = additionalImageStores;
+        this.additionalLayerStores = additionalLayerStores;
         this.defaultRuntime = defaultRuntime;
         this.logLevel = logLevel;
         this.logSizeMax = logSizeMax;
         this.overlaySize = overlaySize;
         this.pidsLimit = pidsLimit;
+    }
+
+    /**
+     * additionalArtifactStores configures additional read-only artifact storage locations for Open Container Initiative (OCI) artifacts.<br><p> <br><p> Artifacts are checked in order: additional stores first, then the default location (/var/lib/containers/storage/artifacts). Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default artifact location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalArtifactStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AdditionalArtifactStore> getAdditionalArtifactStores() {
+        return additionalArtifactStores;
+    }
+
+    /**
+     * additionalArtifactStores configures additional read-only artifact storage locations for Open Container Initiative (OCI) artifacts.<br><p> <br><p> Artifacts are checked in order: additional stores first, then the default location (/var/lib/containers/storage/artifacts). Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default artifact location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalArtifactStores")
+    public void setAdditionalArtifactStores(List<AdditionalArtifactStore> additionalArtifactStores) {
+        this.additionalArtifactStores = additionalArtifactStores;
+    }
+
+    /**
+     * additionalImageStores configures additional read-only container image store locations for Open Container Initiative (OCI) images.<br><p> <br><p> Images are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default image location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalImageStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AdditionalImageStore> getAdditionalImageStores() {
+        return additionalImageStores;
+    }
+
+    /**
+     * additionalImageStores configures additional read-only container image store locations for Open Container Initiative (OCI) images.<br><p> <br><p> Images are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 10 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default image location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalImageStores")
+    public void setAdditionalImageStores(List<AdditionalImageStore> additionalImageStores) {
+        this.additionalImageStores = additionalImageStores;
+    }
+
+    /**
+     * additionalLayerStores configures additional read-only container image layer store locations for Open Container Initiative (OCI) images.<br><p> <br><p> Layers are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 5 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default layer location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalLayerStores")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<AdditionalLayerStore> getAdditionalLayerStores() {
+        return additionalLayerStores;
+    }
+
+    /**
+     * additionalLayerStores configures additional read-only container image layer store locations for Open Container Initiative (OCI) images.<br><p> <br><p> Layers are checked in order: additional stores first, then the default location. Stores are read-only. Maximum of 5 stores allowed. Each path must be unique.<br><p> <br><p> When omitted, only the default layer location is used. When specified, at least one store must be provided.
+     */
+    @JsonProperty("additionalLayerStores")
+    public void setAdditionalLayerStores(List<AdditionalLayerStore> additionalLayerStores) {
+        this.additionalLayerStores = additionalLayerStores;
     }
 
     /**

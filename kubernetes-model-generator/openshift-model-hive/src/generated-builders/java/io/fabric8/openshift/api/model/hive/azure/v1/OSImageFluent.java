@@ -17,6 +17,7 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
 
   private Map<String,Object> additionalProperties;
   private String offer;
+  private String plan;
   private String publisher;
   private String sku;
   private String version;
@@ -52,6 +53,7 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
     instance = instance != null ? instance : new OSImage();
     if (instance != null) {
         this.withOffer(instance.getOffer());
+        this.withPlan(instance.getPlan());
         this.withPublisher(instance.getPublisher());
         this.withSku(instance.getSku());
         this.withVersion(instance.getVersion());
@@ -71,6 +73,9 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
     }
     OSImageFluent that = (OSImageFluent) o;
     if (!(Objects.equals(offer, that.offer))) {
+      return false;
+    }
+    if (!(Objects.equals(plan, that.plan))) {
       return false;
     }
     if (!(Objects.equals(publisher, that.publisher))) {
@@ -96,6 +101,10 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
     return this.offer;
   }
   
+  public String getPlan() {
+    return this.plan;
+  }
+  
   public String getPublisher() {
     return this.publisher;
   }
@@ -116,6 +125,10 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
     return this.offer != null;
   }
   
+  public boolean hasPlan() {
+    return this.plan != null;
+  }
+  
   public boolean hasPublisher() {
     return this.publisher != null;
   }
@@ -129,7 +142,7 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
   }
   
   public int hashCode() {
-    return Objects.hash(offer, publisher, sku, version, additionalProperties);
+    return Objects.hash(offer, plan, publisher, sku, version, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -162,6 +175,11 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
     if (!(offer == null)) {
         sb.append("offer:");
         sb.append(offer);
+        sb.append(",");
+    }
+    if (!(plan == null)) {
+        sb.append("plan:");
+        sb.append(plan);
         sb.append(",");
     }
     if (!(publisher == null)) {
@@ -198,6 +216,11 @@ public class OSImageFluent<A extends io.fabric8.openshift.api.model.hive.azure.v
   
   public A withOffer(String offer) {
     this.offer = offer;
+    return (A) this;
+  }
+  
+  public A withPlan(String plan) {
+    this.plan = plan;
     return (A) this;
   }
   

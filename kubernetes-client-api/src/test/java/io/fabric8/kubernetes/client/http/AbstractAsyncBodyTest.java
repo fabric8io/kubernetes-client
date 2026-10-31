@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -125,6 +126,24 @@ public abstract class AbstractAsyncBodyTest {
       asyncBodyResponse.body().consume();
       asyncBodyResponse.body().done().get(10L, TimeUnit.SECONDS);
       assertThat(responseText.toString()).isEqualTo(largeBody);
+    }
+  }
+
+  @Test
+  @DisplayName("Consumer failure, completes done() exceptionally")
+  public void consumerFailureFailsDone() throws Exception {
+    try (final HttpClient client = getHttpClientFactory().newBuilder().build()) {
+      server.expect().withPath("/consumer-failure").andReturn(200, "some body").always();
+      final HttpResponse<AsyncBody> asyncBodyResponse = client.consumeBytes(
+          client.newHttpRequestBuilder().uri(server.url("/consumer-failure")).build(),
+          (value, asyncBody) -> {
+            throw new IllegalStateException("consumer failed");
+          })
+          .get(10L, TimeUnit.SECONDS);
+      asyncBodyResponse.body().consume();
+      final CompletableFuture<Void> doneFuture = asyncBodyResponse.body().done();
+      assertThatThrownBy(() -> doneFuture.get(10L, TimeUnit.SECONDS))
+          .isInstanceOf(ExecutionException.class);
     }
   }
 

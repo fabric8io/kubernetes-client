@@ -23,6 +23,7 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
   private Map<String,Object> additionalProperties;
   private HTTPConfigBuilder httpConfig;
   private Integer maxAlerts;
+  private String payload;
   private Boolean sendResolved;
   private String timeout;
   private String url;
@@ -64,6 +65,7 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
     if (instance != null) {
         this.withHttpConfig(instance.getHttpConfig());
         this.withMaxAlerts(instance.getMaxAlerts());
+        this.withPayload(instance.getPayload());
         this.withSendResolved(instance.getSendResolved());
         this.withTimeout(instance.getTimeout());
         this.withUrl(instance.getUrl());
@@ -101,6 +103,9 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
     if (!(Objects.equals(maxAlerts, that.maxAlerts))) {
       return false;
     }
+    if (!(Objects.equals(payload, that.payload))) {
+      return false;
+    }
     if (!(Objects.equals(sendResolved, that.sendResolved))) {
       return false;
     }
@@ -125,6 +130,10 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
   
   public Integer getMaxAlerts() {
     return this.maxAlerts;
+  }
+  
+  public String getPayload() {
+    return this.payload;
   }
   
   public Boolean getSendResolved() {
@@ -155,6 +164,10 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
     return this.maxAlerts != null;
   }
   
+  public boolean hasPayload() {
+    return this.payload != null;
+  }
+  
   public boolean hasSendResolved() {
     return this.sendResolved != null;
   }
@@ -172,7 +185,7 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
   }
   
   public int hashCode() {
-    return Objects.hash(httpConfig, maxAlerts, sendResolved, timeout, url, urlSecret, additionalProperties);
+    return Objects.hash(httpConfig, maxAlerts, payload, sendResolved, timeout, url, urlSecret, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -210,6 +223,11 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
     if (!(maxAlerts == null)) {
         sb.append("maxAlerts:");
         sb.append(maxAlerts);
+        sb.append(",");
+    }
+    if (!(payload == null)) {
+        sb.append("payload:");
+        sb.append(payload);
         sb.append(",");
     }
     if (!(sendResolved == null)) {
@@ -276,6 +294,11 @@ public class WebhookConfigFluent<A extends io.fabric8.openshift.api.model.monito
   
   public A withNewUrlSecret(String key,String name,Boolean optional) {
     return (A) this.withUrlSecret(new SecretKeySelector(key, name, optional));
+  }
+  
+  public A withPayload(String payload) {
+    this.payload = payload;
+    return (A) this;
   }
   
   public A withSendResolved() {

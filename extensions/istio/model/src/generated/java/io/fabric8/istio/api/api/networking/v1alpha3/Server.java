@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * `Server` describes the properties of the proxy on a given load balancer port. For example,<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 80<br><p> 	    name: http2<br><p> 	    protocol: HTTP2<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> <br><p> ```<br><p> <br><p> # Another example<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-tcp-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-tcp-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 27018<br><p> 	    name: mongo<br><p> 	    protocol: MONGO<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> <br><p> ```<br><p> <br><p> # The following is an example of TLS configuration for port 443<br><p> <br><p> ```yaml apiVersion: networking.istio.io/v1 kind: Gateway metadata:<br><p> <br><p> 	name: my-tls-ingress<br><p> <br><p> spec:<br><p> <br><p> 	selector:<br><p> 	  app: my-tls-ingressgateway<br><p> 	servers:<br><p> 	- port:<br><p> 	    number: 443<br><p> 	    name: https<br><p> 	    protocol: HTTPS<br><p> 	  hosts:<br><p> 	  - "&#42;"<br><p> 	  tls:<br><p> 	    mode: SIMPLE<br><p> 	    credentialName: tls-cert<br><p> <br><p> ```
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "bind",

@@ -2,6 +2,7 @@ package io.fabric8.kubernetes.api.model;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Integer;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -19,6 +20,7 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
 
   private Map<String,Object> additionalProperties;
   private String medium;
+  private Integer mode;
   private QuantityBuilder sizeLimit;
 
   public EmptyDirVolumeSourceFluent() {
@@ -56,6 +58,7 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
     instance = instance != null ? instance : new EmptyDirVolumeSource();
     if (instance != null) {
         this.withMedium(instance.getMedium());
+        this.withMode(instance.getMode());
         this.withSizeLimit(instance.getSizeLimit());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -87,6 +90,9 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
     if (!(Objects.equals(medium, that.medium))) {
       return false;
     }
+    if (!(Objects.equals(mode, that.mode))) {
+      return false;
+    }
     if (!(Objects.equals(sizeLimit, that.sizeLimit))) {
       return false;
     }
@@ -104,6 +110,10 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
     return this.medium;
   }
   
+  public Integer getMode() {
+    return this.mode;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -112,12 +122,16 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
     return this.medium != null;
   }
   
+  public boolean hasMode() {
+    return this.mode != null;
+  }
+  
   public boolean hasSizeLimit() {
     return this.sizeLimit != null;
   }
   
   public int hashCode() {
-    return Objects.hash(medium, sizeLimit, additionalProperties);
+    return Objects.hash(medium, mode, sizeLimit, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -152,6 +166,11 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
         sb.append(medium);
         sb.append(",");
     }
+    if (!(mode == null)) {
+        sb.append("mode:");
+        sb.append(mode);
+        sb.append(",");
+    }
     if (!(sizeLimit == null)) {
         sb.append("sizeLimit:");
         sb.append(sizeLimit);
@@ -176,6 +195,11 @@ public class EmptyDirVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mode
   
   public A withMedium(String medium) {
     this.medium = medium;
+    return (A) this;
+  }
+  
+  public A withMode(Integer mode) {
+    this.mode = mode;
     return (A) this;
   }
   

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -36,11 +35,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Role is a namespaced, logical grouping of PolicyRules that can be referenced as a unit by a RoleBinding.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
@@ -150,7 +150,7 @@ public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * Rules holds all the PolicyRules for this Role
+     * rules holds all the PolicyRules for this Role
      */
     @JsonProperty("rules")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -159,7 +159,7 @@ public class Role implements Editable<RoleBuilder>, HasMetadata, Namespaced
     }
 
     /**
-     * Rules holds all the PolicyRules for this Role
+     * rules holds all the PolicyRules for this Role
      */
     @JsonProperty("rules")
     public void setRules(List<PolicyRule> rules) {

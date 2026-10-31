@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
@@ -34,14 +33,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * UserDefinedNetworkStatus contains the observed status of the UserDefinedNetwork.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "conditions"
+    "conditions",
+    "vrfName"
 })
 @ToString
 @EqualsAndHashCode
@@ -71,6 +72,8 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Condition> conditions = new ArrayList<>();
+    @JsonProperty("vrfName")
+    private String vrfName;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -80,9 +83,10 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     public UserDefinedNetworkStatus() {
     }
 
-    public UserDefinedNetworkStatus(List<Condition> conditions) {
+    public UserDefinedNetworkStatus(List<Condition> conditions, String vrfName) {
         super();
         this.conditions = conditions;
+        this.vrfName = vrfName;
     }
 
     /**
@@ -100,6 +104,22 @@ public class UserDefinedNetworkStatus implements Editable<UserDefinedNetworkStat
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {
         this.conditions = conditions;
+    }
+
+    /**
+     * VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.
+     */
+    @JsonProperty("vrfName")
+    public String getVrfName() {
+        return vrfName;
+    }
+
+    /**
+     * VRFName is the name of the Linux VRF device that OVN-Kubernetes creates for this network on every node where the network is present. It is populated for primary networks. Consumers that must name the VRF, such as FRRConfiguration authors filling in the routers 'vrf' field, should read this value instead of deriving it.
+     */
+    @JsonProperty("vrfName")
+    public void setVrfName(String vrfName) {
+        this.vrfName = vrfName;
     }
 
     @JsonIgnore

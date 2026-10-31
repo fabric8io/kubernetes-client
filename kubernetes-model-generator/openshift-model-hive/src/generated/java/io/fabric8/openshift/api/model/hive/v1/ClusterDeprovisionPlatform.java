@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,19 +30,20 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "aws",
     "azure",
     "gcp",
     "ibmcloud",
+    "nutanix",
     "openstack",
-    "ovirt",
     "vsphere"
 })
 @ToString
@@ -79,10 +79,10 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     private GCPClusterDeprovision gcp;
     @JsonProperty("ibmcloud")
     private IBMClusterDeprovision ibmcloud;
+    @JsonProperty("nutanix")
+    private NutanixClusterDeprovision nutanix;
     @JsonProperty("openstack")
     private OpenStackClusterDeprovision openstack;
-    @JsonProperty("ovirt")
-    private OvirtClusterDeprovision ovirt;
     @JsonProperty("vsphere")
     private VSphereClusterDeprovision vsphere;
     @JsonIgnore
@@ -94,14 +94,14 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     public ClusterDeprovisionPlatform() {
     }
 
-    public ClusterDeprovisionPlatform(AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, IBMClusterDeprovision ibmcloud, OpenStackClusterDeprovision openstack, OvirtClusterDeprovision ovirt, VSphereClusterDeprovision vsphere) {
+    public ClusterDeprovisionPlatform(AWSClusterDeprovision aws, AzureClusterDeprovision azure, GCPClusterDeprovision gcp, IBMClusterDeprovision ibmcloud, NutanixClusterDeprovision nutanix, OpenStackClusterDeprovision openstack, VSphereClusterDeprovision vsphere) {
         super();
         this.aws = aws;
         this.azure = azure;
         this.gcp = gcp;
         this.ibmcloud = ibmcloud;
+        this.nutanix = nutanix;
         this.openstack = openstack;
-        this.ovirt = ovirt;
         this.vsphere = vsphere;
     }
 
@@ -172,6 +172,22 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     /**
      * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
      */
+    @JsonProperty("nutanix")
+    public NutanixClusterDeprovision getNutanix() {
+        return nutanix;
+    }
+
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
+    @JsonProperty("nutanix")
+    public void setNutanix(NutanixClusterDeprovision nutanix) {
+        this.nutanix = nutanix;
+    }
+
+    /**
+     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
+     */
     @JsonProperty("openstack")
     public OpenStackClusterDeprovision getOpenstack() {
         return openstack;
@@ -183,22 +199,6 @@ public class ClusterDeprovisionPlatform implements Editable<ClusterDeprovisionPl
     @JsonProperty("openstack")
     public void setOpenstack(OpenStackClusterDeprovision openstack) {
         this.openstack = openstack;
-    }
-
-    /**
-     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
-     */
-    @JsonProperty("ovirt")
-    public OvirtClusterDeprovision getOvirt() {
-        return ovirt;
-    }
-
-    /**
-     * ClusterDeprovisionPlatform contains platform-specific configuration for the deprovision
-     */
-    @JsonProperty("ovirt")
-    public void setOvirt(OvirtClusterDeprovision ovirt) {
-        this.ovirt = ovirt;
     }
 
     /**

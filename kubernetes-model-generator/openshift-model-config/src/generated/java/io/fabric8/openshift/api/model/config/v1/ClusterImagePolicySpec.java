@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,11 +31,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * CLusterImagePolicySpec is the specification of the ClusterImagePolicy custom resource.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "policy",
@@ -68,7 +68,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
 {
 
     @JsonProperty("policy")
-    private Policy policy;
+    private ImageSigstoreVerificationPolicy policy;
     @JsonProperty("scopes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> scopes = new ArrayList<>();
@@ -81,7 +81,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
     public ClusterImagePolicySpec() {
     }
 
-    public ClusterImagePolicySpec(Policy policy, List<String> scopes) {
+    public ClusterImagePolicySpec(ImageSigstoreVerificationPolicy policy, List<String> scopes) {
         super();
         this.policy = policy;
         this.scopes = scopes;
@@ -91,7 +91,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
      * CLusterImagePolicySpec is the specification of the ClusterImagePolicy custom resource.
      */
     @JsonProperty("policy")
-    public Policy getPolicy() {
+    public ImageSigstoreVerificationPolicy getPolicy() {
         return policy;
     }
 
@@ -99,7 +99,7 @@ public class ClusterImagePolicySpec implements Editable<ClusterImagePolicySpecBu
      * CLusterImagePolicySpec is the specification of the ClusterImagePolicy custom resource.
      */
     @JsonProperty("policy")
-    public void setPolicy(Policy policy) {
+    public void setPolicy(ImageSigstoreVerificationPolicy policy) {
         this.policy = policy;
     }
 

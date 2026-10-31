@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ManagedClusterSet defines a group of ManagedClusters that you can run workloads on. You can define a workload to be deployed on a ManagedClusterSet. See the following options  for the workload: - The workload can run on any ManagedCluster in the ManagedClusterSet - The workload cannot run on any ManagedCluster outside the ManagedClusterSet - The service exposed by the workload can be shared in any ManagedCluster in the ManagedClusterSet<br><p> <br><p> To assign a ManagedCluster to a certain ManagedClusterSet, add a label with the name cluster.open-cluster-management.io/clusterset on the ManagedCluster to refer to the ManagedClusterSet. You are not allowed to add or remove this label on a ManagedCluster unless you have an RBAC rule to CREATE on a virtual subresource of managedclustersets/join. To update this label, you must have the permission on both the old and new ManagedClusterSet.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,14 +29,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TokenClaimMapping allows specifying a JWT token claim to be used when mapping claims from an authentication token to cluster identities.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "claim"
+    "claim",
+    "expression"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,6 +67,8 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
 
     @JsonProperty("claim")
     private String claim;
+    @JsonProperty("expression")
+    private String expression;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -75,13 +78,14 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     public TokenClaimMapping() {
     }
 
-    public TokenClaimMapping(String claim) {
+    public TokenClaimMapping(String claim, String expression) {
         super();
         this.claim = claim;
+        this.expression = expression;
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
+     * claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string `""`, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.
      */
     @JsonProperty("claim")
     public String getClaim() {
@@ -89,11 +93,27 @@ public class TokenClaimMapping implements Editable<TokenClaimMappingBuilder>, Ku
     }
 
     /**
-     * claim is a required field that configures the JWT token claim whose value is assigned to the cluster identity field associated with this mapping.
+     * claim is an optional field for specifying the JWT token claim that is used in the mapping. The value of this claim will be assigned to the field in which this mapping is associated. claim must not exceed 256 characters in length. When set to the empty string `""`, this means that no named claim should be used for the group mapping. claim is required when the ExternalOIDCWithUpstreamParity feature gate is not enabled.
      */
     @JsonProperty("claim")
     public void setClaim(String claim) {
         this.claim = claim;
+    }
+
+    /**
+     * expression is an optional CEL expression used to derive group values from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length .<br><p> <br><p> When specified, claim must not be set or be explicitly set to the empty string (`""`).
+     */
+    @JsonProperty("expression")
+    public String getExpression() {
+        return expression;
+    }
+
+    /**
+     * expression is an optional CEL expression used to derive group values from JWT claims.<br><p> <br><p> CEL expressions have access to the token claims through a CEL variable, 'claims'.<br><p> <br><p> expression must be at least 1 character and must not exceed 1024 characters in length .<br><p> <br><p> When specified, claim must not be set or be explicitly set to the empty string (`""`).
+     */
+    @JsonProperty("expression")
+    public void setExpression(String expression) {
+        this.expression = expression;
     }
 
     @JsonIgnore

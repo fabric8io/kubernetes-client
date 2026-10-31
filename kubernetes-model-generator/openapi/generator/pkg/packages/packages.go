@@ -50,8 +50,6 @@ var OpenShiftPackagePatterns = []string{
 	"github.com/operator-framework/api/pkg/operators/v...",
 	"github.com/operator-framework/operator-lifecycle-manager/pkg/package-server/apis/operators/v...",
 	"github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring/v...",
-	// Support types required by some APIs such as (github.com/openshift/hive)
-	"github.com/openshift/custom-resource-status/conditions/v...",
 }
 
 var AutoscalingPackagePatterns = []string{
@@ -132,12 +130,17 @@ var OpenClusterManagementPackagePatterns = []string{
 }
 
 var OvnPackagePatterns = []string{
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressip/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1",
-	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/adminpolicybasedroute/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/clusternetworkconnect/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressfirewall/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressip/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressqos/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/egressservice/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/routeadvertisements/v1",
+	// Shared selectors (no API group) referenced by clusternetworkconnect and routeadvertisements
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/types",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/userdefinednetwork/v1",
+	"github.com/ovn-kubernetes/ovn-kubernetes/go-controller/pkg/crd/vtep/v1",
 }
 
 var TektonPackagePatterns = []string{

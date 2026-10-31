@@ -27,6 +27,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
   private String datacenter;
   private String defaultDatastore;
   private String folder;
+  private io.fabric8.openshift.api.model.installer.vsphere.v1.Platform infrastructure;
   private String network;
   private String vCenter;
 
@@ -74,6 +75,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
         this.withDatacenter(instance.getDatacenter());
         this.withDefaultDatastore(instance.getDefaultDatastore());
         this.withFolder(instance.getFolder());
+        this.withInfrastructure(instance.getInfrastructure());
         this.withNetwork(instance.getNetwork());
         this.withVCenter(instance.getVCenter());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -133,6 +135,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
     if (!(Objects.equals(folder, that.folder))) {
       return false;
     }
+    if (!(Objects.equals(infrastructure, that.infrastructure))) {
+      return false;
+    }
     if (!(Objects.equals(network, that.network))) {
       return false;
     }
@@ -163,6 +168,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
   
   public String getFolder() {
     return this.folder;
+  }
+  
+  public io.fabric8.openshift.api.model.installer.vsphere.v1.Platform getInfrastructure() {
+    return this.infrastructure;
   }
   
   public String getNetwork() {
@@ -201,6 +210,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
     return this.folder != null;
   }
   
+  public boolean hasInfrastructure() {
+    return this.infrastructure != null;
+  }
+  
   public boolean hasNetwork() {
     return this.network != null;
   }
@@ -210,7 +223,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
   }
   
   public int hashCode() {
-    return Objects.hash(certificatesSecretRef, cluster, credentialsSecretRef, datacenter, defaultDatastore, folder, network, vCenter, additionalProperties);
+    return Objects.hash(certificatesSecretRef, cluster, credentialsSecretRef, datacenter, defaultDatastore, folder, infrastructure, network, vCenter, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -268,6 +281,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
     if (!(folder == null)) {
         sb.append("folder:");
         sb.append(folder);
+        sb.append(",");
+    }
+    if (!(infrastructure == null)) {
+        sb.append("infrastructure:");
+        sb.append(infrastructure);
         sb.append(",");
     }
     if (!(network == null)) {
@@ -338,6 +356,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.hive.vspher
   
   public A withFolder(String folder) {
     this.folder = folder;
+    return (A) this;
+  }
+  
+  public A withInfrastructure(io.fabric8.openshift.api.model.installer.vsphere.v1.Platform infrastructure) {
+    this.infrastructure = infrastructure;
     return (A) this;
   }
   

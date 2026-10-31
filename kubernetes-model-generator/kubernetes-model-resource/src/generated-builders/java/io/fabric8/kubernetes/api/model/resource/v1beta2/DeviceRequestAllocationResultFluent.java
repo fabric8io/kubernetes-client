@@ -35,6 +35,7 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
   private String pool;
   private String request;
   private String shareID;
+  private List<String> skipNodeOperations = new ArrayList<String>();
   private ArrayList<DeviceTolerationBuilder> tolerations = new ArrayList<DeviceTolerationBuilder>();
 
   public DeviceRequestAllocationResultFluent() {
@@ -60,6 +61,16 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     }
     for (String item : items) {
       this.bindingFailureConditions.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToSkipNodeOperations(Collection<String> items) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    for (String item : items) {
+      this.skipNodeOperations.add(item);
     }
     return (A) this;
   }
@@ -164,6 +175,24 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     return (A) this;
   }
   
+  public A addToSkipNodeOperations(String... items) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    for (String item : items) {
+      this.skipNodeOperations.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToSkipNodeOperations(int index,String item) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    this.skipNodeOperations.add(index, item);
+    return (A) this;
+  }
+  
   public A addToTolerations(DeviceToleration... items) {
     if (this.tolerations == null) {
       this.tolerations = new ArrayList();
@@ -228,6 +257,7 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
         this.withPool(instance.getPool());
         this.withRequest(instance.getRequest());
         this.withShareID(instance.getShareID());
+        this.withSkipNodeOperations(instance.getSkipNodeOperations());
         this.withTolerations(instance.getTolerations());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -307,6 +337,9 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     if (!(Objects.equals(shareID, that.shareID))) {
       return false;
     }
+    if (!(Objects.equals(skipNodeOperations, that.skipNodeOperations))) {
+      return false;
+    }
     if (!(Objects.equals(tolerations, that.tolerations))) {
       return false;
     }
@@ -360,12 +393,20 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     return this.bindingFailureConditions.get(0);
   }
   
+  public String getFirstSkipNodeOperation() {
+    return this.skipNodeOperations.get(0);
+  }
+  
   public String getLastBindingCondition() {
     return this.bindingConditions.get(bindingConditions.size() - 1);
   }
   
   public String getLastBindingFailureCondition() {
     return this.bindingFailureConditions.get(bindingFailureConditions.size() - 1);
+  }
+  
+  public String getLastSkipNodeOperation() {
+    return this.skipNodeOperations.get(skipNodeOperations.size() - 1);
   }
   
   public String getMatchingBindingCondition(Predicate<String> predicate) {
@@ -386,6 +427,15 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
       return null;
   }
   
+  public String getMatchingSkipNodeOperation(Predicate<String> predicate) {
+      for (String item : skipNodeOperations) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
   public String getPool() {
     return this.pool;
   }
@@ -396,6 +446,14 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
   
   public String getShareID() {
     return this.shareID;
+  }
+  
+  public String getSkipNodeOperation(int index) {
+    return this.skipNodeOperations.get(index);
+  }
+  
+  public List<String> getSkipNodeOperations() {
+    return this.skipNodeOperations;
   }
   
   public boolean hasAdditionalProperties() {
@@ -444,6 +502,15 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
       return false;
   }
   
+  public boolean hasMatchingSkipNodeOperation(Predicate<String> predicate) {
+      for (String item : skipNodeOperations) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMatchingToleration(Predicate<DeviceTolerationBuilder> predicate) {
       for (DeviceTolerationBuilder item : tolerations) {
         if (predicate.test(item)) {
@@ -465,12 +532,16 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     return this.shareID != null;
   }
   
+  public boolean hasSkipNodeOperations() {
+    return this.skipNodeOperations != null && !(this.skipNodeOperations.isEmpty());
+  }
+  
   public boolean hasTolerations() {
     return this.tolerations != null && !(this.tolerations.isEmpty());
   }
   
   public int hashCode() {
-    return Objects.hash(adminAccess, bindingConditions, bindingFailureConditions, consumedCapacity, device, driver, pool, request, shareID, tolerations, additionalProperties);
+    return Objects.hash(adminAccess, bindingConditions, bindingFailureConditions, consumedCapacity, device, driver, pool, request, shareID, skipNodeOperations, tolerations, additionalProperties);
   }
   
   public A removeAllFromBindingConditions(Collection<String> items) {
@@ -489,6 +560,16 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     }
     for (String item : items) {
       this.bindingFailureConditions.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromSkipNodeOperations(Collection<String> items) {
+    if (this.skipNodeOperations == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.skipNodeOperations.remove(item);
     }
     return (A) this;
   }
@@ -573,6 +654,16 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     return (A) this;
   }
   
+  public A removeFromSkipNodeOperations(String... items) {
+    if (this.skipNodeOperations == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.skipNodeOperations.remove(item);
+    }
+    return (A) this;
+  }
+  
   public A removeFromTolerations(DeviceToleration... items) {
     if (this.tolerations == null) {
       return (A) this;
@@ -618,6 +709,14 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
       this.bindingFailureConditions = new ArrayList();
     }
     this.bindingFailureConditions.set(index, item);
+    return (A) this;
+  }
+  
+  public A setToSkipNodeOperations(int index,String item) {
+    if (this.skipNodeOperations == null) {
+      this.skipNodeOperations = new ArrayList();
+    }
+    this.skipNodeOperations.set(index, item);
     return (A) this;
   }
   
@@ -682,6 +781,11 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
     if (!(shareID == null)) {
         sb.append("shareID:");
         sb.append(shareID);
+        sb.append(",");
+    }
+    if (!(skipNodeOperations == null) && !(skipNodeOperations.isEmpty())) {
+        sb.append("skipNodeOperations:");
+        sb.append(skipNodeOperations);
         sb.append(",");
     }
     if (!(tolerations == null) && !(tolerations.isEmpty())) {
@@ -796,6 +900,31 @@ public class DeviceRequestAllocationResultFluent<A extends io.fabric8.kubernetes
   
   public A withShareID(String shareID) {
     this.shareID = shareID;
+    return (A) this;
+  }
+  
+  public A withSkipNodeOperations(List<String> skipNodeOperations) {
+    if (skipNodeOperations != null) {
+        this.skipNodeOperations = new ArrayList();
+        for (String item : skipNodeOperations) {
+          this.addToSkipNodeOperations(item);
+        }
+    } else {
+      this.skipNodeOperations = null;
+    }
+    return (A) this;
+  }
+  
+  public A withSkipNodeOperations(String... skipNodeOperations) {
+    if (this.skipNodeOperations != null) {
+        this.skipNodeOperations.clear();
+        _visitables.remove("skipNodeOperations");
+    }
+    if (skipNodeOperations != null) {
+      for (String item : skipNodeOperations) {
+        this.addToSkipNodeOperations(item);
+      }
+    }
     return (A) this;
   }
   

@@ -25,7 +25,7 @@ public class SNSConfigBuilder extends SNSConfigFluent<SNSConfigBuilder> implemen
   }
 
   public SNSConfig build() {
-    SNSConfig buildable = new SNSConfig(fluent.getApiURL(), fluent.getAttributes(), fluent.buildHttpConfig(), fluent.getMessage(), fluent.getPhoneNumber(), fluent.getSendResolved(), fluent.buildSigv4(), fluent.getSubject(), fluent.getTargetARN(), fluent.getTopicARN());
+    SNSConfig buildable = new SNSConfig(fluent.getApiURL(), fluent.getAttributes(), fluent.buildHttpConfig(), fluent.getMessage(), fluent.getPhoneNumber(), fluent.getSendResolved(), fluent.buildSigv4(), fluent.getSubject(), fluent.getTargetARN(), fluent.getTopicARN(), fluent.getUseAWSHTTPClient());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

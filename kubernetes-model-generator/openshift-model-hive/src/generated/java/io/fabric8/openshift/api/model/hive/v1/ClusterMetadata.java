@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,17 +30,19 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ClusterMetadata contains metadata information about the installed cluster.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "adminKubeconfigSecretRef",
     "adminPasswordSecretRef",
     "clusterID",
     "infraID",
+    "metadataJSONSecretRef",
     "platform"
 })
 @ToString
@@ -77,6 +78,8 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     private String clusterID;
     @JsonProperty("infraID")
     private String infraID;
+    @JsonProperty("metadataJSONSecretRef")
+    private LocalObjectReference metadataJSONSecretRef;
     @JsonProperty("platform")
     private ClusterPlatformMetadata platform;
     @JsonIgnore
@@ -88,12 +91,13 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     public ClusterMetadata() {
     }
 
-    public ClusterMetadata(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, ClusterPlatformMetadata platform) {
+    public ClusterMetadata(LocalObjectReference adminKubeconfigSecretRef, LocalObjectReference adminPasswordSecretRef, String clusterID, String infraID, LocalObjectReference metadataJSONSecretRef, ClusterPlatformMetadata platform) {
         super();
         this.adminKubeconfigSecretRef = adminKubeconfigSecretRef;
         this.adminPasswordSecretRef = adminPasswordSecretRef;
         this.clusterID = clusterID;
         this.infraID = infraID;
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
         this.platform = platform;
     }
 
@@ -159,6 +163,22 @@ public class ClusterMetadata implements Editable<ClusterMetadataBuilder>, Kubern
     @JsonProperty("infraID")
     public void setInfraID(String infraID) {
         this.infraID = infraID;
+    }
+
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public LocalObjectReference getMetadataJSONSecretRef() {
+        return metadataJSONSecretRef;
+    }
+
+    /**
+     * ClusterMetadata contains metadata information about the installed cluster.
+     */
+    @JsonProperty("metadataJSONSecretRef")
+    public void setMetadataJSONSecretRef(LocalObjectReference metadataJSONSecretRef) {
+        this.metadataJSONSecretRef = metadataJSONSecretRef;
     }
 
     /**

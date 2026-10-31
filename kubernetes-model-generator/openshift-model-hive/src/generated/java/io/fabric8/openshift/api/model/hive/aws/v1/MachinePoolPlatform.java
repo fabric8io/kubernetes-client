@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePoolPlatform stores the configuration for a machine pool installed on AWS.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "additionalSecurityGroupIDs",
+    "amiID",
     "metadataService",
     "rootVolume",
     "spotMarketOptions",
@@ -77,6 +78,8 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("additionalSecurityGroupIDs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> additionalSecurityGroupIDs = new ArrayList<>();
+    @JsonProperty("amiID")
+    private String amiID;
     @JsonProperty("metadataService")
     private EC2Metadata metadataService;
     @JsonProperty("rootVolume")
@@ -103,9 +106,10 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     public MachinePoolPlatform() {
     }
 
-    public MachinePoolPlatform(List<String> additionalSecurityGroupIDs, EC2Metadata metadataService, EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, Map<String, String> userTags, List<String> zones) {
+    public MachinePoolPlatform(List<String> additionalSecurityGroupIDs, String amiID, EC2Metadata metadataService, EC2RootVolume rootVolume, SpotMarketOptions spotMarketOptions, List<String> subnets, String type, Map<String, String> userTags, List<String> zones) {
         super();
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+        this.amiID = amiID;
         this.metadataService = metadataService;
         this.rootVolume = rootVolume;
         this.spotMarketOptions = spotMarketOptions;
@@ -130,6 +134,22 @@ public class MachinePoolPlatform implements Editable<MachinePoolPlatformBuilder>
     @JsonProperty("additionalSecurityGroupIDs")
     public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
         this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
+    }
+
+    /**
+     * AMIID is the AMI to use for machines in this pool. When omitted, Hive falls back to its existing behavior of determining an appropriate boot image for the platform.
+     */
+    @JsonProperty("amiID")
+    public String getAmiID() {
+        return amiID;
+    }
+
+    /**
+     * AMIID is the AMI to use for machines in this pool. When omitted, Hive falls back to its existing behavior of determining an appropriate boot image for the platform.
+     */
+    @JsonProperty("amiID")
+    public void setAmiID(String amiID) {
+        this.amiID = amiID;
     }
 
     /**

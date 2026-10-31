@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,13 +29,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "configImage",
     "configVersion",
     "node",
     "pool"
@@ -66,6 +67,8 @@ import lombok.experimental.Accessors;
 public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("configImage")
+    private MachineConfigNodeSpecConfigImage configImage;
     @JsonProperty("configVersion")
     private MachineConfigNodeSpecMachineConfigVersion configVersion;
     @JsonProperty("node")
@@ -81,11 +84,28 @@ public class MachineConfigNodeSpec implements Editable<MachineConfigNodeSpecBuil
     public MachineConfigNodeSpec() {
     }
 
-    public MachineConfigNodeSpec(MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, MCOObjectReference pool) {
+    public MachineConfigNodeSpec(MachineConfigNodeSpecConfigImage configImage, MachineConfigNodeSpecMachineConfigVersion configVersion, MCOObjectReference node, MCOObjectReference pool) {
         super();
+        this.configImage = configImage;
         this.configVersion = configVersion;
         this.node = node;
         this.pool = pool;
+    }
+
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
+    @JsonProperty("configImage")
+    public MachineConfigNodeSpecConfigImage getConfigImage() {
+        return configImage;
+    }
+
+    /**
+     * MachineConfigNodeSpec describes the MachineConfigNode we are managing.
+     */
+    @JsonProperty("configImage")
+    public void setConfigImage(MachineConfigNodeSpecConfigImage configImage) {
+        this.configImage = configImage;
     }
 
     /**

@@ -39,19 +39,19 @@ jobs:
       fail-fast: false
       matrix:
         kubernetes: [v1.36.0,v1.35.4,v1.34.7,v1.33.11,v1.32.13]
-        httpclient: [jdk,jetty,okhttp,vertx-5]
+        httpclient: [jdk,jetty,okhttp,vertx-4]
     steps:
       - name: Checkout
         uses: actions/checkout@v7
       - name: Setup Minikube-Kubernetes
-        uses: manusa/actions-setup-minikube@b65276017fdec6f1e6498129fb740e34e260dc55 # v2.18.0
+        uses: manusa/actions-setup-minikube@001b9f30165b2a875b835ec5183ced75b94bc269 # v2.19.0
         with:
           minikube version: v1.38.1
           kubernetes version: ${{ matrix.kubernetes }}
           github token: ${{ secrets.GITHUB_TOKEN }}
           start args: '--force'
       - name: Setup Java 17
-        uses: actions/setup-java@v5
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
           distribution: 'temurin'

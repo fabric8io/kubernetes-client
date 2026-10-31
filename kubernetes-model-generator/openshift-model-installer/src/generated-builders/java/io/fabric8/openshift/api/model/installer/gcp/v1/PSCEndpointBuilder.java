@@ -25,7 +25,7 @@ public class PSCEndpointBuilder extends PSCEndpointFluent<PSCEndpointBuilder> im
   }
 
   public PSCEndpoint build() {
-    PSCEndpoint buildable = new PSCEndpoint(fluent.getClusterUseOnly(), fluent.getName(), fluent.getRegion());
+    PSCEndpoint buildable = new PSCEndpoint(fluent.getClusterUseOnly(), fluent.getName());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

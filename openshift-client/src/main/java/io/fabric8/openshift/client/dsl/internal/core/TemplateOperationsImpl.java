@@ -15,7 +15,6 @@
  */
 package io.fabric8.openshift.client.dsl.internal.core;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import io.fabric8.kubernetes.api.model.HasMetadata;
 import io.fabric8.kubernetes.api.model.KubernetesList;
 import io.fabric8.kubernetes.api.model.KubernetesListBuilder;
@@ -37,6 +36,7 @@ import io.fabric8.openshift.client.ParameterValue;
 import io.fabric8.openshift.client.dsl.TemplateResource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import tools.jackson.core.type.TypeReference;
 
 import java.io.File;
 import java.io.FileInputStream;

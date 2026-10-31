@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -34,11 +33,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SyncIdentityProviderSpec defines the SyncIdentityProviderCommonSpec identity providers to sync along with ClusterDeploymentRefs indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "clusterDeploymentRefs",
@@ -91,7 +91,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     /**
-     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
      */
     @JsonProperty("clusterDeploymentRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -100,7 +100,7 @@ public class SyncIdentityProviderSpec implements Editable<SyncIdentityProviderSp
     }
 
     /**
-     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncSet applies to in the SyncSet's namespace.
+     * ClusterDeploymentRefs is the list of LocalObjectReference indicating which clusters the SyncIdentityProvider applies to in the SyncIdentityProvider's namespace.
      */
     @JsonProperty("clusterDeploymentRefs")
     public void setClusterDeploymentRefs(List<LocalObjectReference> clusterDeploymentRefs) {

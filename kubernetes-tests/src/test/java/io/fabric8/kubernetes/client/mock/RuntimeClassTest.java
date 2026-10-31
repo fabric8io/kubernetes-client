@@ -16,10 +16,10 @@
 package io.fabric8.kubernetes.client.mock;
 
 import io.fabric8.kubernetes.api.model.HasMetadata;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClass;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassBuilder;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassList;
-import io.fabric8.kubernetes.api.model.node.v1beta1.RuntimeClassListBuilder;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClass;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassBuilder;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassList;
+import io.fabric8.kubernetes.api.model.node.v1.RuntimeClassListBuilder;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.server.mock.EnableKubernetesMockClient;
 import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
@@ -56,7 +56,7 @@ class RuntimeClassTest {
   @Test
   void testCreate() {
     // Given
-    server.expect().post().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses")
+    server.expect().post().withPath("/apis/node.k8s.io/v1/runtimeclasses")
         .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
         .once();
 
@@ -71,7 +71,7 @@ class RuntimeClassTest {
   @Test
   void testGet() {
     // Given
-    server.expect().get().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
+    server.expect().get().withPath("/apis/node.k8s.io/v1/runtimeclasses/test-class")
         .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
         .once();
 
@@ -86,7 +86,7 @@ class RuntimeClassTest {
   @Test
   void testList() {
     // Given
-    server.expect().get().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses")
+    server.expect().get().withPath("/apis/node.k8s.io/v1/runtimeclasses")
         .andReturn(HttpURLConnection.HTTP_OK, new RuntimeClassListBuilder()
             .addToItems(getMockRuntimeClass())
             .build())
@@ -104,7 +104,7 @@ class RuntimeClassTest {
   @Test
   void testDelete() {
     // Given
-    server.expect().delete().withPath("/apis/node.k8s.io/v1beta1/runtimeclasses/test-class")
+    server.expect().delete().withPath("/apis/node.k8s.io/v1/runtimeclasses/test-class")
         .andReturn(HttpURLConnection.HTTP_OK, getMockRuntimeClass())
         .once();
 

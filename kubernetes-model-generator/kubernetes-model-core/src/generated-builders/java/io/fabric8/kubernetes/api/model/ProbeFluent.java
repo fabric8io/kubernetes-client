@@ -414,8 +414,8 @@ public class ProbeFluent<A extends io.fabric8.kubernetes.api.model.ProbeFluent<A
     return new GrpcNested(null);
   }
   
-  public A withNewGrpc(Integer port,String service) {
-    return (A) this.withGrpc(new GRPCAction(port, service));
+  public A withNewGrpc(String mode,Integer port,String service) {
+    return (A) this.withGrpc(new GRPCAction(mode, port, service));
   }
   
   public GrpcNested<A> withNewGrpcLike(GRPCAction item) {

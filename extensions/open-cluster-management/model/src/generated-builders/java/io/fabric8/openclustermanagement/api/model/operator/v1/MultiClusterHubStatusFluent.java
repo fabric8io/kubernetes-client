@@ -2,6 +2,7 @@ package io.fabric8.openclustermanagement.api.model.operator.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
+import java.lang.Boolean;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -14,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -27,6 +29,7 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
   private ArrayList<HubConditionBuilder> conditions = new ArrayList<HubConditionBuilder>();
   private String currentVersion;
   private String desiredVersion;
+  private MCEVersionComplianceStatusBuilder mceVersionCompliance;
   private String phase;
 
   public MultiClusterHubStatusFluent() {
@@ -148,6 +151,10 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
       return null;
   }
   
+  public MCEVersionComplianceStatus buildMceVersionCompliance() {
+    return this.mceVersionCompliance != null ? this.mceVersionCompliance.build() : null;
+  }
+  
   protected void copyInstance(MultiClusterHubStatus instance) {
     instance = instance != null ? instance : new MultiClusterHubStatus();
     if (instance != null) {
@@ -155,6 +162,7 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
         this.withConditions(instance.getConditions());
         this.withCurrentVersion(instance.getCurrentVersion());
         this.withDesiredVersion(instance.getDesiredVersion());
+        this.withMceVersionCompliance(instance.getMceVersionCompliance());
         this.withPhase(instance.getPhase());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -196,6 +204,18 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
     return this.setNewConditionLike(index, this.buildCondition(index));
   }
   
+  public MceVersionComplianceNested<A> editMceVersionCompliance() {
+    return this.withNewMceVersionComplianceLike(Optional.ofNullable(this.buildMceVersionCompliance()).orElse(null));
+  }
+  
+  public MceVersionComplianceNested<A> editOrNewMceVersionCompliance() {
+    return this.withNewMceVersionComplianceLike(Optional.ofNullable(this.buildMceVersionCompliance()).orElse(new MCEVersionComplianceStatusBuilder().build()));
+  }
+  
+  public MceVersionComplianceNested<A> editOrNewMceVersionComplianceLike(MCEVersionComplianceStatus item) {
+    return this.withNewMceVersionComplianceLike(Optional.ofNullable(this.buildMceVersionCompliance()).orElse(item));
+  }
+  
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -217,6 +237,9 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
       return false;
     }
     if (!(Objects.equals(desiredVersion, that.desiredVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(mceVersionCompliance, that.mceVersionCompliance))) {
       return false;
     }
     if (!(Objects.equals(phase, that.phase))) {
@@ -277,12 +300,16 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
       return false;
   }
   
+  public boolean hasMceVersionCompliance() {
+    return this.mceVersionCompliance != null;
+  }
+  
   public boolean hasPhase() {
     return this.phase != null;
   }
   
   public int hashCode() {
-    return Objects.hash(components, conditions, currentVersion, desiredVersion, phase, additionalProperties);
+    return Objects.hash(components, conditions, currentVersion, desiredVersion, mceVersionCompliance, phase, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<HubCondition> items) {
@@ -415,6 +442,11 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
         sb.append(desiredVersion);
         sb.append(",");
     }
+    if (!(mceVersionCompliance == null)) {
+        sb.append("mceVersionCompliance:");
+        sb.append(mceVersionCompliance);
+        sb.append(",");
+    }
     if (!(phase == null)) {
         sb.append("phase:");
         sb.append(phase);
@@ -484,6 +516,30 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
     return (A) this;
   }
   
+  public A withMceVersionCompliance(MCEVersionComplianceStatus mceVersionCompliance) {
+    this._visitables.remove("mceVersionCompliance");
+    if (mceVersionCompliance != null) {
+        this.mceVersionCompliance = new MCEVersionComplianceStatusBuilder(mceVersionCompliance);
+        this._visitables.get("mceVersionCompliance").add(this.mceVersionCompliance);
+    } else {
+        this.mceVersionCompliance = null;
+        this._visitables.get("mceVersionCompliance").remove(this.mceVersionCompliance);
+    }
+    return (A) this;
+  }
+  
+  public MceVersionComplianceNested<A> withNewMceVersionCompliance() {
+    return new MceVersionComplianceNested(null);
+  }
+  
+  public A withNewMceVersionCompliance(String currentVersion,Boolean isCompliant,String message,String requiredChannel) {
+    return (A) this.withMceVersionCompliance(new MCEVersionComplianceStatus(currentVersion, isCompliant, message, requiredChannel));
+  }
+  
+  public MceVersionComplianceNested<A> withNewMceVersionComplianceLike(MCEVersionComplianceStatus item) {
+    return new MceVersionComplianceNested(item);
+  }
+  
   public A withPhase(String phase) {
     this.phase = phase;
     return (A) this;
@@ -503,6 +559,23 @@ public class MultiClusterHubStatusFluent<A extends io.fabric8.openclustermanagem
     }
     
     public N endCondition() {
+      return and();
+    }
+    
+  }
+  public class MceVersionComplianceNested<N> extends MCEVersionComplianceStatusFluent<MceVersionComplianceNested<N>> implements Nested<N>{
+  
+    MCEVersionComplianceStatusBuilder builder;
+  
+    MceVersionComplianceNested(MCEVersionComplianceStatus item) {
+      this.builder = new MCEVersionComplianceStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MultiClusterHubStatusFluent.this.withMceVersionCompliance(builder.build());
+    }
+    
+    public N endMceVersionCompliance() {
       return and();
     }
     

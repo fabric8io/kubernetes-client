@@ -16,6 +16,7 @@ io.fabric8.openshift.api.model.config.v1.DNS
 io.fabric8.openshift.api.model.config.v1.DNSList
 io.fabric8.openshift.api.model.config.v1.FeatureGate
 io.fabric8.openshift.api.model.config.v1.FeatureGateList
+io.fabric8.openshift.api.model.config.v1.GenericControllerConfig
 io.fabric8.openshift.api.model.config.v1.Image
 io.fabric8.openshift.api.model.config.v1.ImageContentPolicy
 io.fabric8.openshift.api.model.config.v1.ImageContentPolicyList
@@ -30,6 +31,8 @@ io.fabric8.openshift.api.model.config.v1.Infrastructure
 io.fabric8.openshift.api.model.config.v1.InfrastructureList
 io.fabric8.openshift.api.model.config.v1.Ingress
 io.fabric8.openshift.api.model.config.v1.IngressList
+io.fabric8.openshift.api.model.config.v1.InsightsDataGather
+io.fabric8.openshift.api.model.config.v1.InsightsDataGatherList
 io.fabric8.openshift.api.model.config.v1.Network
 io.fabric8.openshift.api.model.config.v1.NetworkList
 io.fabric8.openshift.api.model.config.v1.Node

@@ -1,6 +1,5 @@
 package io.fabric8.kubernetes.api.model.apiextensions.v1;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
@@ -20,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import tools.jackson.databind.JsonNode;
 
 /**
  * Generated

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Thanos Receive Spec.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "containers",
+    "debug",
     "replicas",
     "resources",
     "serviceAccountAnnotations"
@@ -73,6 +74,8 @@ public class ReceiveSpec implements Editable<ReceiveSpecBuilder>, KubernetesReso
     @JsonProperty("containers")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Container> containers = new ArrayList<>();
+    @JsonProperty("debug")
+    private ReceiveDebugSpec debug;
     @JsonProperty("replicas")
     private Integer replicas;
     @JsonProperty("resources")
@@ -89,9 +92,10 @@ public class ReceiveSpec implements Editable<ReceiveSpecBuilder>, KubernetesReso
     public ReceiveSpec() {
     }
 
-    public ReceiveSpec(List<Container> containers, Integer replicas, ResourceRequirements resources, Map<String, String> serviceAccountAnnotations) {
+    public ReceiveSpec(List<Container> containers, ReceiveDebugSpec debug, Integer replicas, ResourceRequirements resources, Map<String, String> serviceAccountAnnotations) {
         super();
         this.containers = containers;
+        this.debug = debug;
         this.replicas = replicas;
         this.resources = resources;
         this.serviceAccountAnnotations = serviceAccountAnnotations;
@@ -112,6 +116,22 @@ public class ReceiveSpec implements Editable<ReceiveSpecBuilder>, KubernetesReso
     @JsonProperty("containers")
     public void setContainers(List<Container> containers) {
         this.containers = containers;
+    }
+
+    /**
+     * Thanos Receive Spec.
+     */
+    @JsonProperty("debug")
+    public ReceiveDebugSpec getDebug() {
+        return debug;
+    }
+
+    /**
+     * Thanos Receive Spec.
+     */
+    @JsonProperty("debug")
+    public void setDebug(ReceiveDebugSpec debug) {
+        this.debug = debug;
     }
 
     /**

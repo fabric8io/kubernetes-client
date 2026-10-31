@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ExternalNextHops contains slices of StaticHops and DynamicHops structures. Minimum is one StaticHop or one DynamicHop.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "dynamic",
@@ -90,7 +90,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     * DynamicHops defines a slice of DynamicHop. This field is optional.
      */
     @JsonProperty("dynamic")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -99,7 +99,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * DynamicHops defines a slices of DynamicHop. This field is optional.
+     * DynamicHops defines a slice of DynamicHop. This field is optional.
      */
     @JsonProperty("dynamic")
     public void setDynamic(List<DynamicHop> dynamic) {

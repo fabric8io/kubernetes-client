@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,15 +30,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "h2UpgradePolicy",
     "http1MaxPendingRequests",
+    "http2KeepAlive",
     "http2MaxRequests",
     "idleTimeout",
     "maxConcurrentStreams",
@@ -76,6 +77,8 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     private ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy;
     @JsonProperty("http1MaxPendingRequests")
     private Integer http1MaxPendingRequests;
+    @JsonProperty("http2KeepAlive")
+    private ConnectionPoolSettingsHTTPSettingsConnectionKeepalive http2KeepAlive;
     @JsonProperty("http2MaxRequests")
     private Integer http2MaxRequests;
     @JsonProperty("idleTimeout")
@@ -97,10 +100,11 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     public ConnectionPoolSettingsHTTPSettings() {
     }
 
-    public ConnectionPoolSettingsHTTPSettings(ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy, Integer http1MaxPendingRequests, Integer http2MaxRequests, String idleTimeout, Integer maxConcurrentStreams, Integer maxRequestsPerConnection, Integer maxRetries, Boolean useClientProtocol) {
+    public ConnectionPoolSettingsHTTPSettings(ConnectionPoolSettingsHTTPSettingsH2UpgradePolicy h2UpgradePolicy, Integer http1MaxPendingRequests, ConnectionPoolSettingsHTTPSettingsConnectionKeepalive http2KeepAlive, Integer http2MaxRequests, String idleTimeout, Integer maxConcurrentStreams, Integer maxRequestsPerConnection, Integer maxRetries, Boolean useClientProtocol) {
         super();
         this.h2UpgradePolicy = h2UpgradePolicy;
         this.http1MaxPendingRequests = http1MaxPendingRequests;
+        this.http2KeepAlive = http2KeepAlive;
         this.http2MaxRequests = http2MaxRequests;
         this.idleTimeout = idleTimeout;
         this.maxConcurrentStreams = maxConcurrentStreams;
@@ -139,6 +143,22 @@ public class ConnectionPoolSettingsHTTPSettings implements Editable<ConnectionPo
     @JsonProperty("http1MaxPendingRequests")
     public void setHttp1MaxPendingRequests(Integer http1MaxPendingRequests) {
         this.http1MaxPendingRequests = http1MaxPendingRequests;
+    }
+
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
+    @JsonProperty("http2KeepAlive")
+    public ConnectionPoolSettingsHTTPSettingsConnectionKeepalive getHttp2KeepAlive() {
+        return http2KeepAlive;
+    }
+
+    /**
+     * Settings applicable to HTTP1.1/HTTP2/GRPC connections.
+     */
+    @JsonProperty("http2KeepAlive")
+    public void setHttp2KeepAlive(ConnectionPoolSettingsHTTPSettingsConnectionKeepalive http2KeepAlive) {
+        this.http2KeepAlive = http2KeepAlive;
     }
 
     /**

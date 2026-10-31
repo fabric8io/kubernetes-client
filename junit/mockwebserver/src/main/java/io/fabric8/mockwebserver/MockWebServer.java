@@ -142,7 +142,10 @@ public class MockWebServer implements Closeable {
         .setPort(port)
         .setAlpnVersions(protocols.stream().map(Protocol::getHttpVersion).collect(Collectors.toList()))
         .setWebSocketSubProtocols(Arrays.asList(SUPPORTED_WEBSOCKET_SUB_PROTOCOLS))
-        .setHandle100ContinueAutomatically(true);
+        .setHandle100ContinueAutomatically(true)
+        // Vert.x 5 HttpServer#close() waits for the closing handshake of every open WebSocket (10 s by default),
+        // don't let clients that never answer the server's Close frame stall shutdown()
+        .setWebSocketClosingTimeout(1);
     if (ssl) {
       options
           .setSsl(true)

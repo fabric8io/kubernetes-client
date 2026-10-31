@@ -32,6 +32,7 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
 
   private Map<String,Object> additionalProperties;
   private ArrayList<ContainerBuilder> containers = new ArrayList<ContainerBuilder>();
+  private ReceiveDebugSpecBuilder debug;
   private Integer replicas;
   private ResourceRequirementsBuilder resources;
   private Map<String,String> serviceAccountAnnotations;
@@ -138,6 +139,10 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.containers != null ? build(containers) : null;
   }
   
+  public ReceiveDebugSpec buildDebug() {
+    return this.debug != null ? this.debug.build() : null;
+  }
+  
   public Container buildFirstContainer() {
     return this.containers.get(0).build();
   }
@@ -163,6 +168,7 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     instance = instance != null ? instance : new ReceiveSpec();
     if (instance != null) {
         this.withContainers(instance.getContainers());
+        this.withDebug(instance.getDebug());
         this.withReplicas(instance.getReplicas());
         this.withResources(instance.getResources());
         this.withServiceAccountAnnotations(instance.getServiceAccountAnnotations());
@@ -175,6 +181,10 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "containers"));
     }
     return this.setNewContainerLike(index, this.buildContainer(index));
+  }
+  
+  public DebugNested<A> editDebug() {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(null));
   }
   
   public ContainersNested<A> editFirstContainer() {
@@ -206,6 +216,14 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.setNewContainerLike(index, this.buildContainer(index));
   }
   
+  public DebugNested<A> editOrNewDebug() {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(new ReceiveDebugSpecBuilder().build()));
+  }
+  
+  public DebugNested<A> editOrNewDebugLike(ReceiveDebugSpec item) {
+    return this.withNewDebugLike(Optional.ofNullable(this.buildDebug()).orElse(item));
+  }
+  
   public ResourcesNested<A> editOrNewResources() {
     return this.withNewResourcesLike(Optional.ofNullable(this.buildResources()).orElse(new ResourceRequirementsBuilder().build()));
   }
@@ -230,6 +248,9 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     }
     ReceiveSpecFluent that = (ReceiveSpecFluent) o;
     if (!(Objects.equals(containers, that.containers))) {
+      return false;
+    }
+    if (!(Objects.equals(debug, that.debug))) {
       return false;
     }
     if (!(Objects.equals(replicas, that.replicas))) {
@@ -267,6 +288,10 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return this.containers != null && !(this.containers.isEmpty());
   }
   
+  public boolean hasDebug() {
+    return this.debug != null;
+  }
+  
   public boolean hasMatchingContainer(Predicate<ContainerBuilder> predicate) {
       for (ContainerBuilder item : containers) {
         if (predicate.test(item)) {
@@ -289,7 +314,7 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(containers, replicas, resources, serviceAccountAnnotations, additionalProperties);
+    return Objects.hash(containers, debug, replicas, resources, serviceAccountAnnotations, additionalProperties);
   }
   
   public A removeAllFromContainers(Collection<Container> items) {
@@ -407,6 +432,11 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
         sb.append(containers);
         sb.append(",");
     }
+    if (!(debug == null)) {
+        sb.append("debug:");
+        sb.append(debug);
+        sb.append(",");
+    }
     if (!(replicas == null)) {
         sb.append("replicas:");
         sb.append(replicas);
@@ -467,6 +497,30 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     return (A) this;
   }
   
+  public A withDebug(ReceiveDebugSpec debug) {
+    this._visitables.remove("debug");
+    if (debug != null) {
+        this.debug = new ReceiveDebugSpecBuilder(debug);
+        this._visitables.get("debug").add(this.debug);
+    } else {
+        this.debug = null;
+        this._visitables.get("debug").remove(this.debug);
+    }
+    return (A) this;
+  }
+  
+  public DebugNested<A> withNewDebug() {
+    return new DebugNested(null);
+  }
+  
+  public A withNewDebug(String logLevel) {
+    return (A) this.withDebug(new ReceiveDebugSpec(logLevel));
+  }
+  
+  public DebugNested<A> withNewDebugLike(ReceiveDebugSpec item) {
+    return new DebugNested(item);
+  }
+  
   public ResourcesNested<A> withNewResources() {
     return new ResourcesNested(null);
   }
@@ -515,6 +569,23 @@ public class ReceiveSpecFluent<A extends io.fabric8.openclustermanagement.api.mo
     }
     
     public N endContainer() {
+      return and();
+    }
+    
+  }
+  public class DebugNested<N> extends ReceiveDebugSpecFluent<DebugNested<N>> implements Nested<N>{
+  
+    ReceiveDebugSpecBuilder builder;
+  
+    DebugNested(ReceiveDebugSpec item) {
+      this.builder = new ReceiveDebugSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ReceiveSpecFluent.this.withDebug(builder.build());
+    }
+    
+    public N endDebug() {
       return and();
     }
     

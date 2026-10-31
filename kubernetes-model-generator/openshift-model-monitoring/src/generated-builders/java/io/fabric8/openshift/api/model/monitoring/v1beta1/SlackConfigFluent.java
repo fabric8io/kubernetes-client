@@ -48,6 +48,7 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
   private String timeout;
   private String title;
   private String titleLink;
+  private Boolean updateMessage;
   private String username;
 
   public SlackConfigFluent() {
@@ -287,6 +288,7 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
         this.withTimeout(instance.getTimeout());
         this.withTitle(instance.getTitle());
         this.withTitleLink(instance.getTitleLink());
+        this.withUpdateMessage(instance.getUpdateMessage());
         this.withUsername(instance.getUsername());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -468,6 +470,9 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
     if (!(Objects.equals(titleLink, that.titleLink))) {
       return false;
     }
+    if (!(Objects.equals(updateMessage, that.updateMessage))) {
+      return false;
+    }
     if (!(Objects.equals(username, that.username))) {
       return false;
     }
@@ -576,6 +581,10 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
   
   public String getTitleLink() {
     return this.titleLink;
+  }
+  
+  public Boolean getUpdateMessage() {
+    return this.updateMessage;
   }
   
   public String getUsername() {
@@ -705,12 +714,16 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
     return this.titleLink != null;
   }
   
+  public boolean hasUpdateMessage() {
+    return this.updateMessage != null;
+  }
+  
   public boolean hasUsername() {
     return this.username != null;
   }
   
   public int hashCode() {
-    return Objects.hash(actions, apiURL, callbackId, channel, color, fallback, fields, footer, httpConfig, iconEmoji, iconURL, imageURL, linkNames, messageText, mrkdwnIn, pretext, sendResolved, shortFields, text, thumbURL, timeout, title, titleLink, username, additionalProperties);
+    return Objects.hash(actions, apiURL, callbackId, channel, color, fallback, fields, footer, httpConfig, iconEmoji, iconURL, imageURL, linkNames, messageText, mrkdwnIn, pretext, sendResolved, shortFields, text, thumbURL, timeout, title, titleLink, updateMessage, username, additionalProperties);
   }
   
   public A removeAllFromActions(Collection<SlackAction> items) {
@@ -1001,6 +1014,11 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
         sb.append(titleLink);
         sb.append(",");
     }
+    if (!(updateMessage == null)) {
+        sb.append("updateMessage:");
+        sb.append(updateMessage);
+        sb.append(",");
+    }
     if (!(username == null)) {
         sb.append("username:");
         sb.append(username);
@@ -1247,6 +1265,15 @@ public class SlackConfigFluent<A extends io.fabric8.openshift.api.model.monitori
   
   public A withTitleLink(String titleLink) {
     this.titleLink = titleLink;
+    return (A) this;
+  }
+  
+  public A withUpdateMessage() {
+    return withUpdateMessage(true);
+  }
+  
+  public A withUpdateMessage(Boolean updateMessage) {
+    this.updateMessage = updateMessage;
     return (A) this;
   }
   

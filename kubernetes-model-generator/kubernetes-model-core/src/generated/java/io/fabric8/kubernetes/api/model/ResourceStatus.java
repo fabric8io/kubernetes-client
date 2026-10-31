@@ -12,17 +12,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ResourceStatus represents the status of a single resource allocated to a Pod.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
@@ -60,7 +60,7 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
     }
 
     /**
-     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;". When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
+     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;" when container.resources.claims[&#42;].request is set or "claim:&lt;claim_name&gt;" when container.resources.claims[&#42;].request is empty. For DRA-backed extended resources, "claim:&lt;claim_name&gt;/&lt;request&gt;" is used when the claim name and request name are recorded in pod.status.extendedResourceClaimStatus. When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
      */
     @JsonProperty("name")
     public String getName() {
@@ -68,7 +68,7 @@ public class ResourceStatus implements Editable<ResourceStatusBuilder>, Kubernet
     }
 
     /**
-     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;". When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
+     * Name of the resource. Must be unique within the pod and in case of non-DRA resource, match one of the resources from the pod spec. For DRA resources, the value must be "claim:&lt;claim_name&gt;/&lt;request&gt;" when container.resources.claims[&#42;].request is set or "claim:&lt;claim_name&gt;" when container.resources.claims[&#42;].request is empty. For DRA-backed extended resources, "claim:&lt;claim_name&gt;/&lt;request&gt;" is used when the claim name and request name are recorded in pod.status.extendedResourceClaimStatus. When this status is reported about a container, the "claim_name" and "request" must match one of the claims of this container.
      */
     @JsonProperty("name")
     public void setName(String name) {

@@ -25,7 +25,7 @@ public class ConditionalUpdateBuilder extends ConditionalUpdateFluent<Conditiona
   }
 
   public ConditionalUpdate build() {
-    ConditionalUpdate buildable = new ConditionalUpdate(fluent.getConditions(), fluent.buildRelease(), fluent.buildRisks());
+    ConditionalUpdate buildable = new ConditionalUpdate(fluent.getConditions(), fluent.buildRelease(), fluent.getRiskNames(), fluent.buildRisks());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

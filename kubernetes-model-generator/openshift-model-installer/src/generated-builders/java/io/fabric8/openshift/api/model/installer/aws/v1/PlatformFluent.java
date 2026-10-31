@@ -30,6 +30,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
   private MachinePoolBuilder defaultMachinePlatform;
   private String hostedZone;
   private String hostedZoneRole;
+  private String ipFamily;
   private String lbType;
   private Boolean preserveBootstrapIgnition;
   private Boolean propagateUserTags;
@@ -208,6 +209,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
         this.withDefaultMachinePlatform(instance.getDefaultMachinePlatform());
         this.withHostedZone(instance.getHostedZone());
         this.withHostedZoneRole(instance.getHostedZoneRole());
+        this.withIpFamily(instance.getIpFamily());
         this.withLbType(instance.getLbType());
         this.withPreserveBootstrapIgnition(instance.getPreserveBootstrapIgnition());
         this.withPropagateUserTags(instance.getPropagateUserTags());
@@ -308,6 +310,9 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
     if (!(Objects.equals(hostedZoneRole, that.hostedZoneRole))) {
       return false;
     }
+    if (!(Objects.equals(ipFamily, that.ipFamily))) {
+      return false;
+    }
     if (!(Objects.equals(lbType, that.lbType))) {
       return false;
     }
@@ -366,6 +371,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
   
   public String getHostedZoneRole() {
     return this.hostedZoneRole;
+  }
+  
+  public String getIpFamily() {
+    return this.ipFamily;
   }
   
   public String getLastSubnet() {
@@ -441,6 +450,10 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
     return this.hostedZoneRole != null;
   }
   
+  public boolean hasIpFamily() {
+    return this.ipFamily != null;
+  }
+  
   public boolean hasLbType() {
     return this.lbType != null;
   }
@@ -500,7 +513,7 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
   }
   
   public int hashCode() {
-    return Objects.hash(amiID, bestEffortDeleteIgnition, defaultMachinePlatform, hostedZone, hostedZoneRole, lbType, preserveBootstrapIgnition, propagateUserTags, publicIpv4Pool, region, serviceEndpoints, subnets, userProvisionedDNS, userTags, vpc, additionalProperties);
+    return Objects.hash(amiID, bestEffortDeleteIgnition, defaultMachinePlatform, hostedZone, hostedZoneRole, ipFamily, lbType, preserveBootstrapIgnition, propagateUserTags, publicIpv4Pool, region, serviceEndpoints, subnets, userProvisionedDNS, userTags, vpc, additionalProperties);
   }
   
   public A removeAllFromServiceEndpoints(Collection<ServiceEndpoint> items) {
@@ -666,6 +679,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
         sb.append(hostedZoneRole);
         sb.append(",");
     }
+    if (!(ipFamily == null)) {
+        sb.append("ipFamily:");
+        sb.append(ipFamily);
+        sb.append(",");
+    }
     if (!(lbType == null)) {
         sb.append("lbType:");
         sb.append(lbType);
@@ -766,6 +784,11 @@ public class PlatformFluent<A extends io.fabric8.openshift.api.model.installer.a
   
   public A withHostedZoneRole(String hostedZoneRole) {
     this.hostedZoneRole = hostedZoneRole;
+    return (A) this;
+  }
+  
+  public A withIpFamily(String ipFamily) {
+    this.ipFamily = ipFamily;
     return (A) this;
   }
   

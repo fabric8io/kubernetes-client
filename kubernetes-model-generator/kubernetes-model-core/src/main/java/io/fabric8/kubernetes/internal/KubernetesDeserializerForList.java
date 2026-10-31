@@ -15,18 +15,17 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class KubernetesDeserializerForList extends JsonDeserializer<List<KubernetesResource>> {
+public class KubernetesDeserializerForList extends ValueDeserializer<List<KubernetesResource>> {
 
   private final KubernetesDeserializer kubernetesDeserializer;
 
@@ -35,14 +34,14 @@ public class KubernetesDeserializerForList extends JsonDeserializer<List<Kuberne
   }
 
   @Override
-  public List<KubernetesResource> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+  public List<KubernetesResource> deserialize(JsonParser p, DeserializationContext ctxt) {
     final JsonNode node = p.readValueAsTree();
     if (!node.isArray()) {
-      throw new JsonMappingException(p, "Expected array but found " + node.getNodeType());
+      throw DatabindException.from(p, "Expected array but found " + node.getNodeType());
     }
     final List<KubernetesResource> ret = new ArrayList<>();
     for (JsonNode item : node) {
-      ret.add(kubernetesDeserializer.deserialize(p, item));
+      ret.add(kubernetesDeserializer.deserialize(p, ctxt, item));
     }
     return ret;
   }

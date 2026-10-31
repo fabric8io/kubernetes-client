@@ -330,7 +330,7 @@ We are no longer supporting it.
 
 ### CRD Generator annotation processor deprecated <a href="#crd-generator-annotation-processor-deprecated" id="crd-generator-annotation-processor-deprecated"/>
 
-The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) are being deprecated and will eventually be removed once we offer a complete replacement for all users.
+The CRD Generator annotation processing tool (APT) (`io.fabric8:crd-generator-apt`) and its API (`io.fabric8:crd-generator-api`) were deprecated in 7.0.0 and **removed in 8.0.0**.
 The CRD Generator API users should use the v2 version of the API (`io.fabric8:crd-generator-api-v2`) instead. 
 
-You can find out more about its replacement in the [CRD Generator documentation](./CRD-generator.md)
+You can find out more about its replacement in the [CRD Generator documentation](./CRD-generator.md). For migration instructions to 8.0.0, see [MIGRATION-v8.md](MIGRATION-v8.md#crd-generator-v1-removed).

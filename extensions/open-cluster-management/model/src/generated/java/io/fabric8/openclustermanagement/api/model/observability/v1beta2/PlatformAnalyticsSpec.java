@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,12 +30,14 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "incidentDetection",
-    "namespaceRightSizingRecommendation"
+    "namespaceRightSizingRecommendation",
+    "virtualizationRightSizingRecommendation"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,7 +67,9 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     @JsonProperty("incidentDetection")
     private PlatformIncidentDetectionSpec incidentDetection;
     @JsonProperty("namespaceRightSizingRecommendation")
-    private PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation;
+    private PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation;
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    private PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -76,10 +79,11 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     public PlatformAnalyticsSpec() {
     }
 
-    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection, PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+    public PlatformAnalyticsSpec(PlatformIncidentDetectionSpec incidentDetection, PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation, PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation) {
         super();
         this.incidentDetection = incidentDetection;
         this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
+        this.virtualizationRightSizingRecommendation = virtualizationRightSizingRecommendation;
     }
 
     @JsonProperty("incidentDetection")
@@ -93,13 +97,23 @@ public class PlatformAnalyticsSpec implements Editable<PlatformAnalyticsSpecBuil
     }
 
     @JsonProperty("namespaceRightSizingRecommendation")
-    public PlatformNamespaceRightSizingRecommendationSpec getNamespaceRightSizingRecommendation() {
+    public PlatformRightSizingRecommendationSpec getNamespaceRightSizingRecommendation() {
         return namespaceRightSizingRecommendation;
     }
 
     @JsonProperty("namespaceRightSizingRecommendation")
-    public void setNamespaceRightSizingRecommendation(PlatformNamespaceRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
+    public void setNamespaceRightSizingRecommendation(PlatformRightSizingRecommendationSpec namespaceRightSizingRecommendation) {
         this.namespaceRightSizingRecommendation = namespaceRightSizingRecommendation;
+    }
+
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    public PlatformRightSizingRecommendationSpec getVirtualizationRightSizingRecommendation() {
+        return virtualizationRightSizingRecommendation;
+    }
+
+    @JsonProperty("virtualizationRightSizingRecommendation")
+    public void setVirtualizationRightSizingRecommendation(PlatformRightSizingRecommendationSpec virtualizationRightSizingRecommendation) {
+        this.virtualizationRightSizingRecommendation = virtualizationRightSizingRecommendation;
     }
 
     @JsonIgnore

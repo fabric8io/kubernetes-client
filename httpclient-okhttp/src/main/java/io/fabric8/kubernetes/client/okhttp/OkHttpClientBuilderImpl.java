@@ -23,6 +23,7 @@ import okhttp3.Authenticator;
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
 import okhttp3.Protocol;
+import okhttp3.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,6 +73,9 @@ class OkHttpClientBuilderImpl
     if (connectTimeout != null) {
       builder.connectTimeout(this.connectTimeout);
     }
+    if (websocketPingInterval != null) {
+      builder.pingInterval(this.websocketPingInterval);
+    }
     if (sslContext != null) {
       X509TrustManager trustManager = null;
       if (trustManagers != null) {
@@ -98,9 +102,16 @@ class OkHttpClientBuilderImpl
     } else if (proxyAddress != null) {
       builder.proxy(new Proxy(convertProxyType(), proxyAddress));
       if (proxyAuthorization != null) {
-        builder.proxyAuthenticator(
-            (route, response) -> response.request().newBuilder()
-                .header(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization).build());
+        builder.proxyAuthenticator((route, response) -> {
+          final Request request = response.request();
+          // Only the CONNECT and plain http requests reach the proxy: a 407 to a request inside the tunnel comes from
+          // the server. Credentials the proxy already rejected aren't sent again.
+          if ((request.url().isHttps() && !"CONNECT".equals(request.method()))
+              || proxyAuthorization.equals(request.header(StandardHttpHeaders.PROXY_AUTHORIZATION))) {
+            return null;
+          }
+          return request.newBuilder().header(StandardHttpHeaders.PROXY_AUTHORIZATION, proxyAuthorization).build();
+        });
       }
     }
     if (tlsVersions != null) {

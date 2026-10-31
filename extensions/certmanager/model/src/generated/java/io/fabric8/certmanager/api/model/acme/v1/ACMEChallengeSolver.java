@@ -10,10 +10,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
+import io.fabric8.kubernetes.api.model.Duration;
 import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.kubernetes.api.model.IntOrString;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
@@ -31,16 +31,18 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "dns01",
     "http01",
-    "selector"
+    "selector",
+    "waitInsteadOfSelfCheck"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +75,8 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
     private ACMEChallengeSolverHTTP01 http01;
     @JsonProperty("selector")
     private CertificateDNSNameSelector selector;
+    @JsonProperty("waitInsteadOfSelfCheck")
+    private Duration waitInsteadOfSelfCheck;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +86,12 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
     public ACMEChallengeSolver() {
     }
 
-    public ACMEChallengeSolver(ACMEChallengeSolverDNS01 dns01, ACMEChallengeSolverHTTP01 http01, CertificateDNSNameSelector selector) {
+    public ACMEChallengeSolver(ACMEChallengeSolverDNS01 dns01, ACMEChallengeSolverHTTP01 http01, CertificateDNSNameSelector selector, Duration waitInsteadOfSelfCheck) {
         super();
         this.dns01 = dns01;
         this.http01 = http01;
         this.selector = selector;
+        this.waitInsteadOfSelfCheck = waitInsteadOfSelfCheck;
     }
 
     /**
@@ -135,6 +140,22 @@ public class ACMEChallengeSolver implements Editable<ACMEChallengeSolverBuilder>
     @JsonProperty("selector")
     public void setSelector(CertificateDNSNameSelector selector) {
         this.selector = selector;
+    }
+
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
+    @JsonProperty("waitInsteadOfSelfCheck")
+    public Duration getWaitInsteadOfSelfCheck() {
+        return waitInsteadOfSelfCheck;
+    }
+
+    /**
+     * An ACMEChallengeSolver describes how to solve ACME challenges for the issuer it is part of. A selector may be provided to use different solving strategies for different DNS names. Only one of HTTP01 or DNS01 must be provided.
+     */
+    @JsonProperty("waitInsteadOfSelfCheck")
+    public void setWaitInsteadOfSelfCheck(Duration waitInsteadOfSelfCheck) {
+        this.waitInsteadOfSelfCheck = waitInsteadOfSelfCheck;
     }
 
     @JsonIgnore

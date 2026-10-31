@@ -15,7 +15,13 @@
  */
 package io.fabric8.kubernetes.client.http;
 
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.ConfigBuilder;
 import io.fabric8.mockwebserver.DefaultMockServer;
+import io.fabric8.mockwebserver.MockWebServer;
+import io.fabric8.mockwebserver.http.MockResponse;
+import io.fabric8.mockwebserver.http.Response;
+import io.fabric8.mockwebserver.http.WebSocketListener;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,6 +32,8 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
@@ -77,6 +85,7 @@ public abstract class AbstractWebSocketSendReceiveTest {
             @Override
             public void onMessage(WebSocket webSocket, String text) {
               assertTrue(receivedText.offer(text));
+              webSocket.request();
             }
           }).get(10L, TimeUnit.SECONDS);
       // When
@@ -84,6 +93,42 @@ public abstract class AbstractWebSocketSendReceiveTest {
       final String result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo("received");
+    }
+  }
+
+  @Test
+  @DisplayName("derived client receives a message larger than the WebSocket implementation's default message limit")
+  void derivedClientReceivesMessageAboveDefaultLimit() throws Exception {
+    // 300 KiB exceeds every implementation's out-of-the-box maximum message size (Vert.x defaults to 256 KiB),
+    // so this only succeeds if the derived client inherited the configured unlimited message size rather than
+    // falling back to transport defaults. Oversized messages are dropped silently, which surfaces as a hang.
+    final String largeMessage = "a".repeat(300_000);
+    try (
+        final HttpClient client = getHttpClientFactory().newBuilder().build();
+        final HttpClient derivedClient = client.newBuilder().build()) {
+      // Given
+      server.expect().withPath("/receive-large-derived")
+          .andUpgradeToWebSocket()
+          .open()
+          .waitFor(5)
+          .andEmit(largeMessage)
+          .done()
+          .always();
+      final BlockingQueue<String> receivedText = new LinkedBlockingQueue<>();
+      // When
+      derivedClient.newWebSocketBuilder()
+          .uri(URI.create(server.url("receive-large-derived")))
+          .buildAsync(new WebSocket.Listener() {
+            @Override
+            public void onMessage(WebSocket webSocket, String text) {
+              receivedText.add(text);
+              webSocket.request();
+            }
+          }).get(10L, TimeUnit.SECONDS);
+      // Then
+      assertThat(receivedText.poll(10L, TimeUnit.SECONDS))
+          .as("a derived client must keep the configured WebSocket message limits, not revert to transport defaults")
+          .isEqualTo(largeMessage);
     }
   }
 
@@ -130,6 +175,104 @@ public abstract class AbstractWebSocketSendReceiveTest {
       result = receivedText.poll(10L, TimeUnit.SECONDS);
       // Then
       assertThat(result).isEqualTo(multiframe);
+    }
+  }
+
+  @Test
+  @DisplayName("a server-initiated close is answered with a Close frame even if the listener doesn't send one (RFC 6455 5.5.1)")
+  void serverInitiatedCloseIsAnswered() throws Exception {
+    final CompletableFuture<Integer> clientReceivedClose = new CompletableFuture<>();
+    final CompletableFuture<Integer> serverReceivedClose = new CompletableFuture<>();
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+        @Override
+        public void onOpen(io.fabric8.mockwebserver.http.WebSocket webSocket, Response response) {
+          webSocket.close(1000, "server closing");
+        }
+
+        @Override
+        public void onClosing(io.fabric8.mockwebserver.http.WebSocket webSocket, int code, String reason) {
+          serverReceivedClose.complete(code);
+        }
+      }));
+      try (HttpClient client = getHttpClientFactory().newBuilder().build()) {
+        // When
+        client.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+              @Override
+              public void onClose(WebSocket webSocket, int code, String reason) {
+                clientReceivedClose.complete(code);
+              }
+
+              @Override
+              public void onError(WebSocket webSocket, Throwable error) {
+                clientReceivedClose.completeExceptionally(error);
+              }
+            }).get(10L, TimeUnit.SECONDS);
+        // Then
+        assertThat(clientReceivedClose).succeedsWithin(10, TimeUnit.SECONDS).isEqualTo(1000);
+        assertThat(serverReceivedClose)
+            .as("the HttpClient implementation, not the listener, must answer the server's Close frame")
+            .succeedsWithin(10, TimeUnit.SECONDS)
+            .isEqualTo(1000);
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("an idle WebSocket, also of a client derived with newBuilder, sends ping frames every Config#websocketPingInterval so idle-timeout proxies keep it open")
+  void idleWebSocketSendsPingsAtConfiguredInterval() throws Exception {
+    final CountDownLatch pings = new CountDownLatch(2);
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+        @Override
+        public void onPing(io.fabric8.mockwebserver.http.WebSocket webSocket, byte[] payload) {
+          pings.countDown();
+        }
+      }));
+      // well above a loaded CI runner's pong round trip, OkHttp fails the socket if a pong misses the next ping
+      final Config config = new ConfigBuilder(Config.empty()).withWebsocketPingInterval(250L).build();
+      try (
+          HttpClient client = getHttpClientFactory().newBuilder(config).build();
+          HttpClient derivedClient = client.newBuilder().build()) {
+        // When
+        final WebSocket ws = derivedClient.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+            }).get(10L, TimeUnit.SECONDS);
+        // Then
+        assertThat(pings.await(10L, TimeUnit.SECONDS))
+            .as("the server must receive repeated pings on an otherwise idle WebSocket of a derived client")
+            .isTrue();
+        ws.sendClose(1000, "done");
+      }
+    }
+  }
+
+  @Test
+  @DisplayName("a WebSocket with pings enabled that the listener closes in onOpen still completes buildAsync")
+  void webSocketClosedInOnOpenWithPingsCompletes() throws Exception {
+    try (MockWebServer mockWebServer = new MockWebServer()) {
+      // Given
+      mockWebServer.enqueue(new MockResponse().withWebSocketUpgrade(new WebSocketListener() {
+      }));
+      final Config config = new ConfigBuilder(Config.empty()).withWebsocketPingInterval(250L).build();
+      try (HttpClient client = getHttpClientFactory().newBuilder(config).build()) {
+        // When
+        final CompletableFuture<WebSocket> ws = client.newWebSocketBuilder()
+            .uri(mockWebServer.url("/").uri())
+            .buildAsync(new WebSocket.Listener() {
+              @Override
+              public void onOpen(WebSocket webSocket) {
+                webSocket.sendClose(1000, "closing in onOpen");
+              }
+            });
+        // Then
+        assertThat(ws).succeedsWithin(10, TimeUnit.SECONDS);
+      }
     }
   }
 

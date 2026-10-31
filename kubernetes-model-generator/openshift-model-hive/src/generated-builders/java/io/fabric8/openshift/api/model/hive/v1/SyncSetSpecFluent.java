@@ -29,6 +29,7 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   private Map<String,Object> additionalProperties;
   private String applyBehavior;
   private ArrayList<LocalObjectReferenceBuilder> clusterDeploymentRefs = new ArrayList<LocalObjectReferenceBuilder>();
+  private Boolean enablePatchTemplates;
   private Boolean enableResourceTemplates;
   private ArrayList<SyncObjectPatchBuilder> patches = new ArrayList<SyncObjectPatchBuilder>();
   private String resourceApplyMode;
@@ -315,6 +316,7 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
     if (instance != null) {
         this.withApplyBehavior(instance.getApplyBehavior());
         this.withClusterDeploymentRefs(instance.getClusterDeploymentRefs());
+        this.withEnablePatchTemplates(instance.getEnablePatchTemplates());
         this.withEnableResourceTemplates(instance.getEnableResourceTemplates());
         this.withPatches(instance.getPatches());
         this.withResourceApplyMode(instance.getResourceApplyMode());
@@ -449,6 +451,9 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
     if (!(Objects.equals(clusterDeploymentRefs, that.clusterDeploymentRefs))) {
       return false;
     }
+    if (!(Objects.equals(enablePatchTemplates, that.enablePatchTemplates))) {
+      return false;
+    }
     if (!(Objects.equals(enableResourceTemplates, that.enableResourceTemplates))) {
       return false;
     }
@@ -476,6 +481,10 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   
   public String getApplyBehavior() {
     return this.applyBehavior;
+  }
+  
+  public Boolean getEnablePatchTemplates() {
+    return this.enablePatchTemplates;
   }
   
   public Boolean getEnableResourceTemplates() {
@@ -521,6 +530,10 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   
   public boolean hasClusterDeploymentRefs() {
     return this.clusterDeploymentRefs != null && !(this.clusterDeploymentRefs.isEmpty());
+  }
+  
+  public boolean hasEnablePatchTemplates() {
+    return this.enablePatchTemplates != null;
   }
   
   public boolean hasEnableResourceTemplates() {
@@ -580,7 +593,7 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   }
   
   public int hashCode() {
-    return Objects.hash(applyBehavior, clusterDeploymentRefs, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
+    return Objects.hash(applyBehavior, clusterDeploymentRefs, enablePatchTemplates, enableResourceTemplates, patches, resourceApplyMode, resources, secretMappings, additionalProperties);
   }
   
   public A removeAllFromClusterDeploymentRefs(Collection<LocalObjectReference> items) {
@@ -825,6 +838,11 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
         sb.append(clusterDeploymentRefs);
         sb.append(",");
     }
+    if (!(enablePatchTemplates == null)) {
+        sb.append("enablePatchTemplates:");
+        sb.append(enablePatchTemplates);
+        sb.append(",");
+    }
     if (!(enableResourceTemplates == null)) {
         sb.append("enableResourceTemplates:");
         sb.append(enableResourceTemplates);
@@ -897,6 +915,15 @@ public class SyncSetSpecFluent<A extends io.fabric8.openshift.api.model.hive.v1.
         this.addToClusterDeploymentRefs(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withEnablePatchTemplates() {
+    return withEnablePatchTemplates(true);
+  }
+  
+  public A withEnablePatchTemplates(Boolean enablePatchTemplates) {
+    this.enablePatchTemplates = enablePatchTemplates;
     return (A) this;
   }
   

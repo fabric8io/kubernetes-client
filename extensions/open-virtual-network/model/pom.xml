@@ -63,6 +63,7 @@
                 </schemas>
                 <includeGenerationRegexes>
                   <includeGenerationRegex>^org\.ovn\..*$</includeGenerationRegex>
+                  <includeGenerationRegex>^com\.github\.ovn-kubernetes\.ovn-kubernetes\.go-controller\.pkg\.crd\.types\..*$</includeGenerationRegex>
                 </includeGenerationRegexes>
               </settings>
             </configuration>

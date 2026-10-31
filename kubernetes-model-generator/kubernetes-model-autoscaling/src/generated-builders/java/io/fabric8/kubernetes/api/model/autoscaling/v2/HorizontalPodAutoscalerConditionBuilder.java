@@ -25,7 +25,7 @@ public class HorizontalPodAutoscalerConditionBuilder extends HorizontalPodAutosc
   }
 
   public HorizontalPodAutoscalerCondition build() {
-    HorizontalPodAutoscalerCondition buildable = new HorizontalPodAutoscalerCondition(fluent.getLastTransitionTime(), fluent.getMessage(), fluent.getReason(), fluent.getStatus(), fluent.getType());
+    HorizontalPodAutoscalerCondition buildable = new HorizontalPodAutoscalerCondition(fluent.getLastTransitionTime(), fluent.getMessage(), fluent.getObservedGeneration(), fluent.getReason(), fluent.getStatus(), fluent.getType());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

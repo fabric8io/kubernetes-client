@@ -4,6 +4,7 @@ import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.RuntimeException;
 import java.lang.String;
@@ -26,6 +27,7 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
 
   private Map<String,Object> additionalProperties;
   private Integer defaultMode;
+  private Long defaultUser;
   private ArrayList<KeyToPathBuilder> items = new ArrayList<KeyToPathBuilder>();
   private String name;
   private Boolean optional;
@@ -53,8 +55,8 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     return new ItemsNested(-1, null);
   }
   
-  public A addNewItem(String key,Integer mode,String path) {
-    return (A) this.addToItems(new KeyToPath(key, mode, path));
+  public A addNewItem(String key,Integer mode,String path,Long user) {
+    return (A) this.addToItems(new KeyToPath(key, mode, path, user));
   }
   
   public ItemsNested<A> addNewItemLike(KeyToPath item) {
@@ -137,6 +139,7 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     instance = instance != null ? instance : new ConfigMapVolumeSource();
     if (instance != null) {
         this.withDefaultMode(instance.getDefaultMode());
+        this.withDefaultUser(instance.getDefaultUser());
         this.withItems(instance.getItems());
         this.withName(instance.getName());
         this.withOptional(instance.getOptional());
@@ -194,6 +197,9 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     if (!(Objects.equals(defaultMode, that.defaultMode))) {
       return false;
     }
+    if (!(Objects.equals(defaultUser, that.defaultUser))) {
+      return false;
+    }
     if (!(Objects.equals(items, that.items))) {
       return false;
     }
@@ -217,6 +223,10 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
     return this.defaultMode;
   }
   
+  public Long getDefaultUser() {
+    return this.defaultUser;
+  }
+  
   public String getName() {
     return this.name;
   }
@@ -231,6 +241,10 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
   
   public boolean hasDefaultMode() {
     return this.defaultMode != null;
+  }
+  
+  public boolean hasDefaultUser() {
+    return this.defaultUser != null;
   }
   
   public boolean hasItems() {
@@ -255,7 +269,7 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
   }
   
   public int hashCode() {
-    return Objects.hash(defaultMode, items, name, optional, additionalProperties);
+    return Objects.hash(defaultMode, defaultUser, items, name, optional, additionalProperties);
   }
   
   public A removeAllFromItems(Collection<KeyToPath> items) {
@@ -349,6 +363,11 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
         sb.append(defaultMode);
         sb.append(",");
     }
+    if (!(defaultUser == null)) {
+        sb.append("defaultUser:");
+        sb.append(defaultUser);
+        sb.append(",");
+    }
     if (!(items == null) && !(items.isEmpty())) {
         sb.append("items:");
         sb.append(items);
@@ -383,6 +402,11 @@ public class ConfigMapVolumeSourceFluent<A extends io.fabric8.kubernetes.api.mod
   
   public A withDefaultMode(Integer defaultMode) {
     this.defaultMode = defaultMode;
+    return (A) this;
+  }
+  
+  public A withDefaultUser(Long defaultUser) {
+    this.defaultUser = defaultUser;
     return (A) this;
   }
   

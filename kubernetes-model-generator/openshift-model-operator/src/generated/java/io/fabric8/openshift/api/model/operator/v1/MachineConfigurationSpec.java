@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,10 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "bootImageSkewEnforcement",
     "failedRevisionLimit",
     "forceRedeploymentReason",
     "irreconcilableValidationOverrides",
@@ -72,6 +73,8 @@ import lombok.experimental.Accessors;
 public class MachineConfigurationSpec implements Editable<MachineConfigurationSpecBuilder>, KubernetesResource
 {
 
+    @JsonProperty("bootImageSkewEnforcement")
+    private BootImageSkewEnforcementConfig bootImageSkewEnforcement;
     @JsonProperty("failedRevisionLimit")
     private Integer failedRevisionLimit;
     @JsonProperty("forceRedeploymentReason")
@@ -105,8 +108,9 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
     public MachineConfigurationSpec() {
     }
 
-    public MachineConfigurationSpec(Integer failedRevisionLimit, String forceRedeploymentReason, IrreconcilableValidationOverrides irreconcilableValidationOverrides, String logLevel, ManagedBootImages managedBootImages, String managementState, NodeDisruptionPolicyConfig nodeDisruptionPolicy, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
+    public MachineConfigurationSpec(BootImageSkewEnforcementConfig bootImageSkewEnforcement, Integer failedRevisionLimit, String forceRedeploymentReason, IrreconcilableValidationOverrides irreconcilableValidationOverrides, String logLevel, ManagedBootImages managedBootImages, String managementState, NodeDisruptionPolicyConfig nodeDisruptionPolicy, Object observedConfig, String operatorLogLevel, Integer succeededRevisionLimit, Object unsupportedConfigOverrides) {
         super();
+        this.bootImageSkewEnforcement = bootImageSkewEnforcement;
         this.failedRevisionLimit = failedRevisionLimit;
         this.forceRedeploymentReason = forceRedeploymentReason;
         this.irreconcilableValidationOverrides = irreconcilableValidationOverrides;
@@ -118,6 +122,16 @@ public class MachineConfigurationSpec implements Editable<MachineConfigurationSp
         this.operatorLogLevel = operatorLogLevel;
         this.succeededRevisionLimit = succeededRevisionLimit;
         this.unsupportedConfigOverrides = unsupportedConfigOverrides;
+    }
+
+    @JsonProperty("bootImageSkewEnforcement")
+    public BootImageSkewEnforcementConfig getBootImageSkewEnforcement() {
+        return bootImageSkewEnforcement;
+    }
+
+    @JsonProperty("bootImageSkewEnforcement")
+    public void setBootImageSkewEnforcement(BootImageSkewEnforcementConfig bootImageSkewEnforcement) {
+        this.bootImageSkewEnforcement = bootImageSkewEnforcement;
     }
 
     /**

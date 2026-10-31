@@ -6,6 +6,7 @@ import io.fabric8.kubernetes.api.model.LabelSelector;
 import io.fabric8.kubernetes.api.model.LabelSelectorBuilder;
 import io.fabric8.kubernetes.api.model.LabelSelectorFluent;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
+import io.fabric8.openshift.api.model.operator.v1.IngressControllerTuningOptions;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -28,6 +29,7 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
   private LabelSelectorBuilder namespaceSelector;
   private LabelSelectorBuilder routeSelector;
   private String servingCertificate;
+  private IngressControllerTuningOptions tuningOptions;
 
   public ClusterIngressFluent() {
   }
@@ -73,6 +75,7 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
         this.withNamespaceSelector(instance.getNamespaceSelector());
         this.withRouteSelector(instance.getRouteSelector());
         this.withServingCertificate(instance.getServingCertificate());
+        this.withTuningOptions(instance.getTuningOptions());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -130,6 +133,9 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
     if (!(Objects.equals(servingCertificate, that.servingCertificate))) {
       return false;
     }
+    if (!(Objects.equals(tuningOptions, that.tuningOptions))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -154,6 +160,10 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
   
   public String getServingCertificate() {
     return this.servingCertificate;
+  }
+  
+  public IngressControllerTuningOptions getTuningOptions() {
+    return this.tuningOptions;
   }
   
   public boolean hasAdditionalProperties() {
@@ -184,8 +194,12 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
     return this.servingCertificate != null;
   }
   
+  public boolean hasTuningOptions() {
+    return this.tuningOptions != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(domain, httpErrorCodePages, name, namespaceSelector, routeSelector, servingCertificate, additionalProperties);
+    return Objects.hash(domain, httpErrorCodePages, name, namespaceSelector, routeSelector, servingCertificate, tuningOptions, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -243,6 +257,11 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
     if (!(servingCertificate == null)) {
         sb.append("servingCertificate:");
         sb.append(servingCertificate);
+        sb.append(",");
+    }
+    if (!(tuningOptions == null)) {
+        sb.append("tuningOptions:");
+        sb.append(tuningOptions);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -323,6 +342,11 @@ public class ClusterIngressFluent<A extends io.fabric8.openshift.api.model.hive.
   
   public A withServingCertificate(String servingCertificate) {
     this.servingCertificate = servingCertificate;
+    return (A) this;
+  }
+  
+  public A withTuningOptions(IngressControllerTuningOptions tuningOptions) {
+    this.tuningOptions = tuningOptions;
     return (A) this;
   }
   public class NamespaceSelectorNested<N> extends LabelSelectorFluent<NamespaceSelectorNested<N>> implements Nested<N>{

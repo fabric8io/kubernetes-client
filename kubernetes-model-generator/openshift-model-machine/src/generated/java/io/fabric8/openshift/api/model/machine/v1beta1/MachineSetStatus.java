@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,11 +31,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachineSetStatus defines the observed state of MachineSet
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authoritativeAPI",
@@ -45,9 +45,11 @@ import lombok.experimental.Accessors;
     "errorMessage",
     "errorReason",
     "fullyLabeledReplicas",
+    "labelSelector",
     "observedGeneration",
     "readyReplicas",
     "replicas",
+    "synchronizedAPI",
     "synchronizedGeneration"
 })
 @ToString
@@ -88,12 +90,16 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     private String errorReason;
     @JsonProperty("fullyLabeledReplicas")
     private Integer fullyLabeledReplicas;
+    @JsonProperty("labelSelector")
+    private String labelSelector;
     @JsonProperty("observedGeneration")
     private Long observedGeneration;
     @JsonProperty("readyReplicas")
     private Integer readyReplicas;
     @JsonProperty("replicas")
     private Integer replicas;
+    @JsonProperty("synchronizedAPI")
+    private String synchronizedAPI;
     @JsonProperty("synchronizedGeneration")
     private Long synchronizedGeneration;
     @JsonIgnore
@@ -105,7 +111,7 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     public MachineSetStatus() {
     }
 
-    public MachineSetStatus(String authoritativeAPI, Integer availableReplicas, List<Condition> conditions, String errorMessage, String errorReason, Integer fullyLabeledReplicas, Long observedGeneration, Integer readyReplicas, Integer replicas, Long synchronizedGeneration) {
+    public MachineSetStatus(String authoritativeAPI, Integer availableReplicas, List<Condition> conditions, String errorMessage, String errorReason, Integer fullyLabeledReplicas, String labelSelector, Long observedGeneration, Integer readyReplicas, Integer replicas, String synchronizedAPI, Long synchronizedGeneration) {
         super();
         this.authoritativeAPI = authoritativeAPI;
         this.availableReplicas = availableReplicas;
@@ -113,9 +119,11 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
         this.errorMessage = errorMessage;
         this.errorReason = errorReason;
         this.fullyLabeledReplicas = fullyLabeledReplicas;
+        this.labelSelector = labelSelector;
         this.observedGeneration = observedGeneration;
         this.readyReplicas = readyReplicas;
         this.replicas = replicas;
+        this.synchronizedAPI = synchronizedAPI;
         this.synchronizedGeneration = synchronizedGeneration;
     }
 
@@ -217,6 +225,22 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     }
 
     /**
+     * labelSelector is a label selector, in string format, for Machines corresponding to the MachineSet. It is exposed via the scale subresource as status.selector. When omitted, the MachineSet controller has not yet reconciled spec.selector into status.labelSelector. When present, it must not be empty and must not exceed 4096 characters.
+     */
+    @JsonProperty("labelSelector")
+    public String getLabelSelector() {
+        return labelSelector;
+    }
+
+    /**
+     * labelSelector is a label selector, in string format, for Machines corresponding to the MachineSet. It is exposed via the scale subresource as status.selector. When omitted, the MachineSet controller has not yet reconciled spec.selector into status.labelSelector. When present, it must not be empty and must not exceed 4096 characters.
+     */
+    @JsonProperty("labelSelector")
+    public void setLabelSelector(String labelSelector) {
+        this.labelSelector = labelSelector;
+    }
+
+    /**
      * observedGeneration reflects the generation of the most recently observed MachineSet.
      */
     @JsonProperty("observedGeneration")
@@ -262,6 +286,22 @@ public class MachineSetStatus implements Editable<MachineSetStatusBuilder>, Kube
     @JsonProperty("replicas")
     public void setReplicas(Integer replicas) {
         this.replicas = replicas;
+    }
+
+    /**
+     * synchronizedAPI holds the last stable value of authoritativeAPI. It is used to detect migration cancellation requests and to restore the resource to its previous state. Valid values are "MachineAPI" and "ClusterAPI". When omitted, the resource has not yet been reconciled by the migration controller.
+     */
+    @JsonProperty("synchronizedAPI")
+    public String getSynchronizedAPI() {
+        return synchronizedAPI;
+    }
+
+    /**
+     * synchronizedAPI holds the last stable value of authoritativeAPI. It is used to detect migration cancellation requests and to restore the resource to its previous state. Valid values are "MachineAPI" and "ClusterAPI". When omitted, the resource has not yet been reconciled by the migration controller.
+     */
+    @JsonProperty("synchronizedAPI")
+    public void setSynchronizedAPI(String synchronizedAPI) {
+        this.synchronizedAPI = synchronizedAPI;
     }
 
     /**

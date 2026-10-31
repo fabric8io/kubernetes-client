@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ResourcePool describes the pool that ResourceSlices belong to.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "generation",
@@ -106,7 +106,7 @@ public class ResourcePool implements Editable<ResourcePoolBuilder>, KubernetesRe
     }
 
     /**
-     * Name is used to identify the pool. For node-local devices, this is often the node name, but this is not required.<br><p> <br><p> It must not be longer than 253 characters and must consist of one or more DNS sub-domains separated by slashes. This field is immutable.
+     * Name is used to identify the pool. For node-local devices, this is often the node name, but this is not required. A field selector can be used to list only ResourceSlice objects belonging to a certain pool.<br><p> <br><p> It must not be longer than 253 characters and must consist of one or more DNS sub-domains separated by slashes. This field is immutable.
      */
     @JsonProperty("name")
     public String getName() {
@@ -114,7 +114,7 @@ public class ResourcePool implements Editable<ResourcePoolBuilder>, KubernetesRe
     }
 
     /**
-     * Name is used to identify the pool. For node-local devices, this is often the node name, but this is not required.<br><p> <br><p> It must not be longer than 253 characters and must consist of one or more DNS sub-domains separated by slashes. This field is immutable.
+     * Name is used to identify the pool. For node-local devices, this is often the node name, but this is not required. A field selector can be used to list only ResourceSlice objects belonging to a certain pool.<br><p> <br><p> It must not be longer than 253 characters and must consist of one or more DNS sub-domains separated by slashes. This field is immutable.
      */
     @JsonProperty("name")
     public void setName(String name) {

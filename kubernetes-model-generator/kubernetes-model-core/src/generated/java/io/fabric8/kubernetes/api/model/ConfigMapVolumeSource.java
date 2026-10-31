@@ -12,20 +12,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Adapts a ConfigMap into a volume.<br><p> <br><p> The contents of the target ConfigMap's Data field will be presented in a volume as files using the keys in the Data field as the file names, unless the items element is populated with specific mappings of keys to paths. ConfigMap volumes support ownership management and SELinux relabeling.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "defaultMode",
+    "defaultUser",
     "items",
     "name",
     "optional"
@@ -43,6 +44,8 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
 
     @JsonProperty("defaultMode")
     private Integer defaultMode;
+    @JsonProperty("defaultUser")
+    private Long defaultUser;
     @JsonProperty("items")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<KeyToPath> items = new ArrayList<>();
@@ -59,9 +62,10 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
     public ConfigMapVolumeSource() {
     }
 
-    public ConfigMapVolumeSource(Integer defaultMode, List<KeyToPath> items, String name, Boolean optional) {
+    public ConfigMapVolumeSource(Integer defaultMode, Long defaultUser, List<KeyToPath> items, String name, Boolean optional) {
         super();
         this.defaultMode = defaultMode;
+        this.defaultUser = defaultUser;
         this.items = items;
         this.name = name;
         this.optional = optional;
@@ -81,6 +85,22 @@ public class ConfigMapVolumeSource implements Editable<ConfigMapVolumeSourceBuil
     @JsonProperty("defaultMode")
     public void setDefaultMode(Integer defaultMode) {
         this.defaultMode = defaultMode;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public Long getDefaultUser() {
+        return defaultUser;
+    }
+
+    /**
+     * defaultUser is Optional: The owner UID of the created files by default. The defaultUser field is only used as a fallback when the item-level user field is unset. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("defaultUser")
+    public void setDefaultUser(Long defaultUser) {
+        this.defaultUser = defaultUser;
     }
 
     /**

@@ -27,6 +27,7 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
   private Map<String,Object> additionalProperties;
   private List<Condition> conditions = new ArrayList<Condition>();
   private ReleaseBuilder release;
+  private List<String> riskNames = new ArrayList<String>();
   private ArrayList<ConditionalUpdateRiskBuilder> risks = new ArrayList<ConditionalUpdateRiskBuilder>();
 
   public ConditionalUpdateFluent() {
@@ -42,6 +43,16 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     }
     for (Condition item : items) {
       this.conditions.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToRiskNames(Collection<String> items) {
+    if (this.riskNames == null) {
+      this.riskNames = new ArrayList();
+    }
+    for (String item : items) {
+      this.riskNames.add(item);
     }
     return (A) this;
   }
@@ -101,6 +112,24 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
       this.conditions = new ArrayList();
     }
     this.conditions.add(index, item);
+    return (A) this;
+  }
+  
+  public A addToRiskNames(String... items) {
+    if (this.riskNames == null) {
+      this.riskNames = new ArrayList();
+    }
+    for (String item : items) {
+      this.riskNames.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToRiskNames(int index,String item) {
+    if (this.riskNames == null) {
+      this.riskNames = new ArrayList();
+    }
+    this.riskNames.add(index, item);
     return (A) this;
   }
   
@@ -165,6 +194,7 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     if (instance != null) {
         this.withConditions(instance.getConditions());
         this.withRelease(instance.getRelease());
+        this.withRiskNames(instance.getRiskNames());
         this.withRisks(instance.getRisks());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -235,6 +265,9 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     if (!(Objects.equals(release, that.release))) {
       return false;
     }
+    if (!(Objects.equals(riskNames, that.riskNames))) {
+      return false;
+    }
     if (!(Objects.equals(risks, that.risks))) {
       return false;
     }
@@ -260,8 +293,16 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     return this.conditions.get(0);
   }
   
+  public String getFirstRiskName() {
+    return this.riskNames.get(0);
+  }
+  
   public Condition getLastCondition() {
     return this.conditions.get(conditions.size() - 1);
+  }
+  
+  public String getLastRiskName() {
+    return this.riskNames.get(riskNames.size() - 1);
   }
   
   public Condition getMatchingCondition(Predicate<Condition> predicate) {
@@ -271,6 +312,23 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
         }
       }
       return null;
+  }
+  
+  public String getMatchingRiskName(Predicate<String> predicate) {
+      for (String item : riskNames) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
+  }
+  
+  public String getRiskName(int index) {
+    return this.riskNames.get(index);
+  }
+  
+  public List<String> getRiskNames() {
+    return this.riskNames;
   }
   
   public boolean hasAdditionalProperties() {
@@ -299,8 +357,21 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
       return false;
   }
   
+  public boolean hasMatchingRiskName(Predicate<String> predicate) {
+      for (String item : riskNames) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasRelease() {
     return this.release != null;
+  }
+  
+  public boolean hasRiskNames() {
+    return this.riskNames != null && !(this.riskNames.isEmpty());
   }
   
   public boolean hasRisks() {
@@ -308,7 +379,7 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
   }
   
   public int hashCode() {
-    return Objects.hash(conditions, release, risks, additionalProperties);
+    return Objects.hash(conditions, release, riskNames, risks, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -317,6 +388,16 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     }
     for (Condition item : items) {
       this.conditions.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromRiskNames(Collection<String> items) {
+    if (this.riskNames == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.riskNames.remove(item);
     }
     return (A) this;
   }
@@ -367,6 +448,16 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
+  public A removeFromRiskNames(String... items) {
+    if (this.riskNames == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.riskNames.remove(item);
+    }
+    return (A) this;
+  }
+  
   public A removeFromRisks(ConditionalUpdateRisk... items) {
     if (this.risks == null) {
       return (A) this;
@@ -407,6 +498,14 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
+  public A setToRiskNames(int index,String item) {
+    if (this.riskNames == null) {
+      this.riskNames = new ArrayList();
+    }
+    this.riskNames.set(index, item);
+    return (A) this;
+  }
+  
   public A setToRisks(int index,ConditionalUpdateRisk item) {
     if (this.risks == null) {
       this.risks = new ArrayList();
@@ -433,6 +532,11 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     if (!(release == null)) {
         sb.append("release:");
         sb.append(release);
+        sb.append(",");
+    }
+    if (!(riskNames == null) && !(riskNames.isEmpty())) {
+        sb.append("riskNames:");
+        sb.append(riskNames);
         sb.append(",");
     }
     if (!(risks == null) && !(risks.isEmpty())) {
@@ -498,6 +602,31 @@ public class ConditionalUpdateFluent<A extends io.fabric8.openshift.api.model.co
     } else {
         this.release = null;
         this._visitables.get("release").remove(this.release);
+    }
+    return (A) this;
+  }
+  
+  public A withRiskNames(List<String> riskNames) {
+    if (riskNames != null) {
+        this.riskNames = new ArrayList();
+        for (String item : riskNames) {
+          this.addToRiskNames(item);
+        }
+    } else {
+      this.riskNames = null;
+    }
+    return (A) this;
+  }
+  
+  public A withRiskNames(String... riskNames) {
+    if (this.riskNames != null) {
+        this.riskNames.clear();
+        _visitables.remove("riskNames");
+    }
+    if (riskNames != null) {
+      for (String item : riskNames) {
+        this.addToRiskNames(item);
+      }
     }
     return (A) this;
   }

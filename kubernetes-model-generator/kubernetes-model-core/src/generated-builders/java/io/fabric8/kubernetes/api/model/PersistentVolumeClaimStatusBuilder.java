@@ -25,7 +25,7 @@ public class PersistentVolumeClaimStatusBuilder extends PersistentVolumeClaimSta
   }
 
   public PersistentVolumeClaimStatus build() {
-    PersistentVolumeClaimStatus buildable = new PersistentVolumeClaimStatus(fluent.getAccessModes(), fluent.getAllocatedResourceStatuses(), fluent.getAllocatedResources(), fluent.getCapacity(), fluent.buildConditions(), fluent.getCurrentVolumeAttributesClassName(), fluent.buildModifyVolumeStatus(), fluent.getPhase());
+    PersistentVolumeClaimStatus buildable = new PersistentVolumeClaimStatus(fluent.getAccessModes(), fluent.getAllocatedResourceStatuses(), fluent.getAllocatedResources(), fluent.getCapacity(), fluent.buildConditions(), fluent.getCurrentVolumeAttributesClassName(), fluent.buildHealthStatus(), fluent.buildModifyVolumeStatus(), fluent.getPhase());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

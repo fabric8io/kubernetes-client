@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,11 +29,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * WasmConfig configures a WebAssembly filter.<br><p> <br><p> Example:<br><p> <br><p> ```yaml wasm:<br><p> <br><p> 	url: oci://gcr.io/myproject/filter:v1.0.0<br><p> 	sha256: abc123...<br><p> 	imagePullPolicy: IfNotPresent<br><p> 	imagePullSecret: gcr-secret<br><p> 	pluginName: my-filter<br><p> 	pluginConfig:<br><p> 	  key1: value1<br><p> 	  key2: value2<br><p> 	failStrategy: FAIL_CLOSE<br><p> 	vmConfig:<br><p> 	  env:<br><p> 	  - name: SOME_ENV_VAR<br><p> 	    value: some_value<br><p> 	type: HTTP<br><p> <br><p> ```
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "failStrategy",

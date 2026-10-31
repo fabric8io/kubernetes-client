@@ -24,7 +24,7 @@ io.fabric8.kubernetes.api.model.storage.v1beta1.StorageClass
 io.fabric8.kubernetes.api.model.storage.v1beta1.StorageClassList
 io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeAttachment
 io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeAttachmentList
-io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeAttributesClass
-io.fabric8.kubernetes.api.model.storage.v1beta1.VolumeAttributesClassList
+io.fabric8.kubernetes.api.model.storagemigration.v1.StorageVersionMigration
+io.fabric8.kubernetes.api.model.storagemigration.v1.StorageVersionMigrationList
 io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigration
 io.fabric8.kubernetes.api.model.storagemigration.v1beta1.StorageVersionMigrationList

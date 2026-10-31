@@ -25,7 +25,7 @@ public class PrefixedClaimMappingBuilder extends PrefixedClaimMappingFluent<Pref
   }
 
   public PrefixedClaimMapping build() {
-    PrefixedClaimMapping buildable = new PrefixedClaimMapping(fluent.getClaim(), fluent.getPrefix());
+    PrefixedClaimMapping buildable = new PrefixedClaimMapping(fluent.getClaim(), fluent.getExpression(), fluent.getPrefix());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

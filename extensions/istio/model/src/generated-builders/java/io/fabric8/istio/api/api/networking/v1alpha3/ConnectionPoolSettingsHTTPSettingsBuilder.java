@@ -25,7 +25,7 @@ public class ConnectionPoolSettingsHTTPSettingsBuilder extends ConnectionPoolSet
   }
 
   public ConnectionPoolSettingsHTTPSettings build() {
-    ConnectionPoolSettingsHTTPSettings buildable = new ConnectionPoolSettingsHTTPSettings(fluent.getH2UpgradePolicy(), fluent.getHttp1MaxPendingRequests(), fluent.getHttp2MaxRequests(), fluent.getIdleTimeout(), fluent.getMaxConcurrentStreams(), fluent.getMaxRequestsPerConnection(), fluent.getMaxRetries(), fluent.getUseClientProtocol());
+    ConnectionPoolSettingsHTTPSettings buildable = new ConnectionPoolSettingsHTTPSettings(fluent.getH2UpgradePolicy(), fluent.getHttp1MaxPendingRequests(), fluent.buildHttp2KeepAlive(), fluent.getHttp2MaxRequests(), fluent.getIdleTimeout(), fluent.getMaxConcurrentStreams(), fluent.getMaxRequestsPerConnection(), fluent.getMaxRetries(), fluent.getUseClientProtocol());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

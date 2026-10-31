@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PolicyRule holds information that describes a policy rule, but does not contain information about who the rule applies to or which namespace the rule applies to.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiGroups",
@@ -105,7 +105,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
+     * apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
      */
     @JsonProperty("apiGroups")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -114,7 +114,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * APIGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
+     * apiGroups is the name of the APIGroup that contains the resources.  If multiple API groups are specified, any action requested against one of the enumerated resources in any API group will be allowed. "" represents the core API group and "&#42;" represents all API groups.
      */
     @JsonProperty("apiGroups")
     public void setApiGroups(List<String> apiGroups) {
@@ -122,7 +122,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
+     * nonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
      */
     @JsonProperty("nonResourceURLs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -131,7 +131,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * NonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
+     * nonResourceURLs is a set of partial urls that a user should have access to.  &#42;s are allowed, but only as the full, final step in the path Since non-resource URLs are not namespaced, this field is only applicable for ClusterRoles referenced from a ClusterRoleBinding. Rules can either apply to API resources (such as "pods" or "secrets") or non-resource URL paths (such as "/api"),  but not both.
      */
     @JsonProperty("nonResourceURLs")
     public void setNonResourceURLs(List<String> nonResourceURLs) {
@@ -139,7 +139,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -148,7 +148,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * ResourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
+     * resourceNames is an optional white list of names that the rule applies to.  An empty set means that everything is allowed.
      */
     @JsonProperty("resourceNames")
     public void setResourceNames(List<String> resourceNames) {
@@ -156,7 +156,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Resources is a list of resources this rule applies to. '&#42;' represents all resources.
+     * resources is a list of resources this rule applies to. '&#42;' represents all resources.
      */
     @JsonProperty("resources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -165,7 +165,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Resources is a list of resources this rule applies to. '&#42;' represents all resources.
+     * resources is a list of resources this rule applies to. '&#42;' represents all resources.
      */
     @JsonProperty("resources")
     public void setResources(List<String> resources) {
@@ -173,7 +173,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
+     * verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
      */
     @JsonProperty("verbs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -182,7 +182,7 @@ public class PolicyRule implements Editable<PolicyRuleBuilder>, KubernetesResour
     }
 
     /**
-     * Verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
+     * verbs is a list of Verbs that apply to ALL the ResourceKinds contained in this rule. '&#42;' represents all verbs.
      */
     @JsonProperty("verbs")
     public void setVerbs(List<String> verbs) {

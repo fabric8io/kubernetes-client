@@ -62,10 +62,13 @@ spec:
                 - message: "cannot be changed once set"
                   rule: "self == oldSelf"
               maxReplicas:
+                format: "int32"
                 type: "integer"
               minReplicas:
+                format: "int32"
                 type: "integer"
               monotonicCounter:
+                format: "int32"
                 type: "integer"
                 x-kubernetes-validations:
                 - message: "cannot decrease value once set"
@@ -117,6 +120,7 @@ spec:
                   rule: "!(self == 'high' && oldSelf == 'low') && !(self == 'low'\
                     \ && oldSelf == 'high')"
               replicas:
+                format: "int32"
                 type: "integer"
               simple:
                 type: "string"
@@ -146,6 +150,7 @@ spec:
           status:
             properties:
               availableReplicas:
+                format: "int32"
                 type: "integer"
             type: "object"
         type: "object"

@@ -44,6 +44,11 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
   final Vertx vertx;
   private volatile TlsWarmup tlsWarmup = TlsWarmup.CONTEXT;
 
+  @Override
+  public int priority() {
+    return -1;
+  }
+
   /**
    * Return a factory that reuses the supplied Vert.x instance.
    */
@@ -91,11 +96,13 @@ public class Vertx5HttpClientFactory implements HttpClient.Factory {
       Class.forName(VERTX5_MARKER_CLASS);
     } catch (ClassNotFoundException e) {
       throw new IllegalStateException(
-          "Vert.x 5 runtime classes not found. The kubernetes-httpclient-vertx-5 module requires "
-              + "Vert.x 5.x on the classpath. This error typically occurs when both kubernetes-httpclient-vertx "
-              + "(Vert.x 4) and kubernetes-httpclient-vertx-5 (Vert.x 5) are present, causing Maven to resolve "
-              + "Vert.x 4 JARs. These modules are mutually exclusive - please exclude one from your dependencies "
-              + "and ensure vertx.version property is set appropriately (5.x for vertx-5, 4.x for vertx).",
+          """
+              Vert.x 5 runtime classes not found. The kubernetes-httpclient-vertx-5 module requires Vert.x 5.x, \
+              but Vert.x 4.x was resolved, typically because kubernetes-httpclient-vertx (Vert.x 4) or a BOM \
+              that manages io.vertx at 4.x is also on the classpath. Either align the io.vertx dependencies \
+              to 5.x, or exclude kubernetes-httpclient-vertx-5 and use kubernetes-httpclient-vertx, \
+              see the Fabric8 Kubernetes Client 8.0 migration guide.\
+              """,
           e);
     }
   }

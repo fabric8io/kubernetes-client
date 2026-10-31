@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Represents a standard link that could be generated in HTML
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "href",
@@ -86,7 +86,7 @@ public class Link implements Editable<LinkBuilder>, KubernetesResource
     }
 
     /**
-     * href is the absolute secure URL for the link (must use https)
+     * href is the absolute URL for the link. Must use https:// for web URLs or mailto: for email links.
      */
     @JsonProperty("href")
     public String getHref() {
@@ -94,7 +94,7 @@ public class Link implements Editable<LinkBuilder>, KubernetesResource
     }
 
     /**
-     * href is the absolute secure URL for the link (must use https)
+     * href is the absolute URL for the link. Must use https:// for web URLs or mailto: for email links.
      */
     @JsonProperty("href")
     public void setHref(String href) {

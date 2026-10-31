@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -34,11 +33,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * MultiClusterObservabilityStatus defines the observed state of MultiClusterObservability.
+ * Observed state of the MultiClusterObservability installation, including component health and addon status.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions"
@@ -86,7 +86,7 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
     }
 
     /**
-     * Represents the status of each deployment
+     * Conditions describing the current state of the MultiClusterObservability installation. Condition types include: Ready, Installing, Failed, MetricsDisabled, MultiClusterObservabilityAddonDegraded.
      */
     @JsonProperty("conditions")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -95,7 +95,7 @@ public class MultiClusterObservabilityStatus implements Editable<MultiClusterObs
     }
 
     /**
-     * Represents the status of each deployment
+     * Conditions describing the current state of the MultiClusterObservability installation. Condition types include: Ready, Installing, Failed, MetricsDisabled, MultiClusterObservabilityAddonDegraded.
      */
     @JsonProperty("conditions")
     public void setConditions(List<Condition> conditions) {

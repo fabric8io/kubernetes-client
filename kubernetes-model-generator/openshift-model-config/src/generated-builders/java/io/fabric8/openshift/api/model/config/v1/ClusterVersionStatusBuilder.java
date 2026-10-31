@@ -25,7 +25,7 @@ public class ClusterVersionStatusBuilder extends ClusterVersionStatusFluent<Clus
   }
 
   public ClusterVersionStatus build() {
-    ClusterVersionStatus buildable = new ClusterVersionStatus(fluent.buildAvailableUpdates(), fluent.buildCapabilities(), fluent.buildConditionalUpdates(), fluent.buildConditions(), fluent.buildDesired(), fluent.buildHistory(), fluent.getObservedGeneration(), fluent.getVersionHash());
+    ClusterVersionStatus buildable = new ClusterVersionStatus(fluent.buildAvailableUpdates(), fluent.buildCapabilities(), fluent.buildConditionalUpdateRisks(), fluent.buildConditionalUpdates(), fluent.buildConditions(), fluent.buildDesired(), fluent.buildHistory(), fluent.getObservedGeneration(), fluent.getVersionHash());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

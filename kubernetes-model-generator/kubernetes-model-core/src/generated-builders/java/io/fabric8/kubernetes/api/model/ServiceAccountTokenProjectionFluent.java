@@ -20,6 +20,7 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
   private String audience;
   private Long expirationSeconds;
   private String path;
+  private Long user;
 
   public ServiceAccountTokenProjectionFluent() {
   }
@@ -54,6 +55,7 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
         this.withAudience(instance.getAudience());
         this.withExpirationSeconds(instance.getExpirationSeconds());
         this.withPath(instance.getPath());
+        this.withUser(instance.getUser());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -78,6 +80,9 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
     if (!(Objects.equals(path, that.path))) {
       return false;
     }
+    if (!(Objects.equals(user, that.user))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -100,6 +105,10 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
     return this.path;
   }
   
+  public Long getUser() {
+    return this.user;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -116,8 +125,12 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
     return this.path != null;
   }
   
+  public boolean hasUser() {
+    return this.user != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(audience, expirationSeconds, path, additionalProperties);
+    return Objects.hash(audience, expirationSeconds, path, user, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -162,6 +175,11 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
         sb.append(path);
         sb.append(",");
     }
+    if (!(user == null)) {
+        sb.append("user:");
+        sb.append(user);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -191,6 +209,11 @@ public class ServiceAccountTokenProjectionFluent<A extends io.fabric8.kubernetes
   
   public A withPath(String path) {
     this.path = path;
+    return (A) this;
+  }
+  
+  public A withUser(Long user) {
+    this.user = user;
     return (A) this;
   }
   

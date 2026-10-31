@@ -18,6 +18,7 @@ package io.fabric8.kubernetes.client.informers.impl.cache;
 import io.fabric8.kubernetes.api.model.Pod;
 import io.fabric8.kubernetes.api.model.PodBuilder;
 import io.fabric8.kubernetes.client.informers.cache.Cache;
+import io.fabric8.kubernetes.client.informers.cache.ItemStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -153,6 +156,49 @@ class CacheTest {
     assertEquals(1, clusterNameIndexedPods.size());
   }
 
+  @Test
+  void testNamespaceIndexCleanupWithDroppingItemStore() {
+    CacheImpl<Pod> podCache = new CacheImpl<>();
+    DroppingItemStore itemStore = new DroppingItemStore();
+    podCache.setItemStore(itemStore);
+
+    Pod testPod = new PodBuilder()
+        .withNewMetadata().withNamespace("test").withName("test-pod").withResourceVersion("1").endMetadata()
+        .build();
+
+    podCache.put(testPod);
+    podCache.remove(testPod);
+    itemStore.insertBypassingCache(testPod);
+
+    assertEquals(0, podCache.byIndex(Cache.NAMESPACE_INDEX, "test").size());
+  }
+
+  @Test
+  void testCustomIndexCleanupWithDroppingItemStore() {
+    CacheImpl<Pod> podCache = new CacheImpl<>();
+    DroppingItemStore itemStore = new DroppingItemStore();
+    podCache.setItemStore(itemStore);
+    String nodeIndex = "node-index";
+    podCache.addIndexers(
+        Collections.singletonMap(nodeIndex, pod -> Collections.singletonList(pod.getSpec().getNodeName())));
+
+    Pod testPod = new PodBuilder()
+        .withNewMetadata().withNamespace("test").withName("test-pod").withResourceVersion("1").endMetadata()
+        .withNewSpec().withNodeName("node-a").endSpec()
+        .build();
+    podCache.put(testPod);
+
+    Pod movedPod = new PodBuilder()
+        .withNewMetadata().withNamespace("test").withName("test-pod").withResourceVersion("2").endMetadata()
+        .withNewSpec().withNodeName("node-b").endSpec()
+        .build();
+    podCache.put(movedPod);
+    podCache.remove(movedPod);
+    itemStore.insertBypassingCache(movedPod);
+
+    assertEquals(0, podCache.byIndex(nodeIndex, "node-b").size());
+  }
+
   private static List<String> mockIndexFunction(Object obj) {
     if (obj == null) {
       return Collections.singletonList("null");
@@ -167,4 +213,51 @@ class CacheTest {
     return String.valueOf(System.identityHashCode(obj));
   }
 
+  private static class DroppingItemStore implements ItemStore<Pod> {
+
+    private final Map<String, Pod> retained = new ConcurrentHashMap<>();
+
+    /**
+     * Makes a leaked index entry observable: {@link CacheImpl#byIndex(String, String)} skips an entry whose object
+     * the store does not hold, so the store has to resolve the key again without the cache indexing it.
+     */
+    void insertBypassingCache(Pod pod) {
+      retained.put(getKey(pod), pod);
+    }
+
+    @Override
+    public String getKey(Pod obj) {
+      return Cache.metaNamespaceKeyFunc(obj);
+    }
+
+    @Override
+    public Pod put(String key, Pod obj) {
+      return null;
+    }
+
+    @Override
+    public Pod remove(String key) {
+      return retained.remove(key);
+    }
+
+    @Override
+    public Stream<String> keySet() {
+      return retained.keySet().stream();
+    }
+
+    @Override
+    public Stream<Pod> values() {
+      return retained.values().stream();
+    }
+
+    @Override
+    public int size() {
+      return retained.size();
+    }
+
+    @Override
+    public Pod get(String key) {
+      return retained.get(key);
+    }
+  }
 }

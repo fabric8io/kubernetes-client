@@ -28,6 +28,7 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
   private ArrayList<HTTPHeaderBuilder> httpHeaders = new ArrayList<HTTPHeaderBuilder>();
   private String path;
   private IntOrStringBuilder port;
+  private String protocol;
   private String scheme;
 
   public HTTPGetActionFluent() {
@@ -144,6 +145,7 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
         this.withHttpHeaders(instance.getHttpHeaders());
         this.withPath(instance.getPath());
         this.withPort(instance.getPort());
+        this.withProtocol(instance.getProtocol());
         this.withScheme(instance.getScheme());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -220,6 +222,9 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
     if (!(Objects.equals(port, that.port))) {
       return false;
     }
+    if (!(Objects.equals(protocol, that.protocol))) {
+      return false;
+    }
     if (!(Objects.equals(scheme, that.scheme))) {
       return false;
     }
@@ -239,6 +244,10 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
   
   public String getPath() {
     return this.path;
+  }
+  
+  public String getProtocol() {
+    return this.protocol;
   }
   
   public String getScheme() {
@@ -274,12 +283,16 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
     return this.port != null;
   }
   
+  public boolean hasProtocol() {
+    return this.protocol != null;
+  }
+  
   public boolean hasScheme() {
     return this.scheme != null;
   }
   
   public int hashCode() {
-    return Objects.hash(host, httpHeaders, path, port, scheme, additionalProperties);
+    return Objects.hash(host, httpHeaders, path, port, protocol, scheme, additionalProperties);
   }
   
   public A removeAllFromHttpHeaders(Collection<HTTPHeader> items) {
@@ -388,6 +401,11 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
         sb.append(port);
         sb.append(",");
     }
+    if (!(protocol == null)) {
+        sb.append("protocol:");
+        sb.append(protocol);
+        sb.append(",");
+    }
     if (!(scheme == null)) {
         sb.append("scheme:");
         sb.append(scheme);
@@ -469,6 +487,11 @@ public class HTTPGetActionFluent<A extends io.fabric8.kubernetes.api.model.HTTPG
         this.port = null;
         this._visitables.get("port").remove(this.port);
     }
+    return (A) this;
+  }
+  
+  public A withProtocol(String protocol) {
+    this.protocol = protocol;
     return (A) this;
   }
   

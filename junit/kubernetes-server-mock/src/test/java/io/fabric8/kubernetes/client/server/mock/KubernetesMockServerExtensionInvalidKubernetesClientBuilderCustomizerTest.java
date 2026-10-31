@@ -1,0 +1,59 @@
+/*
+ * Copyright (C) 2015 Red Hat, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package io.fabric8.kubernetes.client.server.mock;
+
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtensionContext;
+
+import java.util.Optional;
+import java.util.function.Consumer;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Answers.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+
+class KubernetesMockServerExtensionInvalidKubernetesClientBuilderCustomizerTest {
+
+  @Test
+  @DisplayName("beforeAll fails with a message naming the kubernetesClientBuilderCustomizer if it has no no-arg constructor")
+  void invalidKubernetesClientBuilderCustomizer() {
+    final ExtensionContext context = mock(ExtensionContext.class, CALLS_REAL_METHODS);
+    doReturn(Optional.of(InvalidCustomizerMockClientTest.class)).when(context).getTestClass();
+    final KubernetesMockServerExtension extension = new KubernetesMockServerExtension();
+    assertThatThrownBy(() -> extension.beforeAll(context))
+        .isInstanceOf(IllegalArgumentException.class)
+        .hasMessage("The provided kubernetesClientBuilderCustomizer " + NoNoArgConstructorCustomizer.class.getName()
+            + " could not be instantiated, it must be a concrete top-level or static nested class with a no-arg constructor");
+  }
+
+  @EnableKubernetesMockClient(https = false, kubernetesClientBuilderCustomizer = NoNoArgConstructorCustomizer.class)
+  static final class InvalidCustomizerMockClientTest {
+  }
+
+  static final class NoNoArgConstructorCustomizer implements Consumer<KubernetesClientBuilder> {
+
+    NoNoArgConstructorCustomizer(String unused) {
+    }
+
+    @Override
+    public void accept(KubernetesClientBuilder kubernetesClientBuilder) {
+      // NO-OP
+    }
+  }
+}

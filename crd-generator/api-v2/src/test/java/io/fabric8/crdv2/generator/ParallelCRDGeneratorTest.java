@@ -18,6 +18,6 @@ package io.fabric8.crdv2.generator;
 class ParallelCRDGeneratorTest extends CRDGeneratorTest {
 
   public ParallelCRDGeneratorTest() {
-    parallelCRDGeneration = false;
+    parallelCRDGeneration = true;
   }
 }

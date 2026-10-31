@@ -5,6 +5,7 @@ import io.fabric8.kubernetes.api.builder.Nested;
 import io.fabric8.kubernetes.api.model.LocalObjectReference;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceBuilder;
 import io.fabric8.kubernetes.api.model.LocalObjectReferenceFluent;
+import io.fabric8.openshift.api.model.config.v1.ClusterVersionStatus;
 import java.lang.Boolean;
 import java.lang.Integer;
 import java.lang.Object;
@@ -32,6 +33,7 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
   private String apiURL;
   private ArrayList<CertificateBundleStatusBuilder> certificateBundles = new ArrayList<CertificateBundleStatusBuilder>();
   private String cliImage;
+  private ClusterVersionStatus clusterVersionStatus;
   private ArrayList<ClusterDeploymentConditionBuilder> conditions = new ArrayList<ClusterDeploymentConditionBuilder>();
   private Integer installRestarts;
   private String installStartedTimestamp;
@@ -232,6 +234,7 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
         this.withApiURL(instance.getApiURL());
         this.withCertificateBundles(instance.getCertificateBundles());
         this.withCliImage(instance.getCliImage());
+        this.withClusterVersionStatus(instance.getClusterVersionStatus());
         this.withConditions(instance.getConditions());
         this.withInstallRestarts(instance.getInstallRestarts());
         this.withInstallStartedTimestamp(instance.getInstallStartedTimestamp());
@@ -362,6 +365,9 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
     if (!(Objects.equals(cliImage, that.cliImage))) {
       return false;
     }
+    if (!(Objects.equals(clusterVersionStatus, that.clusterVersionStatus))) {
+      return false;
+    }
     if (!(Objects.equals(conditions, that.conditions))) {
       return false;
     }
@@ -410,6 +416,10 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
     return this.cliImage;
   }
   
+  public ClusterVersionStatus getClusterVersionStatus() {
+    return this.clusterVersionStatus;
+  }
+  
   public Integer getInstallRestarts() {
     return this.installRestarts;
   }
@@ -452,6 +462,10 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
   
   public boolean hasCliImage() {
     return this.cliImage != null;
+  }
+  
+  public boolean hasClusterVersionStatus() {
+    return this.clusterVersionStatus != null;
   }
   
   public boolean hasConditions() {
@@ -513,7 +527,7 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
   }
   
   public int hashCode() {
-    return Objects.hash(apiURL, certificateBundles, cliImage, conditions, installRestarts, installStartedTimestamp, installVersion, installedTimestamp, installerImage, platformStatus, powerState, provisionRef, webConsoleURL, additionalProperties);
+    return Objects.hash(apiURL, certificateBundles, cliImage, clusterVersionStatus, conditions, installRestarts, installStartedTimestamp, installVersion, installedTimestamp, installerImage, platformStatus, powerState, provisionRef, webConsoleURL, additionalProperties);
   }
   
   public A removeAllFromCertificateBundles(Collection<CertificateBundleStatus> items) {
@@ -676,6 +690,11 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
         sb.append(cliImage);
         sb.append(",");
     }
+    if (!(clusterVersionStatus == null)) {
+        sb.append("clusterVersionStatus:");
+        sb.append(clusterVersionStatus);
+        sb.append(",");
+    }
     if (!(conditions == null) && !(conditions.isEmpty())) {
         sb.append("conditions:");
         sb.append(conditions);
@@ -778,6 +797,11 @@ public class ClusterDeploymentStatusFluent<A extends io.fabric8.openshift.api.mo
   
   public A withCliImage(String cliImage) {
     this.cliImage = cliImage;
+    return (A) this;
+  }
+  
+  public A withClusterVersionStatus(ClusterVersionStatus clusterVersionStatus) {
+    this.clusterVersionStatus = clusterVersionStatus;
     return (A) this;
   }
   

@@ -17,21 +17,19 @@ package io.fabric8.junit.jupiter;
 
 import io.fabric8.junit.jupiter.api.RequireK8sSupport;
 import io.fabric8.kubernetes.client.KubernetesClient;
-import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ConditionEvaluationResult;
 import org.junit.jupiter.api.extension.ExecutionCondition;
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.platform.commons.support.AnnotationSupport;
 
-import static org.junit.platform.commons.support.AnnotationSupport.findAnnotation;
-
-public class RequireK8sSupportCondition implements ExecutionCondition {
+public class RequireK8sSupportCondition implements ExecutionCondition, BaseExtension {
 
   @Override
   public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
-    final RequireK8sSupport requireK8s = findAnnotation(context.getElement(), RequireK8sSupport.class)
+    final RequireK8sSupport requireK8s = AnnotationSupport.findAnnotation(context.getElement(), RequireK8sSupport.class)
         .orElse(null);
     if (requireK8s != null) {
-      try (KubernetesClient client = new KubernetesClientBuilder().build()) {
+      try (KubernetesClient client = createKubernetesClient(context)) {
         if (client.supports(requireK8s.value())) {
           return ConditionEvaluationResult
               .enabled(String.format("Kubernetes resource %s IS supported in this cluster", requireK8s.value().getName()));

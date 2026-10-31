@@ -31,6 +31,7 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
 
   private Map<String,Object> additionalProperties;
   private ContainerBuilder container;
+  private Map<String,String> labels;
   private ArrayList<VolumeBuilder> volumes = new ArrayList<VolumeBuilder>();
 
   public TaskFluent() {
@@ -76,6 +77,26 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
     }
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToLabels(Map<String,String> map) {
+    if (this.labels == null && map != null) {
+      this.labels = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.labels.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToLabels(String key,String value) {
+    if (this.labels == null && key != null && value != null) {
+      this.labels = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.labels.put(key, value);
     }
     return (A) this;
   }
@@ -140,6 +161,7 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
     instance = instance != null ? instance : new Task();
     if (instance != null) {
         this.withContainer(instance.getContainer());
+        this.withLabels(instance.getLabels());
         this.withVolumes(instance.getVolumes());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -207,6 +229,9 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
     if (!(Objects.equals(container, that.container))) {
       return false;
     }
+    if (!(Objects.equals(labels, that.labels))) {
+      return false;
+    }
     if (!(Objects.equals(volumes, that.volumes))) {
       return false;
     }
@@ -220,12 +245,20 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
     return this.additionalProperties;
   }
   
+  public Map<String,String> getLabels() {
+    return this.labels;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
   
   public boolean hasContainer() {
     return this.container != null;
+  }
+  
+  public boolean hasLabels() {
+    return this.labels != null;
   }
   
   public boolean hasMatchingVolume(Predicate<VolumeBuilder> predicate) {
@@ -242,7 +275,7 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
   }
   
   public int hashCode() {
-    return Objects.hash(container, volumes, additionalProperties);
+    return Objects.hash(container, labels, volumes, additionalProperties);
   }
   
   public A removeAllFromVolumes(Collection<Volume> items) {
@@ -275,6 +308,30 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
       for (Object key : map.keySet()) {
         if (this.additionalProperties != null) {
           this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromLabels(String key) {
+    if (this.labels == null) {
+      return (A) this;
+    }
+    if (key != null && this.labels != null) {
+      this.labels.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromLabels(Map<String,String> map) {
+    if (this.labels == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.labels != null) {
+          this.labels.remove(key);
         }
       }
     }
@@ -336,6 +393,11 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
         sb.append(container);
         sb.append(",");
     }
+    if (!(labels == null) && !(labels.isEmpty())) {
+        sb.append("labels:");
+        sb.append(labels);
+        sb.append(",");
+    }
     if (!(volumes == null) && !(volumes.isEmpty())) {
         sb.append("volumes:");
         sb.append(volumes);
@@ -366,6 +428,15 @@ public class TaskFluent<A extends io.fabric8.chaosmesh.v1alpha1.TaskFluent<A>> e
     } else {
         this.container = null;
         this._visitables.get("container").remove(this.container);
+    }
+    return (A) this;
+  }
+  
+  public <K,V>A withLabels(Map<String,String> labels) {
+    if (labels == null) {
+      this.labels = null;
+    } else {
+      this.labels = new LinkedHashMap(labels);
     }
     return (A) this;
   }

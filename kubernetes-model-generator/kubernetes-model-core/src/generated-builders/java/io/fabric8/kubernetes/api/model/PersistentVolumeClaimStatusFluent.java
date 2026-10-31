@@ -30,6 +30,7 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
   private Map<String,Quantity> capacity;
   private ArrayList<PersistentVolumeClaimConditionBuilder> conditions = new ArrayList<PersistentVolumeClaimConditionBuilder>();
   private String currentVolumeAttributesClassName;
+  private VolumeHealthStatusBuilder healthStatus;
   private ModifyVolumeStatusBuilder modifyVolumeStatus;
   private String phase;
 
@@ -207,6 +208,10 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
     return this.conditions.get(0).build();
   }
   
+  public VolumeHealthStatus buildHealthStatus() {
+    return this.healthStatus != null ? this.healthStatus.build() : null;
+  }
+  
   public PersistentVolumeClaimCondition buildLastCondition() {
     return this.conditions.get(conditions.size() - 1).build();
   }
@@ -233,6 +238,7 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
         this.withCapacity(instance.getCapacity());
         this.withConditions(instance.getConditions());
         this.withCurrentVolumeAttributesClassName(instance.getCurrentVolumeAttributesClassName());
+        this.withHealthStatus(instance.getHealthStatus());
         this.withModifyVolumeStatus(instance.getModifyVolumeStatus());
         this.withPhase(instance.getPhase());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -251,6 +257,10 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "conditions"));
     }
     return this.setNewConditionLike(0, this.buildCondition(0));
+  }
+  
+  public HealthStatusNested<A> editHealthStatus() {
+    return this.withNewHealthStatusLike(Optional.ofNullable(this.buildHealthStatus()).orElse(null));
   }
   
   public ConditionsNested<A> editLastCondition() {
@@ -277,6 +287,14 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
   
   public ModifyVolumeStatusNested<A> editModifyVolumeStatus() {
     return this.withNewModifyVolumeStatusLike(Optional.ofNullable(this.buildModifyVolumeStatus()).orElse(null));
+  }
+  
+  public HealthStatusNested<A> editOrNewHealthStatus() {
+    return this.withNewHealthStatusLike(Optional.ofNullable(this.buildHealthStatus()).orElse(new VolumeHealthStatusBuilder().build()));
+  }
+  
+  public HealthStatusNested<A> editOrNewHealthStatusLike(VolumeHealthStatus item) {
+    return this.withNewHealthStatusLike(Optional.ofNullable(this.buildHealthStatus()).orElse(item));
   }
   
   public ModifyVolumeStatusNested<A> editOrNewModifyVolumeStatus() {
@@ -314,6 +332,9 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
       return false;
     }
     if (!(Objects.equals(currentVolumeAttributesClassName, that.currentVolumeAttributesClassName))) {
+      return false;
+    }
+    if (!(Objects.equals(healthStatus, that.healthStatus))) {
       return false;
     }
     if (!(Objects.equals(modifyVolumeStatus, that.modifyVolumeStatus))) {
@@ -405,6 +426,10 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
     return this.currentVolumeAttributesClassName != null;
   }
   
+  public boolean hasHealthStatus() {
+    return this.healthStatus != null;
+  }
+  
   public boolean hasMatchingAccessMode(Predicate<String> predicate) {
       for (String item : accessModes) {
         if (predicate.test(item)) {
@@ -432,7 +457,7 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
   }
   
   public int hashCode() {
-    return Objects.hash(accessModes, allocatedResourceStatuses, allocatedResources, capacity, conditions, currentVolumeAttributesClassName, modifyVolumeStatus, phase, additionalProperties);
+    return Objects.hash(accessModes, allocatedResourceStatuses, allocatedResources, capacity, conditions, currentVolumeAttributesClassName, healthStatus, modifyVolumeStatus, phase, additionalProperties);
   }
   
   public A removeAllFromAccessModes(Collection<String> items) {
@@ -651,6 +676,11 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
         sb.append(currentVolumeAttributesClassName);
         sb.append(",");
     }
+    if (!(healthStatus == null)) {
+        sb.append("healthStatus:");
+        sb.append(healthStatus);
+        sb.append(",");
+    }
     if (!(modifyVolumeStatus == null)) {
         sb.append("modifyVolumeStatus:");
         sb.append(modifyVolumeStatus);
@@ -763,6 +793,18 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
     return (A) this;
   }
   
+  public A withHealthStatus(VolumeHealthStatus healthStatus) {
+    this._visitables.remove("healthStatus");
+    if (healthStatus != null) {
+        this.healthStatus = new VolumeHealthStatusBuilder(healthStatus);
+        this._visitables.get("healthStatus").add(this.healthStatus);
+    } else {
+        this.healthStatus = null;
+        this._visitables.get("healthStatus").remove(this.healthStatus);
+    }
+    return (A) this;
+  }
+  
   public A withModifyVolumeStatus(ModifyVolumeStatus modifyVolumeStatus) {
     this._visitables.remove("modifyVolumeStatus");
     if (modifyVolumeStatus != null) {
@@ -773,6 +815,14 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
         this._visitables.get("modifyVolumeStatus").remove(this.modifyVolumeStatus);
     }
     return (A) this;
+  }
+  
+  public HealthStatusNested<A> withNewHealthStatus() {
+    return new HealthStatusNested(null);
+  }
+  
+  public HealthStatusNested<A> withNewHealthStatusLike(VolumeHealthStatus item) {
+    return new HealthStatusNested(item);
   }
   
   public ModifyVolumeStatusNested<A> withNewModifyVolumeStatus() {
@@ -806,6 +856,23 @@ public class PersistentVolumeClaimStatusFluent<A extends io.fabric8.kubernetes.a
     }
     
     public N endCondition() {
+      return and();
+    }
+    
+  }
+  public class HealthStatusNested<N> extends VolumeHealthStatusFluent<HealthStatusNested<N>> implements Nested<N>{
+  
+    VolumeHealthStatusBuilder builder;
+  
+    HealthStatusNested(VolumeHealthStatus item) {
+      this.builder = new VolumeHealthStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PersistentVolumeClaimStatusFluent.this.withHealthStatus(builder.build());
+    }
+    
+    public N endHealthStatus() {
       return and();
     }
     

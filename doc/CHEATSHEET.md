@@ -937,14 +937,14 @@ client.serviceAccounts().inNamespace("default").withName("serviceaccount1").dele
 ```
 
 ### Ingress
-`Ingress` resource is available in Kubernetes Client API via `client.network().v1().ingress()`. Here are some examples regarding its usage:
+`Ingress` resource is available in Kubernetes Client API via `client.network().v1().ingresses()`. Here are some examples regarding its usage:
 - Load `Ingress` from yaml:
 ```java
-Ingress ingress = client.network().v1().ingress().load(new FileInputStream("ingress.yml")).item();
+Ingress ingress = client.network().v1().ingresses().load(new FileInputStream("ingress.yml")).item();
 ```
 - Get `Ingress` from Kubernetes API server:
 ```java
-Ingress ingress = client.network().v1().ingress().inNamespace("default").withName("ingress1").get();
+Ingress ingress = client.network().v1().ingresses().inNamespace("default").withName("ingress1").get();
 ```
 - Create `Ingress`:
 ```java
@@ -960,7 +960,7 @@ Ingress ingress = new IngressBuilder()
   .endRule()
   .endSpec()
   .build();
-client.network().v1().ingress().inNamespace("default").resource(ingress).create();
+client.network().v1().ingresses().inNamespace("default").resource(ingress).create();
 ```
 - Apply `Ingress` onto Kubernetes Cluster:
 ```java
@@ -968,19 +968,19 @@ Ingress igx = client.network().v1().ingresses().inNamespace("default").resource(
 ```
 - List `Ingress` in some namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inNamespace("default").list();
+IngressList ingressList = client.network().v1().ingresses().inNamespace("default").list();
 ```
 - List `Ingress` in any namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inAnyNamespace().list();
+IngressList ingressList = client.network().v1().ingresses().inAnyNamespace().list();
 ```
 - List `Ingress` with some label in any namespace:
 ```java
-IngressList ingressList = client.network().v1().ingress().inNamespace("default").withLabel("foo", "bar").list();
+IngressList ingressList = client.network().v1().ingresses().inNamespace("default").withLabel("foo", "bar").list();
 ```
 - Delete `Ingress`:
 ```java
-client.network().v1().ingress().inNamespace("default").withName("ingress1").delete();
+client.network().v1().ingresses().inNamespace("default").withName("ingress1").delete();
 ```
 
 ### StatefulSet
@@ -2363,6 +2363,18 @@ PodList podList = client.pods().inNamespace("default").list(new ListOptionsBuild
   .withLimit(1L)
   .withContinue(null)
   .build());
+```
+- List only the resources belonging to one shard, here the first of an even four way split of the UID hash space (alpha, requires Kubernetes 1.36+ with the `ShardedListAndWatch` feature gate). It applies to watches and informers too:
+```
+PodList podList = client.pods().inNamespace("default").withShardSelector(ShardSelector.ofShard(0, 4)).list();
+```
+- Take more than one shard, or shard by namespace instead of by UID:
+```
+ShardSelector shardSelector = ShardSelector.builder()
+  .addShard(ShardField.NAMESPACE, 0, 4)
+  .addShard(ShardField.NAMESPACE, 2, 4)
+  .build();
+PodList podList = client.pods().inAnyNamespace().withShardSelector(shardSelector).list();
 ```
 
 ### Delete Options

@@ -48,10 +48,6 @@ public class DiscoveredClusterStatusFluent<A extends io.fabric8.openclustermanag
     return new ConditionsNested(-1, null);
   }
   
-  public A addNewCondition(String lastTransitionTime,String lastUpdateTime,String status,String type) {
-    return (A) this.addToConditions(new DiscoveredClusterCondition(lastTransitionTime, lastUpdateTime, status, type));
-  }
-  
   public ConditionsNested<A> addNewConditionLike(DiscoveredClusterCondition item) {
     return new ConditionsNested(-1, item);
   }

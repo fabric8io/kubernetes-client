@@ -298,8 +298,8 @@ public class ChallengeFluent<A extends io.fabric8.certmanager.api.model.acme.v1.
     return new StatusNested(null);
   }
   
-  public A withNewStatus(Boolean presented,Boolean processing,String reason,String state) {
-    return (A) this.withStatus(new ChallengeStatus(presented, processing, reason, state));
+  public A withNewStatus(Boolean presented,String presentedAt,Boolean processing,String reason,String state) {
+    return (A) this.withStatus(new ChallengeStatus(presented, presentedAt, processing, reason, state));
   }
   
   public StatusNested<A> withNewStatusLike(ChallengeStatus item) {

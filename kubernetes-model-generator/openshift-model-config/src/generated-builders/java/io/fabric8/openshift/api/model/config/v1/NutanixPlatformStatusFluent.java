@@ -24,6 +24,7 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
   private Map<String,Object> additionalProperties;
   private String apiServerInternalIP;
   private List<String> apiServerInternalIPs = new ArrayList<String>();
+  private String dnsRecordsType;
   private String ingressIP;
   private List<String> ingressIPs = new ArrayList<String>();
   private NutanixPlatformLoadBalancerBuilder loadBalancer;
@@ -120,6 +121,7 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
     if (instance != null) {
         this.withApiServerInternalIP(instance.getApiServerInternalIP());
         this.withApiServerInternalIPs(instance.getApiServerInternalIPs());
+        this.withDnsRecordsType(instance.getDnsRecordsType());
         this.withIngressIP(instance.getIngressIP());
         this.withIngressIPs(instance.getIngressIPs());
         this.withLoadBalancer(instance.getLoadBalancer());
@@ -156,6 +158,9 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
     if (!(Objects.equals(apiServerInternalIPs, that.apiServerInternalIPs))) {
       return false;
     }
+    if (!(Objects.equals(dnsRecordsType, that.dnsRecordsType))) {
+      return false;
+    }
     if (!(Objects.equals(ingressIP, that.ingressIP))) {
       return false;
     }
@@ -185,6 +190,10 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
   
   public List<String> getApiServerInternalIPs() {
     return this.apiServerInternalIPs;
+  }
+  
+  public String getDnsRecordsType() {
+    return this.dnsRecordsType;
   }
   
   public String getFirstApiServerInternalIP() {
@@ -245,6 +254,10 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
     return this.apiServerInternalIPs != null && !(this.apiServerInternalIPs.isEmpty());
   }
   
+  public boolean hasDnsRecordsType() {
+    return this.dnsRecordsType != null;
+  }
+  
   public boolean hasIngressIP() {
     return this.ingressIP != null;
   }
@@ -276,7 +289,7 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(apiServerInternalIP, apiServerInternalIPs, ingressIP, ingressIPs, loadBalancer, additionalProperties);
+    return Objects.hash(apiServerInternalIP, apiServerInternalIPs, dnsRecordsType, ingressIP, ingressIPs, loadBalancer, additionalProperties);
   }
   
   public A removeAllFromApiServerInternalIPs(Collection<String> items) {
@@ -372,6 +385,11 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
         sb.append(apiServerInternalIPs);
         sb.append(",");
     }
+    if (!(dnsRecordsType == null)) {
+        sb.append("dnsRecordsType:");
+        sb.append(dnsRecordsType);
+        sb.append(",");
+    }
     if (!(ingressIP == null)) {
         sb.append("ingressIP:");
         sb.append(ingressIP);
@@ -431,6 +449,11 @@ public class NutanixPlatformStatusFluent<A extends io.fabric8.openshift.api.mode
         this.addToApiServerInternalIPs(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withDnsRecordsType(String dnsRecordsType) {
+    this.dnsRecordsType = dnsRecordsType;
     return (A) this;
   }
   

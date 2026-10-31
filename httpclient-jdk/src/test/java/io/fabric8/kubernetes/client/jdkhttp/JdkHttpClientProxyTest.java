@@ -17,11 +17,20 @@ package io.fabric8.kubernetes.client.jdkhttp;
 
 import io.fabric8.kubernetes.client.http.AbstractHttpClientProxyTest;
 import io.fabric8.kubernetes.client.http.HttpClient;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("java:S2187")
 public class JdkHttpClientProxyTest extends AbstractHttpClientProxyTest {
   @Override
   protected HttpClient.Factory getHttpClientFactory() {
     return new JdkHttpClientFactory();
+  }
+
+  @Test
+  @Disabled("JDK HttpClient only supports HTTP proxies")
+  @Override
+  protected void socks5ProxyOtherAuthIsNotSentToServer() {
+    // not applicable
   }
 }

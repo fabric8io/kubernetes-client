@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,15 +31,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SoftwareRAIDVolume defines the desired configuration of volume in software RAID.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "level",
     "physicalDisks",
+    "rootVolume",
     "sizeGibibytes"
 })
 @ToString
@@ -73,6 +74,8 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
     @JsonProperty("physicalDisks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<RootDeviceHints> physicalDisks = new ArrayList<>();
+    @JsonProperty("rootVolume")
+    private Boolean rootVolume;
     @JsonProperty("sizeGibibytes")
     private Integer sizeGibibytes;
     @JsonIgnore
@@ -84,10 +87,11 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
     public SoftwareRAIDVolume() {
     }
 
-    public SoftwareRAIDVolume(String level, List<RootDeviceHints> physicalDisks, Integer sizeGibibytes) {
+    public SoftwareRAIDVolume(String level, List<RootDeviceHints> physicalDisks, Boolean rootVolume, Integer sizeGibibytes) {
         super();
         this.level = level;
         this.physicalDisks = physicalDisks;
+        this.rootVolume = rootVolume;
         this.sizeGibibytes = sizeGibibytes;
     }
 
@@ -122,6 +126,22 @@ public class SoftwareRAIDVolume implements Editable<SoftwareRAIDVolumeBuilder>, 
     @JsonProperty("physicalDisks")
     public void setPhysicalDisks(List<RootDeviceHints> physicalDisks) {
         this.physicalDisks = physicalDisks;
+    }
+
+    /**
+     * Setting this to true, causes installer to consider this volume as root device for installation. This can only be set for one of the volumes.
+     */
+    @JsonProperty("rootVolume")
+    public Boolean getRootVolume() {
+        return rootVolume;
+    }
+
+    /**
+     * Setting this to true, causes installer to consider this volume as root device for installation. This can only be set for one of the volumes.
+     */
+    @JsonProperty("rootVolume")
+    public void setRootVolume(Boolean rootVolume) {
+        this.rootVolume = rootVolume;
     }
 
     /**

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
@@ -20,11 +19,12 @@ import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Endpoints is a collection of endpoints that implement the actual service. Example:<br><p> <br><p> 	 Name: "mysvc",<br><p> 	 Subsets: [<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.1.1"}, {"ip": "10.10.2.2"}],<br><p> 	     Ports: [{"name": "a", "port": 8675}, {"name": "b", "port": 309}]<br><p> 	   },<br><p> 	   {<br><p> 	     Addresses: [{"ip": "10.10.3.3"}],<br><p> 	     Ports: [{"name": "a", "port": 93}, {"name": "b", "port": 76}]<br><p> 	   },<br><p> 	]<br><p> <br><p> Endpoints is a legacy API and does not contain information about all Service features. Use discoveryv1.EndpointSlice for complete information about Service endpoints.<br><p> <br><p> Deprecated: This API is deprecated in v1.33+. Use discoveryv1.EndpointSlice.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",

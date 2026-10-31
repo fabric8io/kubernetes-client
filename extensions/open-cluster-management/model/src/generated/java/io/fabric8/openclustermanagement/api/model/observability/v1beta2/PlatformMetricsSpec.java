@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,14 +30,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "collection",
+    "alerts",
+    "default",
     "ui"
 })
 @ToString
@@ -66,8 +67,10 @@ import lombok.experimental.Accessors;
 public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("collection")
-    private PlatformMetricsCollectionSpec collection;
+    @JsonProperty("alerts")
+    private MetricsAlertsSpec alerts;
+    @JsonProperty("default")
+    private PlatformMetricsDefaultSpec _default;
     @JsonProperty("ui")
     private UIConfig ui;
     @JsonIgnore
@@ -79,26 +82,43 @@ public class PlatformMetricsSpec implements Editable<PlatformMetricsSpecBuilder>
     public PlatformMetricsSpec() {
     }
 
-    public PlatformMetricsSpec(PlatformMetricsCollectionSpec collection, UIConfig ui) {
+    public PlatformMetricsSpec(MetricsAlertsSpec alerts, PlatformMetricsDefaultSpec _default, UIConfig ui) {
         super();
-        this.collection = collection;
+        this.alerts = alerts;
+        this._default = _default;
         this.ui = ui;
     }
 
     /**
      * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
      */
-    @JsonProperty("collection")
-    public PlatformMetricsCollectionSpec getCollection() {
-        return collection;
+    @JsonProperty("alerts")
+    public MetricsAlertsSpec getAlerts() {
+        return alerts;
     }
 
     /**
      * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
      */
-    @JsonProperty("collection")
-    public void setCollection(PlatformMetricsCollectionSpec collection) {
-        this.collection = collection;
+    @JsonProperty("alerts")
+    public void setAlerts(MetricsAlertsSpec alerts) {
+        this.alerts = alerts;
+    }
+
+    /**
+     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     */
+    @JsonProperty("default")
+    public PlatformMetricsDefaultSpec getDefault() {
+        return _default;
+    }
+
+    /**
+     * PlatformMetricsSpec defines the spec for the addon to collect, forward and store metrics from fleet managed clusters.
+     */
+    @JsonProperty("default")
+    public void setDefault(PlatformMetricsDefaultSpec _default) {
+        this._default = _default;
     }
 
     /**

@@ -19,27 +19,31 @@ import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.http.HttpClient.ProxyType;
 import io.fabric8.kubernetes.client.http.StandardHttpClientBuilder;
 import io.fabric8.kubernetes.client.http.TlsVersion;
+import org.eclipse.jetty.client.Authentication;
+import org.eclipse.jetty.client.BasicAuthentication;
 import org.eclipse.jetty.client.HttpClient;
 import org.eclipse.jetty.client.HttpClientTransport;
 import org.eclipse.jetty.client.HttpProxy;
 import org.eclipse.jetty.client.Origin;
 import org.eclipse.jetty.client.Socks4Proxy;
+import org.eclipse.jetty.client.Socks5;
 import org.eclipse.jetty.client.Socks5Proxy;
-import org.eclipse.jetty.client.api.Authentication;
-import org.eclipse.jetty.client.dynamic.HttpClientTransportDynamic;
-import org.eclipse.jetty.client.http.HttpClientConnectionFactory;
-import org.eclipse.jetty.client.http.HttpClientTransportOverHTTP;
-import org.eclipse.jetty.client.util.BasicAuthentication;
+import org.eclipse.jetty.client.WWWAuthenticationProtocolHandler;
+import org.eclipse.jetty.client.transport.HttpClientConnectionFactory;
+import org.eclipse.jetty.client.transport.HttpClientTransportDynamic;
+import org.eclipse.jetty.client.transport.HttpClientTransportOverHTTP;
+import org.eclipse.jetty.http.HttpCookieStore;
 import org.eclipse.jetty.http2.client.HTTP2Client;
-import org.eclipse.jetty.http2.client.http.ClientConnectionFactoryOverHTTP2;
+import org.eclipse.jetty.http2.client.transport.ClientConnectionFactoryOverHTTP2;
 import org.eclipse.jetty.io.ClientConnector;
+import org.eclipse.jetty.util.component.LifeCycle;
 import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.websocket.client.WebSocketClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
@@ -87,50 +91,64 @@ public class JettyHttpClientBuilder
       sslContextFactory.setSNIProvider((sslEngine, serverNames) -> sniServerNames);
     }
     HttpClient sharedHttpClient = new HttpClient(newTransport(sslContextFactory, preferHttp11));
-    WebSocketClient sharedWebSocketClient = new WebSocketClient(new HttpClient(newTransport(sslContextFactory, preferHttp11)));
+    // Authentication goes through the client's interceptors, Jetty never holds the API server credentials. Its
+    // WWW-Authenticate handler, installed on every start, fails a 401 without challenge, which is all the API server sends
+    sharedHttpClient.addEventListener(new LifeCycle.Listener() {
+      @Override
+      public void lifeCycleStarted(LifeCycle event) {
+        sharedHttpClient.getProtocolHandlers().remove(WWWAuthenticationProtocolHandler.NAME);
+      }
+    });
+    // The WebSocket upgrade requests are sent by the HTTP client, so they get the same transport, TLS and proxy settings
+    WebSocketClient sharedWebSocketClient = new WebSocketClient(sharedHttpClient);
     sharedWebSocketClient.setMaxBinaryMessageSize(MAX_WS_MESSAGE_SIZE);
     // the api-server does not seem to fragment messages, so the frames can be very large
     sharedWebSocketClient.setMaxFrameSize(MAX_WS_MESSAGE_SIZE);
     sharedWebSocketClient.setMaxTextMessageSize(MAX_WS_MESSAGE_SIZE);
+    // The WebSocket idle timeout is written through to the HTTP client, keep the HTTP one
+    final long httpIdleTimeout = sharedHttpClient.getIdleTimeout();
     sharedWebSocketClient.setIdleTimeout(Duration.ZERO);
+    sharedHttpClient.setIdleTimeout(httpIdleTimeout);
     if (connectTimeout != null) {
       sharedHttpClient.setConnectTimeout(connectTimeout.toMillis());
-      sharedWebSocketClient.setConnectTimeout(connectTimeout.toMillis());
     }
     sharedHttpClient.setFollowRedirects(followRedirects);
+    // Like the other HttpClient implementations, don't send cookies back, WebSocket upgrades included
+    sharedHttpClient.setHttpCookieStore(new HttpCookieStore.Empty());
     // long running http requests count against this and eventually exhaust
     // the work that can be done
     sharedHttpClient.setMaxConnectionsPerDestination(MAX_CONNECTIONS);
-    sharedWebSocketClient.getHttpClient().setMaxConnectionsPerDestination(MAX_CONNECTIONS);
     if (proxyType != ProxyType.DIRECT && proxyAddress != null) {
       Origin.Address address = new Origin.Address(proxyAddress.getHostString(), proxyAddress.getPort());
+      final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
       // Jetty allows for the differentiation of proxy being secure separately from the destination,
       // but we'll always set that flag to false
       switch (proxyType) {
         case HTTP:
           sharedHttpClient.getProxyConfiguration().addProxy(new HttpProxy(address, false));
+          if (userPassword != null) {
+            sharedHttpClient.getAuthenticationStore().addAuthentication(new BasicAuthentication(
+                URI.create("http://" + address.asString()), Authentication.ANY_REALM, userPassword[0], userPassword[1]));
+          }
           break;
         case SOCKS4:
           sharedHttpClient.getProxyConfiguration().addProxy(new Socks4Proxy(address, false));
           break;
         case SOCKS5:
-          sharedHttpClient.getProxyConfiguration().addProxy(new Socks5Proxy(address, false));
+          final Socks5Proxy socks5Proxy = new Socks5Proxy(address, false);
+          if (userPassword != null) {
+            socks5Proxy.putAuthenticationFactory(
+                new Socks5.UsernamePasswordAuthenticationFactory(userPassword[0], userPassword[1], StandardCharsets.UTF_8));
+          }
+          sharedHttpClient.getProxyConfiguration().addProxy(socks5Proxy);
           break;
         default:
           throw new KubernetesClientException("Unsupported proxy type");
       }
-      final String[] userPassword = decodeBasicCredentials(this.proxyAuthorization);
-      if (userPassword != null) {
-        URI proxyUri;
-        try {
-          proxyUri = new URI("http://" + proxyAddress.getHostString() + ":" + proxyAddress.getPort());
-        } catch (URISyntaxException e) {
-          throw KubernetesClientException.launderThrowable(e);
-        }
-        sharedHttpClient.getAuthenticationStore()
-            .addAuthentication(new BasicAuthentication(proxyUri, Authentication.ANY_REALM, userPassword[0], userPassword[1]));
-      } else {
-        addProxyAuthInterceptor();
+      if (userPassword == null) {
+        // Over HTTP/1.1 (preferHttp11), Jetty sends plain http requests and WebSocket upgrades to the proxy in absolute
+        // form. With HTTP/2 it would tunnel them, and the header would reach the API server
+        addPlainHttpProxyAuthInterceptor(false);
       }
     }
     clientFactory.additionalConfig(sharedHttpClient, sharedWebSocketClient);

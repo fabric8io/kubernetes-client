@@ -15,14 +15,14 @@
  */
 package io.fabric8.mockwebserver
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import io.fabric8.mockwebserver.crud.Attribute
 import io.fabric8.mockwebserver.crud.AttributeExtractor
 import io.fabric8.mockwebserver.crud.AttributeSet
+import tools.jackson.databind.json.JsonMapper
 
 class UserAttributeExtractor implements AttributeExtractor {
 
-	static def mapper = new ObjectMapper()
+	static def mapper = new JsonMapper()
 
 	@Override
 	AttributeSet fromPath(String path) {

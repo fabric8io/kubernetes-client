@@ -25,7 +25,7 @@ public class TokenRequestSpecBuilder extends TokenRequestSpecFluent<TokenRequest
   }
 
   public TokenRequestSpec build() {
-    TokenRequestSpec buildable = new TokenRequestSpec(fluent.getAudiences(), fluent.buildBoundObjectRef(), fluent.getExpirationSeconds());
+    TokenRequestSpec buildable = new TokenRequestSpec(fluent.getAttestations(), fluent.getAudiences(), fluent.buildBoundObjectRef(), fluent.getExpirationSeconds());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

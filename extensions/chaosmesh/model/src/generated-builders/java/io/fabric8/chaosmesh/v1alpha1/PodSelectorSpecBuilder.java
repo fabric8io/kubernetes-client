@@ -25,7 +25,7 @@ public class PodSelectorSpecBuilder extends PodSelectorSpecFluent<PodSelectorSpe
   }
 
   public PodSelectorSpec build() {
-    PodSelectorSpec buildable = new PodSelectorSpec(fluent.getAnnotationSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces(), fluent.getNodeSelectors(), fluent.getNodes(), fluent.getPodPhaseSelectors(), fluent.getPods());
+    PodSelectorSpec buildable = new PodSelectorSpec(fluent.getAnnotationSelectors(), fluent.getExpressionSelectors(), fluent.getFieldSelectors(), fluent.getLabelSelectors(), fluent.getNamespaces(), fluent.getNodeSelectors(), fluent.getNodes(), fluent.getPodPhaseSelectors(), fluent.getPods());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

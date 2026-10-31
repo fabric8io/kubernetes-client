@@ -25,7 +25,7 @@ public class OvirtPlatformStatusBuilder extends OvirtPlatformStatusFluent<OvirtP
   }
 
   public OvirtPlatformStatus build() {
-    OvirtPlatformStatus buildable = new OvirtPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getNodeDNSIP());
+    OvirtPlatformStatus buildable = new OvirtPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getDnsRecordsType(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getNodeDNSIP());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

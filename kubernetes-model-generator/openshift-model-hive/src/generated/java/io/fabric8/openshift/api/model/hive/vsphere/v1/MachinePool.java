@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.vsphere.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -26,23 +27,29 @@ import io.fabric8.kubernetes.api.model.PodTemplateSpec;
 import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
+import io.fabric8.openshift.api.model.installer.vsphere.v1.DataDisk;
+import io.fabric8.openshift.api.model.installer.vsphere.v1.OSDisk;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on vSphere.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "coresPerSocket",
     "cpus",
+    "dataDisks",
     "memoryMB",
     "osDisk",
-    "resourcePool"
+    "resourcePool",
+    "tagIDs",
+    "zones"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,12 +80,21 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     private Integer coresPerSocket;
     @JsonProperty("cpus")
     private Integer cpus;
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<DataDisk> dataDisks = new ArrayList<>();
     @JsonProperty("memoryMB")
     private Long memoryMB;
     @JsonProperty("osDisk")
     private OSDisk osDisk;
     @JsonProperty("resourcePool")
     private String resourcePool;
+    @JsonProperty("tagIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> tagIDs = new ArrayList<>();
+    @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> zones = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,13 +104,16 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(Integer coresPerSocket, Integer cpus, Long memoryMB, OSDisk osDisk, String resourcePool) {
+    public MachinePool(Integer coresPerSocket, Integer cpus, List<DataDisk> dataDisks, Long memoryMB, OSDisk osDisk, String resourcePool, List<String> tagIDs, List<String> zones) {
         super();
         this.coresPerSocket = coresPerSocket;
         this.cpus = cpus;
+        this.dataDisks = dataDisks;
         this.memoryMB = memoryMB;
         this.osDisk = osDisk;
         this.resourcePool = resourcePool;
+        this.tagIDs = tagIDs;
+        this.zones = zones;
     }
 
     /**
@@ -127,6 +146,23 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("cpus")
     public void setCpus(Integer cpus) {
         this.cpus = cpus;
+    }
+
+    /**
+     * DataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
+     */
+    @JsonProperty("dataDisks")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<DataDisk> getDataDisks() {
+        return dataDisks;
+    }
+
+    /**
+     * DataDisks are additional disks to add to the VM that are not part of the VM's OVA template.
+     */
+    @JsonProperty("dataDisks")
+    public void setDataDisks(List<DataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
     }
 
     /**
@@ -175,6 +211,40 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     @JsonProperty("resourcePool")
     public void setResourcePool(String resourcePool) {
         this.resourcePool = resourcePool;
+    }
+
+    /**
+     * TagIDs is a list of up to 10 tags to add to the VMs that this machine set provisions in vSphere.
+     */
+    @JsonProperty("tagIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getTagIDs() {
+        return tagIDs;
+    }
+
+    /**
+     * TagIDs is a list of up to 10 tags to add to the VMs that this machine set provisions in vSphere.
+     */
+    @JsonProperty("tagIDs")
+    public void setTagIDs(List<String> tagIDs) {
+        this.tagIDs = tagIDs;
+    }
+
+    /**
+     * Zones defines available zones Zones is available in TechPreview.
+     */
+    @JsonProperty("zones")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getZones() {
+        return zones;
+    }
+
+    /**
+     * Zones defines available zones Zones is available in TechPreview.
+     */
+    @JsonProperty("zones")
+    public void setZones(List<String> zones) {
+        this.zones = zones;
     }
 
     @JsonIgnore

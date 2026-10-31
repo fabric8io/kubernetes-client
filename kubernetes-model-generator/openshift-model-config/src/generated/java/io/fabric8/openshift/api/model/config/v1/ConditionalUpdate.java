@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Condition;
 import io.fabric8.kubernetes.api.model.Container;
@@ -33,15 +32,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ConditionalUpdate represents an update which is recommended to some clusters on the version the current cluster is reconciling, but which may not be recommended for the current cluster.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "conditions",
     "release",
+    "riskNames",
     "risks"
 })
 @ToString
@@ -74,6 +75,9 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     private List<Condition> conditions = new ArrayList<>();
     @JsonProperty("release")
     private Release release;
+    @JsonProperty("riskNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> riskNames = new ArrayList<>();
     @JsonProperty("risks")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<ConditionalUpdateRisk> risks = new ArrayList<>();
@@ -86,10 +90,11 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     public ConditionalUpdate() {
     }
 
-    public ConditionalUpdate(List<Condition> conditions, Release release, List<ConditionalUpdateRisk> risks) {
+    public ConditionalUpdate(List<Condition> conditions, Release release, List<String> riskNames, List<ConditionalUpdateRisk> risks) {
         super();
         this.conditions = conditions;
         this.release = release;
+        this.riskNames = riskNames;
         this.risks = risks;
     }
 
@@ -124,6 +129,23 @@ public class ConditionalUpdate implements Editable<ConditionalUpdateBuilder>, Ku
     @JsonProperty("release")
     public void setRelease(Release release) {
         this.release = release;
+    }
+
+    /**
+     * riskNames represents the set of the names of conditionalUpdateRisks that are relevant to this update for some clusters. The Applies condition of each conditionalUpdateRisks entry declares if that risk applies to this cluster. A conditional update is accepted only if each of its risks either does not apply to the cluster or is considered acceptable by the cluster administrator. The latter means that the risk names are included in value of the spec.desiredUpdate.acceptRisks field. Entries must be unique and must not exceed 256 characters. riskNames must not contain more than 500 entries.
+     */
+    @JsonProperty("riskNames")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getRiskNames() {
+        return riskNames;
+    }
+
+    /**
+     * riskNames represents the set of the names of conditionalUpdateRisks that are relevant to this update for some clusters. The Applies condition of each conditionalUpdateRisks entry declares if that risk applies to this cluster. A conditional update is accepted only if each of its risks either does not apply to the cluster or is considered acceptable by the cluster administrator. The latter means that the risk names are included in value of the spec.desiredUpdate.acceptRisks field. Entries must be unique and must not exceed 256 characters. riskNames must not contain more than 500 entries.
+     */
+    @JsonProperty("riskNames")
+    public void setRiskNames(List<String> riskNames) {
+        this.riskNames = riskNames;
     }
 
     /**

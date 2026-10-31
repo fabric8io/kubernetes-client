@@ -387,8 +387,8 @@ public class VolumeProjectionFluent<A extends io.fabric8.kubernetes.api.model.Vo
     return new ServiceAccountTokenNested(null);
   }
   
-  public A withNewServiceAccountToken(String audience,Long expirationSeconds,String path) {
-    return (A) this.withServiceAccountToken(new ServiceAccountTokenProjection(audience, expirationSeconds, path));
+  public A withNewServiceAccountToken(String audience,Long expirationSeconds,String path,Long user) {
+    return (A) this.withServiceAccountToken(new ServiceAccountTokenProjection(audience, expirationSeconds, path, user));
   }
   
   public ServiceAccountTokenNested<A> withNewServiceAccountTokenLike(ServiceAccountTokenProjection item) {

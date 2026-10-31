@@ -1,0 +1,48 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr view *)",
+      "Bash(gh pr checks *)",
+      "Bash(gh pr list *)",
+      "Bash(gh pr diff *)",
+      "Bash(gh run list *)",
+      "Bash(gh run view *)",
+      "Bash(gh issue view *)",
+      "Bash(gh issue list *)",
+      "Bash(gh release list *)",
+      "Bash(gh repo view *)",
+      "Bash(go -C kubernetes-model-generator/openapi/generator mod download)",
+      "Bash(java -version)",
+      "Bash(make quickly)",
+      "Bash(make format)",
+      "Bash(make openapi-generate-java-classes)",
+      "Bash(make generate-javadoc-links)"
+    ]
+  },
+  "sandbox": {
+    "excludedCommands": [
+      "gh *",
+      "git fetch",
+      "git fetch *",
+      "git pull",
+      "git pull *",
+      "git push",
+      "git push *",
+      "go -C kubernetes-model-generator/openapi/generator get *",
+      "go -C kubernetes-model-generator/openapi/generator mod tidy",
+      "go -C kubernetes-model-generator/openapi/generator mod download",
+      "java -version",
+      "mvn *",
+      "make quickly",
+      "make install",
+      "make format",
+      "make openapi-generate-java-classes",
+      "make generate-javadoc-links",
+      "*.claude/skills/gh-issue-release/scripts/get-release-context.sh *",
+      "*.claude/skills/k8s-model-update/scripts/download-k8s-schema.sh *",
+      "*.claude/skills/k8s-model-update/scripts/get-update-context.sh *",
+      "*.claude/skills/regen-java-models-from-upstream/scripts/get-dep-context.sh *",
+      "*.claude/skills/regen-java-models-from-upstream/scripts/get-pr-state.sh *"
+    ]
+  }
+}

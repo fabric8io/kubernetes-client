@@ -15,14 +15,19 @@
  */
 package io.fabric8.junit.jupiter;
 
+import io.fabric8.junit.jupiter.api.KubernetesTest;
+import io.fabric8.kubernetes.client.KubernetesClient;
+import io.fabric8.kubernetes.client.KubernetesClientBuilder;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -78,6 +83,36 @@ public interface BaseExtension {
     field.setAccessible(true);
     field.set(entity, value);
     field.setAccessible(isAccessible);
+  }
+
+  /**
+   * Builds a {@link KubernetesClient} customized by the nearest {@link KubernetesTest#kubernetesClientBuilderCustomizer()},
+   * or a default one if the test class isn't annotated with {@link KubernetesTest}.
+   *
+   * @param context the current extension context.
+   * @return a new KubernetesClient instance; the caller is responsible for closing it.
+   */
+  default KubernetesClient createKubernetesClient(ExtensionContext context) {
+    final KubernetesClientBuilder kubernetesClientBuilder = new KubernetesClientBuilder();
+    final KubernetesTest annotation = context.getTestClass()
+        .map(testClass -> findAnnotation(testClass, KubernetesTest.class))
+        .orElse(null);
+    if (annotation != null) {
+      final Class<? extends Consumer<KubernetesClientBuilder>> customizerClass = annotation
+          .kubernetesClientBuilderCustomizer();
+      final Consumer<KubernetesClientBuilder> customizer;
+      try {
+        final Constructor<? extends Consumer<KubernetesClientBuilder>> constructor = customizerClass.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        customizer = constructor.newInstance();
+      } catch (ReflectiveOperationException e) {
+        throw new IllegalArgumentException("The provided kubernetesClientBuilderCustomizer " + customizerClass.getName()
+            + " could not be instantiated, it must be a concrete top-level or static nested class with a no-arg constructor",
+            e);
+      }
+      customizer.accept(kubernetesClientBuilder);
+    }
+    return kubernetesClientBuilder.build();
   }
 
   default <T extends Annotation> T findAnnotation(Class<?> clazz, Class<T> annotation) {

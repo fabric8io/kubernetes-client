@@ -25,7 +25,7 @@ public class ExactDeviceRequestBuilder extends ExactDeviceRequestFluent<ExactDev
   }
 
   public ExactDeviceRequest build() {
-    ExactDeviceRequest buildable = new ExactDeviceRequest(fluent.getAdminAccess(), fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.getDeviceClassName(), fluent.buildSelectors(), fluent.buildTolerations());
+    ExactDeviceRequest buildable = new ExactDeviceRequest(fluent.getAdminAccess(), fluent.getAllocationMode(), fluent.buildCapacity(), fluent.getCount(), fluent.buildDerivedAttributes(), fluent.getDeviceClassName(), fluent.buildSelectors(), fluent.buildTolerations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

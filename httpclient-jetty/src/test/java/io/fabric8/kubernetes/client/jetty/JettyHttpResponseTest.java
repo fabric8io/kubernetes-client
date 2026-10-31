@@ -15,7 +15,7 @@
  */
 package io.fabric8.kubernetes.client.jetty;
 
-import org.eclipse.jetty.client.HttpResponse;
+import org.eclipse.jetty.client.transport.HttpResponse;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -30,7 +30,7 @@ class JettyHttpResponseTest {
   @Test
   void headersHandlesJettyHttpFields() {
     // Given
-    final HttpResponse response = new HttpResponse(null, Collections.emptyList())
+    final HttpResponse response = new HttpResponse(null)
         .headers(m -> m
             .add("Content-Type", "text/plain")
             .add("Content-Length", "1337")

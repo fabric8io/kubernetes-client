@@ -56,8 +56,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>@maven.compiler.plugin.version@</version>
         <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>@maven.compiler.source@</source>
+          <target>@maven.compiler.target@</target>
         </configuration>
       </plugin>
     </plugins>

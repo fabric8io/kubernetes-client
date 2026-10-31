@@ -34,6 +34,7 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
   private List<String> externalTargets = new ArrayList<String>();
   private LossSpecBuilder loss;
   private String mode;
+  private String partitionBehavior;
   private RateSpecBuilder rate;
   private String remoteCluster;
   private PodSelectorSpecBuilder selector;
@@ -142,6 +143,7 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
         this.withExternalTargets(instance.getExternalTargets());
         this.withLoss(instance.getLoss());
         this.withMode(instance.getMode());
+        this.withPartitionBehavior(instance.getPartitionBehavior());
         this.withRate(instance.getRate());
         this.withRemoteCluster(instance.getRemoteCluster());
         this.withSelector(instance.getSelector());
@@ -292,6 +294,9 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
     if (!(Objects.equals(mode, that.mode))) {
       return false;
     }
+    if (!(Objects.equals(partitionBehavior, that.partitionBehavior))) {
+      return false;
+    }
     if (!(Objects.equals(rate, that.rate))) {
       return false;
     }
@@ -365,6 +370,10 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
     return this.mode;
   }
   
+  public String getPartitionBehavior() {
+    return this.partitionBehavior;
+  }
+  
   public String getRemoteCluster() {
     return this.remoteCluster;
   }
@@ -434,6 +443,10 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
     return this.mode != null;
   }
   
+  public boolean hasPartitionBehavior() {
+    return this.partitionBehavior != null;
+  }
+  
   public boolean hasRate() {
     return this.rate != null;
   }
@@ -459,7 +472,7 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
   }
   
   public int hashCode() {
-    return Objects.hash(action, bandwidth, corrupt, delay, device, direction, duplicate, duration, externalTargets, loss, mode, rate, remoteCluster, selector, target, targetDevice, value, additionalProperties);
+    return Objects.hash(action, bandwidth, corrupt, delay, device, direction, duplicate, duration, externalTargets, loss, mode, partitionBehavior, rate, remoteCluster, selector, target, targetDevice, value, additionalProperties);
   }
   
   public A removeAllFromExternalTargets(Collection<String> items) {
@@ -570,6 +583,11 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
     if (!(mode == null)) {
         sb.append("mode:");
         sb.append(mode);
+        sb.append(",");
+    }
+    if (!(partitionBehavior == null)) {
+        sb.append("partitionBehavior:");
+        sb.append(partitionBehavior);
         sb.append(",");
     }
     if (!(rate == null)) {
@@ -811,6 +829,11 @@ public class NetworkChaosSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.Netw
   
   public TargetNested<A> withNewTargetLike(PodSelector item) {
     return new TargetNested(item);
+  }
+  
+  public A withPartitionBehavior(String partitionBehavior) {
+    this.partitionBehavior = partitionBehavior;
+    return (A) this;
   }
   
   public A withRate(RateSpec rate) {

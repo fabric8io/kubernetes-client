@@ -20,6 +20,7 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   private String op;
   private String path;
   private String value;
+  private String valueJSON;
 
   public PatchEntityFluent() {
   }
@@ -55,6 +56,7 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
         this.withOp(instance.getOp());
         this.withPath(instance.getPath());
         this.withValue(instance.getValue());
+        this.withValueJSON(instance.getValueJSON());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -80,6 +82,9 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
       return false;
     }
     if (!(Objects.equals(value, that.value))) {
+      return false;
+    }
+    if (!(Objects.equals(valueJSON, that.valueJSON))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -108,6 +113,10 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
     return this.value;
   }
   
+  public String getValueJSON() {
+    return this.valueJSON;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -128,8 +137,12 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
     return this.value != null;
   }
   
+  public boolean hasValueJSON() {
+    return this.valueJSON != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(from, op, path, value, additionalProperties);
+    return Objects.hash(from, op, path, value, valueJSON, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -179,6 +192,11 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
         sb.append(value);
         sb.append(",");
     }
+    if (!(valueJSON == null)) {
+        sb.append("valueJSON:");
+        sb.append(valueJSON);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -213,6 +231,11 @@ public class PatchEntityFluent<A extends io.fabric8.openshift.api.model.hive.v1.
   
   public A withValue(String value) {
     this.value = value;
+    return (A) this;
+  }
+  
+  public A withValueJSON(String valueJSON) {
+    this.valueJSON = valueJSON;
     return (A) this;
   }
   

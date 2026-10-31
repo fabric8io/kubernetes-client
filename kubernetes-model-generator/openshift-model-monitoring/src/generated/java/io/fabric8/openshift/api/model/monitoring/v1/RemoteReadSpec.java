@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,11 +31,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * RemoteReadSpec defines the configuration for Prometheus to read back samples from a remote endpoint.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "authorization",
@@ -429,7 +429,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * url defines the URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public String getUrl() {
@@ -437,7 +437,7 @@ public class RemoteReadSpec implements Editable<RemoteReadSpecBuilder>, Kubernet
     }
 
     /**
-     * url defines the URL of the endpoint to query from.
+     * url defines the URL of the endpoint to query from.<br><p> <br><p> It must use the HTTP or HTTPS scheme.
      */
     @JsonProperty("url")
     public void setUrl(String url) {

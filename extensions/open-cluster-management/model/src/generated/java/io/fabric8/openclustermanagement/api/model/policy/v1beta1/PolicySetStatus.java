@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PolicySetStatus reports the observed status of the policy set resulting from its policies.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "compliant",
+    "exclusions",
     "placement",
     "statusMessage"
 })
@@ -71,6 +72,9 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
 
     @JsonProperty("compliant")
     private String compliant;
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PolicySetStatusExclusion> exclusions = new ArrayList<>();
     @JsonProperty("placement")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<PolicySetStatusPlacement> placement = new ArrayList<>();
@@ -85,9 +89,10 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
     public PolicySetStatus() {
     }
 
-    public PolicySetStatus(String compliant, List<PolicySetStatusPlacement> placement, String statusMessage) {
+    public PolicySetStatus(String compliant, List<PolicySetStatusExclusion> exclusions, List<PolicySetStatusPlacement> placement, String statusMessage) {
         super();
         this.compliant = compliant;
+        this.exclusions = exclusions;
         this.placement = placement;
         this.statusMessage = statusMessage;
     }
@@ -109,6 +114,23 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
     }
 
     /**
+     * Exclusions reports cluster-level exclusions the controller has applied for policies in the set.
+     */
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PolicySetStatusExclusion> getExclusions() {
+        return exclusions;
+    }
+
+    /**
+     * Exclusions reports cluster-level exclusions the controller has applied for policies in the set.
+     */
+    @JsonProperty("exclusions")
+    public void setExclusions(List<PolicySetStatusExclusion> exclusions) {
+        this.exclusions = exclusions;
+    }
+
+    /**
      * PolicySetStatus reports the observed status of the policy set resulting from its policies.
      */
     @JsonProperty("placement")
@@ -126,7 +148,7 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
     }
 
     /**
-     * StatusMessge reports the current state while determining the compliance of the policy set.
+     * StatusMessage reports the current state while determining the compliance of the policy set.
      */
     @JsonProperty("statusMessage")
     public String getStatusMessage() {
@@ -134,7 +156,7 @@ public class PolicySetStatus implements Editable<PolicySetStatusBuilder>, Kubern
     }
 
     /**
-     * StatusMessge reports the current state while determining the compliance of the policy set.
+     * StatusMessage reports the current state while determining the compliance of the policy set.
      */
     @JsonProperty("statusMessage")
     public void setStatusMessage(String statusMessage) {

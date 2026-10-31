@@ -193,57 +193,69 @@ spec:
                 properties:
                   listItemMax1:
                     items:
+                      format: "int32"
                       maximum: 1.0
                       type: "integer"
                     type: "array"
                   listItemMin1:
                     items:
+                      format: "int32"
                       minimum: 1.0
                       type: "integer"
                     type: "array"
                   listItemMin1Max3:
                     items:
+                      format: "int32"
                       maximum: 3.0
                       minimum: 1.0
                       type: "integer"
                     type: "array"
                   mapItemMax1:
                     additionalProperties:
+                      format: "int32"
                       maximum: 1.0
                       type: "integer"
                     type: "object"
                   mapItemMin1:
                     additionalProperties:
+                      format: "int32"
                       minimum: 1.0
                       type: "integer"
                     type: "object"
                   mapItemMin1Max3:
                     additionalProperties:
+                      format: "int32"
                       maximum: 3.0
                       minimum: 1.0
                       type: "integer"
                     type: "object"
                   maximum1:
+                    format: "int32"
                     maximum: 1.0
                     type: "integer"
                   maximumExclusive1:
                     exclusiveMaximum: true
+                    format: "int32"
                     maximum: 1.0
                     type: "integer"
                   minimum1:
+                    format: "int32"
                     minimum: 1.0
                     type: "integer"
                   minimum1Maximum3:
+                    format: "int32"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1:
                     exclusiveMinimum: true
+                    format: "int32"
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1MaximumExclusive3:
                     exclusiveMaximum: true
                     exclusiveMinimum: true
+                    format: "int32"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
@@ -251,26 +263,32 @@ spec:
               onIntegerPrim:
                 properties:
                   maximum1:
+                    format: "int32"
                     maximum: 1.0
                     type: "integer"
                   maximumExclusive1:
                     exclusiveMaximum: true
+                    format: "int32"
                     maximum: 1.0
                     type: "integer"
                   minimum1:
+                    format: "int32"
                     minimum: 1.0
                     type: "integer"
                   minimum1Maximum3:
+                    format: "int32"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1:
                     exclusiveMinimum: true
+                    format: "int32"
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1MaximumExclusive3:
                     exclusiveMaximum: true
                     exclusiveMinimum: true
+                    format: "int32"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
@@ -298,57 +316,69 @@ spec:
                 properties:
                   listItemMax1:
                     items:
+                      format: "int64"
                       maximum: 1.0
                       type: "integer"
                     type: "array"
                   listItemMin1:
                     items:
+                      format: "int64"
                       minimum: 1.0
                       type: "integer"
                     type: "array"
                   listItemMin1Max3:
                     items:
+                      format: "int64"
                       maximum: 3.0
                       minimum: 1.0
                       type: "integer"
                     type: "array"
                   mapItemMax1:
                     additionalProperties:
+                      format: "int64"
                       maximum: 1.0
                       type: "integer"
                     type: "object"
                   mapItemMin1:
                     additionalProperties:
+                      format: "int64"
                       minimum: 1.0
                       type: "integer"
                     type: "object"
                   mapItemMin1Max3:
                     additionalProperties:
+                      format: "int64"
                       maximum: 3.0
                       minimum: 1.0
                       type: "integer"
                     type: "object"
                   maximum1:
+                    format: "int64"
                     maximum: 1.0
                     type: "integer"
                   maximumExclusive1:
                     exclusiveMaximum: true
+                    format: "int64"
                     maximum: 1.0
                     type: "integer"
                   minimum1:
+                    format: "int64"
                     minimum: 1.0
                     type: "integer"
                   minimum1Maximum3:
+                    format: "int64"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1:
                     exclusiveMinimum: true
+                    format: "int64"
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1MaximumExclusive3:
                     exclusiveMaximum: true
                     exclusiveMinimum: true
+                    format: "int64"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
@@ -356,26 +386,32 @@ spec:
               onLongPrim:
                 properties:
                   maximum1:
+                    format: "int64"
                     maximum: 1.0
                     type: "integer"
                   maximumExclusive1:
                     exclusiveMaximum: true
+                    format: "int64"
                     maximum: 1.0
                     type: "integer"
                   minimum1:
+                    format: "int64"
                     minimum: 1.0
                     type: "integer"
                   minimum1Maximum3:
+                    format: "int64"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1:
                     exclusiveMinimum: true
+                    format: "int64"
                     minimum: 1.0
                     type: "integer"
                   minimumExclusive1MaximumExclusive3:
                     exclusiveMaximum: true
                     exclusiveMinimum: true
+                    format: "int64"
                     maximum: 3.0
                     minimum: 1.0
                     type: "integer"

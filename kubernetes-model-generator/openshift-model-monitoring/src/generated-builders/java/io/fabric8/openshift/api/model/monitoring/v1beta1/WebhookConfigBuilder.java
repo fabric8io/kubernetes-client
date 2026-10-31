@@ -25,7 +25,7 @@ public class WebhookConfigBuilder extends WebhookConfigFluent<WebhookConfigBuild
   }
 
   public WebhookConfig build() {
-    WebhookConfig buildable = new WebhookConfig(fluent.buildHttpConfig(), fluent.getMaxAlerts(), fluent.getSendResolved(), fluent.getTimeout(), fluent.getUrl(), fluent.buildUrlSecret());
+    WebhookConfig buildable = new WebhookConfig(fluent.buildHttpConfig(), fluent.getMaxAlerts(), fluent.getPayload(), fluent.getSendResolved(), fluent.getTimeout(), fluent.getUrl(), fluent.buildUrlSecret());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

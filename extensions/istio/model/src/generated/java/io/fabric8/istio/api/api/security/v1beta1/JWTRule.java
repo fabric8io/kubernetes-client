@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * JSON Web Token (JWT) token format for authentication as defined by [RFC 7519](https://tools.ietf.org/html/rfc7519). See [OAuth 2.0](https://tools.ietf.org/html/rfc6749) and [OIDC 1.0](http://openid.net/connect) for how this is used in the whole authentication flow.<br><p> <br><p> Examples:<br><p> <br><p> Spec for a JWT that is issued by `https://example.com`, with the audience claims must be either `bookstore_android.apps.example.com` or `bookstore_web.apps.example.com`. The token should be presented at the `Authorization` header (default). The JSON Web Key Set (JWKS) will be discovered following OpenID Connect protocol.<br><p> <br><p> ```yaml issuer: https://example.com audiences:<br><p>   - bookstore_android.apps.example.com<br><p>     bookstore_web.apps.example.com<br><p> <br><p> ```<br><p> <br><p> This example specifies a token in a non-default location (`x-goog-iap-jwt-assertion` header). It also defines the URI to fetch JWKS explicitly.<br><p> <br><p> ```yaml issuer: https://example.com jwksUri: https://example.com/.secret/jwks.json fromHeaders: - "x-goog-iap-jwt-assertion" ```<br><p> <br><p> This example shows how to configure custom claims to be treated as space-delimited strings. This is useful when JWT tokens contain custom claims with multiple space-separated values that should be available for individual matching in authorization policies.<br><p> <br><p> ```yaml issuer: https://example.com spaceDelimitedClaims: - "custom_scope" - "provider.login.scope" - "roles" ```<br><p> <br><p> With this configuration, a JWT containing `"custom_scope": "read write admin"` will allow authorization policies to match against individual values like "read", "write", or "admin".
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "audiences",

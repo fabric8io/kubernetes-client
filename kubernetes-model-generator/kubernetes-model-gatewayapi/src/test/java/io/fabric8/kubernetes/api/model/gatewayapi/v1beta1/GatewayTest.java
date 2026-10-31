@@ -15,9 +15,10 @@
  */
 package io.fabric8.kubernetes.api.model.gatewayapi.v1beta1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.kubernetes.api.model.gatewayapi.v1.ListenerBuilder;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -27,7 +28,7 @@ import java.util.Scanner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GatewayTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException, ParseException {

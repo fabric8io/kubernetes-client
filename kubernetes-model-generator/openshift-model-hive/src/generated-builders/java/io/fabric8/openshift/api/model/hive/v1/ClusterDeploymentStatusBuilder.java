@@ -25,7 +25,7 @@ public class ClusterDeploymentStatusBuilder extends ClusterDeploymentStatusFluen
   }
 
   public ClusterDeploymentStatus build() {
-    ClusterDeploymentStatus buildable = new ClusterDeploymentStatus(fluent.getApiURL(), fluent.buildCertificateBundles(), fluent.getCliImage(), fluent.buildConditions(), fluent.getInstallRestarts(), fluent.getInstallStartedTimestamp(), fluent.getInstallVersion(), fluent.getInstalledTimestamp(), fluent.getInstallerImage(), fluent.buildPlatformStatus(), fluent.getPowerState(), fluent.buildProvisionRef(), fluent.getWebConsoleURL());
+    ClusterDeploymentStatus buildable = new ClusterDeploymentStatus(fluent.getApiURL(), fluent.buildCertificateBundles(), fluent.getCliImage(), fluent.getClusterVersionStatus(), fluent.buildConditions(), fluent.getInstallRestarts(), fluent.getInstallStartedTimestamp(), fluent.getInstallVersion(), fluent.getInstalledTimestamp(), fluent.getInstallerImage(), fluent.buildPlatformStatus(), fluent.getPowerState(), fluent.buildProvisionRef(), fluent.getWebConsoleURL());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

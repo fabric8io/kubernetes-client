@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -34,11 +33,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * OperatorPKI is a simple certificate authority. It is not intended for external use - rather, it is internal to the network operator. The CNO creates a CA and a certificate signed by that CA. The certificate has both ClientAuth and ServerAuth extended usages enabled.<br><p> <br><p> 	More specifically, given an OperatorPKI with &lt;name&gt;, the CNO will manage:<br><p> <br><p> - A Secret called &lt;name&gt;-ca with two data keys:<br><p>   - tls.key - the private key<br><p>   - tls.crt - the CA certificate<br><p> <br><p> - A ConfigMap called &lt;name&gt;-ca with a single data key:<br><p>   - cabundle.crt - the CA certificate(s)<br><p> <br><p> - A Secret called &lt;name&gt;-cert with two data keys:<br><p>   - tls.key - the private key<br><p>   - tls.crt - the certificate, signed by the CA<br><p> <br><p> The CA certificate will have a validity of 10 years, rotated after 9. The target certificate will have a validity of 6 months, rotated after 3<br><p> <br><p> The CA certificate will have a CommonName of "&lt;namespace&gt;_&lt;name&gt;-ca@&lt;timestamp&gt;", where &lt;timestamp&gt; is the last rotation time.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",

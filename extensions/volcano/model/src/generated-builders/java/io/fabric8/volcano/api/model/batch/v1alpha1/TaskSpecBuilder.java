@@ -25,7 +25,7 @@ public class TaskSpecBuilder extends TaskSpecFluent<TaskSpecBuilder> implements 
   }
 
   public TaskSpec build() {
-    TaskSpec buildable = new TaskSpec(fluent.buildDependsOn(), fluent.getMaxRetry(), fluent.getMinAvailable(), fluent.getName(), fluent.buildPolicies(), fluent.getReplicas(), fluent.buildTemplate(), fluent.getTopologyPolicy());
+    TaskSpec buildable = new TaskSpec(fluent.buildDependsOn(), fluent.getMaxRetry(), fluent.getMinAvailable(), fluent.getName(), fluent.buildPartitionPolicy(), fluent.buildPolicies(), fluent.getReplicas(), fluent.buildTemplate(), fluent.getTopologyPolicy());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

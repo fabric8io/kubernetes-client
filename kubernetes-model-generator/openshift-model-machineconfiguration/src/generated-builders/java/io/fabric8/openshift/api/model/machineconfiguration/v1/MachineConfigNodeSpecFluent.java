@@ -18,6 +18,7 @@ import java.util.Optional;
 public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.model.machineconfiguration.v1.MachineConfigNodeSpecFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private MachineConfigNodeSpecConfigImageBuilder configImage;
   private MachineConfigNodeSpecMachineConfigVersionBuilder configVersion;
   private MCOObjectReferenceBuilder node;
   private MCOObjectReferenceBuilder pool;
@@ -49,6 +50,10 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
     return (A) this;
   }
   
+  public MachineConfigNodeSpecConfigImage buildConfigImage() {
+    return this.configImage != null ? this.configImage.build() : null;
+  }
+  
   public MachineConfigNodeSpecMachineConfigVersion buildConfigVersion() {
     return this.configVersion != null ? this.configVersion.build() : null;
   }
@@ -64,11 +69,16 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
   protected void copyInstance(MachineConfigNodeSpec instance) {
     instance = instance != null ? instance : new MachineConfigNodeSpec();
     if (instance != null) {
+        this.withConfigImage(instance.getConfigImage());
         this.withConfigVersion(instance.getConfigVersion());
         this.withNode(instance.getNode());
         this.withPool(instance.getPool());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public ConfigImageNested<A> editConfigImage() {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(null));
   }
   
   public ConfigVersionNested<A> editConfigVersion() {
@@ -77,6 +87,14 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
   
   public NodeNested<A> editNode() {
     return this.withNewNodeLike(Optional.ofNullable(this.buildNode()).orElse(null));
+  }
+  
+  public ConfigImageNested<A> editOrNewConfigImage() {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(new MachineConfigNodeSpecConfigImageBuilder().build()));
+  }
+  
+  public ConfigImageNested<A> editOrNewConfigImageLike(MachineConfigNodeSpecConfigImage item) {
+    return this.withNewConfigImageLike(Optional.ofNullable(this.buildConfigImage()).orElse(item));
   }
   
   public ConfigVersionNested<A> editOrNewConfigVersion() {
@@ -118,6 +136,9 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
       return false;
     }
     MachineConfigNodeSpecFluent that = (MachineConfigNodeSpecFluent) o;
+    if (!(Objects.equals(configImage, that.configImage))) {
+      return false;
+    }
     if (!(Objects.equals(configVersion, that.configVersion))) {
       return false;
     }
@@ -141,6 +162,10 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
     return this.additionalProperties != null;
   }
   
+  public boolean hasConfigImage() {
+    return this.configImage != null;
+  }
+  
   public boolean hasConfigVersion() {
     return this.configVersion != null;
   }
@@ -154,7 +179,7 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(configVersion, node, pool, additionalProperties);
+    return Objects.hash(configImage, configVersion, node, pool, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -184,6 +209,11 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(configImage == null)) {
+        sb.append("configImage:");
+        sb.append(configImage);
+        sb.append(",");
+    }
     if (!(configVersion == null)) {
         sb.append("configVersion:");
         sb.append(configVersion);
@@ -216,6 +246,18 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
     return (A) this;
   }
   
+  public A withConfigImage(MachineConfigNodeSpecConfigImage configImage) {
+    this._visitables.remove("configImage");
+    if (configImage != null) {
+        this.configImage = new MachineConfigNodeSpecConfigImageBuilder(configImage);
+        this._visitables.get("configImage").add(this.configImage);
+    } else {
+        this.configImage = null;
+        this._visitables.get("configImage").remove(this.configImage);
+    }
+    return (A) this;
+  }
+  
   public A withConfigVersion(MachineConfigNodeSpecMachineConfigVersion configVersion) {
     this._visitables.remove("configVersion");
     if (configVersion != null) {
@@ -226,6 +268,18 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
         this._visitables.get("configVersion").remove(this.configVersion);
     }
     return (A) this;
+  }
+  
+  public ConfigImageNested<A> withNewConfigImage() {
+    return new ConfigImageNested(null);
+  }
+  
+  public A withNewConfigImage(String desiredImage) {
+    return (A) this.withConfigImage(new MachineConfigNodeSpecConfigImage(desiredImage));
+  }
+  
+  public ConfigImageNested<A> withNewConfigImageLike(MachineConfigNodeSpecConfigImage item) {
+    return new ConfigImageNested(item);
   }
   
   public ConfigVersionNested<A> withNewConfigVersion() {
@@ -286,6 +340,23 @@ public class MachineConfigNodeSpecFluent<A extends io.fabric8.openshift.api.mode
         this._visitables.get("pool").remove(this.pool);
     }
     return (A) this;
+  }
+  public class ConfigImageNested<N> extends MachineConfigNodeSpecConfigImageFluent<ConfigImageNested<N>> implements Nested<N>{
+  
+    MachineConfigNodeSpecConfigImageBuilder builder;
+  
+    ConfigImageNested(MachineConfigNodeSpecConfigImage item) {
+      this.builder = new MachineConfigNodeSpecConfigImageBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigNodeSpecFluent.this.withConfigImage(builder.build());
+    }
+    
+    public N endConfigImage() {
+      return and();
+    }
+    
   }
   public class ConfigVersionNested<N> extends MachineConfigNodeSpecMachineConfigVersionFluent<ConfigVersionNested<N>> implements Nested<N>{
   

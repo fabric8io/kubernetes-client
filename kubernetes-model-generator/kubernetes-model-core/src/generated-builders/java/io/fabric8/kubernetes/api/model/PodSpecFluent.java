@@ -35,6 +35,7 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
   private String dnsPolicy;
   private Boolean enableServiceLinks;
   private ArrayList<EphemeralContainerBuilder> ephemeralContainers = new ArrayList<EphemeralContainerBuilder>();
+  private ArrayList<EvictionResponderBuilder> evictionResponders = new ArrayList<EvictionResponderBuilder>();
   private ArrayList<HostAliasBuilder> hostAliases = new ArrayList<HostAliasBuilder>();
   private Boolean hostIPC;
   private Boolean hostNetwork;
@@ -97,6 +98,18 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
         EphemeralContainerBuilder builder = new EphemeralContainerBuilder(item);
         _visitables.get("ephemeralContainers").add(builder);
         this.ephemeralContainers.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addAllToEvictionResponders(Collection<EvictionResponder> items) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    for (EvictionResponder item : items) {
+        EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+        _visitables.get("evictionResponders").add(builder);
+        this.evictionResponders.add(builder);
     }
     return (A) this;
   }
@@ -223,6 +236,18 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
   
   public EphemeralContainersNested<A> addNewEphemeralContainerLike(EphemeralContainer item) {
     return new EphemeralContainersNested(-1, item);
+  }
+  
+  public EvictionRespondersNested<A> addNewEvictionResponder() {
+    return new EvictionRespondersNested(-1, null);
+  }
+  
+  public A addNewEvictionResponder(String name,Integer priority) {
+    return (A) this.addToEvictionResponders(new EvictionResponder(name, priority));
+  }
+  
+  public EvictionRespondersNested<A> addNewEvictionResponderLike(EvictionResponder item) {
+    return new EvictionRespondersNested(-1, item);
   }
   
   public HostAliasesNested<A> addNewHostAlias() {
@@ -387,6 +412,33 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     } else {
         _visitables.get("ephemeralContainers").add(builder);
         ephemeralContainers.add(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToEvictionResponders(EvictionResponder... items) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    for (EvictionResponder item : items) {
+        EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+        _visitables.get("evictionResponders").add(builder);
+        this.evictionResponders.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToEvictionResponders(int index,EvictionResponder item) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+    if (index < 0 || index >= evictionResponders.size()) {
+        _visitables.get("evictionResponders").add(builder);
+        evictionResponders.add(builder);
+    } else {
+        _visitables.get("evictionResponders").add(builder);
+        evictionResponders.add(index, builder);
     }
     return (A) this;
   }
@@ -698,12 +750,24 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return this.ephemeralContainers != null ? build(ephemeralContainers) : null;
   }
   
+  public EvictionResponder buildEvictionResponder(int index) {
+    return this.evictionResponders.get(index).build();
+  }
+  
+  public List<EvictionResponder> buildEvictionResponders() {
+    return this.evictionResponders != null ? build(evictionResponders) : null;
+  }
+  
   public Container buildFirstContainer() {
     return this.containers.get(0).build();
   }
   
   public EphemeralContainer buildFirstEphemeralContainer() {
     return this.ephemeralContainers.get(0).build();
+  }
+  
+  public EvictionResponder buildFirstEvictionResponder() {
+    return this.evictionResponders.get(0).build();
   }
   
   public HostAlias buildFirstHostAlias() {
@@ -774,6 +838,10 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return this.ephemeralContainers.get(ephemeralContainers.size() - 1).build();
   }
   
+  public EvictionResponder buildLastEvictionResponder() {
+    return this.evictionResponders.get(evictionResponders.size() - 1).build();
+  }
+  
   public HostAlias buildLastHostAlias() {
     return this.hostAliases.get(hostAliases.size() - 1).build();
   }
@@ -821,6 +889,15 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
   
   public EphemeralContainer buildMatchingEphemeralContainer(Predicate<EphemeralContainerBuilder> predicate) {
       for (EphemeralContainerBuilder item : ephemeralContainers) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
+  public EvictionResponder buildMatchingEvictionResponder(Predicate<EvictionResponderBuilder> predicate) {
+      for (EvictionResponderBuilder item : evictionResponders) {
         if (predicate.test(item)) {
           return item.build();
         }
@@ -984,6 +1061,7 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
         this.withDnsPolicy(instance.getDnsPolicy());
         this.withEnableServiceLinks(instance.getEnableServiceLinks());
         this.withEphemeralContainers(instance.getEphemeralContainers());
+        this.withEvictionResponders(instance.getEvictionResponders());
         this.withHostAliases(instance.getHostAliases());
         this.withHostIPC(instance.getHostIPC());
         this.withHostNetwork(instance.getHostNetwork());
@@ -1044,6 +1122,13 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return this.setNewEphemeralContainerLike(index, this.buildEphemeralContainer(index));
   }
   
+  public EvictionRespondersNested<A> editEvictionResponder(int index) {
+    if (evictionResponders.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "evictionResponders"));
+    }
+    return this.setNewEvictionResponderLike(index, this.buildEvictionResponder(index));
+  }
+  
   public ContainersNested<A> editFirstContainer() {
     if (containers.size() == 0) {
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "containers"));
@@ -1056,6 +1141,13 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
       throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "ephemeralContainers"));
     }
     return this.setNewEphemeralContainerLike(0, this.buildEphemeralContainer(0));
+  }
+  
+  public EvictionRespondersNested<A> editFirstEvictionResponder() {
+    if (evictionResponders.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "evictionResponders"));
+    }
+    return this.setNewEvictionResponderLike(0, this.buildEvictionResponder(0));
   }
   
   public HostAliasesNested<A> editFirstHostAlias() {
@@ -1158,6 +1250,14 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return this.setNewEphemeralContainerLike(index, this.buildEphemeralContainer(index));
   }
   
+  public EvictionRespondersNested<A> editLastEvictionResponder() {
+    int index = evictionResponders.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "evictionResponders"));
+    }
+    return this.setNewEvictionResponderLike(index, this.buildEvictionResponder(index));
+  }
+  
   public HostAliasesNested<A> editLastHostAlias() {
     int index = hostAliases.size() - 1;
     if (index < 0) {
@@ -1256,6 +1356,20 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
       throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "ephemeralContainers"));
     }
     return this.setNewEphemeralContainerLike(index, this.buildEphemeralContainer(index));
+  }
+  
+  public EvictionRespondersNested<A> editMatchingEvictionResponder(Predicate<EvictionResponderBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < evictionResponders.size();i++) {
+      if (predicate.test(evictionResponders.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "evictionResponders"));
+    }
+    return this.setNewEvictionResponderLike(index, this.buildEvictionResponder(index));
   }
   
   public HostAliasesNested<A> editMatchingHostAlias(Predicate<HostAliasBuilder> predicate) {
@@ -1525,6 +1639,9 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     if (!(Objects.equals(ephemeralContainers, that.ephemeralContainers))) {
       return false;
     }
+    if (!(Objects.equals(evictionResponders, that.evictionResponders))) {
+      return false;
+    }
     if (!(Objects.equals(hostAliases, that.hostAliases))) {
       return false;
     }
@@ -1773,6 +1890,10 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return this.ephemeralContainers != null && !(this.ephemeralContainers.isEmpty());
   }
   
+  public boolean hasEvictionResponders() {
+    return this.evictionResponders != null && !(this.evictionResponders.isEmpty());
+  }
+  
   public boolean hasHostAliases() {
     return this.hostAliases != null && !(this.hostAliases.isEmpty());
   }
@@ -1820,6 +1941,15 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
   
   public boolean hasMatchingEphemeralContainer(Predicate<EphemeralContainerBuilder> predicate) {
       for (EphemeralContainerBuilder item : ephemeralContainers) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
+  public boolean hasMatchingEvictionResponder(Predicate<EvictionResponderBuilder> predicate) {
+      for (EvictionResponderBuilder item : evictionResponders) {
         if (predicate.test(item)) {
           return true;
         }
@@ -2009,7 +2139,7 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
   }
   
   public int hashCode() {
-    return Objects.hash(activeDeadlineSeconds, affinity, automountServiceAccountToken, containers, dnsConfig, dnsPolicy, enableServiceLinks, ephemeralContainers, hostAliases, hostIPC, hostNetwork, hostPID, hostUsers, hostname, hostnameOverride, imagePullSecrets, initContainers, nodeName, nodeSelector, os, overhead, preemptionPolicy, priority, priorityClassName, readinessGates, resourceClaims, resources, restartPolicy, runtimeClassName, schedulerName, schedulingGates, schedulingGroup, securityContext, serviceAccount, serviceAccountName, setHostnameAsFQDN, shareProcessNamespace, subdomain, terminationGracePeriodSeconds, tolerations, topologySpreadConstraints, volumes, additionalProperties);
+    return Objects.hash(activeDeadlineSeconds, affinity, automountServiceAccountToken, containers, dnsConfig, dnsPolicy, enableServiceLinks, ephemeralContainers, evictionResponders, hostAliases, hostIPC, hostNetwork, hostPID, hostUsers, hostname, hostnameOverride, imagePullSecrets, initContainers, nodeName, nodeSelector, os, overhead, preemptionPolicy, priority, priorityClassName, readinessGates, resourceClaims, resources, restartPolicy, runtimeClassName, schedulerName, schedulingGates, schedulingGroup, securityContext, serviceAccount, serviceAccountName, setHostnameAsFQDN, shareProcessNamespace, subdomain, terminationGracePeriodSeconds, tolerations, topologySpreadConstraints, volumes, additionalProperties);
   }
   
   public A removeAllFromContainers(Collection<Container> items) {
@@ -2032,6 +2162,18 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
         EphemeralContainerBuilder builder = new EphemeralContainerBuilder(item);
         _visitables.get("ephemeralContainers").remove(builder);
         this.ephemeralContainers.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromEvictionResponders(Collection<EvictionResponder> items) {
+    if (this.evictionResponders == null) {
+      return (A) this;
+    }
+    for (EvictionResponder item : items) {
+        EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+        _visitables.get("evictionResponders").remove(builder);
+        this.evictionResponders.remove(builder);
     }
     return (A) this;
   }
@@ -2188,6 +2330,18 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
         EphemeralContainerBuilder builder = new EphemeralContainerBuilder(item);
         _visitables.get("ephemeralContainers").remove(builder);
         this.ephemeralContainers.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromEvictionResponders(EvictionResponder... items) {
+    if (this.evictionResponders == null) {
+      return (A) this;
+    }
+    for (EvictionResponder item : items) {
+        EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+        _visitables.get("evictionResponders").remove(builder);
+        this.evictionResponders.remove(builder);
     }
     return (A) this;
   }
@@ -2380,6 +2534,22 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return (A) this;
   }
   
+  public A removeMatchingFromEvictionResponders(Predicate<EvictionResponderBuilder> predicate) {
+    if (evictionResponders == null) {
+      return (A) this;
+    }
+    Iterator<EvictionResponderBuilder> each = evictionResponders.iterator();
+    List visitables = _visitables.get("evictionResponders");
+    while (each.hasNext()) {
+        EvictionResponderBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
   public A removeMatchingFromHostAliases(Predicate<HostAliasBuilder> predicate) {
     if (hostAliases == null) {
       return (A) this;
@@ -2532,6 +2702,10 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     return new EphemeralContainersNested(index, item);
   }
   
+  public EvictionRespondersNested<A> setNewEvictionResponderLike(int index,EvictionResponder item) {
+    return new EvictionRespondersNested(index, item);
+  }
+  
   public HostAliasesNested<A> setNewHostAliasLike(int index,HostAlias item) {
     return new HostAliasesNested(index, item);
   }
@@ -2594,6 +2768,21 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     } else {
         _visitables.get("ephemeralContainers").add(builder);
         ephemeralContainers.set(index, builder);
+    }
+    return (A) this;
+  }
+  
+  public A setToEvictionResponders(int index,EvictionResponder item) {
+    if (this.evictionResponders == null) {
+      this.evictionResponders = new ArrayList();
+    }
+    EvictionResponderBuilder builder = new EvictionResponderBuilder(item);
+    if (index < 0 || index >= evictionResponders.size()) {
+        _visitables.get("evictionResponders").add(builder);
+        evictionResponders.add(builder);
+    } else {
+        _visitables.get("evictionResponders").add(builder);
+        evictionResponders.set(index, builder);
     }
     return (A) this;
   }
@@ -2774,6 +2963,11 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     if (!(ephemeralContainers == null) && !(ephemeralContainers.isEmpty())) {
         sb.append("ephemeralContainers:");
         sb.append(ephemeralContainers);
+        sb.append(",");
+    }
+    if (!(evictionResponders == null) && !(evictionResponders.isEmpty())) {
+        sb.append("evictionResponders:");
+        sb.append(evictionResponders);
         sb.append(",");
     }
     if (!(hostAliases == null) && !(hostAliases.isEmpty())) {
@@ -3066,6 +3260,34 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     if (ephemeralContainers != null) {
       for (EphemeralContainer item : ephemeralContainers) {
         this.addToEphemeralContainers(item);
+      }
+    }
+    return (A) this;
+  }
+  
+  public A withEvictionResponders(List<EvictionResponder> evictionResponders) {
+    if (this.evictionResponders != null) {
+      this._visitables.get("evictionResponders").clear();
+    }
+    if (evictionResponders != null) {
+        this.evictionResponders = new ArrayList();
+        for (EvictionResponder item : evictionResponders) {
+          this.addToEvictionResponders(item);
+        }
+    } else {
+      this.evictionResponders = null;
+    }
+    return (A) this;
+  }
+  
+  public A withEvictionResponders(EvictionResponder... evictionResponders) {
+    if (this.evictionResponders != null) {
+        this.evictionResponders.clear();
+        _visitables.remove("evictionResponders");
+    }
+    if (evictionResponders != null) {
+      for (EvictionResponder item : evictionResponders) {
+        this.addToEvictionResponders(item);
       }
     }
     return (A) this;
@@ -3631,6 +3853,25 @@ public class PodSpecFluent<A extends io.fabric8.kubernetes.api.model.PodSpecFlue
     }
     
     public N endEphemeralContainer() {
+      return and();
+    }
+    
+  }
+  public class EvictionRespondersNested<N> extends EvictionResponderFluent<EvictionRespondersNested<N>> implements Nested<N>{
+  
+    EvictionResponderBuilder builder;
+    int index;
+  
+    EvictionRespondersNested(int index,EvictionResponder item) {
+      this.index = index;
+      this.builder = new EvictionResponderBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PodSpecFluent.this.setToEvictionResponders(index, builder.build());
+    }
+    
+    public N endEvictionResponder() {
       return and();
     }
     

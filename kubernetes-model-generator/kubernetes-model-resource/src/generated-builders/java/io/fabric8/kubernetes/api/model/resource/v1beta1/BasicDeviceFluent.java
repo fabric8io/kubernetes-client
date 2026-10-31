@@ -33,7 +33,7 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
   private Boolean bindsToNode;
   private Map<String,DeviceCapacity> capacity;
   private ArrayList<DeviceCounterConsumptionBuilder> consumesCounters = new ArrayList<DeviceCounterConsumptionBuilder>();
-  private Map<String,NodeAllocatableResourceMapping> nodeAllocatableResourceMappings;
+  private Map<String,NodeAllocatableResource> nodeAllocatableResources;
   private String nodeName;
   private NodeSelector nodeSelector;
   private ArrayList<DeviceTaintBuilder> taints = new ArrayList<DeviceTaintBuilder>();
@@ -232,22 +232,22 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
     return (A) this;
   }
   
-  public A addToNodeAllocatableResourceMappings(Map<String,NodeAllocatableResourceMapping> map) {
-    if (this.nodeAllocatableResourceMappings == null && map != null) {
-      this.nodeAllocatableResourceMappings = new LinkedHashMap();
+  public A addToNodeAllocatableResources(Map<String,NodeAllocatableResource> map) {
+    if (this.nodeAllocatableResources == null && map != null) {
+      this.nodeAllocatableResources = new LinkedHashMap();
     }
     if (map != null) {
-      this.nodeAllocatableResourceMappings.putAll(map);
+      this.nodeAllocatableResources.putAll(map);
     }
     return (A) this;
   }
   
-  public A addToNodeAllocatableResourceMappings(String key,NodeAllocatableResourceMapping value) {
-    if (this.nodeAllocatableResourceMappings == null && key != null && value != null) {
-      this.nodeAllocatableResourceMappings = new LinkedHashMap();
+  public A addToNodeAllocatableResources(String key,NodeAllocatableResource value) {
+    if (this.nodeAllocatableResources == null && key != null && value != null) {
+      this.nodeAllocatableResources = new LinkedHashMap();
     }
     if (key != null && value != null) {
-      this.nodeAllocatableResourceMappings.put(key, value);
+      this.nodeAllocatableResources.put(key, value);
     }
     return (A) this;
   }
@@ -340,7 +340,7 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
         this.withBindsToNode(instance.getBindsToNode());
         this.withCapacity(instance.getCapacity());
         this.withConsumesCounters(instance.getConsumesCounters());
-        this.withNodeAllocatableResourceMappings(instance.getNodeAllocatableResourceMappings());
+        this.withNodeAllocatableResources(instance.getNodeAllocatableResources());
         this.withNodeName(instance.getNodeName());
         this.withNodeSelector(instance.getNodeSelector());
         this.withTaints(instance.getTaints());
@@ -455,7 +455,7 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
     if (!(Objects.equals(consumesCounters, that.consumesCounters))) {
       return false;
     }
-    if (!(Objects.equals(nodeAllocatableResourceMappings, that.nodeAllocatableResourceMappings))) {
+    if (!(Objects.equals(nodeAllocatableResources, that.nodeAllocatableResources))) {
       return false;
     }
     if (!(Objects.equals(nodeName, that.nodeName))) {
@@ -547,8 +547,8 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
       return null;
   }
   
-  public Map<String,NodeAllocatableResourceMapping> getNodeAllocatableResourceMappings() {
-    return this.nodeAllocatableResourceMappings;
+  public Map<String,NodeAllocatableResource> getNodeAllocatableResources() {
+    return this.nodeAllocatableResources;
   }
   
   public String getNodeName() {
@@ -631,8 +631,8 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
       return false;
   }
   
-  public boolean hasNodeAllocatableResourceMappings() {
-    return this.nodeAllocatableResourceMappings != null;
+  public boolean hasNodeAllocatableResources() {
+    return this.nodeAllocatableResources != null;
   }
   
   public boolean hasNodeName() {
@@ -648,7 +648,7 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
   }
   
   public int hashCode() {
-    return Objects.hash(allNodes, allowMultipleAllocations, attributes, bindingConditions, bindingFailureConditions, bindsToNode, capacity, consumesCounters, nodeAllocatableResourceMappings, nodeName, nodeSelector, taints, additionalProperties);
+    return Objects.hash(allNodes, allowMultipleAllocations, attributes, bindingConditions, bindingFailureConditions, bindsToNode, capacity, consumesCounters, nodeAllocatableResources, nodeName, nodeSelector, taints, additionalProperties);
   }
   
   public A removeAllFromBindingConditions(Collection<String> items) {
@@ -799,24 +799,24 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
     return (A) this;
   }
   
-  public A removeFromNodeAllocatableResourceMappings(String key) {
-    if (this.nodeAllocatableResourceMappings == null) {
+  public A removeFromNodeAllocatableResources(String key) {
+    if (this.nodeAllocatableResources == null) {
       return (A) this;
     }
-    if (key != null && this.nodeAllocatableResourceMappings != null) {
-      this.nodeAllocatableResourceMappings.remove(key);
+    if (key != null && this.nodeAllocatableResources != null) {
+      this.nodeAllocatableResources.remove(key);
     }
     return (A) this;
   }
   
-  public A removeFromNodeAllocatableResourceMappings(Map<String,NodeAllocatableResourceMapping> map) {
-    if (this.nodeAllocatableResourceMappings == null) {
+  public A removeFromNodeAllocatableResources(Map<String,NodeAllocatableResource> map) {
+    if (this.nodeAllocatableResources == null) {
       return (A) this;
     }
     if (map != null) {
       for (Object key : map.keySet()) {
-        if (this.nodeAllocatableResourceMappings != null) {
-          this.nodeAllocatableResourceMappings.remove(key);
+        if (this.nodeAllocatableResources != null) {
+          this.nodeAllocatableResources.remove(key);
         }
       }
     }
@@ -964,9 +964,9 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
         sb.append(consumesCounters);
         sb.append(",");
     }
-    if (!(nodeAllocatableResourceMappings == null) && !(nodeAllocatableResourceMappings.isEmpty())) {
-        sb.append("nodeAllocatableResourceMappings:");
-        sb.append(nodeAllocatableResourceMappings);
+    if (!(nodeAllocatableResources == null) && !(nodeAllocatableResources.isEmpty())) {
+        sb.append("nodeAllocatableResources:");
+        sb.append(nodeAllocatableResources);
         sb.append(",");
     }
     if (!(nodeName == null)) {
@@ -1124,11 +1124,11 @@ public class BasicDeviceFluent<A extends io.fabric8.kubernetes.api.model.resourc
     return (A) this;
   }
   
-  public <K,V>A withNodeAllocatableResourceMappings(Map<String,NodeAllocatableResourceMapping> nodeAllocatableResourceMappings) {
-    if (nodeAllocatableResourceMappings == null) {
-      this.nodeAllocatableResourceMappings = null;
+  public <K,V>A withNodeAllocatableResources(Map<String,NodeAllocatableResource> nodeAllocatableResources) {
+    if (nodeAllocatableResources == null) {
+      this.nodeAllocatableResources = null;
     } else {
-      this.nodeAllocatableResourceMappings = new LinkedHashMap(nodeAllocatableResourceMappings);
+      this.nodeAllocatableResources = new LinkedHashMap(nodeAllocatableResources);
     }
     return (A) this;
   }

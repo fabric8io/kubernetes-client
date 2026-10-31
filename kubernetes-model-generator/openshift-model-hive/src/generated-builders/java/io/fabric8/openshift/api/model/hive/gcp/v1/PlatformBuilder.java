@@ -25,7 +25,7 @@ public class PlatformBuilder extends PlatformFluent<PlatformBuilder> implements 
   }
 
   public Platform build() {
-    Platform buildable = new Platform(fluent.buildCredentialsSecretRef(), fluent.buildPrivateServiceConnect(), fluent.getRegion());
+    Platform buildable = new Platform(fluent.buildCredentialsSecretRef(), fluent.getDiscardLocalSsdOnHibernate(), fluent.buildPrivateServiceConnect(), fluent.getRegion());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

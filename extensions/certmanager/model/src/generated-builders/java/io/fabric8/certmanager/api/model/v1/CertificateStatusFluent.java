@@ -15,6 +15,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Predicate;
 
 /**
@@ -23,6 +24,7 @@ import java.util.function.Predicate;
 @SuppressWarnings("unchecked")
 public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.v1.CertificateStatusFluent<A>> extends BaseFluent<A>{
 
+  private CertificateACMEStatusBuilder acme;
   private Map<String,Object> additionalProperties;
   private ArrayList<CertificateConditionBuilder> conditions = new ArrayList<CertificateConditionBuilder>();
   private Integer failedIssuanceAttempts;
@@ -107,6 +109,10 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
     return (A) this;
   }
   
+  public CertificateACMEStatus buildAcme() {
+    return this.acme != null ? this.acme.build() : null;
+  }
+  
   public CertificateCondition buildCondition(int index) {
     return this.conditions.get(index).build();
   }
@@ -135,6 +141,7 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
   protected void copyInstance(CertificateStatus instance) {
     instance = instance != null ? instance : new CertificateStatus();
     if (instance != null) {
+        this.withAcme(instance.getAcme());
         this.withConditions(instance.getConditions());
         this.withFailedIssuanceAttempts(instance.getFailedIssuanceAttempts());
         this.withLastFailureTime(instance.getLastFailureTime());
@@ -145,6 +152,10 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
         this.withRevision(instance.getRevision());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public AcmeNested<A> editAcme() {
+    return this.withNewAcmeLike(Optional.ofNullable(this.buildAcme()).orElse(null));
   }
   
   public ConditionsNested<A> editCondition(int index) {
@@ -183,6 +194,14 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
     return this.setNewConditionLike(index, this.buildCondition(index));
   }
   
+  public AcmeNested<A> editOrNewAcme() {
+    return this.withNewAcmeLike(Optional.ofNullable(this.buildAcme()).orElse(new CertificateACMEStatusBuilder().build()));
+  }
+  
+  public AcmeNested<A> editOrNewAcmeLike(CertificateACMEStatus item) {
+    return this.withNewAcmeLike(Optional.ofNullable(this.buildAcme()).orElse(item));
+  }
+  
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -194,6 +213,9 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
       return false;
     }
     CertificateStatusFluent that = (CertificateStatusFluent) o;
+    if (!(Objects.equals(acme, that.acme))) {
+      return false;
+    }
     if (!(Objects.equals(conditions, that.conditions))) {
       return false;
     }
@@ -256,6 +278,10 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
     return this.revision;
   }
   
+  public boolean hasAcme() {
+    return this.acme != null;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -302,7 +328,7 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(conditions, failedIssuanceAttempts, lastFailureTime, nextPrivateKeySecretName, notAfter, notBefore, renewalTime, revision, additionalProperties);
+    return Objects.hash(acme, conditions, failedIssuanceAttempts, lastFailureTime, nextPrivateKeySecretName, notAfter, notBefore, renewalTime, revision, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<CertificateCondition> items) {
@@ -391,6 +417,11 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(acme == null)) {
+        sb.append("acme:");
+        sb.append(acme);
+        sb.append(",");
+    }
     if (!(conditions == null) && !(conditions.isEmpty())) {
         sb.append("conditions:");
         sb.append(conditions);
@@ -437,6 +468,18 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
     }
     sb.append("}");
     return sb.toString();
+  }
+  
+  public A withAcme(CertificateACMEStatus acme) {
+    this._visitables.remove("acme");
+    if (acme != null) {
+        this.acme = new CertificateACMEStatusBuilder(acme);
+        this._visitables.get("acme").add(this.acme);
+    } else {
+        this.acme = null;
+        this._visitables.get("acme").remove(this.acme);
+    }
+    return (A) this;
   }
   
   public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
@@ -486,6 +529,14 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
     return (A) this;
   }
   
+  public AcmeNested<A> withNewAcme() {
+    return new AcmeNested(null);
+  }
+  
+  public AcmeNested<A> withNewAcmeLike(CertificateACMEStatus item) {
+    return new AcmeNested(item);
+  }
+  
   public A withNextPrivateKeySecretName(String nextPrivateKeySecretName) {
     this.nextPrivateKeySecretName = nextPrivateKeySecretName;
     return (A) this;
@@ -509,6 +560,23 @@ public class CertificateStatusFluent<A extends io.fabric8.certmanager.api.model.
   public A withRevision(Integer revision) {
     this.revision = revision;
     return (A) this;
+  }
+  public class AcmeNested<N> extends CertificateACMEStatusFluent<AcmeNested<N>> implements Nested<N>{
+  
+    CertificateACMEStatusBuilder builder;
+  
+    AcmeNested(CertificateACMEStatus item) {
+      this.builder = new CertificateACMEStatusBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) CertificateStatusFluent.this.withAcme(builder.build());
+    }
+    
+    public N endAcme() {
+      return and();
+    }
+    
   }
   public class ConditionsNested<N> extends CertificateConditionFluent<ConditionsNested<N>> implements Nested<N>{
   

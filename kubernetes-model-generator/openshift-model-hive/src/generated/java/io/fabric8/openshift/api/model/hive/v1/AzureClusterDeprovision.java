@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,13 +30,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * AzureClusterDeprovision contains Azure-specific configuration for a ClusterDeprovision
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "baseDomainResourceGroupName",
     "cloudName",
     "credentialsSecretRef",
     "resourceGroupName"
@@ -67,6 +68,8 @@ import lombok.experimental.Accessors;
 public class AzureClusterDeprovision implements Editable<AzureClusterDeprovisionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("baseDomainResourceGroupName")
+    private String baseDomainResourceGroupName;
     @JsonProperty("cloudName")
     private String cloudName;
     @JsonProperty("credentialsSecretRef")
@@ -82,11 +85,28 @@ public class AzureClusterDeprovision implements Editable<AzureClusterDeprovision
     public AzureClusterDeprovision() {
     }
 
-    public AzureClusterDeprovision(String cloudName, LocalObjectReference credentialsSecretRef, String resourceGroupName) {
+    public AzureClusterDeprovision(String baseDomainResourceGroupName, String cloudName, LocalObjectReference credentialsSecretRef, String resourceGroupName) {
         super();
+        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
         this.cloudName = cloudName;
         this.credentialsSecretRef = credentialsSecretRef;
         this.resourceGroupName = resourceGroupName;
+    }
+
+    /**
+     * BaseDomainResourceGroupName is the name of the resource group where the cluster's DNS records were created, if different from the default or the custom ResourceGroupName.
+     */
+    @JsonProperty("baseDomainResourceGroupName")
+    public String getBaseDomainResourceGroupName() {
+        return baseDomainResourceGroupName;
+    }
+
+    /**
+     * BaseDomainResourceGroupName is the name of the resource group where the cluster's DNS records were created, if different from the default or the custom ResourceGroupName.
+     */
+    @JsonProperty("baseDomainResourceGroupName")
+    public void setBaseDomainResourceGroupName(String baseDomainResourceGroupName) {
+        this.baseDomainResourceGroupName = baseDomainResourceGroupName;
     }
 
     /**

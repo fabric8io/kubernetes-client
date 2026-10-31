@@ -29,6 +29,7 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
   private String externalID;
   private String podCIDR;
   private List<String> podCIDRs = new ArrayList<String>();
+  private NodePodPreemptionPolicyBuilder podPreemptionPolicy;
   private String providerID;
   private ArrayList<TaintBuilder> taints = new ArrayList<TaintBuilder>();
   private Boolean unschedulable;
@@ -160,6 +161,10 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
       return null;
   }
   
+  public NodePodPreemptionPolicy buildPodPreemptionPolicy() {
+    return this.podPreemptionPolicy != null ? this.podPreemptionPolicy.build() : null;
+  }
+  
   public Taint buildTaint(int index) {
     return this.taints.get(index).build();
   }
@@ -175,6 +180,7 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
         this.withExternalID(instance.getExternalID());
         this.withPodCIDR(instance.getPodCIDR());
         this.withPodCIDRs(instance.getPodCIDRs());
+        this.withPodPreemptionPolicy(instance.getPodPreemptionPolicy());
         this.withProviderID(instance.getProviderID());
         this.withTaints(instance.getTaints());
         this.withUnschedulable(instance.getUnschedulable());
@@ -223,6 +229,18 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
     return this.withNewConfigSourceLike(Optional.ofNullable(this.buildConfigSource()).orElse(item));
   }
   
+  public PodPreemptionPolicyNested<A> editOrNewPodPreemptionPolicy() {
+    return this.withNewPodPreemptionPolicyLike(Optional.ofNullable(this.buildPodPreemptionPolicy()).orElse(new NodePodPreemptionPolicyBuilder().build()));
+  }
+  
+  public PodPreemptionPolicyNested<A> editOrNewPodPreemptionPolicyLike(NodePodPreemptionPolicy item) {
+    return this.withNewPodPreemptionPolicyLike(Optional.ofNullable(this.buildPodPreemptionPolicy()).orElse(item));
+  }
+  
+  public PodPreemptionPolicyNested<A> editPodPreemptionPolicy() {
+    return this.withNewPodPreemptionPolicyLike(Optional.ofNullable(this.buildPodPreemptionPolicy()).orElse(null));
+  }
+  
   public TaintsNested<A> editTaint(int index) {
     if (taints.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "taints"));
@@ -251,6 +269,9 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
       return false;
     }
     if (!(Objects.equals(podCIDRs, that.podCIDRs))) {
+      return false;
+    }
+    if (!(Objects.equals(podPreemptionPolicy, that.podPreemptionPolicy))) {
       return false;
     }
     if (!(Objects.equals(providerID, that.providerID))) {
@@ -351,6 +372,10 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
     return this.podCIDRs != null && !(this.podCIDRs.isEmpty());
   }
   
+  public boolean hasPodPreemptionPolicy() {
+    return this.podPreemptionPolicy != null;
+  }
+  
   public boolean hasProviderID() {
     return this.providerID != null;
   }
@@ -364,7 +389,7 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
   }
   
   public int hashCode() {
-    return Objects.hash(configSource, externalID, podCIDR, podCIDRs, providerID, taints, unschedulable, additionalProperties);
+    return Objects.hash(configSource, externalID, podCIDR, podCIDRs, podPreemptionPolicy, providerID, taints, unschedulable, additionalProperties);
   }
   
   public A removeAllFromPodCIDRs(Collection<String> items) {
@@ -501,6 +526,11 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
         sb.append(podCIDRs);
         sb.append(",");
     }
+    if (!(podPreemptionPolicy == null)) {
+        sb.append("podPreemptionPolicy:");
+        sb.append(podPreemptionPolicy);
+        sb.append(",");
+    }
     if (!(providerID == null)) {
         sb.append("providerID:");
         sb.append(providerID);
@@ -558,6 +588,14 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
     return new ConfigSourceNested(item);
   }
   
+  public PodPreemptionPolicyNested<A> withNewPodPreemptionPolicy() {
+    return new PodPreemptionPolicyNested(null);
+  }
+  
+  public PodPreemptionPolicyNested<A> withNewPodPreemptionPolicyLike(NodePodPreemptionPolicy item) {
+    return new PodPreemptionPolicyNested(item);
+  }
+  
   public A withPodCIDR(String podCIDR) {
     this.podCIDR = podCIDR;
     return (A) this;
@@ -584,6 +622,18 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
       for (String item : podCIDRs) {
         this.addToPodCIDRs(item);
       }
+    }
+    return (A) this;
+  }
+  
+  public A withPodPreemptionPolicy(NodePodPreemptionPolicy podPreemptionPolicy) {
+    this._visitables.remove("podPreemptionPolicy");
+    if (podPreemptionPolicy != null) {
+        this.podPreemptionPolicy = new NodePodPreemptionPolicyBuilder(podPreemptionPolicy);
+        this._visitables.get("podPreemptionPolicy").add(this.podPreemptionPolicy);
+    } else {
+        this.podPreemptionPolicy = null;
+        this._visitables.get("podPreemptionPolicy").remove(this.podPreemptionPolicy);
     }
     return (A) this;
   }
@@ -642,6 +692,23 @@ public class NodeSpecFluent<A extends io.fabric8.kubernetes.api.model.NodeSpecFl
     }
     
     public N endConfigSource() {
+      return and();
+    }
+    
+  }
+  public class PodPreemptionPolicyNested<N> extends NodePodPreemptionPolicyFluent<PodPreemptionPolicyNested<N>> implements Nested<N>{
+  
+    NodePodPreemptionPolicyBuilder builder;
+  
+    PodPreemptionPolicyNested(NodePodPreemptionPolicy item) {
+      this.builder = new NodePodPreemptionPolicyBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) NodeSpecFluent.this.withPodPreemptionPolicy(builder.build());
+    }
+    
+    public N endPodPreemptionPolicy() {
       return and();
     }
     

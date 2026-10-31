@@ -24,6 +24,7 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
 
   private Map<String,Object> additionalProperties;
   private String compliant;
+  private ArrayList<PolicySetStatusExclusionBuilder> exclusions = new ArrayList<PolicySetStatusExclusionBuilder>();
   private ArrayList<PolicySetStatusPlacementBuilder> placement = new ArrayList<PolicySetStatusPlacementBuilder>();
   private String statusMessage;
 
@@ -34,6 +35,18 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     this.copyInstance(instance);
   }
 
+  public A addAllToExclusions(Collection<PolicySetStatusExclusion> items) {
+    if (this.exclusions == null) {
+      this.exclusions = new ArrayList();
+    }
+    for (PolicySetStatusExclusion item : items) {
+        PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+        _visitables.get("exclusions").add(builder);
+        this.exclusions.add(builder);
+    }
+    return (A) this;
+  }
+  
   public A addAllToPlacement(Collection<PolicySetStatusPlacement> items) {
     if (this.placement == null) {
       this.placement = new ArrayList();
@@ -44,6 +57,14 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
         this.placement.add(builder);
     }
     return (A) this;
+  }
+  
+  public ExclusionsNested<A> addNewExclusion() {
+    return new ExclusionsNested(-1, null);
+  }
+  
+  public ExclusionsNested<A> addNewExclusionLike(PolicySetStatusExclusion item) {
+    return new ExclusionsNested(-1, item);
   }
   
   public PlacementNested<A> addNewPlacement() {
@@ -78,6 +99,33 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return (A) this;
   }
   
+  public A addToExclusions(PolicySetStatusExclusion... items) {
+    if (this.exclusions == null) {
+      this.exclusions = new ArrayList();
+    }
+    for (PolicySetStatusExclusion item : items) {
+        PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+        _visitables.get("exclusions").add(builder);
+        this.exclusions.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToExclusions(int index,PolicySetStatusExclusion item) {
+    if (this.exclusions == null) {
+      this.exclusions = new ArrayList();
+    }
+    PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+    if (index < 0 || index >= exclusions.size()) {
+        _visitables.get("exclusions").add(builder);
+        exclusions.add(builder);
+    } else {
+        _visitables.get("exclusions").add(builder);
+        exclusions.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public A addToPlacement(PolicySetStatusPlacement... items) {
     if (this.placement == null) {
       this.placement = new ArrayList();
@@ -105,12 +153,37 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return (A) this;
   }
   
+  public PolicySetStatusExclusion buildExclusion(int index) {
+    return this.exclusions.get(index).build();
+  }
+  
+  public List<PolicySetStatusExclusion> buildExclusions() {
+    return this.exclusions != null ? build(exclusions) : null;
+  }
+  
+  public PolicySetStatusExclusion buildFirstExclusion() {
+    return this.exclusions.get(0).build();
+  }
+  
   public PolicySetStatusPlacement buildFirstPlacement() {
     return this.placement.get(0).build();
   }
   
+  public PolicySetStatusExclusion buildLastExclusion() {
+    return this.exclusions.get(exclusions.size() - 1).build();
+  }
+  
   public PolicySetStatusPlacement buildLastPlacement() {
     return this.placement.get(placement.size() - 1).build();
+  }
+  
+  public PolicySetStatusExclusion buildMatchingExclusion(Predicate<PolicySetStatusExclusionBuilder> predicate) {
+      for (PolicySetStatusExclusionBuilder item : exclusions) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
   }
   
   public PolicySetStatusPlacement buildMatchingPlacement(Predicate<PolicySetStatusPlacementBuilder> predicate) {
@@ -134,10 +207,25 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     instance = instance != null ? instance : new PolicySetStatus();
     if (instance != null) {
         this.withCompliant(instance.getCompliant());
+        this.withExclusions(instance.getExclusions());
         this.withPlacement(instance.getPlacement());
         this.withStatusMessage(instance.getStatusMessage());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
+  }
+  
+  public ExclusionsNested<A> editExclusion(int index) {
+    if (exclusions.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "exclusions"));
+    }
+    return this.setNewExclusionLike(index, this.buildExclusion(index));
+  }
+  
+  public ExclusionsNested<A> editFirstExclusion() {
+    if (exclusions.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "exclusions"));
+    }
+    return this.setNewExclusionLike(0, this.buildExclusion(0));
   }
   
   public PlacementNested<A> editFirstPlacement() {
@@ -147,12 +235,34 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return this.setNewPlacementLike(0, this.buildPlacement(0));
   }
   
+  public ExclusionsNested<A> editLastExclusion() {
+    int index = exclusions.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "exclusions"));
+    }
+    return this.setNewExclusionLike(index, this.buildExclusion(index));
+  }
+  
   public PlacementNested<A> editLastPlacement() {
     int index = placement.size() - 1;
     if (index < 0) {
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "placement"));
     }
     return this.setNewPlacementLike(index, this.buildPlacement(index));
+  }
+  
+  public ExclusionsNested<A> editMatchingExclusion(Predicate<PolicySetStatusExclusionBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < exclusions.size();i++) {
+      if (predicate.test(exclusions.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "exclusions"));
+    }
+    return this.setNewExclusionLike(index, this.buildExclusion(index));
   }
   
   public PlacementNested<A> editMatchingPlacement(Predicate<PolicySetStatusPlacementBuilder> predicate) {
@@ -190,6 +300,9 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     if (!(Objects.equals(compliant, that.compliant))) {
       return false;
     }
+    if (!(Objects.equals(exclusions, that.exclusions))) {
+      return false;
+    }
     if (!(Objects.equals(placement, that.placement))) {
       return false;
     }
@@ -222,6 +335,19 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return this.compliant != null;
   }
   
+  public boolean hasExclusions() {
+    return this.exclusions != null && !(this.exclusions.isEmpty());
+  }
+  
+  public boolean hasMatchingExclusion(Predicate<PolicySetStatusExclusionBuilder> predicate) {
+      for (PolicySetStatusExclusionBuilder item : exclusions) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMatchingPlacement(Predicate<PolicySetStatusPlacementBuilder> predicate) {
       for (PolicySetStatusPlacementBuilder item : placement) {
         if (predicate.test(item)) {
@@ -240,7 +366,19 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
   }
   
   public int hashCode() {
-    return Objects.hash(compliant, placement, statusMessage, additionalProperties);
+    return Objects.hash(compliant, exclusions, placement, statusMessage, additionalProperties);
+  }
+  
+  public A removeAllFromExclusions(Collection<PolicySetStatusExclusion> items) {
+    if (this.exclusions == null) {
+      return (A) this;
+    }
+    for (PolicySetStatusExclusion item : items) {
+        PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+        _visitables.get("exclusions").remove(builder);
+        this.exclusions.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeAllFromPlacement(Collection<PolicySetStatusPlacement> items) {
@@ -279,6 +417,18 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return (A) this;
   }
   
+  public A removeFromExclusions(PolicySetStatusExclusion... items) {
+    if (this.exclusions == null) {
+      return (A) this;
+    }
+    for (PolicySetStatusExclusion item : items) {
+        PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+        _visitables.get("exclusions").remove(builder);
+        this.exclusions.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromPlacement(PolicySetStatusPlacement... items) {
     if (this.placement == null) {
       return (A) this;
@@ -287,6 +437,22 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
         PolicySetStatusPlacementBuilder builder = new PolicySetStatusPlacementBuilder(item);
         _visitables.get("placement").remove(builder);
         this.placement.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromExclusions(Predicate<PolicySetStatusExclusionBuilder> predicate) {
+    if (exclusions == null) {
+      return (A) this;
+    }
+    Iterator<PolicySetStatusExclusionBuilder> each = exclusions.iterator();
+    List visitables = _visitables.get("exclusions");
+    while (each.hasNext()) {
+        PolicySetStatusExclusionBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
     }
     return (A) this;
   }
@@ -307,8 +473,27 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return (A) this;
   }
   
+  public ExclusionsNested<A> setNewExclusionLike(int index,PolicySetStatusExclusion item) {
+    return new ExclusionsNested(index, item);
+  }
+  
   public PlacementNested<A> setNewPlacementLike(int index,PolicySetStatusPlacement item) {
     return new PlacementNested(index, item);
+  }
+  
+  public A setToExclusions(int index,PolicySetStatusExclusion item) {
+    if (this.exclusions == null) {
+      this.exclusions = new ArrayList();
+    }
+    PolicySetStatusExclusionBuilder builder = new PolicySetStatusExclusionBuilder(item);
+    if (index < 0 || index >= exclusions.size()) {
+        _visitables.get("exclusions").add(builder);
+        exclusions.add(builder);
+    } else {
+        _visitables.get("exclusions").add(builder);
+        exclusions.set(index, builder);
+    }
+    return (A) this;
   }
   
   public A setToPlacement(int index,PolicySetStatusPlacement item) {
@@ -332,6 +517,11 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     if (!(compliant == null)) {
         sb.append("compliant:");
         sb.append(compliant);
+        sb.append(",");
+    }
+    if (!(exclusions == null) && !(exclusions.isEmpty())) {
+        sb.append("exclusions:");
+        sb.append(exclusions);
         sb.append(",");
     }
     if (!(placement == null) && !(placement.isEmpty())) {
@@ -366,6 +556,34 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
     return (A) this;
   }
   
+  public A withExclusions(List<PolicySetStatusExclusion> exclusions) {
+    if (this.exclusions != null) {
+      this._visitables.get("exclusions").clear();
+    }
+    if (exclusions != null) {
+        this.exclusions = new ArrayList();
+        for (PolicySetStatusExclusion item : exclusions) {
+          this.addToExclusions(item);
+        }
+    } else {
+      this.exclusions = null;
+    }
+    return (A) this;
+  }
+  
+  public A withExclusions(PolicySetStatusExclusion... exclusions) {
+    if (this.exclusions != null) {
+        this.exclusions.clear();
+        _visitables.remove("exclusions");
+    }
+    if (exclusions != null) {
+      for (PolicySetStatusExclusion item : exclusions) {
+        this.addToExclusions(item);
+      }
+    }
+    return (A) this;
+  }
+  
   public A withPlacement(List<PolicySetStatusPlacement> placement) {
     if (this.placement != null) {
       this._visitables.get("placement").clear();
@@ -397,6 +615,25 @@ public class PolicySetStatusFluent<A extends io.fabric8.openclustermanagement.ap
   public A withStatusMessage(String statusMessage) {
     this.statusMessage = statusMessage;
     return (A) this;
+  }
+  public class ExclusionsNested<N> extends PolicySetStatusExclusionFluent<ExclusionsNested<N>> implements Nested<N>{
+  
+    PolicySetStatusExclusionBuilder builder;
+    int index;
+  
+    ExclusionsNested(int index,PolicySetStatusExclusion item) {
+      this.index = index;
+      this.builder = new PolicySetStatusExclusionBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) PolicySetStatusFluent.this.setToExclusions(index, builder.build());
+    }
+    
+    public N endExclusion() {
+      return and();
+    }
+    
   }
   public class PlacementNested<N> extends PolicySetStatusPlacementFluent<PlacementNested<N>> implements Nested<N>{
   

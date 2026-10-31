@@ -3,7 +3,7 @@ name: k8s-model-update
 description: Updates Fabric8 Kubernetes Client models and DSL when a new Kubernetes version is released. Handles downloading the OpenAPI spec, regenerating Java models, analyzing API changes (new GA resources, graduations, deprecations, removals), updating the client DSL, and raising a PR. Use this skill whenever the user mentions updating Kubernetes models, bumping a K8s version, generating models from an OpenAPI spec, supporting a new Kubernetes release, or downloading swagger.json for a new K8s version — even if they don't say "skill" or "model update" explicitly.
 argument-hint: "<k8s-version> <github-issue-number>"
 disable-model-invocation: true
-allowed-tools: Read, Edit, Write, Grep, Glob, Bash(make *), Bash(mvn *), Bash(git *), Bash(gh *), Bash(java *), Bash(${CLAUDE_SKILL_DIR}/scripts/*), Bash(du *), Bash(find *), WebSearch, WebFetch, AskUserQuestion
+allowed-tools: Read, Edit, Write, Grep, Glob, Bash(${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh *), Bash(java -version), Bash(git status), Bash(git diff), Bash(git diff --stat), WebSearch, WebFetch(domain:kubernetes.io), AskUserQuestion
 ---
 
 # Kubernetes Model Update
@@ -22,18 +22,33 @@ The process has four user-confirmation checkpoints so nothing ships without revi
 ### Pre-fetched Context
 
 ```
-!`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh $0 $1`
+!`${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "$0" "$1"`
 ```
+
+- `!! MISSING_ARGS` — ask the user for the Kubernetes version and the GitHub issue number, then run `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "<version>" "<issue-number>"` with the Bash tool.
+- `!! GH_FETCH_FAILED` — check the error above it. A TLS or auth error means the injected command ran inside the sandbox: rerun `${CLAUDE_SKILL_DIR}/scripts/get-update-context.sh "$0" "$1"` with the Bash tool and the sandbox disabled. Anything else means the issue is wrong: confirm the issue number with the user.
 
 ---
 
 ## Prerequisites
 
-- **Minimum Java 11** — required to build and run the project.
-- **Java 11 is the preferred JDK for model generation** (`make generate-model`). JDK 25 is NOT supported.
-- **`make format` requires minimum Java 17** — the Spotless formatter and license-header tooling need JDK 17+.
+- **Java 17** — required to build the project, to generate the model (`make generate-model`) and to run `make format`. JDK 25 is NOT supported.
 
-Before starting, verify the active JDK version (`java -version`). Switch JDK versions between steps as needed (e.g., JDK 11 for generation, JDK 17+ for formatting).
+Before starting, verify the active JDK version (`java -version`).
+
+## Running in a Sandbox
+
+The Claude Code sandbox gets in the way of anything that needs the network or credentials: on macOS `gh` and `go` can't verify TLS certificates there (`x509: OSStatus -26276`), `gh` can't read keyring-stored tokens (HTTP 401), and Java ignores the sandbox's network proxy (`Unknown host`) and can't find the JDK (`Unable to locate a Java Runtime`, also from `java -version` in the pre-fetched context). Split the work accordingly.
+
+These run outside the sandbox. The repo's `.claude/settings.json` excludes them in the exact forms this skill uses, so they need nothing extra; only if one still fails with a TLS, auth or `Unknown host` error, rerun it with the sandbox disabled:
+- `gh`, `get-update-context.sh` and `download-k8s-schema.sh`
+- `git fetch`, `git pull` and `git push`
+- `go -C kubernetes-model-generator/openapi/generator mod download`, which only fetches and checksum-verifies modules
+- The Java side, including `java -version`: `make quickly`, `make openapi-generate-java-classes`, `make generate-javadoc-links`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
+
+Keep `make openapi-generate-schema` inside the sandbox, with `GOCACHE` pointing at the repo's git-ignored `.cache/go-build`: it compiles and runs the Go generator and its dependencies. Once `go mod download` has filled the module cache, it only writes inside the repo, and what it compiles never lands in the build cache that unsandboxed Go builds use.
+
+If any of these fails anyway, stop and report it to the user rather than moving more commands out of the sandbox. Never disable TLS or checksum verification (e.g. `GOINSECURE`, `GONOSUMDB`, `GOSUMDB=off`, `GIT_SSL_NO_VERIFY`, `curl -k`, `-Dmaven.wagon.http.ssl.insecure=true`).
 
 ---
 
@@ -51,10 +66,10 @@ Run `make quickly` to confirm a clean starting state (~3-5 minutes). Fix any fai
 
 ### 3. Download the OpenAPI spec
 
-Use the bundled download script:
+Run the bundled download script with the Bash tool:
 
-```
-!`${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh $0`
+```bash
+${CLAUDE_SKILL_DIR}/scripts/download-k8s-schema.sh $0
 ```
 
 The script auto-detects the project root and saves the spec as `kubernetes-model-generator/openapi/schemas/kubernetes-$0.json`.
@@ -69,13 +84,17 @@ In `kubernetes-model-generator/pom.xml`, update the `<openapi.schema.kubernetes-
 
 ### 5. Generate updated models
 
+Run the two targets `make generate-model` consists of, one at a time so the Go half can stay sandboxed (see _Running in a Sandbox_), after filling the Go module cache:
+
 ```
-make generate-model
+go -C kubernetes-model-generator/openapi/generator mod download  # outside the sandbox
+GOCACHE="$PWD/.cache/go-build" make openapi-generate-schema      # inside the sandbox
+make openapi-generate-java-classes                               # outside the sandbox
 ```
 
-This runs the Go-based OpenAPI generator and Maven code-generation plugin across all `kubernetes-model-*` modules. Takes several minutes.
+This runs the Go-based OpenAPI generator and Maven code-generation plugin across all `kubernetes-model-*` modules. Takes several minutes. If `openapi-generate-java-classes` fails partway, it can leave a model module's generated sources deleted: regenerate, don't commit that state.
 
-**When `make generate-model` fails with unknown types or unresolved imports:**
+**When generation fails with unknown types or unresolved imports:**
 
 Do **NOT** modify Go code, update Go dependencies, or change anything in the generator project itself. Instead, fix the issue in the failing model module's `pom.xml` by adding a `refToJavaTypeMappings` entry that maps the unresolved schema reference to a Java type.
 
@@ -98,7 +117,7 @@ Map to `java.lang.String` for simple value types (IPs, names) and `java.lang.Obj
 
 **Always present the proposed `refToJavaTypeMappings` changes to the user and get explicit approval before modifying any `pom.xml`.** Show which module, which schema refs, and which Java types you plan to map them to.
 
-After fixing, re-run `make generate-model` until it succeeds.
+After fixing, re-run both generation targets until they succeed.
 
 ### 6. Verify the build compiles
 

@@ -23,6 +23,7 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
 
   private Map<String,Object> additionalProperties;
   private List<String> audiences = new ArrayList<String>();
+  private String discoveryURL;
   private ConfigMapNameReferenceBuilder issuerCertificateAuthority;
   private String issuerURL;
 
@@ -89,6 +90,7 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
     instance = instance != null ? instance : new TokenIssuer();
     if (instance != null) {
         this.withAudiences(instance.getAudiences());
+        this.withDiscoveryURL(instance.getDiscoveryURL());
         this.withIssuerCertificateAuthority(instance.getIssuerCertificateAuthority());
         this.withIssuerURL(instance.getIssuerURL());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -121,6 +123,9 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
     if (!(Objects.equals(audiences, that.audiences))) {
       return false;
     }
+    if (!(Objects.equals(discoveryURL, that.discoveryURL))) {
+      return false;
+    }
     if (!(Objects.equals(issuerCertificateAuthority, that.issuerCertificateAuthority))) {
       return false;
     }
@@ -143,6 +148,10 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
   
   public List<String> getAudiences() {
     return this.audiences;
+  }
+  
+  public String getDiscoveryURL() {
+    return this.discoveryURL;
   }
   
   public String getFirstAudience() {
@@ -174,6 +183,10 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
     return this.audiences != null && !(this.audiences.isEmpty());
   }
   
+  public boolean hasDiscoveryURL() {
+    return this.discoveryURL != null;
+  }
+  
   public boolean hasIssuerCertificateAuthority() {
     return this.issuerCertificateAuthority != null;
   }
@@ -192,7 +205,7 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
   }
   
   public int hashCode() {
-    return Objects.hash(audiences, issuerCertificateAuthority, issuerURL, additionalProperties);
+    return Objects.hash(audiences, discoveryURL, issuerCertificateAuthority, issuerURL, additionalProperties);
   }
   
   public A removeAllFromAudiences(Collection<String> items) {
@@ -255,6 +268,11 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
         sb.append(audiences);
         sb.append(",");
     }
+    if (!(discoveryURL == null)) {
+        sb.append("discoveryURL:");
+        sb.append(discoveryURL);
+        sb.append(",");
+    }
     if (!(issuerCertificateAuthority == null)) {
         sb.append("issuerCertificateAuthority:");
         sb.append(issuerCertificateAuthority);
@@ -304,6 +322,11 @@ public class TokenIssuerFluent<A extends io.fabric8.openshift.api.model.config.v
         this.addToAudiences(item);
       }
     }
+    return (A) this;
+  }
+  
+  public A withDiscoveryURL(String discoveryURL) {
+    this.discoveryURL = discoveryURL;
     return (A) this;
   }
   

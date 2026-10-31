@@ -25,7 +25,7 @@ public class TrafficPolicyRetryBudgetBuilder extends TrafficPolicyRetryBudgetFlu
   }
 
   public TrafficPolicyRetryBudget build() {
-    TrafficPolicyRetryBudget buildable = new TrafficPolicyRetryBudget(fluent.getMinRetryConcurrency(), fluent.getPercent());
+    TrafficPolicyRetryBudget buildable = new TrafficPolicyRetryBudget(fluent.getBudgetInterval(), fluent.getMinRetryConcurrency(), fluent.getPercent());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -35,11 +34,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * BareMetalHostSpec defines the desired state of BareMetalHost.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "architecture",
@@ -58,6 +58,7 @@ import lombok.experimental.Accessors;
     "inspectionMode",
     "metaData",
     "networkData",
+    "networkInterfaces",
     "online",
     "preprovisioningNetworkDataName",
     "raid",
@@ -122,6 +123,9 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     private SecretReference metaData;
     @JsonProperty("networkData")
     private SecretReference networkData;
+    @JsonProperty("networkInterfaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<NetworkInterface> networkInterfaces = new ArrayList<>();
     @JsonProperty("online")
     private Boolean online;
     @JsonProperty("preprovisioningNetworkDataName")
@@ -144,7 +148,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     public BareMetalHostSpec() {
     }
 
-    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean disablePowerOff, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, String inspectionMode, SecretReference metaData, SecretReference networkData, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
+    public BareMetalHostSpec(String architecture, String automatedCleaningMode, BMCDetails bmc, String bootMACAddress, String bootMode, ObjectReference consumerRef, CustomDeploy customDeploy, String description, Boolean disablePowerOff, Boolean externallyProvisioned, FirmwareConfig firmware, String hardwareProfile, Image image, String inspectionMode, SecretReference metaData, SecretReference networkData, List<NetworkInterface> networkInterfaces, Boolean online, String preprovisioningNetworkDataName, RAIDConfig raid, RootDeviceHints rootDeviceHints, List<Taint> taints, SecretReference userData) {
         super();
         this.architecture = architecture;
         this.automatedCleaningMode = automatedCleaningMode;
@@ -162,6 +166,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
         this.inspectionMode = inspectionMode;
         this.metaData = metaData;
         this.networkData = networkData;
+        this.networkInterfaces = networkInterfaces;
         this.online = online;
         this.preprovisioningNetworkDataName = preprovisioningNetworkDataName;
         this.raid = raid;
@@ -379,7 +384,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run
+     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run "fast" - out-of-band inspection via BMC (Redfish), no ramdisk boot
      */
     @JsonProperty("inspectionMode")
     public String getInspectionMode() {
@@ -387,7 +392,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run
+     * Specifies the mode for host inspection. "disabled" - no inspection will be performed "agent" - normal agent-based inspection will run "fast" - out-of-band inspection via BMC (Redfish), no ramdisk boot
      */
     @JsonProperty("inspectionMode")
     public void setInspectionMode(String inspectionMode) {
@@ -424,6 +429,23 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     @JsonProperty("networkData")
     public void setNetworkData(SecretReference networkData) {
         this.networkData = networkData;
+    }
+
+    /**
+     * NetworkInterfaces defines the network configuration for each interface. This will be used to configure switch ports for the host.  Interface names must correspond to actual NICs discovered during inspection (see HardwareData resource).  They are referenced by either the name or MAC address of the NIC.
+     */
+    @JsonProperty("networkInterfaces")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<NetworkInterface> getNetworkInterfaces() {
+        return networkInterfaces;
+    }
+
+    /**
+     * NetworkInterfaces defines the network configuration for each interface. This will be used to configure switch ports for the host.  Interface names must correspond to actual NICs discovered during inspection (see HardwareData resource).  They are referenced by either the name or MAC address of the NIC.
+     */
+    @JsonProperty("networkInterfaces")
+    public void setNetworkInterfaces(List<NetworkInterface> networkInterfaces) {
+        this.networkInterfaces = networkInterfaces;
     }
 
     /**
@@ -491,7 +513,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Taints is the full, authoritative list of taints to apply to the corresponding Machine. This list will overwrite any modifications made to the Machine on an ongoing basis.
+     * Taints is the full, authoritative list of taints to apply to the corresponding Machine.<br><p> <br><p> Deprecated: the Taints field was never actually implemented.
      */
     @JsonProperty("taints")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -500,7 +522,7 @@ public class BareMetalHostSpec implements Editable<BareMetalHostSpecBuilder>, Ku
     }
 
     /**
-     * Taints is the full, authoritative list of taints to apply to the corresponding Machine. This list will overwrite any modifications made to the Machine on an ongoing basis.
+     * Taints is the full, authoritative list of taints to apply to the corresponding Machine.<br><p> <br><p> Deprecated: the Taints field was never actually implemented.
      */
     @JsonProperty("taints")
     public void setTaints(List<Taint> taints) {

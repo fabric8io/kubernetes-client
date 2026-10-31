@@ -25,7 +25,7 @@ public class CertificateSpecBuilder extends CertificateSpecFluent<CertificateSpe
   }
 
   public CertificateSpec build() {
-    CertificateSpec buildable = new CertificateSpec(fluent.buildAdditionalOutputFormats(), fluent.getCommonName(), fluent.getDnsNames(), fluent.getDuration(), fluent.getEmailAddresses(), fluent.getEncodeUsagesInRequest(), fluent.getIpAddresses(), fluent.getIsCA(), fluent.buildIssuerRef(), fluent.buildKeystores(), fluent.getLiteralSubject(), fluent.buildNameConstraints(), fluent.buildOtherNames(), fluent.buildPrivateKey(), fluent.getRenewBefore(), fluent.getRenewBeforePercentage(), fluent.getRevisionHistoryLimit(), fluent.getSecretName(), fluent.buildSecretTemplate(), fluent.getSignatureAlgorithm(), fluent.buildSubject(), fluent.getUris(), fluent.getUsages());
+    CertificateSpec buildable = new CertificateSpec(fluent.buildAdditionalOutputFormats(), fluent.getCommonName(), fluent.getDnsNames(), fluent.getDuration(), fluent.getEmailAddresses(), fluent.getEncodeUsagesInRequest(), fluent.getIpAddresses(), fluent.getIsCA(), fluent.buildIssuerRef(), fluent.buildKeystores(), fluent.getLiteralSubject(), fluent.buildNameConstraints(), fluent.buildOtherNames(), fluent.buildPrivateKey(), fluent.getRenewBefore(), fluent.getRenewBeforePercentage(), fluent.buildRenewal(), fluent.getRevisionHistoryLimit(), fluent.getSecretName(), fluent.buildSecretTemplate(), fluent.getSignatureAlgorithm(), fluent.buildSubject(), fluent.getUris(), fluent.getUsages());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -15,7 +15,6 @@
  */
 package io.fabric8.java.generator.nodes;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
@@ -34,6 +33,7 @@ import io.fabric8.java.generator.exceptions.JavaGeneratorException;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import io.fabric8.kubernetes.client.utils.Utils;
+import tools.jackson.databind.JsonNode;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -174,9 +174,9 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
 
     clz.addAnnotation(
         new SingleMemberAnnotationExpr(
-            new Name("com.fasterxml.jackson.databind.annotation.JsonDeserialize"),
+            new Name("tools.jackson.databind.annotation.JsonDeserialize"),
             new NameExpr(
-                "using = com.fasterxml.jackson.databind.JsonDeserializer.None.class")));
+                "using = tools.jackson.databind.ValueDeserializer.None.class")));
 
     if (config.isGeneratedAnnotations()) {
       clz.addAnnotation(newGeneratedAnnotation());
@@ -300,7 +300,7 @@ public class JObject extends AbstractJSONSchema2Pojo implements JObjectExtraAnno
                     "io.fabric8.kubernetes.client.utils.Serialization.unmarshal("
                         + "\"" + StringEscapeUtils.escapeJava(Serialization.asJson(prop.getDefaultValue())) + "\""
                         + ", "
-                        + "new com.fasterxml.jackson.core.type.TypeReference<"
+                        + "new tools.jackson.core.type.TypeReference<"
                         + prop.getType()
                         + ">() {}"
                         + ")"));

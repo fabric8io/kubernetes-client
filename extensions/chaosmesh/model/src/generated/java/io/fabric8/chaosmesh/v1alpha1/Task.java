@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,13 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "container",
+    "labels",
     "volumes"
 })
 @ToString
@@ -67,6 +68,9 @@ public class Task implements Editable<TaskBuilder>, KubernetesResource
 
     @JsonProperty("container")
     private Container container;
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private Map<String, String> labels = new LinkedHashMap<>();
     @JsonProperty("volumes")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<Volume> volumes = new ArrayList<>();
@@ -79,9 +83,10 @@ public class Task implements Editable<TaskBuilder>, KubernetesResource
     public Task() {
     }
 
-    public Task(Container container, List<Volume> volumes) {
+    public Task(Container container, Map<String, String> labels, List<Volume> volumes) {
         super();
         this.container = container;
+        this.labels = labels;
         this.volumes = volumes;
     }
 
@@ -93,6 +98,17 @@ public class Task implements Editable<TaskBuilder>, KubernetesResource
     @JsonProperty("container")
     public void setContainer(Container container) {
         this.container = container;
+    }
+
+    @JsonProperty("labels")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public Map<String, String> getLabels() {
+        return labels;
+    }
+
+    @JsonProperty("labels")
+    public void setLabels(Map<String, String> labels) {
+        this.labels = labels;
     }
 
     /**

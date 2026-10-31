@@ -1,7 +1,9 @@
 
 package io.fabric8.kubernetes.api.model.resource.v1beta1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,13 +32,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * DeviceCounterConsumption defines a set of counters that a device will consume from a CounterSet.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "compatibilityGroups",
     "counterSet",
     "counters"
 })
@@ -66,6 +69,9 @@ import lombok.experimental.Accessors;
 public class DeviceCounterConsumption implements Editable<DeviceCounterConsumptionBuilder>, KubernetesResource
 {
 
+    @JsonProperty("compatibilityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> compatibilityGroups = new ArrayList<>();
     @JsonProperty("counterSet")
     private String counterSet;
     @JsonProperty("counters")
@@ -80,10 +86,28 @@ public class DeviceCounterConsumption implements Editable<DeviceCounterConsumpti
     public DeviceCounterConsumption() {
     }
 
-    public DeviceCounterConsumption(String counterSet, Map<String, Counter> counters) {
+    public DeviceCounterConsumption(List<String> compatibilityGroups, String counterSet, Map<String, Counter> counters) {
         super();
+        this.compatibilityGroups = compatibilityGroups;
         this.counterSet = counterSet;
         this.counters = counters;
+    }
+
+    /**
+     * CompatibilityGroups is a list of opaque group names for this counter set consumption.<br><p> <br><p> Devices that consume counters from the same counter set may only be allocated at the same time ("co-allocated") if they all share at least one common group: the intersection of the CompatibilityGroups of all co-allocated devices on that counter set must be non-empty. Devices that consume from different counter sets are never compared via this field.<br><p> <br><p> An unset field, an explicit nil, and an empty list are equivalent and mean "no groups": such a device is only co-allocatable with sibling devices on the same counter set that also have no groups, and is never co-allocatable with a device that declares one or more groups.<br><p> <br><p> Group names are opaque and meaningful only within the publishing driver's pool.<br><p> <br><p> The maximum number of groups is 2, and the names must be unique.
+     */
+    @JsonProperty("compatibilityGroups")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getCompatibilityGroups() {
+        return compatibilityGroups;
+    }
+
+    /**
+     * CompatibilityGroups is a list of opaque group names for this counter set consumption.<br><p> <br><p> Devices that consume counters from the same counter set may only be allocated at the same time ("co-allocated") if they all share at least one common group: the intersection of the CompatibilityGroups of all co-allocated devices on that counter set must be non-empty. Devices that consume from different counter sets are never compared via this field.<br><p> <br><p> An unset field, an explicit nil, and an empty list are equivalent and mean "no groups": such a device is only co-allocatable with sibling devices on the same counter set that also have no groups, and is never co-allocatable with a device that declares one or more groups.<br><p> <br><p> Group names are opaque and meaningful only within the publishing driver's pool.<br><p> <br><p> The maximum number of groups is 2, and the names must be unique.
+     */
+    @JsonProperty("compatibilityGroups")
+    public void setCompatibilityGroups(List<String> compatibilityGroups) {
+        this.compatibilityGroups = compatibilityGroups;
     }
 
     /**

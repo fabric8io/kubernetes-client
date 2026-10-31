@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.openstack.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,13 +32,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * MachinePool stores the configuration for a machine pool installed on OpenStack.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "additionalSecurityGroupIDs",
     "flavor",
     "rootVolume"
 })
@@ -66,6 +69,9 @@ import lombok.experimental.Accessors;
 public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesResource
 {
 
+    @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> additionalSecurityGroupIDs = new ArrayList<>();
     @JsonProperty("flavor")
     private String flavor;
     @JsonProperty("rootVolume")
@@ -79,10 +85,28 @@ public class MachinePool implements Editable<MachinePoolBuilder>, KubernetesReso
     public MachinePool() {
     }
 
-    public MachinePool(String flavor, RootVolume rootVolume) {
+    public MachinePool(List<String> additionalSecurityGroupIDs, String flavor, RootVolume rootVolume) {
         super();
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
         this.flavor = flavor;
         this.rootVolume = rootVolume;
+    }
+
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the UUID format.
+     */
+    @JsonProperty("additionalSecurityGroupIDs")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getAdditionalSecurityGroupIDs() {
+        return additionalSecurityGroupIDs;
+    }
+
+    /**
+     * AdditionalSecurityGroupIDs contains IDs of additional security groups for machines, where each ID is presented in the UUID format.
+     */
+    @JsonProperty("additionalSecurityGroupIDs")
+    public void setAdditionalSecurityGroupIDs(List<String> additionalSecurityGroupIDs) {
+        this.additionalSecurityGroupIDs = additionalSecurityGroupIDs;
     }
 
     /**

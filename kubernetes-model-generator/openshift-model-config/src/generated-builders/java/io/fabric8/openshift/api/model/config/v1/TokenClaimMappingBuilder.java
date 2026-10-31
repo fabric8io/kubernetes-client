@@ -25,7 +25,7 @@ public class TokenClaimMappingBuilder extends TokenClaimMappingFluent<TokenClaim
   }
 
   public TokenClaimMapping build() {
-    TokenClaimMapping buildable = new TokenClaimMapping(fluent.getClaim());
+    TokenClaimMapping buildable = new TokenClaimMapping(fluent.getClaim(), fluent.getExpression());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

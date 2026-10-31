@@ -91,10 +91,6 @@ public class PolicyStatusFluent<A extends io.fabric8.openclustermanagement.api.m
     return new StatusNested(-1, null);
   }
   
-  public A addNewStatus(String clustername,String clusternamespace,String compliant) {
-    return (A) this.addToStatus(new CompliancePerClusterStatus(clustername, clusternamespace, compliant));
-  }
-  
   public StatusNested<A> addNewStatusLike(CompliancePerClusterStatus item) {
     return new StatusNested(-1, item);
   }

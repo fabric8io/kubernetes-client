@@ -18,8 +18,9 @@ import java.util.Optional;
 @SuppressWarnings("unchecked")
 public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanagement.api.model.observability.v1beta2.UserWorkloadMetricsSpecFluent<A>> extends BaseFluent<A>{
 
+  private UserWorkloadMetricsDefaultSpecBuilder _default;
   private Map<String,Object> additionalProperties;
-  private UserWorkloadMetricsCollectionSpecBuilder collection;
+  private MetricsAlertsSpecBuilder alerts;
 
   public UserWorkloadMetricsSpecFluent() {
   }
@@ -48,28 +49,45 @@ public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanag
     return (A) this;
   }
   
-  public UserWorkloadMetricsCollectionSpec buildCollection() {
-    return this.collection != null ? this.collection.build() : null;
+  public MetricsAlertsSpec buildAlerts() {
+    return this.alerts != null ? this.alerts.build() : null;
+  }
+  
+  public UserWorkloadMetricsDefaultSpec buildDefault() {
+    return this._default != null ? this._default.build() : null;
   }
   
   protected void copyInstance(UserWorkloadMetricsSpec instance) {
     instance = instance != null ? instance : new UserWorkloadMetricsSpec();
     if (instance != null) {
-        this.withCollection(instance.getCollection());
+        this.withAlerts(instance.getAlerts());
+        this.withDefault(instance.getDefault());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
   
-  public CollectionNested<A> editCollection() {
-    return this.withNewCollectionLike(Optional.ofNullable(this.buildCollection()).orElse(null));
+  public AlertsNested<A> editAlerts() {
+    return this.withNewAlertsLike(Optional.ofNullable(this.buildAlerts()).orElse(null));
   }
   
-  public CollectionNested<A> editOrNewCollection() {
-    return this.withNewCollectionLike(Optional.ofNullable(this.buildCollection()).orElse(new UserWorkloadMetricsCollectionSpecBuilder().build()));
+  public DefaultNested<A> editDefault() {
+    return this.withNewDefaultLike(Optional.ofNullable(this.buildDefault()).orElse(null));
   }
   
-  public CollectionNested<A> editOrNewCollectionLike(UserWorkloadMetricsCollectionSpec item) {
-    return this.withNewCollectionLike(Optional.ofNullable(this.buildCollection()).orElse(item));
+  public AlertsNested<A> editOrNewAlerts() {
+    return this.withNewAlertsLike(Optional.ofNullable(this.buildAlerts()).orElse(new MetricsAlertsSpecBuilder().build()));
+  }
+  
+  public AlertsNested<A> editOrNewAlertsLike(MetricsAlertsSpec item) {
+    return this.withNewAlertsLike(Optional.ofNullable(this.buildAlerts()).orElse(item));
+  }
+  
+  public DefaultNested<A> editOrNewDefault() {
+    return this.withNewDefaultLike(Optional.ofNullable(this.buildDefault()).orElse(new UserWorkloadMetricsDefaultSpecBuilder().build()));
+  }
+  
+  public DefaultNested<A> editOrNewDefaultLike(UserWorkloadMetricsDefaultSpec item) {
+    return this.withNewDefaultLike(Optional.ofNullable(this.buildDefault()).orElse(item));
   }
   
   public boolean equals(Object o) {
@@ -83,7 +101,10 @@ public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanag
       return false;
     }
     UserWorkloadMetricsSpecFluent that = (UserWorkloadMetricsSpecFluent) o;
-    if (!(Objects.equals(collection, that.collection))) {
+    if (!(Objects.equals(alerts, that.alerts))) {
+      return false;
+    }
+    if (!(Objects.equals(_default, that._default))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -100,12 +121,16 @@ public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanag
     return this.additionalProperties != null;
   }
   
-  public boolean hasCollection() {
-    return this.collection != null;
+  public boolean hasAlerts() {
+    return this.alerts != null;
+  }
+  
+  public boolean hasDefault() {
+    return this._default != null;
   }
   
   public int hashCode() {
-    return Objects.hash(collection, additionalProperties);
+    return Objects.hash(alerts, _default, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -135,9 +160,14 @@ public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanag
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
-    if (!(collection == null)) {
-        sb.append("collection:");
-        sb.append(collection);
+    if (!(alerts == null)) {
+        sb.append("alerts:");
+        sb.append(alerts);
+        sb.append(",");
+    }
+    if (!(_default == null)) {
+        sb.append("_default:");
+        sb.append(_default);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -157,42 +187,83 @@ public class UserWorkloadMetricsSpecFluent<A extends io.fabric8.openclustermanag
     return (A) this;
   }
   
-  public A withCollection(UserWorkloadMetricsCollectionSpec collection) {
-    this._visitables.remove("collection");
-    if (collection != null) {
-        this.collection = new UserWorkloadMetricsCollectionSpecBuilder(collection);
-        this._visitables.get("collection").add(this.collection);
+  public A withAlerts(MetricsAlertsSpec alerts) {
+    this._visitables.remove("alerts");
+    if (alerts != null) {
+        this.alerts = new MetricsAlertsSpecBuilder(alerts);
+        this._visitables.get("alerts").add(this.alerts);
     } else {
-        this.collection = null;
-        this._visitables.get("collection").remove(this.collection);
+        this.alerts = null;
+        this._visitables.get("alerts").remove(this.alerts);
     }
     return (A) this;
   }
   
-  public CollectionNested<A> withNewCollection() {
-    return new CollectionNested(null);
+  public A withDefault(UserWorkloadMetricsDefaultSpec _default) {
+    this._visitables.remove("_default");
+    if (_default != null) {
+        this._default = new UserWorkloadMetricsDefaultSpecBuilder(_default);
+        this._visitables.get("_default").add(this._default);
+    } else {
+        this._default = null;
+        this._visitables.get("_default").remove(this._default);
+    }
+    return (A) this;
   }
   
-  public A withNewCollection(Boolean enabled) {
-    return (A) this.withCollection(new UserWorkloadMetricsCollectionSpec(enabled));
+  public AlertsNested<A> withNewAlerts() {
+    return new AlertsNested(null);
   }
   
-  public CollectionNested<A> withNewCollectionLike(UserWorkloadMetricsCollectionSpec item) {
-    return new CollectionNested(item);
+  public A withNewAlerts(Boolean enabled) {
+    return (A) this.withAlerts(new MetricsAlertsSpec(enabled));
   }
-  public class CollectionNested<N> extends UserWorkloadMetricsCollectionSpecFluent<CollectionNested<N>> implements Nested<N>{
   
-    UserWorkloadMetricsCollectionSpecBuilder builder;
+  public AlertsNested<A> withNewAlertsLike(MetricsAlertsSpec item) {
+    return new AlertsNested(item);
+  }
   
-    CollectionNested(UserWorkloadMetricsCollectionSpec item) {
-      this.builder = new UserWorkloadMetricsCollectionSpecBuilder(this, item);
+  public DefaultNested<A> withNewDefault() {
+    return new DefaultNested(null);
+  }
+  
+  public A withNewDefault(Boolean enabled) {
+    return (A) this.withDefault(new UserWorkloadMetricsDefaultSpec(enabled));
+  }
+  
+  public DefaultNested<A> withNewDefaultLike(UserWorkloadMetricsDefaultSpec item) {
+    return new DefaultNested(item);
+  }
+  public class AlertsNested<N> extends MetricsAlertsSpecFluent<AlertsNested<N>> implements Nested<N>{
+  
+    MetricsAlertsSpecBuilder builder;
+  
+    AlertsNested(MetricsAlertsSpec item) {
+      this.builder = new MetricsAlertsSpecBuilder(this, item);
     }
   
     public N and() {
-      return (N) UserWorkloadMetricsSpecFluent.this.withCollection(builder.build());
+      return (N) UserWorkloadMetricsSpecFluent.this.withAlerts(builder.build());
     }
     
-    public N endCollection() {
+    public N endAlerts() {
+      return and();
+    }
+    
+  }
+  public class DefaultNested<N> extends UserWorkloadMetricsDefaultSpecFluent<DefaultNested<N>> implements Nested<N>{
+  
+    UserWorkloadMetricsDefaultSpecBuilder builder;
+  
+    DefaultNested(UserWorkloadMetricsDefaultSpec item) {
+      this.builder = new UserWorkloadMetricsDefaultSpecBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) UserWorkloadMetricsSpecFluent.this.withDefault(builder.build());
+    }
+    
+    public N endDefault() {
       return and();
     }
     

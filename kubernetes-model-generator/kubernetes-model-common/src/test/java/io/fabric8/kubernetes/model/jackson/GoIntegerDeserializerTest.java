@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.model.jackson;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import lombok.Data;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -25,6 +23,9 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.InvalidFormatException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.stream.Stream;
 
@@ -38,8 +39,7 @@ class GoIntegerDeserializerTest {
 
   @BeforeEach
   void setUp() {
-    context = new ObjectMapper();
-    context.registerModule(new GoCompatibilityModule());
+    context = JsonMapper.builder().addModule(new GoCompatibilityModule()).build();
   }
 
   @Nested

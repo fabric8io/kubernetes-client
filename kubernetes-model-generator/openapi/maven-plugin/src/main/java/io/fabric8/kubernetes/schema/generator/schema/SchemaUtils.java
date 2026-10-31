@@ -65,9 +65,9 @@ public class SchemaUtils {
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta_v2",
         "io.fabric8.kubernetes.api.model.ObjectMeta");
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1beta1.JSON",
-        "com.fasterxml.jackson.databind.JsonNode");
+        "tools.jackson.databind.JsonNode");
     REF_TO_JAVA_TYPE_MAP.put("#/components/schemas/io.k8s.apiextensions-apiserver.pkg.apis.apiextensions.v1.JSON",
-        "com.fasterxml.jackson.databind.JsonNode");
+        "tools.jackson.databind.JsonNode");
   }
 
   private static final Map<String, String> REF_TO_JAVA_PRIMITIVE_MAP = new LinkedHashMap<>();

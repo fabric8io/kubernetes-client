@@ -79,8 +79,7 @@
           "description": "parameters is a key-value map with storage driver specific parameters for creating snapshots. These values are opaque to Kubernetes.",
           "type": "object",
           "additionalProperties": {
-            "type": "string",
-            "default": ""
+            "type": "string"
           }
         }
       },
@@ -107,7 +106,6 @@
           "description": "items is the list of VolumeSnapshotClasses",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotClass"
           }
         },
@@ -182,7 +180,6 @@
           "description": "items is the list of VolumeSnapshotContents",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshotContent"
           }
         },
@@ -346,7 +343,6 @@
           "description": "List of VolumeSnapshots",
           "type": "array",
           "items": {
-            "default": {},
             "$ref": "#/definitions/io.k8s.storage.snapshot.v1.VolumeSnapshot"
           }
         },

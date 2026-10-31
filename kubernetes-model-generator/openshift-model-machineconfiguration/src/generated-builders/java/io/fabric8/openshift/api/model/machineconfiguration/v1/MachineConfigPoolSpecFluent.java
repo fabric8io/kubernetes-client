@@ -35,6 +35,7 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
   private LabelSelectorBuilder machineConfigSelector;
   private IntOrStringBuilder maxUnavailable;
   private LabelSelectorBuilder nodeSelector;
+  private OSImageStreamReferenceBuilder osImageStream;
   private Boolean paused;
   private ArrayList<PinnedImageSetRefBuilder> pinnedImageSets = new ArrayList<PinnedImageSetRefBuilder>();
 
@@ -149,6 +150,10 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     return this.nodeSelector != null ? this.nodeSelector.build() : null;
   }
   
+  public OSImageStreamReference buildOsImageStream() {
+    return this.osImageStream != null ? this.osImageStream.build() : null;
+  }
+  
   public PinnedImageSetRef buildPinnedImageSet(int index) {
     return this.pinnedImageSets.get(index).build();
   }
@@ -164,6 +169,7 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
         this.withMachineConfigSelector(instance.getMachineConfigSelector());
         this.withMaxUnavailable(instance.getMaxUnavailable());
         this.withNodeSelector(instance.getNodeSelector());
+        this.withOsImageStream(instance.getOsImageStream());
         this.withPaused(instance.getPaused());
         this.withPinnedImageSets(instance.getPinnedImageSets());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -247,6 +253,18 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     return this.withNewNodeSelectorLike(Optional.ofNullable(this.buildNodeSelector()).orElse(item));
   }
   
+  public OsImageStreamNested<A> editOrNewOsImageStream() {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(new OSImageStreamReferenceBuilder().build()));
+  }
+  
+  public OsImageStreamNested<A> editOrNewOsImageStreamLike(OSImageStreamReference item) {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(item));
+  }
+  
+  public OsImageStreamNested<A> editOsImageStream() {
+    return this.withNewOsImageStreamLike(Optional.ofNullable(this.buildOsImageStream()).orElse(null));
+  }
+  
   public PinnedImageSetsNested<A> editPinnedImageSet(int index) {
     if (pinnedImageSets.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "pinnedImageSets"));
@@ -275,6 +293,9 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
       return false;
     }
     if (!(Objects.equals(nodeSelector, that.nodeSelector))) {
+      return false;
+    }
+    if (!(Objects.equals(osImageStream, that.osImageStream))) {
       return false;
     }
     if (!(Objects.equals(paused, that.paused))) {
@@ -326,6 +347,10 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     return this.nodeSelector != null;
   }
   
+  public boolean hasOsImageStream() {
+    return this.osImageStream != null;
+  }
+  
   public boolean hasPaused() {
     return this.paused != null;
   }
@@ -335,7 +360,7 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(configuration, machineConfigSelector, maxUnavailable, nodeSelector, paused, pinnedImageSets, additionalProperties);
+    return Objects.hash(configuration, machineConfigSelector, maxUnavailable, nodeSelector, osImageStream, paused, pinnedImageSets, additionalProperties);
   }
   
   public A removeAllFromPinnedImageSets(Collection<PinnedImageSetRef> items) {
@@ -444,6 +469,11 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
         sb.append(nodeSelector);
         sb.append(",");
     }
+    if (!(osImageStream == null)) {
+        sb.append("osImageStream:");
+        sb.append(osImageStream);
+        sb.append(",");
+    }
     if (!(paused == null)) {
         sb.append("paused:");
         sb.append(paused);
@@ -543,6 +573,18 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     return new NodeSelectorNested(item);
   }
   
+  public OsImageStreamNested<A> withNewOsImageStream() {
+    return new OsImageStreamNested(null);
+  }
+  
+  public A withNewOsImageStream(String name) {
+    return (A) this.withOsImageStream(new OSImageStreamReference(name));
+  }
+  
+  public OsImageStreamNested<A> withNewOsImageStreamLike(OSImageStreamReference item) {
+    return new OsImageStreamNested(item);
+  }
+  
   public A withNodeSelector(LabelSelector nodeSelector) {
     this._visitables.remove("nodeSelector");
     if (nodeSelector != null) {
@@ -551,6 +593,18 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     } else {
         this.nodeSelector = null;
         this._visitables.get("nodeSelector").remove(this.nodeSelector);
+    }
+    return (A) this;
+  }
+  
+  public A withOsImageStream(OSImageStreamReference osImageStream) {
+    this._visitables.remove("osImageStream");
+    if (osImageStream != null) {
+        this.osImageStream = new OSImageStreamReferenceBuilder(osImageStream);
+        this._visitables.get("osImageStream").add(this.osImageStream);
+    } else {
+        this.osImageStream = null;
+        this._visitables.get("osImageStream").remove(this.osImageStream);
     }
     return (A) this;
   }
@@ -655,6 +709,23 @@ public class MachineConfigPoolSpecFluent<A extends io.fabric8.openshift.api.mode
     }
     
     public N endNodeSelector() {
+      return and();
+    }
+    
+  }
+  public class OsImageStreamNested<N> extends OSImageStreamReferenceFluent<OsImageStreamNested<N>> implements Nested<N>{
+  
+    OSImageStreamReferenceBuilder builder;
+  
+    OsImageStreamNested(OSImageStreamReference item) {
+      this.builder = new OSImageStreamReferenceBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) MachineConfigPoolSpecFluent.this.withOsImageStream(builder.build());
+    }
+    
+    public N endOsImageStream() {
       return and();
     }
     

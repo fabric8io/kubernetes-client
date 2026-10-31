@@ -28,6 +28,10 @@ spec:
       name: "ID"
       priority: 0
       type: "string"
+    - jsonPath: ".spec.since"
+      name: "SINCE"
+      priority: 0
+      type: "string"
     name: "v1alpha1"
     schema:
       openAPIV3Schema:
@@ -42,11 +46,15 @@ spec:
                         type: "boolean"
                     type: "object"
                   fromLevel1:
+                    format: "int32"
                     type: "integer"
                   name:
                     type: "string"
                 type: "object"
               id:
+                type: "string"
+              since:
+                format: "date"
                 type: "string"
             type: "object"
           status:

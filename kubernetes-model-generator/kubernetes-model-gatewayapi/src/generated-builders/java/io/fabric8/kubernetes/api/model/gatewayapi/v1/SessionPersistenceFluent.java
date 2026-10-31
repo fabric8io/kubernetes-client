@@ -20,7 +20,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
   private String absoluteTimeout;
   private Map<String,Object> additionalProperties;
   private CookieConfigBuilder cookieConfig;
-  private String idleTimeout;
   private String sessionName;
   private String type;
 
@@ -60,7 +59,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     if (instance != null) {
         this.withAbsoluteTimeout(instance.getAbsoluteTimeout());
         this.withCookieConfig(instance.getCookieConfig());
-        this.withIdleTimeout(instance.getIdleTimeout());
         this.withSessionName(instance.getSessionName());
         this.withType(instance.getType());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -96,9 +94,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     if (!(Objects.equals(cookieConfig, that.cookieConfig))) {
       return false;
     }
-    if (!(Objects.equals(idleTimeout, that.idleTimeout))) {
-      return false;
-    }
     if (!(Objects.equals(sessionName, that.sessionName))) {
       return false;
     }
@@ -117,10 +112,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
   
   public Map<String,Object> getAdditionalProperties() {
     return this.additionalProperties;
-  }
-  
-  public String getIdleTimeout() {
-    return this.idleTimeout;
   }
   
   public String getSessionName() {
@@ -143,10 +134,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     return this.cookieConfig != null;
   }
   
-  public boolean hasIdleTimeout() {
-    return this.idleTimeout != null;
-  }
-  
   public boolean hasSessionName() {
     return this.sessionName != null;
   }
@@ -156,7 +143,7 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(absoluteTimeout, cookieConfig, idleTimeout, sessionName, type, additionalProperties);
+    return Objects.hash(absoluteTimeout, cookieConfig, sessionName, type, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -194,11 +181,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     if (!(cookieConfig == null)) {
         sb.append("cookieConfig:");
         sb.append(cookieConfig);
-        sb.append(",");
-    }
-    if (!(idleTimeout == null)) {
-        sb.append("idleTimeout:");
-        sb.append(idleTimeout);
         sb.append(",");
     }
     if (!(sessionName == null)) {
@@ -242,11 +224,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
         this.cookieConfig = null;
         this._visitables.get("cookieConfig").remove(this.cookieConfig);
     }
-    return (A) this;
-  }
-  
-  public A withIdleTimeout(String idleTimeout) {
-    this.idleTimeout = idleTimeout;
     return (A) this;
   }
   

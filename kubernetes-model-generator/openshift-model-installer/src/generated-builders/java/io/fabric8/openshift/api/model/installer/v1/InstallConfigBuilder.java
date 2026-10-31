@@ -25,7 +25,7 @@ public class InstallConfigBuilder extends InstallConfigFluent<InstallConfigBuild
   }
 
   public InstallConfig build() {
-    InstallConfig buildable = new InstallConfig(fluent.getAdditionalTrustBundle(), fluent.getAdditionalTrustBundlePolicy(), fluent.getApiVersion(), fluent.buildArbiter(), fluent.getBaseDomain(), fluent.buildBootstrapInPlace(), fluent.buildCapabilities(), fluent.buildCompute(), fluent.buildControlPlane(), fluent.getCpuPartitioningMode(), fluent.getCredentialsMode(), fluent.getFeatureGates(), fluent.getFeatureSet(), fluent.getFips(), fluent.buildImageContentSources(), fluent.buildImageDigestSources(), fluent.getKind(), fluent.buildMetadata(), fluent.buildNetworking(), fluent.buildOperatorPublishingStrategy(), fluent.buildPlatform(), fluent.buildProxy(), fluent.getPublish(), fluent.getPullSecret(), fluent.getSshKey());
+    InstallConfig buildable = new InstallConfig(fluent.getAdditionalTrustBundle(), fluent.getAdditionalTrustBundlePolicy(), fluent.getApiVersion(), fluent.buildArbiter(), fluent.getBaseDomain(), fluent.buildBootstrapInPlace(), fluent.buildCapabilities(), fluent.buildCompute(), fluent.buildControlPlane(), fluent.getCpuPartitioningMode(), fluent.getCredentialsMode(), fluent.getFeatureGates(), fluent.getFeatureSet(), fluent.getFips(), fluent.buildImageContentSources(), fluent.buildImageDigestSources(), fluent.getKind(), fluent.buildMetadata(), fluent.buildNetworking(), fluent.buildOperatorPublishingStrategy(), fluent.getOsImageStream(), fluent.buildPlatform(), fluent.buildProxy(), fluent.getPublish(), fluent.getPullSecret(), fluent.getSshKey());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -74,7 +74,7 @@ public class ClassInformation implements ImportManager {
     if (isInterface) {
       addImport("com.fasterxml.jackson.annotation.JsonSubTypes");
       addImport("com.fasterxml.jackson.annotation.JsonTypeInfo");
-      addImport("com.fasterxml.jackson.databind.annotation.JsonTypeResolver");
+      addImport("tools.jackson.databind.annotation.JsonTypeResolver");
       jsonSubTypes = new JsonSubTypes(schemaUtils, classSchema);
     } else {
       jsonSubTypes = null;

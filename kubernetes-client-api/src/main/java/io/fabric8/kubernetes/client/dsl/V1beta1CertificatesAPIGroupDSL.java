@@ -19,6 +19,8 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundle;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundleList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequestList;
 import io.fabric8.kubernetes.client.Client;
 
 public interface V1beta1CertificatesAPIGroupDSL extends Client {
@@ -45,4 +47,11 @@ public interface V1beta1CertificatesAPIGroupDSL extends Client {
    * @return {@link NonNamespaceOperation} for ClusterTrustBundle
    */
   NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles();
+
+  /**
+   * API entrypoint for certificates.k8s.io/v1beta1 PodCertificateRequest (namespaced)
+   *
+   * @return {@link MixedOperation} for PodCertificateRequest
+   */
+  MixedOperation<PodCertificateRequest, PodCertificateRequestList, Resource<PodCertificateRequest>> podCertificateRequests();
 }

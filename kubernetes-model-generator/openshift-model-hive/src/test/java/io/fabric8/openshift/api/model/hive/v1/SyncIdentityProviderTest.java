@@ -15,10 +15,11 @@
  */
 package io.fabric8.openshift.api.model.hive.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.fabric8.openshift.api.model.config.v1.GitHubIdentityProviderBuilder;
 import io.fabric8.openshift.api.model.config.v1.IdentityProviderBuilder;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -26,7 +27,7 @@ import java.util.Scanner;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SyncIdentityProviderTest {
-  private final ObjectMapper mapper = new ObjectMapper();
+  private final ObjectMapper mapper = new JsonMapper();
 
   @Test
   void deserializationAndSerializationShouldWorkAsExpected() throws IOException {

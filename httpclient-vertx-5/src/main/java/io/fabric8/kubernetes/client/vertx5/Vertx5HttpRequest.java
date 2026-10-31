@@ -19,6 +19,7 @@ import io.fabric8.kubernetes.client.http.AsyncBody;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest;
 import io.fabric8.kubernetes.client.http.StandardHttpRequest.BodyContent;
+import io.vertx.core.Handler;
 import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.Vertx;
@@ -27,6 +28,7 @@ import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpClosedException;
+import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.core.streams.ReadStream;
 
@@ -93,14 +95,22 @@ class Vertx5HttpRequest {
               })
               .onFailure(promise::fail);
 
+          // Framing has to be set before the head is written: setChunked() throws once writeHead() has flushed it.
+          prepareFraming(req, request.body());
+
+          // A failed write fails the request: when the connection closes before the request is created, Vert.x drops the
+          // close and never completes response(). Once the response arrived, a failed write doesn't replace it.
+          final Handler<Throwable> onWriteFailure = t -> promise
+              .tryFail(t instanceof IOException ? t : new IOException(t.getMessage(), t));
+
           // If the caller asked for 100-continue semantics we first flush the headers,
           // wait for the server to acknowledge, then stream the body.
           if (request.isExpectContinue()) {
-            req.continueHandler(v -> writeBody(req, request.body()));
-            req.sendHead().onFailure(promise::fail);
+            req.continueHandler(v -> writeBody(req, request.body(), onWriteFailure));
+            req.writeHead().onFailure(onWriteFailure);
           } else {
             // Normal request - send headers and body
-            writeBody(req, request.body());
+            writeBody(req, request.body(), onWriteFailure);
           }
 
           return promise.future();
@@ -115,39 +125,58 @@ class Vertx5HttpRequest {
   /**
    * Writes the request body to the HTTP request.
    * For simple body types (null, String, byte[]), uses req.end() directly.
-   * For InputStream bodies, uses req.send(ReadStream) which handles the streaming internally.
-   * Note: For InputStream, this method returns after initiating the send - the response
-   * will be handled by the response() future set up in consumeBytes().
+   * For InputStream bodies, pipes the stream into the request with the framing set by
+   * {@link #prepareFraming(HttpClientRequest, BodyContent)}. The response is handled by the
+   * response() future set up in consumeBytes().
    *
    * @param req the Vert.x HTTP client request
    * @param body the body content to send, or null for no body
+   * @param onWriteFailure notified if the request can't be written
    */
-  private void writeBody(HttpClientRequest req, BodyContent body) {
+  private void writeBody(HttpClientRequest req, BodyContent body, Handler<Throwable> onWriteFailure) {
     if (body == null) {
-      req.end();
+      req.end().onFailure(onWriteFailure);
       return;
     }
 
     if (body instanceof StandardHttpRequest.StringBodyContent) {
       StandardHttpRequest.StringBodyContent s = (StandardHttpRequest.StringBodyContent) body;
-      req.end(Buffer.buffer(s.getContent()));
+      req.end(Buffer.buffer(s.getContent())).onFailure(onWriteFailure);
       return;
     }
     if (body instanceof StandardHttpRequest.ByteArrayBodyContent) {
       StandardHttpRequest.ByteArrayBodyContent b = (StandardHttpRequest.ByteArrayBodyContent) body;
-      req.end(Buffer.buffer(b.getContent()));
+      req.end(Buffer.buffer(b.getContent())).onFailure(onWriteFailure);
       return;
     }
     if (body instanceof StandardHttpRequest.InputStreamBodyContent) {
       StandardHttpRequest.InputStreamBodyContent i = (StandardHttpRequest.InputStreamBodyContent) body;
       InputStream is = i.getContent();
       ReadStream<Buffer> stream = new InputStreamReadStream(this, is, req);
-      // Use send(ReadStream) which handles the streaming properly.
-      // The response will be handled by the response() future already set up.
-      req.send(stream);
+      // Use pipeTo which only streams the body data and calls end().
+      stream.pipeTo(req).onFailure(onWriteFailure);
       return;
     }
     req.reset(0L, new IllegalArgumentException("Unsupported body content: " + body.getClass()));
+  }
+
+  /**
+   * Sets the request framing before any part of the request is written: Content-Length when the InputStream length
+   * is known, chunked otherwise. String and byte[] bodies need nothing: Vert.x sets Content-Length on end(Buffer),
+   * or switches to chunked when writeHead() came first.
+   *
+   * @param req the Vert.x HTTP client request
+   * @param body the body content to send, or null for no body
+   */
+  private static void prepareFraming(HttpClientRequest req, BodyContent body) {
+    if (body instanceof StandardHttpRequest.InputStreamBodyContent) {
+      final long length = ((StandardHttpRequest.InputStreamBodyContent) body).getLength();
+      if (length >= 0) {
+        req.putHeader(HttpHeaders.CONTENT_LENGTH, Long.toString(length));
+      } else {
+        req.setChunked(true);
+      }
+    }
   }
 
   /**

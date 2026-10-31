@@ -25,7 +25,7 @@ public class ContainerRuntimeConfigurationBuilder extends ContainerRuntimeConfig
   }
 
   public ContainerRuntimeConfiguration build() {
-    ContainerRuntimeConfiguration buildable = new ContainerRuntimeConfiguration(fluent.getDefaultRuntime(), fluent.getLogLevel(), fluent.getLogSizeMax(), fluent.getOverlaySize(), fluent.getPidsLimit());
+    ContainerRuntimeConfiguration buildable = new ContainerRuntimeConfiguration(fluent.buildAdditionalArtifactStores(), fluent.buildAdditionalImageStores(), fluent.buildAdditionalLayerStores(), fluent.getDefaultRuntime(), fluent.getLogLevel(), fluent.getLogSizeMax(), fluent.getOverlaySize(), fluent.getPidsLimit());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

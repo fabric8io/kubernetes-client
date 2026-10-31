@@ -24,6 +24,7 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
 
   private Map<String,Object> additionalProperties;
   private ArrayList<PatchEntityBuilder> installConfigPatches = new ArrayList<PatchEntityBuilder>();
+  private ArrayList<InstallerManifestPatchBuilder> installerManifestPatches = new ArrayList<InstallerManifestPatchBuilder>();
 
   public ClusterDeploymentCustomizationSpecFluent() {
   }
@@ -44,16 +45,36 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return (A) this;
   }
   
+  public A addAllToInstallerManifestPatches(Collection<InstallerManifestPatch> items) {
+    if (this.installerManifestPatches == null) {
+      this.installerManifestPatches = new ArrayList();
+    }
+    for (InstallerManifestPatch item : items) {
+        InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+        _visitables.get("installerManifestPatches").add(builder);
+        this.installerManifestPatches.add(builder);
+    }
+    return (A) this;
+  }
+  
   public InstallConfigPatchesNested<A> addNewInstallConfigPatch() {
     return new InstallConfigPatchesNested(-1, null);
   }
   
-  public A addNewInstallConfigPatch(String from,String op,String path,String value) {
-    return (A) this.addToInstallConfigPatches(new PatchEntity(from, op, path, value));
+  public A addNewInstallConfigPatch(String from,String op,String path,String value,String valueJSON) {
+    return (A) this.addToInstallConfigPatches(new PatchEntity(from, op, path, value, valueJSON));
   }
   
   public InstallConfigPatchesNested<A> addNewInstallConfigPatchLike(PatchEntity item) {
     return new InstallConfigPatchesNested(-1, item);
+  }
+  
+  public InstallerManifestPatchesNested<A> addNewInstallerManifestPatch() {
+    return new InstallerManifestPatchesNested(-1, null);
+  }
+  
+  public InstallerManifestPatchesNested<A> addNewInstallerManifestPatchLike(InstallerManifestPatch item) {
+    return new InstallerManifestPatchesNested(-1, item);
   }
   
   public A addToAdditionalProperties(Map<String,Object> map) {
@@ -103,8 +124,39 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return (A) this;
   }
   
+  public A addToInstallerManifestPatches(InstallerManifestPatch... items) {
+    if (this.installerManifestPatches == null) {
+      this.installerManifestPatches = new ArrayList();
+    }
+    for (InstallerManifestPatch item : items) {
+        InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+        _visitables.get("installerManifestPatches").add(builder);
+        this.installerManifestPatches.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToInstallerManifestPatches(int index,InstallerManifestPatch item) {
+    if (this.installerManifestPatches == null) {
+      this.installerManifestPatches = new ArrayList();
+    }
+    InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+    if (index < 0 || index >= installerManifestPatches.size()) {
+        _visitables.get("installerManifestPatches").add(builder);
+        installerManifestPatches.add(builder);
+    } else {
+        _visitables.get("installerManifestPatches").add(builder);
+        installerManifestPatches.add(index, builder);
+    }
+    return (A) this;
+  }
+  
   public PatchEntity buildFirstInstallConfigPatch() {
     return this.installConfigPatches.get(0).build();
+  }
+  
+  public InstallerManifestPatch buildFirstInstallerManifestPatch() {
+    return this.installerManifestPatches.get(0).build();
   }
   
   public PatchEntity buildInstallConfigPatch(int index) {
@@ -115,8 +167,20 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return this.installConfigPatches != null ? build(installConfigPatches) : null;
   }
   
+  public InstallerManifestPatch buildInstallerManifestPatch(int index) {
+    return this.installerManifestPatches.get(index).build();
+  }
+  
+  public List<InstallerManifestPatch> buildInstallerManifestPatches() {
+    return this.installerManifestPatches != null ? build(installerManifestPatches) : null;
+  }
+  
   public PatchEntity buildLastInstallConfigPatch() {
     return this.installConfigPatches.get(installConfigPatches.size() - 1).build();
+  }
+  
+  public InstallerManifestPatch buildLastInstallerManifestPatch() {
+    return this.installerManifestPatches.get(installerManifestPatches.size() - 1).build();
   }
   
   public PatchEntity buildMatchingInstallConfigPatch(Predicate<PatchEntityBuilder> predicate) {
@@ -128,10 +192,20 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
       return null;
   }
   
+  public InstallerManifestPatch buildMatchingInstallerManifestPatch(Predicate<InstallerManifestPatchBuilder> predicate) {
+      for (InstallerManifestPatchBuilder item : installerManifestPatches) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
+  }
+  
   protected void copyInstance(ClusterDeploymentCustomizationSpec instance) {
     instance = instance != null ? instance : new ClusterDeploymentCustomizationSpec();
     if (instance != null) {
         this.withInstallConfigPatches(instance.getInstallConfigPatches());
+        this.withInstallerManifestPatches(instance.getInstallerManifestPatches());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -143,11 +217,25 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return this.setNewInstallConfigPatchLike(0, this.buildInstallConfigPatch(0));
   }
   
+  public InstallerManifestPatchesNested<A> editFirstInstallerManifestPatch() {
+    if (installerManifestPatches.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "installerManifestPatches"));
+    }
+    return this.setNewInstallerManifestPatchLike(0, this.buildInstallerManifestPatch(0));
+  }
+  
   public InstallConfigPatchesNested<A> editInstallConfigPatch(int index) {
     if (installConfigPatches.size() <= index) {
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "installConfigPatches"));
     }
     return this.setNewInstallConfigPatchLike(index, this.buildInstallConfigPatch(index));
+  }
+  
+  public InstallerManifestPatchesNested<A> editInstallerManifestPatch(int index) {
+    if (installerManifestPatches.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "installerManifestPatches"));
+    }
+    return this.setNewInstallerManifestPatchLike(index, this.buildInstallerManifestPatch(index));
   }
   
   public InstallConfigPatchesNested<A> editLastInstallConfigPatch() {
@@ -156,6 +244,14 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "installConfigPatches"));
     }
     return this.setNewInstallConfigPatchLike(index, this.buildInstallConfigPatch(index));
+  }
+  
+  public InstallerManifestPatchesNested<A> editLastInstallerManifestPatch() {
+    int index = installerManifestPatches.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "installerManifestPatches"));
+    }
+    return this.setNewInstallerManifestPatchLike(index, this.buildInstallerManifestPatch(index));
   }
   
   public InstallConfigPatchesNested<A> editMatchingInstallConfigPatch(Predicate<PatchEntityBuilder> predicate) {
@@ -172,6 +268,20 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return this.setNewInstallConfigPatchLike(index, this.buildInstallConfigPatch(index));
   }
   
+  public InstallerManifestPatchesNested<A> editMatchingInstallerManifestPatch(Predicate<InstallerManifestPatchBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < installerManifestPatches.size();i++) {
+      if (predicate.test(installerManifestPatches.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "installerManifestPatches"));
+    }
+    return this.setNewInstallerManifestPatchLike(index, this.buildInstallerManifestPatch(index));
+  }
+  
   public boolean equals(Object o) {
     if (this == o) {
       return true;
@@ -184,6 +294,9 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     }
     ClusterDeploymentCustomizationSpecFluent that = (ClusterDeploymentCustomizationSpecFluent) o;
     if (!(Objects.equals(installConfigPatches, that.installConfigPatches))) {
+      return false;
+    }
+    if (!(Objects.equals(installerManifestPatches, that.installerManifestPatches))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -204,6 +317,10 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return this.installConfigPatches != null && !(this.installConfigPatches.isEmpty());
   }
   
+  public boolean hasInstallerManifestPatches() {
+    return this.installerManifestPatches != null && !(this.installerManifestPatches.isEmpty());
+  }
+  
   public boolean hasMatchingInstallConfigPatch(Predicate<PatchEntityBuilder> predicate) {
       for (PatchEntityBuilder item : installConfigPatches) {
         if (predicate.test(item)) {
@@ -213,8 +330,17 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
       return false;
   }
   
+  public boolean hasMatchingInstallerManifestPatch(Predicate<InstallerManifestPatchBuilder> predicate) {
+      for (InstallerManifestPatchBuilder item : installerManifestPatches) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public int hashCode() {
-    return Objects.hash(installConfigPatches, additionalProperties);
+    return Objects.hash(installConfigPatches, installerManifestPatches, additionalProperties);
   }
   
   public A removeAllFromInstallConfigPatches(Collection<PatchEntity> items) {
@@ -225,6 +351,18 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
         PatchEntityBuilder builder = new PatchEntityBuilder(item);
         _visitables.get("installConfigPatches").remove(builder);
         this.installConfigPatches.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeAllFromInstallerManifestPatches(Collection<InstallerManifestPatch> items) {
+    if (this.installerManifestPatches == null) {
+      return (A) this;
+    }
+    for (InstallerManifestPatch item : items) {
+        InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+        _visitables.get("installerManifestPatches").remove(builder);
+        this.installerManifestPatches.remove(builder);
     }
     return (A) this;
   }
@@ -265,6 +403,18 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return (A) this;
   }
   
+  public A removeFromInstallerManifestPatches(InstallerManifestPatch... items) {
+    if (this.installerManifestPatches == null) {
+      return (A) this;
+    }
+    for (InstallerManifestPatch item : items) {
+        InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+        _visitables.get("installerManifestPatches").remove(builder);
+        this.installerManifestPatches.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeMatchingFromInstallConfigPatches(Predicate<PatchEntityBuilder> predicate) {
     if (installConfigPatches == null) {
       return (A) this;
@@ -281,8 +431,28 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return (A) this;
   }
   
+  public A removeMatchingFromInstallerManifestPatches(Predicate<InstallerManifestPatchBuilder> predicate) {
+    if (installerManifestPatches == null) {
+      return (A) this;
+    }
+    Iterator<InstallerManifestPatchBuilder> each = installerManifestPatches.iterator();
+    List visitables = _visitables.get("installerManifestPatches");
+    while (each.hasNext()) {
+        InstallerManifestPatchBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
+    }
+    return (A) this;
+  }
+  
   public InstallConfigPatchesNested<A> setNewInstallConfigPatchLike(int index,PatchEntity item) {
     return new InstallConfigPatchesNested(index, item);
+  }
+  
+  public InstallerManifestPatchesNested<A> setNewInstallerManifestPatchLike(int index,InstallerManifestPatch item) {
+    return new InstallerManifestPatchesNested(index, item);
   }
   
   public A setToInstallConfigPatches(int index,PatchEntity item) {
@@ -300,12 +470,32 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     return (A) this;
   }
   
+  public A setToInstallerManifestPatches(int index,InstallerManifestPatch item) {
+    if (this.installerManifestPatches == null) {
+      this.installerManifestPatches = new ArrayList();
+    }
+    InstallerManifestPatchBuilder builder = new InstallerManifestPatchBuilder(item);
+    if (index < 0 || index >= installerManifestPatches.size()) {
+        _visitables.get("installerManifestPatches").add(builder);
+        installerManifestPatches.add(builder);
+    } else {
+        _visitables.get("installerManifestPatches").add(builder);
+        installerManifestPatches.set(index, builder);
+    }
+    return (A) this;
+  }
+  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
     if (!(installConfigPatches == null) && !(installConfigPatches.isEmpty())) {
         sb.append("installConfigPatches:");
         sb.append(installConfigPatches);
+        sb.append(",");
+    }
+    if (!(installerManifestPatches == null) && !(installerManifestPatches.isEmpty())) {
+        sb.append("installerManifestPatches:");
+        sb.append(installerManifestPatches);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -352,6 +542,34 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     }
     return (A) this;
   }
+  
+  public A withInstallerManifestPatches(List<InstallerManifestPatch> installerManifestPatches) {
+    if (this.installerManifestPatches != null) {
+      this._visitables.get("installerManifestPatches").clear();
+    }
+    if (installerManifestPatches != null) {
+        this.installerManifestPatches = new ArrayList();
+        for (InstallerManifestPatch item : installerManifestPatches) {
+          this.addToInstallerManifestPatches(item);
+        }
+    } else {
+      this.installerManifestPatches = null;
+    }
+    return (A) this;
+  }
+  
+  public A withInstallerManifestPatches(InstallerManifestPatch... installerManifestPatches) {
+    if (this.installerManifestPatches != null) {
+        this.installerManifestPatches.clear();
+        _visitables.remove("installerManifestPatches");
+    }
+    if (installerManifestPatches != null) {
+      for (InstallerManifestPatch item : installerManifestPatches) {
+        this.addToInstallerManifestPatches(item);
+      }
+    }
+    return (A) this;
+  }
   public class InstallConfigPatchesNested<N> extends PatchEntityFluent<InstallConfigPatchesNested<N>> implements Nested<N>{
   
     PatchEntityBuilder builder;
@@ -367,6 +585,25 @@ public class ClusterDeploymentCustomizationSpecFluent<A extends io.fabric8.opens
     }
     
     public N endInstallConfigPatch() {
+      return and();
+    }
+    
+  }
+  public class InstallerManifestPatchesNested<N> extends InstallerManifestPatchFluent<InstallerManifestPatchesNested<N>> implements Nested<N>{
+  
+    InstallerManifestPatchBuilder builder;
+    int index;
+  
+    InstallerManifestPatchesNested(int index,InstallerManifestPatch item) {
+      this.index = index;
+      this.builder = new InstallerManifestPatchBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ClusterDeploymentCustomizationSpecFluent.this.setToInstallerManifestPatches(index, builder.build());
+    }
+    
+    public N endInstallerManifestPatch() {
       return and();
     }
     

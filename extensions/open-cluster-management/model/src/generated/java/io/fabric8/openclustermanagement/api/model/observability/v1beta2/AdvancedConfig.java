@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,8 +30,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "alertmanager",
@@ -45,12 +45,14 @@ import lombok.experimental.Accessors;
     "query",
     "queryFrontend",
     "queryFrontendMemcached",
+    "queryTimeout",
     "rbacQueryProxy",
     "receive",
     "retentionConfig",
     "rule",
     "store",
-    "storeMemcached"
+    "storeMemcached",
+    "writeTimeout"
 })
 @ToString
 @EqualsAndHashCode
@@ -97,6 +99,8 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
     private QueryFrontendSpec queryFrontend;
     @JsonProperty("queryFrontendMemcached")
     private CacheConfig queryFrontendMemcached;
+    @JsonProperty("queryTimeout")
+    private String queryTimeout;
     @JsonProperty("rbacQueryProxy")
     private CommonSpec rbacQueryProxy;
     @JsonProperty("receive")
@@ -109,6 +113,8 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
     private StoreSpec store;
     @JsonProperty("storeMemcached")
     private CacheConfig storeMemcached;
+    @JsonProperty("writeTimeout")
+    private String writeTimeout;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -118,7 +124,7 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
     public AdvancedConfig() {
     }
 
-    public AdvancedConfig(AlertmanagerSpec alertmanager, CompactSpec compact, String customAlertmanagerHubURL, String customObservabilityHubURL, CommonSpec grafana, CommonSpec multiClusterObservabilityAddon, CommonSpec observatoriumAPI, QuerySpec query, QueryFrontendSpec queryFrontend, CacheConfig queryFrontendMemcached, CommonSpec rbacQueryProxy, ReceiveSpec receive, RetentionConfig retentionConfig, RuleSpec rule, StoreSpec store, CacheConfig storeMemcached) {
+    public AdvancedConfig(AlertmanagerSpec alertmanager, CompactSpec compact, String customAlertmanagerHubURL, String customObservabilityHubURL, CommonSpec grafana, CommonSpec multiClusterObservabilityAddon, CommonSpec observatoriumAPI, QuerySpec query, QueryFrontendSpec queryFrontend, CacheConfig queryFrontendMemcached, String queryTimeout, CommonSpec rbacQueryProxy, ReceiveSpec receive, RetentionConfig retentionConfig, RuleSpec rule, StoreSpec store, CacheConfig storeMemcached, String writeTimeout) {
         super();
         this.alertmanager = alertmanager;
         this.compact = compact;
@@ -130,12 +136,14 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
         this.query = query;
         this.queryFrontend = queryFrontend;
         this.queryFrontendMemcached = queryFrontendMemcached;
+        this.queryTimeout = queryTimeout;
         this.rbacQueryProxy = rbacQueryProxy;
         this.receive = receive;
         this.retentionConfig = retentionConfig;
         this.rule = rule;
         this.store = store;
         this.storeMemcached = storeMemcached;
+        this.writeTimeout = writeTimeout;
     }
 
     @JsonProperty("alertmanager")
@@ -250,6 +258,22 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
         this.queryFrontendMemcached = queryFrontendMemcached;
     }
 
+    /**
+     * QueryTimeout is the timeout for queries and reads through the observability gateway. It is applied to Grafana datasources, HAProxy route, rbac-query-proxy, and the observatorium-api server read timeout. Default is 300s.
+     */
+    @JsonProperty("queryTimeout")
+    public String getQueryTimeout() {
+        return queryTimeout;
+    }
+
+    /**
+     * QueryTimeout is the timeout for queries and reads through the observability gateway. It is applied to Grafana datasources, HAProxy route, rbac-query-proxy, and the observatorium-api server read timeout. Default is 300s.
+     */
+    @JsonProperty("queryTimeout")
+    public void setQueryTimeout(String queryTimeout) {
+        this.queryTimeout = queryTimeout;
+    }
+
     @JsonProperty("rbacQueryProxy")
     public CommonSpec getRbacQueryProxy() {
         return rbacQueryProxy;
@@ -308,6 +332,22 @@ public class AdvancedConfig implements Editable<AdvancedConfigBuilder>, Kubernet
     @JsonProperty("storeMemcached")
     public void setStoreMemcached(CacheConfig storeMemcached) {
         this.storeMemcached = storeMemcached;
+    }
+
+    /**
+     * WriteTimeout is the timeout for metrics ingestion through the observatorium-api gateway. Controls the server write timeout for the response path. Increase for large payloads over high-latency networks. Default is 720s.
+     */
+    @JsonProperty("writeTimeout")
+    public String getWriteTimeout() {
+        return writeTimeout;
+    }
+
+    /**
+     * WriteTimeout is the timeout for metrics ingestion through the observatorium-api gateway. Controls the server write timeout for the response path. Increase for large payloads over high-latency networks. Default is 720s.
+     */
+    @JsonProperty("writeTimeout")
+    public void setWriteTimeout(String writeTimeout) {
+        this.writeTimeout = writeTimeout;
     }
 
     @JsonIgnore

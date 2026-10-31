@@ -12,7 +12,7 @@ KeycloakJavaCr[1] = package org.test.v1alpha1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"extensions","external","externalAccess","externalDatabase","instances","keycloakDeploymentSpec","migration","multiAvailablityZones","podDisruptionBudget","postgresDeploymentSpec","profile","storageClassName","unmanaged"})
-@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@tools.jackson.databind.annotation.JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class KeycloakSpec implements io.fabric8.kubernetes.api.model.KubernetesResource {
 
@@ -232,7 +232,7 @@ KeycloakJavaCr[2] = package org.test.v1alpha1;
 
 @com.fasterxml.jackson.annotation.JsonInclude(com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL)
 @com.fasterxml.jackson.annotation.JsonPropertyOrder({"credentialSecret","externalURL","internalURL","message","phase","ready","secondaryResources","version"})
-@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@tools.jackson.databind.annotation.JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @javax.annotation.processing.Generated("io.fabric8.java.generator.CRGeneratorRunner")
 public class KeycloakStatus implements io.fabric8.kubernetes.api.model.KubernetesResource {
 

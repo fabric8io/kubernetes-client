@@ -15,8 +15,6 @@
  */
 package io.fabric8.java.generator;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.TextNode;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
@@ -35,6 +33,8 @@ import org.assertj.core.api.InstanceOfAssertFactories;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.node.StringNode;
 
 import java.util.*;
 
@@ -443,9 +443,9 @@ class GeneratorTest {
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("string");
     List<JsonNode> enumValues = new ArrayList<>();
-    enumValues.add(new TextNode("foo"));
-    enumValues.add(new TextNode("bar"));
-    enumValues.add(new TextNode("baz"));
+    enumValues.add(new StringNode("foo"));
+    enumValues.add(new StringNode("bar"));
+    enumValues.add(new StringNode("baz"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "pkg",
@@ -480,9 +480,9 @@ class GeneratorTest {
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("integer");
     List<JsonNode> enumValues = new ArrayList<>();
-    enumValues.add(new TextNode("1"));
-    enumValues.add(new TextNode("2"));
-    enumValues.add(new TextNode("3"));
+    enumValues.add(new StringNode("1"));
+    enumValues.add(new StringNode("2"));
+    enumValues.add(new StringNode("3"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "pkg",
@@ -521,9 +521,9 @@ class GeneratorTest {
     newEnum.setType("integer");
     newEnum.setFormat("int32");
     List<JsonNode> enumValues = new ArrayList<>();
-    enumValues.add(new TextNode("1"));
-    enumValues.add(new TextNode("2"));
-    enumValues.add(new TextNode("3"));
+    enumValues.add(new StringNode("1"));
+    enumValues.add(new StringNode("2"));
+    enumValues.add(new StringNode("3"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "pkg",
@@ -561,8 +561,8 @@ class GeneratorTest {
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("boolean");
     List<JsonNode> enumValues = new ArrayList<>();
-    enumValues.add(new TextNode("true"));
-    enumValues.add(new TextNode("false"));
+    enumValues.add(new StringNode("true"));
+    enumValues.add(new StringNode("false"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "pkg",
@@ -599,9 +599,9 @@ class GeneratorTest {
     JSONSchemaProps newEnum = new JSONSchemaProps();
     newEnum.setType("string");
     List<JsonNode> enumValues = new ArrayList<>();
-    enumValues.add(new TextNode("foo"));
-    enumValues.add(new TextNode("bar"));
-    enumValues.add(new TextNode("baz"));
+    enumValues.add(new StringNode("foo"));
+    enumValues.add(new StringNode("bar"));
+    enumValues.add(new StringNode("baz"));
     props.put("e1", newEnum);
     JEnum enu = new JEnum(
         "pkg",

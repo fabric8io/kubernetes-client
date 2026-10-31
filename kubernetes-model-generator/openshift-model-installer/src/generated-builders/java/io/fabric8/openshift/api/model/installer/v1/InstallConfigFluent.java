@@ -48,6 +48,7 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
   private ObjectMetaBuilder metadata;
   private NetworkingBuilder networking;
   private OperatorPublishingStrategyBuilder operatorPublishingStrategy;
+  private String osImageStream;
   private PlatformBuilder platform;
   private ProxyBuilder proxy;
   private String publish;
@@ -384,6 +385,7 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
         this.withMetadata(instance.getMetadata());
         this.withNetworking(instance.getNetworking());
         this.withOperatorPublishingStrategy(instance.getOperatorPublishingStrategy());
+        this.withOsImageStream(instance.getOsImageStream());
         this.withPlatform(instance.getPlatform());
         this.withProxy(instance.getProxy());
         this.withPublish(instance.getPublish());
@@ -680,6 +682,9 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
     if (!(Objects.equals(operatorPublishingStrategy, that.operatorPublishingStrategy))) {
       return false;
     }
+    if (!(Objects.equals(osImageStream, that.osImageStream))) {
+      return false;
+    }
     if (!(Objects.equals(platform, that.platform))) {
       return false;
     }
@@ -764,6 +769,10 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
         }
       }
       return null;
+  }
+  
+  public String getOsImageStream() {
+    return this.osImageStream;
   }
   
   public String getPublish() {
@@ -898,6 +907,10 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
     return this.operatorPublishingStrategy != null;
   }
   
+  public boolean hasOsImageStream() {
+    return this.osImageStream != null;
+  }
+  
   public boolean hasPlatform() {
     return this.platform != null;
   }
@@ -919,7 +932,7 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
   }
   
   public int hashCode() {
-    return Objects.hash(additionalTrustBundle, additionalTrustBundlePolicy, apiVersion, arbiter, baseDomain, bootstrapInPlace, capabilities, compute, controlPlane, cpuPartitioningMode, credentialsMode, featureGates, featureSet, fips, imageContentSources, imageDigestSources, kind, metadata, networking, operatorPublishingStrategy, platform, proxy, publish, pullSecret, sshKey, additionalProperties);
+    return Objects.hash(additionalTrustBundle, additionalTrustBundlePolicy, apiVersion, arbiter, baseDomain, bootstrapInPlace, capabilities, compute, controlPlane, cpuPartitioningMode, credentialsMode, featureGates, featureSet, fips, imageContentSources, imageDigestSources, kind, metadata, networking, operatorPublishingStrategy, osImageStream, platform, proxy, publish, pullSecret, sshKey, additionalProperties);
   }
   
   public A removeAllFromCompute(Collection<MachinePool> items) {
@@ -1252,6 +1265,11 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
     if (!(operatorPublishingStrategy == null)) {
         sb.append("operatorPublishingStrategy:");
         sb.append(operatorPublishingStrategy);
+        sb.append(",");
+    }
+    if (!(osImageStream == null)) {
+        sb.append("osImageStream:");
+        sb.append(osImageStream);
         sb.append(",");
     }
     if (!(platform == null)) {
@@ -1619,6 +1637,11 @@ public class InstallConfigFluent<A extends io.fabric8.openshift.api.model.instal
         this.operatorPublishingStrategy = null;
         this._visitables.get("operatorPublishingStrategy").remove(this.operatorPublishingStrategy);
     }
+    return (A) this;
+  }
+  
+  public A withOsImageStream(String osImageStream) {
+    this.osImageStream = osImageStream;
     return (A) this;
   }
   

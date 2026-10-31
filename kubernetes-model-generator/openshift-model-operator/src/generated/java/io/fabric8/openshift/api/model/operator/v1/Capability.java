@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Capabilities contains set of UI capabilities and their state in the console UI.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "name",
@@ -86,7 +86,7 @@ public class Capability implements Editable<CapabilityBuilder>, KubernetesResour
     }
 
     /**
-     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     * name is the unique name of a capability. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour.
      */
     @JsonProperty("name")
     public String getName() {
@@ -94,7 +94,7 @@ public class Capability implements Editable<CapabilityBuilder>, KubernetesResour
     }
 
     /**
-     * name is the unique name of a capability. Available capabilities are LightspeedButton and GettingStartedBanner.
+     * name is the unique name of a capability. Available capabilities are LightspeedButton, GettingStartedBanner, and GuidedTour.
      */
     @JsonProperty("name")
     public void setName(String name) {

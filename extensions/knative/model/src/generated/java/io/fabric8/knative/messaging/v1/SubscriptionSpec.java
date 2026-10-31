@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.knative.duck.v1.DeliverySpec;
 import io.fabric8.knative.duck.v1.Destination;
 import io.fabric8.knative.duck.v1.KReference;
@@ -34,11 +33,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SubscriptionSpec specifies the Channel for incoming events, a Subscriber target for processing those events and where to put the result of the processing. Only From (where the events are coming from) is always required. You can optionally only Process the events (results in no output events) by leaving out the Reply. You can also perform an identity transformation on the incoming events by leaving out the Subscriber and only specifying Reply.<br><p> <br><p> The following are all valid specifications: channel --[subscriber]--&gt; reply Sink, no outgoing events: channel -- subscriber no-op function (identity transformation): channel --&gt; reply
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "channel",

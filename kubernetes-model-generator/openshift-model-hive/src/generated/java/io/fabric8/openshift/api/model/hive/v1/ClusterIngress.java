@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -27,16 +26,18 @@ import io.fabric8.kubernetes.api.model.ResourceRequirements;
 import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
+import io.fabric8.openshift.api.model.operator.v1.IngressControllerTuningOptions;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "domain",
@@ -44,7 +45,8 @@ import lombok.experimental.Accessors;
     "name",
     "namespaceSelector",
     "routeSelector",
-    "servingCertificate"
+    "servingCertificate",
+    "tuningOptions"
 })
 @ToString
 @EqualsAndHashCode
@@ -83,6 +85,8 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
     private LabelSelector routeSelector;
     @JsonProperty("servingCertificate")
     private String servingCertificate;
+    @JsonProperty("tuningOptions")
+    private IngressControllerTuningOptions tuningOptions;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -92,7 +96,7 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
     public ClusterIngress() {
     }
 
-    public ClusterIngress(String domain, ConfigMapNameReference httpErrorCodePages, String name, LabelSelector namespaceSelector, LabelSelector routeSelector, String servingCertificate) {
+    public ClusterIngress(String domain, ConfigMapNameReference httpErrorCodePages, String name, LabelSelector namespaceSelector, LabelSelector routeSelector, String servingCertificate, IngressControllerTuningOptions tuningOptions) {
         super();
         this.domain = domain;
         this.httpErrorCodePages = httpErrorCodePages;
@@ -100,6 +104,7 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
         this.namespaceSelector = namespaceSelector;
         this.routeSelector = routeSelector;
         this.servingCertificate = servingCertificate;
+        this.tuningOptions = tuningOptions;
     }
 
     /**
@@ -196,6 +201,22 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
     @JsonProperty("servingCertificate")
     public void setServingCertificate(String servingCertificate) {
         this.servingCertificate = servingCertificate;
+    }
+
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
+    @JsonProperty("tuningOptions")
+    public IngressControllerTuningOptions getTuningOptions() {
+        return tuningOptions;
+    }
+
+    /**
+     * ClusterIngress contains the configurable pieces for any ClusterIngress objects that should exist on the cluster.
+     */
+    @JsonProperty("tuningOptions")
+    public void setTuningOptions(IngressControllerTuningOptions tuningOptions) {
+        this.tuningOptions = tuningOptions;
     }
 
     @JsonIgnore

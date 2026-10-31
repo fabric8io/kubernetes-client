@@ -12,8 +12,12 @@ io.fabric8.kubernetes.api.model.gatewayapi.v1.ListenerSet
 io.fabric8.kubernetes.api.model.gatewayapi.v1.ListenerSetList
 io.fabric8.kubernetes.api.model.gatewayapi.v1.ReferenceGrant
 io.fabric8.kubernetes.api.model.gatewayapi.v1.ReferenceGrantList
+io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRoute
+io.fabric8.kubernetes.api.model.gatewayapi.v1.TCPRouteList
 io.fabric8.kubernetes.api.model.gatewayapi.v1.TLSRoute
 io.fabric8.kubernetes.api.model.gatewayapi.v1.TLSRouteList
+io.fabric8.kubernetes.api.model.gatewayapi.v1.UDPRoute
+io.fabric8.kubernetes.api.model.gatewayapi.v1.UDPRouteList
 io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRoute
 io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.GRPCRouteList
 io.fabric8.kubernetes.api.model.gatewayapi.v1alpha2.ReferenceGrant

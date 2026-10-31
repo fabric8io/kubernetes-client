@@ -2,6 +2,7 @@ package io.fabric8.kubernetes.api.model;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -23,6 +24,7 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
   private String keyType;
   private Integer maxExpirationSeconds;
   private String signerName;
+  private Long user;
   private Map<String,String> userAnnotations;
 
   public PodCertificateProjectionFluent() {
@@ -81,6 +83,7 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
         this.withKeyType(instance.getKeyType());
         this.withMaxExpirationSeconds(instance.getMaxExpirationSeconds());
         this.withSignerName(instance.getSignerName());
+        this.withUser(instance.getUser());
         this.withUserAnnotations(instance.getUserAnnotations());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -113,6 +116,9 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
       return false;
     }
     if (!(Objects.equals(signerName, that.signerName))) {
+      return false;
+    }
+    if (!(Objects.equals(user, that.user))) {
       return false;
     }
     if (!(Objects.equals(userAnnotations, that.userAnnotations))) {
@@ -152,6 +158,10 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
     return this.signerName;
   }
   
+  public Long getUser() {
+    return this.user;
+  }
+  
   public Map<String,String> getUserAnnotations() {
     return this.userAnnotations;
   }
@@ -184,12 +194,16 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
     return this.signerName != null;
   }
   
+  public boolean hasUser() {
+    return this.user != null;
+  }
+  
   public boolean hasUserAnnotations() {
     return this.userAnnotations != null;
   }
   
   public int hashCode() {
-    return Objects.hash(certificateChainPath, credentialBundlePath, keyPath, keyType, maxExpirationSeconds, signerName, userAnnotations, additionalProperties);
+    return Objects.hash(certificateChainPath, credentialBundlePath, keyPath, keyType, maxExpirationSeconds, signerName, user, userAnnotations, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -273,6 +287,11 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
         sb.append(signerName);
         sb.append(",");
     }
+    if (!(user == null)) {
+        sb.append("user:");
+        sb.append(user);
+        sb.append(",");
+    }
     if (!(userAnnotations == null) && !(userAnnotations.isEmpty())) {
         sb.append("userAnnotations:");
         sb.append(userAnnotations);
@@ -322,6 +341,11 @@ public class PodCertificateProjectionFluent<A extends io.fabric8.kubernetes.api.
   
   public A withSignerName(String signerName) {
     this.signerName = signerName;
+    return (A) this;
+  }
+  
+  public A withUser(Long user) {
+    this.user = user;
     return (A) this;
   }
   

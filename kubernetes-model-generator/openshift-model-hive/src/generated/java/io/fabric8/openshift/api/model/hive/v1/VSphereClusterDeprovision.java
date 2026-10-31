@@ -1,7 +1,9 @@
 
 package io.fabric8.openshift.api.model.hive.v1;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.processing.Generated;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -10,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,16 +32,18 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * VSphereClusterDeprovision contains VMware vSphere-specific configuration for a ClusterDeprovision
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "certificatesSecretRef",
     "credentialsSecretRef",
-    "vCenter"
+    "vCenter",
+    "vCenters"
 })
 @ToString
 @EqualsAndHashCode
@@ -73,6 +76,9 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     private LocalObjectReference credentialsSecretRef;
     @JsonProperty("vCenter")
     private String vCenter;
+    @JsonProperty("vCenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<String> vCenters = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -82,11 +88,12 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     public VSphereClusterDeprovision() {
     }
 
-    public VSphereClusterDeprovision(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String vCenter) {
+    public VSphereClusterDeprovision(LocalObjectReference certificatesSecretRef, LocalObjectReference credentialsSecretRef, String vCenter, List<String> vCenters) {
         super();
         this.certificatesSecretRef = certificatesSecretRef;
         this.credentialsSecretRef = credentialsSecretRef;
         this.vCenter = vCenter;
+        this.vCenters = vCenters;
     }
 
     /**
@@ -122,7 +129,7 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     }
 
     /**
-     * VCenter is the vSphere vCenter hostname.
+     * DeprecatedVCenter is the vSphere vCenter hostname. Deprecated: use VCenters instead.
      */
     @JsonProperty("vCenter")
     public String getVCenter() {
@@ -130,11 +137,28 @@ public class VSphereClusterDeprovision implements Editable<VSphereClusterDeprovi
     }
 
     /**
-     * VCenter is the vSphere vCenter hostname.
+     * DeprecatedVCenter is the vSphere vCenter hostname. Deprecated: use VCenters instead.
      */
     @JsonProperty("vCenter")
     public void setVCenter(String vCenter) {
         this.vCenter = vCenter;
+    }
+
+    /**
+     * VCenters are potentially multiple vCenter hostnames. Prefer this field over VCenter.
+     */
+    @JsonProperty("vCenters")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<String> getVCenters() {
+        return vCenters;
+    }
+
+    /**
+     * VCenters are potentially multiple vCenter hostnames. Prefer this field over VCenter.
+     */
+    @JsonProperty("vCenters")
+    public void setVCenters(List<String> vCenters) {
+        this.vCenters = vCenters;
     }
 
     @JsonIgnore

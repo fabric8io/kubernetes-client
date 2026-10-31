@@ -25,7 +25,7 @@ public class ServerTLSSettingsBuilder extends ServerTLSSettingsFluent<ServerTLSS
   }
 
   public ServerTLSSettings build() {
-    ServerTLSSettings buildable = new ServerTLSSettings(fluent.getCaCertCredentialName(), fluent.getCaCertificates(), fluent.getCaCrl(), fluent.getCipherSuites(), fluent.getCredentialName(), fluent.getCredentialNames(), fluent.getHttpsRedirect(), fluent.getMaxProtocolVersion(), fluent.getMinProtocolVersion(), fluent.getMode(), fluent.getPrivateKey(), fluent.getServerCertificate(), fluent.getSubjectAltNames(), fluent.buildTlsCertificates(), fluent.getVerifyCertificateHash(), fluent.getVerifyCertificateSpki());
+    ServerTLSSettings buildable = new ServerTLSSettings(fluent.getCaCertCredentialName(), fluent.getCaCertificates(), fluent.getCaCrl(), fluent.getCipherSuites(), fluent.getCredentialName(), fluent.getCredentialNames(), fluent.getHttpsRedirect(), fluent.getInsecureSkipVerify(), fluent.getMaxProtocolVersion(), fluent.getMinProtocolVersion(), fluent.getMode(), fluent.getPrivateKey(), fluent.getServerCertificate(), fluent.getSubjectAltNames(), fluent.buildTlsCertificates(), fluent.getVerifyCertificateHash(), fluent.getVerifyCertificateSpki());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

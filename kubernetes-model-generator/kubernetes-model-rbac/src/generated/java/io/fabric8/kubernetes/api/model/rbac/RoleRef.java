@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * RoleRef contains information that points to the role being used
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "kind",
@@ -90,7 +90,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * APIGroup is the group for the resource being referenced
+     * apiGroup is the group for the resource being referenced
      */
     @JsonProperty("apiGroup")
     public String getApiGroup() {
@@ -98,7 +98,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * APIGroup is the group for the resource being referenced
+     * apiGroup is the group for the resource being referenced
      */
     @JsonProperty("apiGroup")
     public void setApiGroup(String apiGroup) {
@@ -106,7 +106,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * Kind is the type of resource being referenced
+     * kind is the type of resource being referenced
      */
     @JsonProperty("kind")
     public String getKind() {
@@ -114,7 +114,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * Kind is the type of resource being referenced
+     * kind is the type of resource being referenced
      */
     @JsonProperty("kind")
     public void setKind(String kind) {
@@ -122,7 +122,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * Name is the name of resource being referenced
+     * name is the name of resource being referenced
      */
     @JsonProperty("name")
     public String getName() {
@@ -130,7 +130,7 @@ public class RoleRef implements Editable<RoleRefBuilder>, KubernetesResource
     }
 
     /**
-     * Name is the name of resource being referenced
+     * name is the name of resource being referenced
      */
     @JsonProperty("name")
     public void setName(String name) {

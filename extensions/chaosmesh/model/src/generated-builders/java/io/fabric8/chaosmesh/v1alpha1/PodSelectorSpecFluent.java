@@ -1,6 +1,7 @@
 package io.fabric8.chaosmesh.v1alpha1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
+import io.fabric8.kubernetes.api.model.LabelSelectorRequirement;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -21,6 +22,7 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
 
   private Map<String,Object> additionalProperties;
   private Map<String,String> annotationSelectors;
+  private List<LabelSelectorRequirement> expressionSelectors = new ArrayList<LabelSelectorRequirement>();
   private Map<String,String> fieldSelectors;
   private Map<String,String> labelSelectors;
   private List<String> namespaces = new ArrayList<String>();
@@ -36,6 +38,16 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     this.copyInstance(instance);
   }
 
+  public A addAllToExpressionSelectors(Collection<LabelSelectorRequirement> items) {
+    if (this.expressionSelectors == null) {
+      this.expressionSelectors = new ArrayList();
+    }
+    for (LabelSelectorRequirement item : items) {
+      this.expressionSelectors.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addAllToNamespaces(Collection<String> items) {
     if (this.namespaces == null) {
       this.namespaces = new ArrayList();
@@ -103,6 +115,24 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     if (key != null && value != null) {
       this.annotationSelectors.put(key, value);
     }
+    return (A) this;
+  }
+  
+  public A addToExpressionSelectors(LabelSelectorRequirement... items) {
+    if (this.expressionSelectors == null) {
+      this.expressionSelectors = new ArrayList();
+    }
+    for (LabelSelectorRequirement item : items) {
+      this.expressionSelectors.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToExpressionSelectors(int index,LabelSelectorRequirement item) {
+    if (this.expressionSelectors == null) {
+      this.expressionSelectors = new ArrayList();
+    }
+    this.expressionSelectors.add(index, item);
     return (A) this;
   }
   
@@ -244,6 +274,7 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     instance = instance != null ? instance : new PodSelectorSpec();
     if (instance != null) {
         this.withAnnotationSelectors(instance.getAnnotationSelectors());
+        this.withExpressionSelectors(instance.getExpressionSelectors());
         this.withFieldSelectors(instance.getFieldSelectors());
         this.withLabelSelectors(instance.getLabelSelectors());
         this.withNamespaces(instance.getNamespaces());
@@ -267,6 +298,9 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     }
     PodSelectorSpecFluent that = (PodSelectorSpecFluent) o;
     if (!(Objects.equals(annotationSelectors, that.annotationSelectors))) {
+      return false;
+    }
+    if (!(Objects.equals(expressionSelectors, that.expressionSelectors))) {
       return false;
     }
     if (!(Objects.equals(fieldSelectors, that.fieldSelectors))) {
@@ -304,8 +338,20 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     return this.annotationSelectors;
   }
   
+  public LabelSelectorRequirement getExpressionSelector(int index) {
+    return this.expressionSelectors.get(index);
+  }
+  
+  public List<LabelSelectorRequirement> getExpressionSelectors() {
+    return this.expressionSelectors;
+  }
+  
   public Map<String,String> getFieldSelectors() {
     return this.fieldSelectors;
+  }
+  
+  public LabelSelectorRequirement getFirstExpressionSelector() {
+    return this.expressionSelectors.get(0);
   }
   
   public String getFirstNamespace() {
@@ -324,6 +370,10 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     return this.labelSelectors;
   }
   
+  public LabelSelectorRequirement getLastExpressionSelector() {
+    return this.expressionSelectors.get(expressionSelectors.size() - 1);
+  }
+  
   public String getLastNamespace() {
     return this.namespaces.get(namespaces.size() - 1);
   }
@@ -334,6 +384,15 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
   
   public String getLastPodPhaseSelector() {
     return this.podPhaseSelectors.get(podPhaseSelectors.size() - 1);
+  }
+  
+  public LabelSelectorRequirement getMatchingExpressionSelector(Predicate<LabelSelectorRequirement> predicate) {
+      for (LabelSelectorRequirement item : expressionSelectors) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public String getMatchingNamespace(Predicate<String> predicate) {
@@ -403,12 +462,25 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     return this.annotationSelectors != null;
   }
   
+  public boolean hasExpressionSelectors() {
+    return this.expressionSelectors != null && !(this.expressionSelectors.isEmpty());
+  }
+  
   public boolean hasFieldSelectors() {
     return this.fieldSelectors != null;
   }
   
   public boolean hasLabelSelectors() {
     return this.labelSelectors != null;
+  }
+  
+  public boolean hasMatchingExpressionSelector(Predicate<LabelSelectorRequirement> predicate) {
+      for (LabelSelectorRequirement item : expressionSelectors) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingNamespace(Predicate<String> predicate) {
@@ -459,7 +531,17 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
   }
   
   public int hashCode() {
-    return Objects.hash(annotationSelectors, fieldSelectors, labelSelectors, namespaces, nodeSelectors, nodes, podPhaseSelectors, pods, additionalProperties);
+    return Objects.hash(annotationSelectors, expressionSelectors, fieldSelectors, labelSelectors, namespaces, nodeSelectors, nodes, podPhaseSelectors, pods, additionalProperties);
+  }
+  
+  public A removeAllFromExpressionSelectors(Collection<LabelSelectorRequirement> items) {
+    if (this.expressionSelectors == null) {
+      return (A) this;
+    }
+    for (LabelSelectorRequirement item : items) {
+      this.expressionSelectors.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeAllFromNamespaces(Collection<String> items) {
@@ -536,6 +618,16 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
           this.annotationSelectors.remove(key);
         }
       }
+    }
+    return (A) this;
+  }
+  
+  public A removeFromExpressionSelectors(LabelSelectorRequirement... items) {
+    if (this.expressionSelectors == null) {
+      return (A) this;
+    }
+    for (LabelSelectorRequirement item : items) {
+      this.expressionSelectors.remove(item);
     }
     return (A) this;
   }
@@ -666,6 +758,14 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     return (A) this;
   }
   
+  public A setToExpressionSelectors(int index,LabelSelectorRequirement item) {
+    if (this.expressionSelectors == null) {
+      this.expressionSelectors = new ArrayList();
+    }
+    this.expressionSelectors.set(index, item);
+    return (A) this;
+  }
+  
   public A setToNamespaces(int index,String item) {
     if (this.namespaces == null) {
       this.namespaces = new ArrayList();
@@ -696,6 +796,11 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
     if (!(annotationSelectors == null) && !(annotationSelectors.isEmpty())) {
         sb.append("annotationSelectors:");
         sb.append(annotationSelectors);
+        sb.append(",");
+    }
+    if (!(expressionSelectors == null) && !(expressionSelectors.isEmpty())) {
+        sb.append("expressionSelectors:");
+        sb.append(expressionSelectors);
         sb.append(",");
     }
     if (!(fieldSelectors == null) && !(fieldSelectors.isEmpty())) {
@@ -755,6 +860,31 @@ public class PodSelectorSpecFluent<A extends io.fabric8.chaosmesh.v1alpha1.PodSe
       this.annotationSelectors = null;
     } else {
       this.annotationSelectors = new LinkedHashMap(annotationSelectors);
+    }
+    return (A) this;
+  }
+  
+  public A withExpressionSelectors(List<LabelSelectorRequirement> expressionSelectors) {
+    if (expressionSelectors != null) {
+        this.expressionSelectors = new ArrayList();
+        for (LabelSelectorRequirement item : expressionSelectors) {
+          this.addToExpressionSelectors(item);
+        }
+    } else {
+      this.expressionSelectors = null;
+    }
+    return (A) this;
+  }
+  
+  public A withExpressionSelectors(LabelSelectorRequirement... expressionSelectors) {
+    if (this.expressionSelectors != null) {
+        this.expressionSelectors.clear();
+        _visitables.remove("expressionSelectors");
+    }
+    if (expressionSelectors != null) {
+      for (LabelSelectorRequirement item : expressionSelectors) {
+        this.addToExpressionSelectors(item);
+      }
     }
     return (A) this;
   }

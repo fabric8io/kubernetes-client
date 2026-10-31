@@ -25,7 +25,7 @@ public class ClusterDeprovisionSpecBuilder extends ClusterDeprovisionSpecFluent<
   }
 
   public ClusterDeprovisionSpec build() {
-    ClusterDeprovisionSpec buildable = new ClusterDeprovisionSpec(fluent.getBaseDomain(), fluent.getClusterID(), fluent.getClusterName(), fluent.getInfraID(), fluent.buildPlatform());
+    ClusterDeprovisionSpec buildable = new ClusterDeprovisionSpec(fluent.getBaseDomain(), fluent.getClusterID(), fluent.getClusterName(), fluent.getInfraID(), fluent.buildMetadataJSONSecretRef(), fluent.buildPlatform());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

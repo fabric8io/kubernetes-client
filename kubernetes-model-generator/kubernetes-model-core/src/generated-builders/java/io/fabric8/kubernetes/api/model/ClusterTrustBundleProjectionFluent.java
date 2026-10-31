@@ -3,6 +3,7 @@ package io.fabric8.kubernetes.api.model;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import io.fabric8.kubernetes.api.builder.Nested;
 import java.lang.Boolean;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -24,6 +25,7 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
   private Boolean optional;
   private String path;
   private String signerName;
+  private Long user;
 
   public ClusterTrustBundleProjectionFluent() {
   }
@@ -64,6 +66,7 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
         this.withOptional(instance.getOptional());
         this.withPath(instance.getPath());
         this.withSignerName(instance.getSignerName());
+        this.withUser(instance.getUser());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -106,6 +109,9 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
     if (!(Objects.equals(signerName, that.signerName))) {
       return false;
     }
+    if (!(Objects.equals(user, that.user))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -132,6 +138,10 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
     return this.signerName;
   }
   
+  public Long getUser() {
+    return this.user;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -156,8 +166,12 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
     return this.signerName != null;
   }
   
+  public boolean hasUser() {
+    return this.user != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(labelSelector, name, optional, path, signerName, additionalProperties);
+    return Objects.hash(labelSelector, name, optional, path, signerName, user, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -210,6 +224,11 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
     if (!(signerName == null)) {
         sb.append("signerName:");
         sb.append(signerName);
+        sb.append(",");
+    }
+    if (!(user == null)) {
+        sb.append("user:");
+        sb.append(user);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -270,6 +289,11 @@ public class ClusterTrustBundleProjectionFluent<A extends io.fabric8.kubernetes.
   
   public A withSignerName(String signerName) {
     this.signerName = signerName;
+    return (A) this;
+  }
+  
+  public A withUser(Long user) {
+    this.user = user;
     return (A) this;
   }
   public class LabelSelectorNested<N> extends LabelSelectorFluent<LabelSelectorNested<N>> implements Nested<N>{

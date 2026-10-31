@@ -15,18 +15,16 @@
  */
 package io.fabric8.kubernetes.internal;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DatabindException;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ValueDeserializer;
 
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.Map;
 
-public class KubernetesDeserializerForMap extends JsonDeserializer<Map<String, KubernetesResource>> {
+public class KubernetesDeserializerForMap extends ValueDeserializer<Map<String, KubernetesResource>> {
 
   private final KubernetesDeserializer kubernetesDeserializer;
 
@@ -35,15 +33,14 @@ public class KubernetesDeserializerForMap extends JsonDeserializer<Map<String, K
   }
 
   @Override
-  public Map<String, KubernetesResource> deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+  public Map<String, KubernetesResource> deserialize(JsonParser p, DeserializationContext ctxt) {
     final JsonNode node = p.readValueAsTree();
     if (!node.isObject()) {
-      throw new JsonMappingException(p, "Expected map but found " + node.getNodeType());
+      throw DatabindException.from(p, "Expected map but found " + node.getNodeType());
     }
     final Map<String, KubernetesResource> ret = new java.util.LinkedHashMap<>();
-    for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
-      final Map.Entry<String, JsonNode> entry = it.next();
-      ret.put(entry.getKey(), kubernetesDeserializer.deserialize(p, entry.getValue()));
+    for (Map.Entry<String, JsonNode> entry : node.properties()) {
+      ret.put(entry.getKey(), kubernetesDeserializer.deserialize(p, ctxt, entry.getValue()));
     }
     return ret;
   }

@@ -25,7 +25,7 @@ public class BasicDeviceBuilder extends BasicDeviceFluent<BasicDeviceBuilder> im
   }
 
   public BasicDevice build() {
-    BasicDevice buildable = new BasicDevice(fluent.getAllNodes(), fluent.getAllowMultipleAllocations(), fluent.getAttributes(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getBindsToNode(), fluent.getCapacity(), fluent.buildConsumesCounters(), fluent.getNodeAllocatableResourceMappings(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.buildTaints());
+    BasicDevice buildable = new BasicDevice(fluent.getAllNodes(), fluent.getAllowMultipleAllocations(), fluent.getAttributes(), fluent.getBindingConditions(), fluent.getBindingFailureConditions(), fluent.getBindsToNode(), fluent.getCapacity(), fluent.buildConsumesCounters(), fluent.getNodeAllocatableResources(), fluent.getNodeName(), fluent.getNodeSelector(), fluent.buildTaints());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

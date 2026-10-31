@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+ * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",
@@ -134,7 +134,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("metadata")
     public ObjectMeta getMetadata() {
@@ -142,7 +142,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("metadata")
     public void setMetadata(ObjectMeta metadata) {
@@ -150,7 +150,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("spec")
     public SelectorSyncIdentityProviderSpec getSpec() {
@@ -158,7 +158,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("spec")
     public void setSpec(SelectorSyncIdentityProviderSpec spec) {
@@ -166,7 +166,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("status")
     public IdentityProviderStatus getStatus() {
@@ -174,7 +174,7 @@ public class SelectorSyncIdentityProvider implements Editable<SelectorSyncIdenti
     }
 
     /**
-     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncSet API
+     * SelectorSyncIdentityProvider is the Schema for the SelectorSyncIdentityProvider API
      */
     @JsonProperty("status")
     public void setStatus(IdentityProviderStatus status) {

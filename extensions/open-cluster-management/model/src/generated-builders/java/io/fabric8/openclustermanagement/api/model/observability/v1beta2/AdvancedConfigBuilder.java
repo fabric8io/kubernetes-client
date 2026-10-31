@@ -25,7 +25,7 @@ public class AdvancedConfigBuilder extends AdvancedConfigFluent<AdvancedConfigBu
   }
 
   public AdvancedConfig build() {
-    AdvancedConfig buildable = new AdvancedConfig(fluent.buildAlertmanager(), fluent.buildCompact(), fluent.getCustomAlertmanagerHubURL(), fluent.getCustomObservabilityHubURL(), fluent.buildGrafana(), fluent.buildMultiClusterObservabilityAddon(), fluent.buildObservatoriumAPI(), fluent.buildQuery(), fluent.buildQueryFrontend(), fluent.buildQueryFrontendMemcached(), fluent.buildRbacQueryProxy(), fluent.buildReceive(), fluent.buildRetentionConfig(), fluent.buildRule(), fluent.buildStore(), fluent.buildStoreMemcached());
+    AdvancedConfig buildable = new AdvancedConfig(fluent.buildAlertmanager(), fluent.buildCompact(), fluent.getCustomAlertmanagerHubURL(), fluent.getCustomObservabilityHubURL(), fluent.buildGrafana(), fluent.buildMultiClusterObservabilityAddon(), fluent.buildObservatoriumAPI(), fluent.buildQuery(), fluent.buildQueryFrontend(), fluent.buildQueryFrontendMemcached(), fluent.getQueryTimeout(), fluent.buildRbacQueryProxy(), fluent.buildReceive(), fluent.buildRetentionConfig(), fluent.buildRule(), fluent.buildStore(), fluent.buildStoreMemcached(), fluent.getWriteTimeout());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

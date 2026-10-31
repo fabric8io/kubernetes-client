@@ -18,6 +18,7 @@ spec:
           spec:
             properties:
               baseInt:
+                format: "int32"
                 type: "integer"
               supported:
                 additionalProperties:
@@ -25,11 +26,11 @@ spec:
                 type: "object"
               unsupported:
                 additionalProperties:
-                  type: "object"
+                  x-kubernetes-preserve-unknown-fields: true
                 type: "object"
               unsupported2:
                 additionalProperties:
-                  type: "object"
+                  x-kubernetes-preserve-unknown-fields: true
                 type: "object"
             type: "object"
           status:

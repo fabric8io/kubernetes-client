@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,14 +32,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * PolicySetSpec defines the group of policies to be included in the policy set.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "description",
+    "exclusions",
     "policies"
 })
 @ToString
@@ -70,6 +71,9 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
 
     @JsonProperty("description")
     private String description;
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<PolicySetExclusion> exclusions = new ArrayList<>();
     @JsonProperty("policies")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> policies = new ArrayList<>();
@@ -82,9 +86,10 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
     public PolicySetSpec() {
     }
 
-    public PolicySetSpec(String description, List<String> policies) {
+    public PolicySetSpec(String description, List<PolicySetExclusion> exclusions, List<String> policies) {
         super();
         this.description = description;
+        this.exclusions = exclusions;
         this.policies = policies;
     }
 
@@ -102,6 +107,23 @@ public class PolicySetSpec implements Editable<PolicySetSpecBuilder>, Kubernetes
     @JsonProperty("description")
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * Exclusions lists policies that should not be propagated to specific managed clusters through this PolicySet's placement binding. Other policies in the PolicySet and other placement bindings are not affected.
+     */
+    @JsonProperty("exclusions")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<PolicySetExclusion> getExclusions() {
+        return exclusions;
+    }
+
+    /**
+     * Exclusions lists policies that should not be propagated to specific managed clusters through this PolicySet's placement binding. Other policies in the PolicySet and other placement bindings are not affected.
+     */
+    @JsonProperty("exclusions")
+    public void setExclusions(List<PolicySetExclusion> exclusions) {
+        this.exclusions = exclusions;
     }
 
     /**

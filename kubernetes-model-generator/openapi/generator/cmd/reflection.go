@@ -192,14 +192,14 @@ func generateType(schemas openapi3.Schemas, t reflect.Type) {
 func extractFields(fields []reflect.StructField, t reflect.Type) []reflect.StructField {
 	for it := 0; it < t.NumField(); it++ {
 		field := t.Field(it)
-		jsonTag := field.Tag.Get("json")
+		jsonTag, jsonTagExists := field.Tag.Lookup("json")
 		// Fields to Skip
 		if len(field.PkgPath) > 0 || // Private fields
 			strings.Index(jsonTag, "-,") == 0 { //unserialized fields
 			continue
 		}
-		if field.Anonymous && strings.Index(jsonTag, ",inline") == 0 {
-			// Inlined fields
+		if field.Anonymous && jsonTagExists && (jsonTag == "" || strings.HasPrefix(jsonTag, ",")) {
+			// Inlined fields, embedded without a JSON name: `json:",inline"`, or `json:""` since Kubernetes 1.37
 			fields = extractFields(fields, field.Type)
 		} else {
 			// Standard fields

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * KubeletConfigSpec defines the desired state of KubeletConfig
+ * KubeletConfigSpec configures the kubelet running on cluster nodes.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "autoSizingReserved",
@@ -99,7 +99,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * autoSizingReserved controls whether system-reserved CPU and memory are automatically calculated based on each node's installed capacity. When set to true, this prevents node failure from resource starvation of system components (kubelet, CRI-O) without manual configuration. When omitted, this means the user has no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is true for worker nodes and false for control plane nodes. When set to false, automatic resource reservation is disabled and manual settings must be configured.
      */
     @JsonProperty("autoSizingReserved")
     public Boolean getAutoSizingReserved() {
@@ -107,7 +107,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * autoSizingReserved controls whether system-reserved CPU and memory are automatically calculated based on each node's installed capacity. When set to true, this prevents node failure from resource starvation of system components (kubelet, CRI-O) without manual configuration. When omitted, this means the user has no opinion and the platform is left to choose a reasonable default, which is subject to change over time. The current default is true for worker nodes and false for control plane nodes. When set to false, automatic resource reservation is disabled and manual settings must be configured.
      */
     @JsonProperty("autoSizingReserved")
     public void setAutoSizingReserved(Boolean autoSizingReserved) {
@@ -115,7 +115,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("kubeletConfig")
     public Object getKubeletConfig() {
@@ -123,7 +123,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("kubeletConfig")
     @JsonDeserialize(using = io.fabric8.kubernetes.internal.KubernetesDeserializer.class)
@@ -132,7 +132,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * logLevel sets the kubelet log verbosity, controlling the amount of detail in kubelet logs. Valid values range from 0 (minimal logging) to 10 (maximum verbosity with trace-level detail). Higher log levels may impact node performance. When omitted, the platform chooses a reasonable default, which is subject to change over time. The current default is 2 (standard informational logging).
      */
     @JsonProperty("logLevel")
     public Integer getLogLevel() {
@@ -140,7 +140,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * logLevel sets the kubelet log verbosity, controlling the amount of detail in kubelet logs. Valid values range from 0 (minimal logging) to 10 (maximum verbosity with trace-level detail). Higher log levels may impact node performance. When omitted, the platform chooses a reasonable default, which is subject to change over time. The current default is 2 (standard informational logging).
      */
     @JsonProperty("logLevel")
     public void setLogLevel(Integer logLevel) {
@@ -148,7 +148,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("machineConfigPoolSelector")
     public LabelSelector getMachineConfigPoolSelector() {
@@ -156,7 +156,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("machineConfigPoolSelector")
     public void setMachineConfigPoolSelector(LabelSelector machineConfigPoolSelector) {
@@ -164,7 +164,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("tlsSecurityProfile")
     public TLSSecurityProfile getTlsSecurityProfile() {
@@ -172,7 +172,7 @@ public class KubeletConfigSpec implements Editable<KubeletConfigSpecBuilder>, Ku
     }
 
     /**
-     * KubeletConfigSpec defines the desired state of KubeletConfig
+     * KubeletConfigSpec configures the kubelet running on cluster nodes.
      */
     @JsonProperty("tlsSecurityProfile")
     public void setTlsSecurityProfile(TLSSecurityProfile tlsSecurityProfile) {

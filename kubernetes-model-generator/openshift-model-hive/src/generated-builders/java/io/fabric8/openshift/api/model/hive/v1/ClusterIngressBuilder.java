@@ -25,7 +25,7 @@ public class ClusterIngressBuilder extends ClusterIngressFluent<ClusterIngressBu
   }
 
   public ClusterIngress build() {
-    ClusterIngress buildable = new ClusterIngress(fluent.getDomain(), fluent.getHttpErrorCodePages(), fluent.getName(), fluent.buildNamespaceSelector(), fluent.buildRouteSelector(), fluent.getServingCertificate());
+    ClusterIngress buildable = new ClusterIngress(fluent.getDomain(), fluent.getHttpErrorCodePages(), fluent.getName(), fluent.buildNamespaceSelector(), fluent.buildRouteSelector(), fluent.getServingCertificate(), fluent.getTuningOptions());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -34,11 +33,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * SlackConfig configures notifications via Slack. See https://prometheus.io/docs/alerting/latest/configuration/#slack_config
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "actions",
@@ -64,6 +64,7 @@ import lombok.experimental.Accessors;
     "timeout",
     "title",
     "titleLink",
+    "updateMessage",
     "username"
 })
 @ToString
@@ -140,6 +141,8 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     private String title;
     @JsonProperty("titleLink")
     private String titleLink;
+    @JsonProperty("updateMessage")
+    private Boolean updateMessage;
     @JsonProperty("username")
     private String username;
     @JsonIgnore
@@ -151,7 +154,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     public SlackConfig() {
     }
 
-    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, String messageText, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String timeout, String title, String titleLink, String username) {
+    public SlackConfig(List<SlackAction> actions, SecretKeySelector apiURL, String callbackId, String channel, String color, String fallback, List<SlackField> fields, String footer, HTTPConfig httpConfig, String iconEmoji, String iconURL, String imageURL, Boolean linkNames, String messageText, List<String> mrkdwnIn, String pretext, Boolean sendResolved, Boolean shortFields, String text, String thumbURL, String timeout, String title, String titleLink, Boolean updateMessage, String username) {
         super();
         this.actions = actions;
         this.apiURL = apiURL;
@@ -176,6 +179,7 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
         this.timeout = timeout;
         this.title = title;
         this.titleLink = titleLink;
+        this.updateMessage = updateMessage;
         this.username = username;
     }
 
@@ -548,6 +552,22 @@ public class SlackConfig implements Editable<SlackConfigBuilder>, KubernetesReso
     @JsonProperty("titleLink")
     public void setTitleLink(String titleLink) {
         this.titleLink = titleLink;
+    }
+
+    /**
+     * updateMessage enables updating existing Slack messages instead of creating new ones when alert state changes. Please note that Webhook URLs do not support updates. It requires Alertmanager &gt;= v0.32.0.
+     */
+    @JsonProperty("updateMessage")
+    public Boolean getUpdateMessage() {
+        return updateMessage;
+    }
+
+    /**
+     * updateMessage enables updating existing Slack messages instead of creating new ones when alert state changes. Please note that Webhook URLs do not support updates. It requires Alertmanager &gt;= v0.32.0.
+     */
+    @JsonProperty("updateMessage")
+    public void setUpdateMessage(Boolean updateMessage) {
+        this.updateMessage = updateMessage;
     }
 
     /**

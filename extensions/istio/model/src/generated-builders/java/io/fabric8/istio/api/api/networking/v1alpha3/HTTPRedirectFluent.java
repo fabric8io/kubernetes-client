@@ -20,6 +20,7 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
 
   private Map<String,Object> additionalProperties;
   private String authority;
+  private String prefixRewrite;
   private Long redirectCode;
   private VisitableBuilder<? extends IsHTTPRedirectRedirectPort,?> redirectPort;
   private String scheme;
@@ -78,6 +79,7 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
     if (instance != null) {
         this.withRedirectPort(instance.getRedirectPort());
         this.withAuthority(instance.getAuthority());
+        this.withPrefixRewrite(instance.getPrefixRewrite());
         this.withRedirectCode(instance.getRedirectCode());
         this.withScheme(instance.getScheme());
         this.withUri(instance.getUri());
@@ -100,6 +102,9 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
       return false;
     }
     if (!(Objects.equals(authority, that.authority))) {
+      return false;
+    }
+    if (!(Objects.equals(prefixRewrite, that.prefixRewrite))) {
       return false;
     }
     if (!(Objects.equals(redirectCode, that.redirectCode))) {
@@ -125,6 +130,10 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
     return this.authority;
   }
   
+  public String getPrefixRewrite() {
+    return this.prefixRewrite;
+  }
+  
   public Long getRedirectCode() {
     return this.redirectCode;
   }
@@ -145,6 +154,10 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
     return this.authority != null;
   }
   
+  public boolean hasPrefixRewrite() {
+    return this.prefixRewrite != null;
+  }
+  
   public boolean hasRedirectCode() {
     return this.redirectCode != null;
   }
@@ -162,7 +175,7 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
   }
   
   public int hashCode() {
-    return Objects.hash(redirectPort, authority, redirectCode, scheme, uri, additionalProperties);
+    return Objects.hash(redirectPort, authority, prefixRewrite, redirectCode, scheme, uri, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -200,6 +213,11 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
     if (!(authority == null)) {
         sb.append("authority:");
         sb.append(authority);
+        sb.append(",");
+    }
+    if (!(prefixRewrite == null)) {
+        sb.append("prefixRewrite:");
+        sb.append(prefixRewrite);
         sb.append(",");
     }
     if (!(redirectCode == null)) {
@@ -257,6 +275,11 @@ public class HTTPRedirectFluent<A extends io.fabric8.istio.api.api.networking.v1
   
   public HTTPRedirectPortNested<A> withNewHTTPRedirectPortLike(HTTPRedirectPort item) {
     return new HTTPRedirectPortNested(item);
+  }
+  
+  public A withPrefixRewrite(String prefixRewrite) {
+    this.prefixRewrite = prefixRewrite;
+    return (A) this;
   }
   
   public A withRedirectCode(Long redirectCode) {

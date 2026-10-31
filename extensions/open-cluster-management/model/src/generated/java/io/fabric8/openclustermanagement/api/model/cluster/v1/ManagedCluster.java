@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -33,11 +32,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ManagedCluster represents the desired state and current status of a managed cluster. ManagedCluster is a cluster-scoped resource. The name is the cluster UID.<br><p> <br><p> The cluster join process is a double opt-in process. See the following join process steps:<br><p> <br><p> 1. The agent on the managed cluster creates a CSR on the hub with the cluster UID and agent name. 2. The agent on the managed cluster creates a ManagedCluster on the hub. 3. The cluster admin on the hub cluster approves the CSR for the UID and agent name of the ManagedCluster. 4. The cluster admin sets the spec.acceptClient of the ManagedCluster to true. 5. The cluster admin on the managed cluster creates a credential of the kubeconfig for the hub cluster.<br><p> <br><p> After the hub cluster creates the cluster namespace, the klusterlet agent on the ManagedCluster pushes the credential to the hub cluster to use against the kube-apiserver of the ManagedCluster.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVersion",

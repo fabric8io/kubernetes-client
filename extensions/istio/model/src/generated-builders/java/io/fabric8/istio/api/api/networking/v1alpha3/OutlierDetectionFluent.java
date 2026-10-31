@@ -3,13 +3,18 @@ package io.fabric8.istio.api.api.networking.v1alpha3;
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import java.lang.Boolean;
 import java.lang.Integer;
+import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
 import java.lang.SuppressWarnings;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 /**
  * Generated
@@ -26,6 +31,7 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
   private String interval;
   private Integer maxEjectionPercent;
   private Integer minHealthPercent;
+  private List<Long> outlierDetectionHttpErrorCodes = new ArrayList<Long>();
   private Boolean splitExternalLocalOriginErrors;
 
   public OutlierDetectionFluent() {
@@ -35,6 +41,16 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     this.copyInstance(instance);
   }
 
+  public A addAllToOutlierDetectionHttpErrorCodes(Collection<Long> items) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      this.outlierDetectionHttpErrorCodes = new ArrayList();
+    }
+    for (Long item : items) {
+      this.outlierDetectionHttpErrorCodes.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addToAdditionalProperties(Map<String,Object> map) {
     if (this.additionalProperties == null && map != null) {
       this.additionalProperties = new LinkedHashMap();
@@ -55,6 +71,24 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     return (A) this;
   }
   
+  public A addToOutlierDetectionHttpErrorCodes(Long... items) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      this.outlierDetectionHttpErrorCodes = new ArrayList();
+    }
+    for (Long item : items) {
+      this.outlierDetectionHttpErrorCodes.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToOutlierDetectionHttpErrorCodes(int index,Long item) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      this.outlierDetectionHttpErrorCodes = new ArrayList();
+    }
+    this.outlierDetectionHttpErrorCodes.add(index, item);
+    return (A) this;
+  }
+  
   protected void copyInstance(OutlierDetection instance) {
     instance = instance != null ? instance : new OutlierDetection();
     if (instance != null) {
@@ -66,6 +100,7 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
         this.withInterval(instance.getInterval());
         this.withMaxEjectionPercent(instance.getMaxEjectionPercent());
         this.withMinHealthPercent(instance.getMinHealthPercent());
+        this.withOutlierDetectionHttpErrorCodes(instance.getOutlierDetectionHttpErrorCodes());
         this.withSplitExternalLocalOriginErrors(instance.getSplitExternalLocalOriginErrors());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -106,6 +141,9 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     if (!(Objects.equals(minHealthPercent, that.minHealthPercent))) {
       return false;
     }
+    if (!(Objects.equals(outlierDetectionHttpErrorCodes, that.outlierDetectionHttpErrorCodes))) {
+      return false;
+    }
     if (!(Objects.equals(splitExternalLocalOriginErrors, that.splitExternalLocalOriginErrors))) {
       return false;
     }
@@ -139,8 +177,25 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     return this.consecutiveLocalOriginFailures;
   }
   
+  public Long getFirstOutlierDetectionHttpErrorCode() {
+    return this.outlierDetectionHttpErrorCodes.get(0);
+  }
+  
   public String getInterval() {
     return this.interval;
+  }
+  
+  public Long getLastOutlierDetectionHttpErrorCode() {
+    return this.outlierDetectionHttpErrorCodes.get(outlierDetectionHttpErrorCodes.size() - 1);
+  }
+  
+  public Long getMatchingOutlierDetectionHttpErrorCode(Predicate<Long> predicate) {
+      for (Long item : outlierDetectionHttpErrorCodes) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public Integer getMaxEjectionPercent() {
@@ -149,6 +204,14 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
   
   public Integer getMinHealthPercent() {
     return this.minHealthPercent;
+  }
+  
+  public Long getOutlierDetectionHttpErrorCode(int index) {
+    return this.outlierDetectionHttpErrorCodes.get(index);
+  }
+  
+  public List<Long> getOutlierDetectionHttpErrorCodes() {
+    return this.outlierDetectionHttpErrorCodes;
   }
   
   public Boolean getSplitExternalLocalOriginErrors() {
@@ -183,6 +246,15 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     return this.interval != null;
   }
   
+  public boolean hasMatchingOutlierDetectionHttpErrorCode(Predicate<Long> predicate) {
+      for (Long item : outlierDetectionHttpErrorCodes) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
+  }
+  
   public boolean hasMaxEjectionPercent() {
     return this.maxEjectionPercent != null;
   }
@@ -191,12 +263,26 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     return this.minHealthPercent != null;
   }
   
+  public boolean hasOutlierDetectionHttpErrorCodes() {
+    return this.outlierDetectionHttpErrorCodes != null && !(this.outlierDetectionHttpErrorCodes.isEmpty());
+  }
+  
   public boolean hasSplitExternalLocalOriginErrors() {
     return this.splitExternalLocalOriginErrors != null;
   }
   
   public int hashCode() {
-    return Objects.hash(baseEjectionTime, consecutive5xxErrors, consecutiveErrors, consecutiveGatewayErrors, consecutiveLocalOriginFailures, interval, maxEjectionPercent, minHealthPercent, splitExternalLocalOriginErrors, additionalProperties);
+    return Objects.hash(baseEjectionTime, consecutive5xxErrors, consecutiveErrors, consecutiveGatewayErrors, consecutiveLocalOriginFailures, interval, maxEjectionPercent, minHealthPercent, outlierDetectionHttpErrorCodes, splitExternalLocalOriginErrors, additionalProperties);
+  }
+  
+  public A removeAllFromOutlierDetectionHttpErrorCodes(Collection<Long> items) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      return (A) this;
+    }
+    for (Long item : items) {
+      this.outlierDetectionHttpErrorCodes.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -220,6 +306,24 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
         }
       }
     }
+    return (A) this;
+  }
+  
+  public A removeFromOutlierDetectionHttpErrorCodes(Long... items) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      return (A) this;
+    }
+    for (Long item : items) {
+      this.outlierDetectionHttpErrorCodes.remove(item);
+    }
+    return (A) this;
+  }
+  
+  public A setToOutlierDetectionHttpErrorCodes(int index,Long item) {
+    if (this.outlierDetectionHttpErrorCodes == null) {
+      this.outlierDetectionHttpErrorCodes = new ArrayList();
+    }
+    this.outlierDetectionHttpErrorCodes.set(index, item);
     return (A) this;
   }
   
@@ -264,6 +368,11 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
     if (!(minHealthPercent == null)) {
         sb.append("minHealthPercent:");
         sb.append(minHealthPercent);
+        sb.append(",");
+    }
+    if (!(outlierDetectionHttpErrorCodes == null) && !(outlierDetectionHttpErrorCodes.isEmpty())) {
+        sb.append("outlierDetectionHttpErrorCodes:");
+        sb.append(outlierDetectionHttpErrorCodes);
         sb.append(",");
     }
     if (!(splitExternalLocalOriginErrors == null)) {
@@ -325,6 +434,31 @@ public class OutlierDetectionFluent<A extends io.fabric8.istio.api.api.networkin
   
   public A withMinHealthPercent(Integer minHealthPercent) {
     this.minHealthPercent = minHealthPercent;
+    return (A) this;
+  }
+  
+  public A withOutlierDetectionHttpErrorCodes(List<Long> outlierDetectionHttpErrorCodes) {
+    if (outlierDetectionHttpErrorCodes != null) {
+        this.outlierDetectionHttpErrorCodes = new ArrayList();
+        for (Long item : outlierDetectionHttpErrorCodes) {
+          this.addToOutlierDetectionHttpErrorCodes(item);
+        }
+    } else {
+      this.outlierDetectionHttpErrorCodes = null;
+    }
+    return (A) this;
+  }
+  
+  public A withOutlierDetectionHttpErrorCodes(Long... outlierDetectionHttpErrorCodes) {
+    if (this.outlierDetectionHttpErrorCodes != null) {
+        this.outlierDetectionHttpErrorCodes.clear();
+        _visitables.remove("outlierDetectionHttpErrorCodes");
+    }
+    if (outlierDetectionHttpErrorCodes != null) {
+      for (Long item : outlierDetectionHttpErrorCodes) {
+        this.addToOutlierDetectionHttpErrorCodes(item);
+      }
+    }
     return (A) this;
   }
   

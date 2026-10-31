@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -34,17 +33,19 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Platform stores any global configuration used for Nutanix platforms.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "apiVIP",
     "apiVIPs",
     "clusterOSImage",
     "defaultMachinePlatform",
+    "dnsRecordsType",
     "failureDomains",
     "ingressVIP",
     "ingressVIPs",
@@ -89,6 +90,8 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     private String clusterOSImage;
     @JsonProperty("defaultMachinePlatform")
     private MachinePool defaultMachinePlatform;
+    @JsonProperty("dnsRecordsType")
+    private String dnsRecordsType;
     @JsonProperty("failureDomains")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<FailureDomain> failureDomains = new ArrayList<>();
@@ -120,12 +123,13 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     public Platform() {
     }
 
-    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, List<FailureDomain> failureDomains, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, String preloadedOSImageName, Integer prismAPICallTimeout, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
+    public Platform(String apiVIP, List<String> apiVIPs, String clusterOSImage, MachinePool defaultMachinePlatform, String dnsRecordsType, List<FailureDomain> failureDomains, String ingressVIP, List<String> ingressVIPs, NutanixPlatformLoadBalancer loadBalancer, String preloadedOSImageName, Integer prismAPICallTimeout, PrismCentral prismCentral, List<PrismElement> prismElements, List<String> subnetUUIDs) {
         super();
         this.apiVIP = apiVIP;
         this.apiVIPs = apiVIPs;
         this.clusterOSImage = clusterOSImage;
         this.defaultMachinePlatform = defaultMachinePlatform;
+        this.dnsRecordsType = dnsRecordsType;
         this.failureDomains = failureDomains;
         this.ingressVIP = ingressVIP;
         this.ingressVIPs = ingressVIPs;
@@ -200,6 +204,22 @@ public class Platform implements Editable<PlatformBuilder>, KubernetesResource
     @JsonProperty("defaultMachinePlatform")
     public void setDefaultMachinePlatform(MachinePool defaultMachinePlatform) {
         this.defaultMachinePlatform = defaultMachinePlatform;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public String getDnsRecordsType() {
+        return dnsRecordsType;
+    }
+
+    /**
+     * dnsRecordsType determines whether records for api, api-int, and ingress are provided by the internal DNS service or externally. Allowed values are `Internal`, `External`, and omitted. When set to `Internal`, records are provided by the internal infrastructure and no additional user configuration is required for the cluster to function. When set to `External`, records are not provided by the internal infrastructure and must be configured by the user on a DNS server outside the cluster. Cluster nodes must use this external server for their upstream DNS requests. This value may only be set when loadBalancer.type is set to UserManaged. When omitted, this means the user has no opinion and the platform is left to choose reasonable defaults. These defaults are subject to change over time. The current default is `Internal`.<br><p> <br><p> Possible enum values:<br><p>  - `"External"`<br><p>  - `"Internal"`
+     */
+    @JsonProperty("dnsRecordsType")
+    public void setDnsRecordsType(String dnsRecordsType) {
+        this.dnsRecordsType = dnsRecordsType;
     }
 
     /**

@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ObservabilityAddonSpec is the spec of observability addon.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "enableMetrics",
@@ -98,7 +98,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * EnableMetrics indicates the observability addon push metrics to hub server.
+     * When false, the managed cluster addon stops pushing metrics to the hub.
      */
     @JsonProperty("enableMetrics")
     public Boolean getEnableMetrics() {
@@ -106,7 +106,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * EnableMetrics indicates the observability addon push metrics to hub server.
+     * When false, the managed cluster addon stops pushing metrics to the hub.
      */
     @JsonProperty("enableMetrics")
     public void setEnableMetrics(Boolean enableMetrics) {
@@ -114,7 +114,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * Interval for the observability addon push metrics to hub server.
+     * Interval in seconds at which the observability addon on each managed cluster pushes metrics to the hub.
      */
     @JsonProperty("interval")
     public Integer getInterval() {
@@ -122,7 +122,7 @@ public class ObservabilityAddonSpec implements Editable<ObservabilityAddonSpecBu
     }
 
     /**
-     * Interval for the observability addon push metrics to hub server.
+     * Interval in seconds at which the observability addon on each managed cluster pushes metrics to the hub.
      */
     @JsonProperty("interval")
     public void setInterval(Integer interval) {

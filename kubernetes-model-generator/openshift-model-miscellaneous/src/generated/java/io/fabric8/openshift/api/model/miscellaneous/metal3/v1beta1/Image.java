@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * Image holds the details of an image to use during provisioning.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "checksum",
@@ -94,7 +94,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.
      */
     @JsonProperty("checksum")
     public String getChecksum() {
@@ -102,7 +102,7 @@ public class Image implements Editable<ImageBuilder>, KubernetesResource
     }
 
     /**
-     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one.
+     * Checksum is a md5sum, sha256sum or sha512sum value or a URL to retrieve one. Optional for live-iso and oci:// URLs; required otherwise.
      */
     @JsonProperty("checksum")
     public void setChecksum(String checksum) {

@@ -25,7 +25,7 @@ public class UpdateBuilder extends UpdateFluent<UpdateBuilder> implements Visita
   }
 
   public Update build() {
-    Update buildable = new Update(fluent.getArchitecture(), fluent.getForce(), fluent.getImage(), fluent.getVersion());
+    Update buildable = new Update(fluent.buildAcceptRisks(), fluent.getArchitecture(), fluent.getForce(), fluent.getImage(), fluent.getMode(), fluent.getVersion());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

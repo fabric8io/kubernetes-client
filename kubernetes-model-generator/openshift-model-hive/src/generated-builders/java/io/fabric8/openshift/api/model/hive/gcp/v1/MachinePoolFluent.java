@@ -29,6 +29,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
   private OSDiskBuilder osDisk;
   private String secureBoot;
   private String serviceAccount;
+  private List<String> tags = new ArrayList<String>();
   private String type;
   private ArrayList<UserTagBuilder> userTags = new ArrayList<UserTagBuilder>();
   private List<String> zones = new ArrayList<String>();
@@ -40,6 +41,16 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     this.copyInstance(instance);
   }
 
+  public A addAllToTags(Collection<String> items) {
+    if (this.tags == null) {
+      this.tags = new ArrayList();
+    }
+    for (String item : items) {
+      this.tags.add(item);
+    }
+    return (A) this;
+  }
+  
   public A addAllToUserTags(Collection<UserTag> items) {
     if (this.userTags == null) {
       this.userTags = new ArrayList();
@@ -91,6 +102,24 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
     }
+    return (A) this;
+  }
+  
+  public A addToTags(String... items) {
+    if (this.tags == null) {
+      this.tags = new ArrayList();
+    }
+    for (String item : items) {
+      this.tags.add(item);
+    }
+    return (A) this;
+  }
+  
+  public A addToTags(int index,String item) {
+    if (this.tags == null) {
+      this.tags = new ArrayList();
+    }
+    this.tags.add(index, item);
     return (A) this;
   }
   
@@ -176,6 +205,7 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
         this.withOsDisk(instance.getOsDisk());
         this.withSecureBoot(instance.getSecureBoot());
         this.withServiceAccount(instance.getServiceAccount());
+        this.withTags(instance.getTags());
         this.withType(instance.getType());
         this.withUserTags(instance.getUserTags());
         this.withZones(instance.getZones());
@@ -257,6 +287,9 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     if (!(Objects.equals(serviceAccount, that.serviceAccount))) {
       return false;
     }
+    if (!(Objects.equals(tags, that.tags))) {
+      return false;
+    }
     if (!(Objects.equals(type, that.type))) {
       return false;
     }
@@ -276,12 +309,29 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     return this.additionalProperties;
   }
   
+  public String getFirstTag() {
+    return this.tags.get(0);
+  }
+  
   public String getFirstZone() {
     return this.zones.get(0);
   }
   
+  public String getLastTag() {
+    return this.tags.get(tags.size() - 1);
+  }
+  
   public String getLastZone() {
     return this.zones.get(zones.size() - 1);
+  }
+  
+  public String getMatchingTag(Predicate<String> predicate) {
+      for (String item : tags) {
+        if (predicate.test(item)) {
+          return item;
+        }
+      }
+      return null;
   }
   
   public String getMatchingZone(Predicate<String> predicate) {
@@ -309,6 +359,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     return this.serviceAccount;
   }
   
+  public String getTag(int index) {
+    return this.tags.get(index);
+  }
+  
+  public List<String> getTags() {
+    return this.tags;
+  }
+  
   public String getType() {
     return this.type;
   }
@@ -323,6 +381,15 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasMatchingTag(Predicate<String> predicate) {
+      for (String item : tags) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingUserTag(Predicate<UserTagBuilder> predicate) {
@@ -363,6 +430,10 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     return this.serviceAccount != null;
   }
   
+  public boolean hasTags() {
+    return this.tags != null && !(this.tags.isEmpty());
+  }
+  
   public boolean hasType() {
     return this.type != null;
   }
@@ -376,7 +447,17 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
   }
   
   public int hashCode() {
-    return Objects.hash(networkProjectID, onHostMaintenance, osDisk, secureBoot, serviceAccount, type, userTags, zones, additionalProperties);
+    return Objects.hash(networkProjectID, onHostMaintenance, osDisk, secureBoot, serviceAccount, tags, type, userTags, zones, additionalProperties);
+  }
+  
+  public A removeAllFromTags(Collection<String> items) {
+    if (this.tags == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.tags.remove(item);
+    }
+    return (A) this;
   }
   
   public A removeAllFromUserTags(Collection<UserTag> items) {
@@ -425,6 +506,16 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     return (A) this;
   }
   
+  public A removeFromTags(String... items) {
+    if (this.tags == null) {
+      return (A) this;
+    }
+    for (String item : items) {
+      this.tags.remove(item);
+    }
+    return (A) this;
+  }
+  
   public A removeFromUserTags(UserTag... items) {
     if (this.userTags == null) {
       return (A) this;
@@ -465,6 +556,14 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
   
   public UserTagsNested<A> setNewUserTagLike(int index,UserTag item) {
     return new UserTagsNested(index, item);
+  }
+  
+  public A setToTags(int index,String item) {
+    if (this.tags == null) {
+      this.tags = new ArrayList();
+    }
+    this.tags.set(index, item);
+    return (A) this;
   }
   
   public A setToUserTags(int index,UserTag item) {
@@ -516,6 +615,11 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
     if (!(serviceAccount == null)) {
         sb.append("serviceAccount:");
         sb.append(serviceAccount);
+        sb.append(",");
+    }
+    if (!(tags == null) && !(tags.isEmpty())) {
+        sb.append("tags:");
+        sb.append(tags);
         sb.append(",");
     }
     if (!(type == null)) {
@@ -587,6 +691,31 @@ public class MachinePoolFluent<A extends io.fabric8.openshift.api.model.hive.gcp
   
   public A withServiceAccount(String serviceAccount) {
     this.serviceAccount = serviceAccount;
+    return (A) this;
+  }
+  
+  public A withTags(List<String> tags) {
+    if (tags != null) {
+        this.tags = new ArrayList();
+        for (String item : tags) {
+          this.addToTags(item);
+        }
+    } else {
+      this.tags = null;
+    }
+    return (A) this;
+  }
+  
+  public A withTags(String... tags) {
+    if (this.tags != null) {
+        this.tags.clear();
+        _visitables.remove("tags");
+    }
+    if (tags != null) {
+      for (String item : tags) {
+        this.addToTags(item);
+      }
+    }
     return (A) this;
   }
   

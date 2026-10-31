@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,14 +31,15 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * JobTemplateSpec defines the desired state of JobTemplate
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "JobSpec"
+    "jobSpec"
 })
 @ToString
 @EqualsAndHashCode
@@ -66,7 +66,7 @@ import lombok.experimental.Accessors;
 public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, KubernetesResource
 {
 
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     private JobSpec jobSpec;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
@@ -85,7 +85,7 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
     /**
      * JobTemplateSpec defines the desired state of JobTemplate
      */
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     public JobSpec getJobSpec() {
         return jobSpec;
     }
@@ -93,7 +93,7 @@ public class JobTemplateSpec implements Editable<JobTemplateSpecBuilder>, Kubern
     /**
      * JobTemplateSpec defines the desired state of JobTemplate
      */
-    @JsonProperty("JobSpec")
+    @JsonProperty("jobSpec")
     public void setJobSpec(JobSpec jobSpec) {
         this.jobSpec = jobSpec;
     }

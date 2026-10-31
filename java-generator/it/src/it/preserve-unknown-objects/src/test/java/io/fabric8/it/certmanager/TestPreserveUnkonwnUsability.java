@@ -15,7 +15,6 @@
  */
 package io.fabric8.it.certmanager;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import io.dapr.v1alpha1.Component;
 import io.dapr.v1alpha1.ComponentSpec;
 import io.dapr.v1alpha1.componentspec.Metadata;
@@ -24,6 +23,7 @@ import io.fabric8.kubernetes.api.model.AnyType;
 import io.fabric8.kubernetes.api.model.ObjectMeta;
 import io.fabric8.kubernetes.client.utils.Serialization;
 import org.junit.jupiter.api.Test;
+import tools.jackson.databind.JsonNode;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

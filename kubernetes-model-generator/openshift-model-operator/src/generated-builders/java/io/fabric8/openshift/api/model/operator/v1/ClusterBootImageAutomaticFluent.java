@@ -1,0 +1,173 @@
+package io.fabric8.openshift.api.model.operator.v1;
+
+import io.fabric8.kubernetes.api.builder.BaseFluent;
+import java.lang.Object;
+import java.lang.String;
+import java.lang.StringBuilder;
+import java.lang.SuppressWarnings;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Objects;
+
+/**
+ * Generated
+ */
+@SuppressWarnings("unchecked")
+public class ClusterBootImageAutomaticFluent<A extends io.fabric8.openshift.api.model.operator.v1.ClusterBootImageAutomaticFluent<A>> extends BaseFluent<A>{
+
+  private Map<String,Object> additionalProperties;
+  private String ocpVersion;
+  private String rhcosVersion;
+
+  public ClusterBootImageAutomaticFluent() {
+  }
+  
+  public ClusterBootImageAutomaticFluent(ClusterBootImageAutomatic instance) {
+    this.copyInstance(instance);
+  }
+
+  public A addToAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null && map != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (map != null) {
+      this.additionalProperties.putAll(map);
+    }
+    return (A) this;
+  }
+  
+  public A addToAdditionalProperties(String key,Object value) {
+    if (this.additionalProperties == null && key != null && value != null) {
+      this.additionalProperties = new LinkedHashMap();
+    }
+    if (key != null && value != null) {
+      this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  protected void copyInstance(ClusterBootImageAutomatic instance) {
+    instance = instance != null ? instance : new ClusterBootImageAutomatic();
+    if (instance != null) {
+        this.withOcpVersion(instance.getOcpVersion());
+        this.withRhcosVersion(instance.getRhcosVersion());
+        this.withAdditionalProperties(instance.getAdditionalProperties());
+    }
+  }
+  
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    if (!(super.equals(o))) {
+      return false;
+    }
+    ClusterBootImageAutomaticFluent that = (ClusterBootImageAutomaticFluent) o;
+    if (!(Objects.equals(ocpVersion, that.ocpVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(rhcosVersion, that.rhcosVersion))) {
+      return false;
+    }
+    if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
+      return false;
+    }
+    return true;
+  }
+  
+  public Map<String,Object> getAdditionalProperties() {
+    return this.additionalProperties;
+  }
+  
+  public String getOcpVersion() {
+    return this.ocpVersion;
+  }
+  
+  public String getRhcosVersion() {
+    return this.rhcosVersion;
+  }
+  
+  public boolean hasAdditionalProperties() {
+    return this.additionalProperties != null;
+  }
+  
+  public boolean hasOcpVersion() {
+    return this.ocpVersion != null;
+  }
+  
+  public boolean hasRhcosVersion() {
+    return this.rhcosVersion != null;
+  }
+  
+  public int hashCode() {
+    return Objects.hash(ocpVersion, rhcosVersion, additionalProperties);
+  }
+  
+  public A removeFromAdditionalProperties(String key) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (key != null && this.additionalProperties != null) {
+      this.additionalProperties.remove(key);
+    }
+    return (A) this;
+  }
+  
+  public A removeFromAdditionalProperties(Map<String,Object> map) {
+    if (this.additionalProperties == null) {
+      return (A) this;
+    }
+    if (map != null) {
+      for (Object key : map.keySet()) {
+        if (this.additionalProperties != null) {
+          this.additionalProperties.remove(key);
+        }
+      }
+    }
+    return (A) this;
+  }
+  
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{");
+    if (!(ocpVersion == null)) {
+        sb.append("ocpVersion:");
+        sb.append(ocpVersion);
+        sb.append(",");
+    }
+    if (!(rhcosVersion == null)) {
+        sb.append("rhcosVersion:");
+        sb.append(rhcosVersion);
+        sb.append(",");
+    }
+    if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
+        sb.append("additionalProperties:");
+        sb.append(additionalProperties);
+    }
+    sb.append("}");
+    return sb.toString();
+  }
+  
+  public <K,V>A withAdditionalProperties(Map<String,Object> additionalProperties) {
+    if (additionalProperties == null) {
+      this.additionalProperties = null;
+    } else {
+      this.additionalProperties = new LinkedHashMap(additionalProperties);
+    }
+    return (A) this;
+  }
+  
+  public A withOcpVersion(String ocpVersion) {
+    this.ocpVersion = ocpVersion;
+    return (A) this;
+  }
+  
+  public A withRhcosVersion(String rhcosVersion) {
+    this.rhcosVersion = rhcosVersion;
+    return (A) this;
+  }
+  
+}

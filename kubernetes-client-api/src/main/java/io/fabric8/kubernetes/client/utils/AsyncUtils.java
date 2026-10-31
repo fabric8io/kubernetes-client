@@ -73,23 +73,35 @@ public class AsyncUtils {
       Consumer<T> onCancel, Duration timeout, ExponentialBackoffIntervalCalculator retryIntervalCalculator,
       ShouldRetry<T> shouldRetry) {
     withTimeout(action.get(), timeout).whenComplete((r, t) -> {
-      if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
-        final long retryInterval = retryIntervalCalculator.nextReconnectInterval();
-        long retryValue = shouldRetry.shouldRetry(r, t, retryInterval);
-        if (retryValue >= 0) {
-          if (r != null) {
-            onCancel.accept(r);
+      try {
+        if (retryIntervalCalculator.shouldRetry() && !result.isDone()) {
+          final long retryInterval = retryIntervalCalculator.nextReconnectInterval();
+          long retryValue = shouldRetry.shouldRetry(r, t, retryInterval);
+          if (retryValue >= 0) {
+            if (r != null) {
+              onCancel.accept(r);
+            }
+            Utils.schedule(Runnable::run,
+                () -> retryWithExponentialBackoff(result, action, onCancel, timeout, retryIntervalCalculator, shouldRetry),
+                retryInterval, TimeUnit.MILLISECONDS)
+                .exceptionally(failure -> {
+                  result.completeExceptionally(failure);
+                  return null;
+                });
+            return;
           }
-          Utils.schedule(Runnable::run,
-              () -> retryWithExponentialBackoff(result, action, onCancel, timeout, retryIntervalCalculator, shouldRetry),
-              retryInterval, TimeUnit.MILLISECONDS);
-          return;
         }
-      }
-      if (t != null) {
-        result.completeExceptionally(t);
-      } else if (!result.complete(r)) {
-        onCancel.accept(r);
+        if (t != null) {
+          result.completeExceptionally(t);
+        } else if (!result.complete(r)) {
+          onCancel.accept(r);
+        }
+      } catch (Throwable failure) {
+        // keep the attempt's failure (e.g. connection refused) visible when a retry callback throws on top of it
+        if (t != null && t != failure) {
+          failure.addSuppressed(t);
+        }
+        result.completeExceptionally(failure);
       }
     });
   }

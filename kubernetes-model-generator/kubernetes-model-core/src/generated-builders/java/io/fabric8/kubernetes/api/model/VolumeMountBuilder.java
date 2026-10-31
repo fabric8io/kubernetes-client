@@ -25,7 +25,7 @@ public class VolumeMountBuilder extends VolumeMountFluent<VolumeMountBuilder> im
   }
 
   public VolumeMount build() {
-    VolumeMount buildable = new VolumeMount(fluent.getMountPath(), fluent.getMountPropagation(), fluent.getName(), fluent.getReadOnly(), fluent.getRecursiveReadOnly(), fluent.getSubPath(), fluent.getSubPathExpr());
+    VolumeMount buildable = new VolumeMount(fluent.getBindMountOptions(), fluent.getMountPath(), fluent.getMountPropagation(), fluent.getName(), fluent.getReadOnly(), fluent.getRecursiveReadOnly(), fluent.getSubPath(), fluent.getSubPathExpr());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,14 +31,16 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * AWSPlatformStatus holds the current status of the Amazon Web Services infrastructure provider.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "cloudLoadBalancerConfig",
+    "ipFamily",
     "region",
     "resourceTags",
     "serviceEndpoints"
@@ -71,6 +72,8 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
 
     @JsonProperty("cloudLoadBalancerConfig")
     private CloudLoadBalancerConfig cloudLoadBalancerConfig;
+    @JsonProperty("ipFamily")
+    private String ipFamily;
     @JsonProperty("region")
     private String region;
     @JsonProperty("resourceTags")
@@ -88,9 +91,10 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     public AWSPlatformStatus() {
     }
 
-    public AWSPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
+    public AWSPlatformStatus(CloudLoadBalancerConfig cloudLoadBalancerConfig, String ipFamily, String region, List<AWSResourceTag> resourceTags, List<AWSServiceEndpoint> serviceEndpoints) {
         super();
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
+        this.ipFamily = ipFamily;
         this.region = region;
         this.resourceTags = resourceTags;
         this.serviceEndpoints = serviceEndpoints;
@@ -110,6 +114,22 @@ public class AWSPlatformStatus implements Editable<AWSPlatformStatusBuilder>, Ku
     @JsonProperty("cloudLoadBalancerConfig")
     public void setCloudLoadBalancerConfig(CloudLoadBalancerConfig cloudLoadBalancerConfig) {
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public String getIpFamily() {
+        return ipFamily;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for AWS network resources. This controls whether AWS resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public void setIpFamily(String ipFamily) {
+        this.ipFamily = ipFamily;
     }
 
     /**

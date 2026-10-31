@@ -25,7 +25,7 @@ public class ClusterTrustBundleProjectionBuilder extends ClusterTrustBundleProje
   }
 
   public ClusterTrustBundleProjection build() {
-    ClusterTrustBundleProjection buildable = new ClusterTrustBundleProjection(fluent.buildLabelSelector(), fluent.getName(), fluent.getOptional(), fluent.getPath(), fluent.getSignerName());
+    ClusterTrustBundleProjection buildable = new ClusterTrustBundleProjection(fluent.buildLabelSelector(), fluent.getName(), fluent.getOptional(), fluent.getPath(), fluent.getSignerName(), fluent.getUser());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

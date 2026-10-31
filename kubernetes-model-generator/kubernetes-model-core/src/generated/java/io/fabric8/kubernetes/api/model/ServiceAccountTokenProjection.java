@@ -10,22 +10,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.sundr.builder.annotations.Buildable;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * ServiceAccountTokenProjection represents a projected service account token volume. This projection can be used to insert a service account token into the pods runtime filesystem for use against APIs (Kubernetes API Server or otherwise).
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "audience",
     "expirationSeconds",
-    "path"
+    "path",
+    "user"
 })
 @ToString
 @EqualsAndHashCode
@@ -44,6 +45,8 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
     private Long expirationSeconds;
     @JsonProperty("path")
     private String path;
+    @JsonProperty("user")
+    private Long user;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -53,11 +56,12 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
     public ServiceAccountTokenProjection() {
     }
 
-    public ServiceAccountTokenProjection(String audience, Long expirationSeconds, String path) {
+    public ServiceAccountTokenProjection(String audience, Long expirationSeconds, String path, Long user) {
         super();
         this.audience = audience;
         this.expirationSeconds = expirationSeconds;
         this.path = path;
+        this.user = user;
     }
 
     /**
@@ -106,6 +110,22 @@ public class ServiceAccountTokenProjection implements Editable<ServiceAccountTok
     @JsonProperty("path")
     public void setPath(String path) {
         this.path = path;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public Long getUser() {
+        return user;
+    }
+
+    /**
+     * user is Optional: The owner UID of the created file. If specified, the item-level user field takes precedence over defaultUser. (Alpha) This field requires the AtomicWriteVolumeUserFields feature gate to be enabled.
+     */
+    @JsonProperty("user")
+    public void setUser(Long user) {
+        this.user = user;
     }
 
     @JsonIgnore

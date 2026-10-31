@@ -90,7 +90,7 @@
               <dependencies>
                 <includes>
                   <include>com.squareup*:*</include>
-                  <include>com.fasterxml.jackson*:*</include>
+                  <include>tools.jackson*:*</include>
                 </includes>
               </dependencies>
               <properties>

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,15 +31,17 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "claimMappings",
     "claimValidationRules",
     "issuer",
     "name",
-    "oidcClients"
+    "oidcClients",
+    "userValidationRules"
 })
 @ToString
 @EqualsAndHashCode
@@ -79,6 +80,9 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     @JsonProperty("oidcClients")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<OIDCClientConfig> oidcClients = new ArrayList<>();
+    @JsonProperty("userValidationRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    private List<TokenUserValidationRule> userValidationRules = new ArrayList<>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -88,13 +92,14 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     public OIDCProvider() {
     }
 
-    public OIDCProvider(TokenClaimMappings claimMappings, List<TokenClaimValidationRule> claimValidationRules, TokenIssuer issuer, String name, List<OIDCClientConfig> oidcClients) {
+    public OIDCProvider(TokenClaimMappings claimMappings, List<TokenClaimValidationRule> claimValidationRules, TokenIssuer issuer, String name, List<OIDCClientConfig> oidcClients, List<TokenUserValidationRule> userValidationRules) {
         super();
         this.claimMappings = claimMappings;
         this.claimValidationRules = claimValidationRules;
         this.issuer = issuer;
         this.name = name;
         this.oidcClients = oidcClients;
+        this.userValidationRules = userValidationRules;
     }
 
     @JsonProperty("claimMappings")
@@ -165,6 +170,23 @@ public class OIDCProvider implements Editable<OIDCProviderBuilder>, KubernetesRe
     @JsonProperty("oidcClients")
     public void setOidcClients(List<OIDCClientConfig> oidcClients) {
         this.oidcClients = oidcClients;
+    }
+
+    /**
+     * userValidationRules is an optional field that configures the set of rules used to validate the cluster user identity that was constructed via mapping token claims to user identity attributes. Rules are CEL expressions that must evaluate to 'true' for authentication to succeed. If any rule in the chain of rules evaluates to 'false', authentication will fail. When specified, at least one rule must be specified and no more than 64 rules may be specified.
+     */
+    @JsonProperty("userValidationRules")
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    public List<TokenUserValidationRule> getUserValidationRules() {
+        return userValidationRules;
+    }
+
+    /**
+     * userValidationRules is an optional field that configures the set of rules used to validate the cluster user identity that was constructed via mapping token claims to user identity attributes. Rules are CEL expressions that must evaluate to 'true' for authentication to succeed. If any rule in the chain of rules evaluates to 'false', authentication will fail. When specified, at least one rule must be specified and no more than 64 rules may be specified.
+     */
+    @JsonProperty("userValidationRules")
+    public void setUserValidationRules(List<TokenUserValidationRule> userValidationRules) {
+        this.userValidationRules = userValidationRules;
     }
 
     @JsonIgnore

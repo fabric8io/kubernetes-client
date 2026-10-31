@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,16 +31,18 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * AzurePlatformStatus holds the current status of the Azure infrastructure provider.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "armEndpoint",
     "cloudLoadBalancerConfig",
     "cloudName",
+    "ipFamily",
     "networkResourceGroupName",
     "resourceGroupName",
     "resourceTags"
@@ -77,6 +78,8 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     private CloudLoadBalancerConfig cloudLoadBalancerConfig;
     @JsonProperty("cloudName")
     private String cloudName;
+    @JsonProperty("ipFamily")
+    private String ipFamily;
     @JsonProperty("networkResourceGroupName")
     private String networkResourceGroupName;
     @JsonProperty("resourceGroupName")
@@ -93,11 +96,12 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     public AzurePlatformStatus() {
     }
 
-    public AzurePlatformStatus(String armEndpoint, CloudLoadBalancerConfig cloudLoadBalancerConfig, String cloudName, String networkResourceGroupName, String resourceGroupName, List<AzureResourceTag> resourceTags) {
+    public AzurePlatformStatus(String armEndpoint, CloudLoadBalancerConfig cloudLoadBalancerConfig, String cloudName, String ipFamily, String networkResourceGroupName, String resourceGroupName, List<AzureResourceTag> resourceTags) {
         super();
         this.armEndpoint = armEndpoint;
         this.cloudLoadBalancerConfig = cloudLoadBalancerConfig;
         this.cloudName = cloudName;
+        this.ipFamily = ipFamily;
         this.networkResourceGroupName = networkResourceGroupName;
         this.resourceGroupName = resourceGroupName;
         this.resourceTags = resourceTags;
@@ -149,6 +153,22 @@ public class AzurePlatformStatus implements Editable<AzurePlatformStatusBuilder>
     @JsonProperty("cloudName")
     public void setCloudName(String cloudName) {
         this.cloudName = cloudName;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for Azure network resources. This controls whether Azure resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public String getIpFamily() {
+        return ipFamily;
+    }
+
+    /**
+     * ipFamily specifies the IP protocol family that should be used for Azure network resources. This controls whether Azure resources are created with IPv4-only, or dual-stack networking with IPv4 or IPv6 as the primary protocol family.
+     */
+    @JsonProperty("ipFamily")
+    public void setIpFamily(String ipFamily) {
+        this.ipFamily = ipFamily;
     }
 
     /**

@@ -29,7 +29,7 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   private String region;
   private ArrayList<GCPResourceLabelBuilder> resourceLabels = new ArrayList<GCPResourceLabelBuilder>();
   private ArrayList<GCPResourceTagBuilder> resourceTags = new ArrayList<GCPResourceTagBuilder>();
-  private ArrayList<GCPServiceEndpointBuilder> serviceEndpoints = new ArrayList<GCPServiceEndpointBuilder>();
+  private String universeDomain;
 
   public GCPPlatformStatusFluent() {
   }
@@ -62,18 +62,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A addAllToServiceEndpoints(Collection<GCPServiceEndpoint> items) {
-    if (this.serviceEndpoints == null) {
-      this.serviceEndpoints = new ArrayList();
-    }
-    for (GCPServiceEndpoint item : items) {
-        GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-        _visitables.get("serviceEndpoints").add(builder);
-        this.serviceEndpoints.add(builder);
-    }
-    return (A) this;
-  }
-  
   public ResourceLabelsNested<A> addNewResourceLabel() {
     return new ResourceLabelsNested(-1, null);
   }
@@ -96,18 +84,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   
   public ResourceTagsNested<A> addNewResourceTagLike(GCPResourceTag item) {
     return new ResourceTagsNested(-1, item);
-  }
-  
-  public ServiceEndpointsNested<A> addNewServiceEndpoint() {
-    return new ServiceEndpointsNested(-1, null);
-  }
-  
-  public A addNewServiceEndpoint(String name,String url) {
-    return (A) this.addToServiceEndpoints(new GCPServiceEndpoint(name, url));
-  }
-  
-  public ServiceEndpointsNested<A> addNewServiceEndpointLike(GCPServiceEndpoint item) {
-    return new ServiceEndpointsNested(-1, item);
   }
   
   public A addToAdditionalProperties(Map<String,Object> map) {
@@ -184,33 +160,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A addToServiceEndpoints(GCPServiceEndpoint... items) {
-    if (this.serviceEndpoints == null) {
-      this.serviceEndpoints = new ArrayList();
-    }
-    for (GCPServiceEndpoint item : items) {
-        GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-        _visitables.get("serviceEndpoints").add(builder);
-        this.serviceEndpoints.add(builder);
-    }
-    return (A) this;
-  }
-  
-  public A addToServiceEndpoints(int index,GCPServiceEndpoint item) {
-    if (this.serviceEndpoints == null) {
-      this.serviceEndpoints = new ArrayList();
-    }
-    GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-    if (index < 0 || index >= serviceEndpoints.size()) {
-        _visitables.get("serviceEndpoints").add(builder);
-        serviceEndpoints.add(builder);
-    } else {
-        _visitables.get("serviceEndpoints").add(builder);
-        serviceEndpoints.add(index, builder);
-    }
-    return (A) this;
-  }
-  
   public CloudLoadBalancerConfig buildCloudLoadBalancerConfig() {
     return this.cloudLoadBalancerConfig != null ? this.cloudLoadBalancerConfig.build() : null;
   }
@@ -223,20 +172,12 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.resourceTags.get(0).build();
   }
   
-  public GCPServiceEndpoint buildFirstServiceEndpoint() {
-    return this.serviceEndpoints.get(0).build();
-  }
-  
   public GCPResourceLabel buildLastResourceLabel() {
     return this.resourceLabels.get(resourceLabels.size() - 1).build();
   }
   
   public GCPResourceTag buildLastResourceTag() {
     return this.resourceTags.get(resourceTags.size() - 1).build();
-  }
-  
-  public GCPServiceEndpoint buildLastServiceEndpoint() {
-    return this.serviceEndpoints.get(serviceEndpoints.size() - 1).build();
   }
   
   public GCPResourceLabel buildMatchingResourceLabel(Predicate<GCPResourceLabelBuilder> predicate) {
@@ -250,15 +191,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   
   public GCPResourceTag buildMatchingResourceTag(Predicate<GCPResourceTagBuilder> predicate) {
       for (GCPResourceTagBuilder item : resourceTags) {
-        if (predicate.test(item)) {
-          return item.build();
-        }
-      }
-      return null;
-  }
-  
-  public GCPServiceEndpoint buildMatchingServiceEndpoint(Predicate<GCPServiceEndpointBuilder> predicate) {
-      for (GCPServiceEndpointBuilder item : serviceEndpoints) {
         if (predicate.test(item)) {
           return item.build();
         }
@@ -282,14 +214,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.resourceTags != null ? build(resourceTags) : null;
   }
   
-  public GCPServiceEndpoint buildServiceEndpoint(int index) {
-    return this.serviceEndpoints.get(index).build();
-  }
-  
-  public List<GCPServiceEndpoint> buildServiceEndpoints() {
-    return this.serviceEndpoints != null ? build(serviceEndpoints) : null;
-  }
-  
   protected void copyInstance(GCPPlatformStatus instance) {
     instance = instance != null ? instance : new GCPPlatformStatus();
     if (instance != null) {
@@ -298,7 +222,7 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
         this.withRegion(instance.getRegion());
         this.withResourceLabels(instance.getResourceLabels());
         this.withResourceTags(instance.getResourceTags());
-        this.withServiceEndpoints(instance.getServiceEndpoints());
+        this.withUniverseDomain(instance.getUniverseDomain());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -321,13 +245,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.setNewResourceTagLike(0, this.buildResourceTag(0));
   }
   
-  public ServiceEndpointsNested<A> editFirstServiceEndpoint() {
-    if (serviceEndpoints.size() == 0) {
-      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "serviceEndpoints"));
-    }
-    return this.setNewServiceEndpointLike(0, this.buildServiceEndpoint(0));
-  }
-  
   public ResourceLabelsNested<A> editLastResourceLabel() {
     int index = resourceLabels.size() - 1;
     if (index < 0) {
@@ -342,14 +259,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "resourceTags"));
     }
     return this.setNewResourceTagLike(index, this.buildResourceTag(index));
-  }
-  
-  public ServiceEndpointsNested<A> editLastServiceEndpoint() {
-    int index = serviceEndpoints.size() - 1;
-    if (index < 0) {
-      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "serviceEndpoints"));
-    }
-    return this.setNewServiceEndpointLike(index, this.buildServiceEndpoint(index));
   }
   
   public ResourceLabelsNested<A> editMatchingResourceLabel(Predicate<GCPResourceLabelBuilder> predicate) {
@@ -380,20 +289,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.setNewResourceTagLike(index, this.buildResourceTag(index));
   }
   
-  public ServiceEndpointsNested<A> editMatchingServiceEndpoint(Predicate<GCPServiceEndpointBuilder> predicate) {
-    int index = -1;
-    for (int i = 0;i < serviceEndpoints.size();i++) {
-      if (predicate.test(serviceEndpoints.get(i))) {
-          index = i;
-          break;
-      }
-    }
-    if (index < 0) {
-      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "serviceEndpoints"));
-    }
-    return this.setNewServiceEndpointLike(index, this.buildServiceEndpoint(index));
-  }
-  
   public CloudLoadBalancerConfigNested<A> editOrNewCloudLoadBalancerConfig() {
     return this.withNewCloudLoadBalancerConfigLike(Optional.ofNullable(this.buildCloudLoadBalancerConfig()).orElse(new CloudLoadBalancerConfigBuilder().build()));
   }
@@ -414,13 +309,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
       throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "resourceTags"));
     }
     return this.setNewResourceTagLike(index, this.buildResourceTag(index));
-  }
-  
-  public ServiceEndpointsNested<A> editServiceEndpoint(int index) {
-    if (serviceEndpoints.size() <= index) {
-      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "serviceEndpoints"));
-    }
-    return this.setNewServiceEndpointLike(index, this.buildServiceEndpoint(index));
   }
   
   public boolean equals(Object o) {
@@ -449,7 +337,7 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     if (!(Objects.equals(resourceTags, that.resourceTags))) {
       return false;
     }
-    if (!(Objects.equals(serviceEndpoints, that.serviceEndpoints))) {
+    if (!(Objects.equals(universeDomain, that.universeDomain))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -468,6 +356,10 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
   
   public String getRegion() {
     return this.region;
+  }
+  
+  public String getUniverseDomain() {
+    return this.universeDomain;
   }
   
   public boolean hasAdditionalProperties() {
@@ -496,15 +388,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
       return false;
   }
   
-  public boolean hasMatchingServiceEndpoint(Predicate<GCPServiceEndpointBuilder> predicate) {
-      for (GCPServiceEndpointBuilder item : serviceEndpoints) {
-        if (predicate.test(item)) {
-          return true;
-        }
-      }
-      return false;
-  }
-  
   public boolean hasProjectID() {
     return this.projectID != null;
   }
@@ -521,12 +404,12 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return this.resourceTags != null && !(this.resourceTags.isEmpty());
   }
   
-  public boolean hasServiceEndpoints() {
-    return this.serviceEndpoints != null && !(this.serviceEndpoints.isEmpty());
+  public boolean hasUniverseDomain() {
+    return this.universeDomain != null;
   }
   
   public int hashCode() {
-    return Objects.hash(cloudLoadBalancerConfig, projectID, region, resourceLabels, resourceTags, serviceEndpoints, additionalProperties);
+    return Objects.hash(cloudLoadBalancerConfig, projectID, region, resourceLabels, resourceTags, universeDomain, additionalProperties);
   }
   
   public A removeAllFromResourceLabels(Collection<GCPResourceLabel> items) {
@@ -549,18 +432,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
         GCPResourceTagBuilder builder = new GCPResourceTagBuilder(item);
         _visitables.get("resourceTags").remove(builder);
         this.resourceTags.remove(builder);
-    }
-    return (A) this;
-  }
-  
-  public A removeAllFromServiceEndpoints(Collection<GCPServiceEndpoint> items) {
-    if (this.serviceEndpoints == null) {
-      return (A) this;
-    }
-    for (GCPServiceEndpoint item : items) {
-        GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-        _visitables.get("serviceEndpoints").remove(builder);
-        this.serviceEndpoints.remove(builder);
     }
     return (A) this;
   }
@@ -613,18 +484,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A removeFromServiceEndpoints(GCPServiceEndpoint... items) {
-    if (this.serviceEndpoints == null) {
-      return (A) this;
-    }
-    for (GCPServiceEndpoint item : items) {
-        GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-        _visitables.get("serviceEndpoints").remove(builder);
-        this.serviceEndpoints.remove(builder);
-    }
-    return (A) this;
-  }
-  
   public A removeMatchingFromResourceLabels(Predicate<GCPResourceLabelBuilder> predicate) {
     if (resourceLabels == null) {
       return (A) this;
@@ -657,32 +516,12 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A removeMatchingFromServiceEndpoints(Predicate<GCPServiceEndpointBuilder> predicate) {
-    if (serviceEndpoints == null) {
-      return (A) this;
-    }
-    Iterator<GCPServiceEndpointBuilder> each = serviceEndpoints.iterator();
-    List visitables = _visitables.get("serviceEndpoints");
-    while (each.hasNext()) {
-        GCPServiceEndpointBuilder builder = each.next();
-        if (predicate.test(builder)) {
-            visitables.remove(builder);
-            each.remove();
-        }
-    }
-    return (A) this;
-  }
-  
   public ResourceLabelsNested<A> setNewResourceLabelLike(int index,GCPResourceLabel item) {
     return new ResourceLabelsNested(index, item);
   }
   
   public ResourceTagsNested<A> setNewResourceTagLike(int index,GCPResourceTag item) {
     return new ResourceTagsNested(index, item);
-  }
-  
-  public ServiceEndpointsNested<A> setNewServiceEndpointLike(int index,GCPServiceEndpoint item) {
-    return new ServiceEndpointsNested(index, item);
   }
   
   public A setToResourceLabels(int index,GCPResourceLabel item) {
@@ -715,21 +554,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A setToServiceEndpoints(int index,GCPServiceEndpoint item) {
-    if (this.serviceEndpoints == null) {
-      this.serviceEndpoints = new ArrayList();
-    }
-    GCPServiceEndpointBuilder builder = new GCPServiceEndpointBuilder(item);
-    if (index < 0 || index >= serviceEndpoints.size()) {
-        _visitables.get("serviceEndpoints").add(builder);
-        serviceEndpoints.add(builder);
-    } else {
-        _visitables.get("serviceEndpoints").add(builder);
-        serviceEndpoints.set(index, builder);
-    }
-    return (A) this;
-  }
-  
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
@@ -758,9 +582,9 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
         sb.append(resourceTags);
         sb.append(",");
     }
-    if (!(serviceEndpoints == null) && !(serviceEndpoints.isEmpty())) {
-        sb.append("serviceEndpoints:");
-        sb.append(serviceEndpoints);
+    if (!(universeDomain == null)) {
+        sb.append("universeDomain:");
+        sb.append(universeDomain);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -866,31 +690,8 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     return (A) this;
   }
   
-  public A withServiceEndpoints(List<GCPServiceEndpoint> serviceEndpoints) {
-    if (this.serviceEndpoints != null) {
-      this._visitables.get("serviceEndpoints").clear();
-    }
-    if (serviceEndpoints != null) {
-        this.serviceEndpoints = new ArrayList();
-        for (GCPServiceEndpoint item : serviceEndpoints) {
-          this.addToServiceEndpoints(item);
-        }
-    } else {
-      this.serviceEndpoints = null;
-    }
-    return (A) this;
-  }
-  
-  public A withServiceEndpoints(GCPServiceEndpoint... serviceEndpoints) {
-    if (this.serviceEndpoints != null) {
-        this.serviceEndpoints.clear();
-        _visitables.remove("serviceEndpoints");
-    }
-    if (serviceEndpoints != null) {
-      for (GCPServiceEndpoint item : serviceEndpoints) {
-        this.addToServiceEndpoints(item);
-      }
-    }
+  public A withUniverseDomain(String universeDomain) {
+    this.universeDomain = universeDomain;
     return (A) this;
   }
   public class CloudLoadBalancerConfigNested<N> extends CloudLoadBalancerConfigFluent<CloudLoadBalancerConfigNested<N>> implements Nested<N>{
@@ -944,25 +745,6 @@ public class GCPPlatformStatusFluent<A extends io.fabric8.openshift.api.model.co
     }
     
     public N endResourceTag() {
-      return and();
-    }
-    
-  }
-  public class ServiceEndpointsNested<N> extends GCPServiceEndpointFluent<ServiceEndpointsNested<N>> implements Nested<N>{
-  
-    GCPServiceEndpointBuilder builder;
-    int index;
-  
-    ServiceEndpointsNested(int index,GCPServiceEndpoint item) {
-      this.index = index;
-      this.builder = new GCPServiceEndpointBuilder(this, item);
-    }
-  
-    public N and() {
-      return (N) GCPPlatformStatusFluent.this.setToServiceEndpoints(index, builder.build());
-    }
-    
-    public N endServiceEndpoint() {
       return and();
     }
     

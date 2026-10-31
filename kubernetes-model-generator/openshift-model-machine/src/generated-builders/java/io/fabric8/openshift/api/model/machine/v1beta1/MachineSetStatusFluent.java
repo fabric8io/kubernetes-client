@@ -31,9 +31,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
   private String errorMessage;
   private String errorReason;
   private Integer fullyLabeledReplicas;
+  private String labelSelector;
   private Long observedGeneration;
   private Integer readyReplicas;
   private Integer replicas;
+  private String synchronizedAPI;
   private Long synchronizedGeneration;
 
   public MachineSetStatusFluent() {
@@ -144,9 +146,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
         this.withErrorMessage(instance.getErrorMessage());
         this.withErrorReason(instance.getErrorReason());
         this.withFullyLabeledReplicas(instance.getFullyLabeledReplicas());
+        this.withLabelSelector(instance.getLabelSelector());
         this.withObservedGeneration(instance.getObservedGeneration());
         this.withReadyReplicas(instance.getReadyReplicas());
         this.withReplicas(instance.getReplicas());
+        this.withSynchronizedAPI(instance.getSynchronizedAPI());
         this.withSynchronizedGeneration(instance.getSynchronizedGeneration());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -217,6 +221,9 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     if (!(Objects.equals(fullyLabeledReplicas, that.fullyLabeledReplicas))) {
       return false;
     }
+    if (!(Objects.equals(labelSelector, that.labelSelector))) {
+      return false;
+    }
     if (!(Objects.equals(observedGeneration, that.observedGeneration))) {
       return false;
     }
@@ -224,6 +231,9 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
       return false;
     }
     if (!(Objects.equals(replicas, that.replicas))) {
+      return false;
+    }
+    if (!(Objects.equals(synchronizedAPI, that.synchronizedAPI))) {
       return false;
     }
     if (!(Objects.equals(synchronizedGeneration, that.synchronizedGeneration))) {
@@ -259,6 +269,10 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     return this.fullyLabeledReplicas;
   }
   
+  public String getLabelSelector() {
+    return this.labelSelector;
+  }
+  
   public Long getObservedGeneration() {
     return this.observedGeneration;
   }
@@ -269,6 +283,10 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
   
   public Integer getReplicas() {
     return this.replicas;
+  }
+  
+  public String getSynchronizedAPI() {
+    return this.synchronizedAPI;
   }
   
   public Long getSynchronizedGeneration() {
@@ -303,6 +321,10 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     return this.fullyLabeledReplicas != null;
   }
   
+  public boolean hasLabelSelector() {
+    return this.labelSelector != null;
+  }
+  
   public boolean hasMatchingCondition(Predicate<ConditionBuilder> predicate) {
       for (ConditionBuilder item : conditions) {
         if (predicate.test(item)) {
@@ -324,12 +346,16 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     return this.replicas != null;
   }
   
+  public boolean hasSynchronizedAPI() {
+    return this.synchronizedAPI != null;
+  }
+  
   public boolean hasSynchronizedGeneration() {
     return this.synchronizedGeneration != null;
   }
   
   public int hashCode() {
-    return Objects.hash(authoritativeAPI, availableReplicas, conditions, errorMessage, errorReason, fullyLabeledReplicas, observedGeneration, readyReplicas, replicas, synchronizedGeneration, additionalProperties);
+    return Objects.hash(authoritativeAPI, availableReplicas, conditions, errorMessage, errorReason, fullyLabeledReplicas, labelSelector, observedGeneration, readyReplicas, replicas, synchronizedAPI, synchronizedGeneration, additionalProperties);
   }
   
   public A removeAllFromConditions(Collection<Condition> items) {
@@ -448,6 +474,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
         sb.append(fullyLabeledReplicas);
         sb.append(",");
     }
+    if (!(labelSelector == null)) {
+        sb.append("labelSelector:");
+        sb.append(labelSelector);
+        sb.append(",");
+    }
     if (!(observedGeneration == null)) {
         sb.append("observedGeneration:");
         sb.append(observedGeneration);
@@ -461,6 +492,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     if (!(replicas == null)) {
         sb.append("replicas:");
         sb.append(replicas);
+        sb.append(",");
+    }
+    if (!(synchronizedAPI == null)) {
+        sb.append("synchronizedAPI:");
+        sb.append(synchronizedAPI);
         sb.append(",");
     }
     if (!(synchronizedGeneration == null)) {
@@ -538,6 +574,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
     return (A) this;
   }
   
+  public A withLabelSelector(String labelSelector) {
+    this.labelSelector = labelSelector;
+    return (A) this;
+  }
+  
   public A withObservedGeneration(Long observedGeneration) {
     this.observedGeneration = observedGeneration;
     return (A) this;
@@ -550,6 +591,11 @@ public class MachineSetStatusFluent<A extends io.fabric8.openshift.api.model.mac
   
   public A withReplicas(Integer replicas) {
     this.replicas = replicas;
+    return (A) this;
+  }
+  
+  public A withSynchronizedAPI(String synchronizedAPI) {
+    this.synchronizedAPI = synchronizedAPI;
     return (A) this;
   }
   

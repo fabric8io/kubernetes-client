@@ -142,7 +142,7 @@ class ModelGenerator {
     }
     final String serializer = serializerForJavaClass(ret.getClassInformation().getClassName());
     if (serializer != null) {
-      ret.addImport("com.fasterxml.jackson.databind.annotation.JsonSerialize");
+      ret.addImport("tools.jackson.databind.annotation.JsonSerialize");
       ret.put("classJsonSerializeUsing", serializer);
     }
     final String deserializer;
@@ -151,12 +151,12 @@ class ModelGenerator {
     } else if (deserializerForJavaClass(ret.getClassInformation().getClassName()) != null) {
       deserializer = deserializerForJavaClass(ret.getClassInformation().getClassName());
     } else if (!ret.getClassInformation().isEnum()) {
-      deserializer = "com.fasterxml.jackson.databind.JsonDeserializer.None.class";
+      deserializer = "tools.jackson.databind.ValueDeserializer.None.class";
     } else {
       deserializer = null;
     }
     if (deserializer != null) {
-      ret.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+      ret.addImport("tools.jackson.databind.annotation.JsonDeserialize");
       ret.put("classJsonDeserializeUsing", deserializer);
     }
     if (!ret.getClassInformation().isEnum()) {
@@ -227,12 +227,12 @@ class ModelGenerator {
       }
       final String serializeUsing = serializerForSchema(propertySchema);
       if (serializeUsing != null) {
-        templateContext.addImport("com.fasterxml.jackson.databind.annotation.JsonSerialize");
+        templateContext.addImport("tools.jackson.databind.annotation.JsonSerialize");
         templateProp.put("serializeUsing", serializeUsing);
       }
       final String deserializeUsing = deserializerForType(type);
       if (deserializeUsing != null) {
-        templateContext.addImport("com.fasterxml.jackson.databind.annotation.JsonDeserialize");
+        templateContext.addImport("tools.jackson.databind.annotation.JsonDeserialize");
         templateProp.put("deserializeUsing", deserializeUsing);
       }
       if (interfaceFields.contains(property.getKey())) {

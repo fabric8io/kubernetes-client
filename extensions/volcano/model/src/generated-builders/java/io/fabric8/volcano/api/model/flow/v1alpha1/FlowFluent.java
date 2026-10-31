@@ -20,6 +20,7 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
   private Map<String,Object> additionalProperties;
   private DependsOnBuilder dependsOn;
   private String name;
+  private PatchBuilder patch;
 
   public FlowFluent() {
   }
@@ -52,11 +53,16 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
     return this.dependsOn != null ? this.dependsOn.build() : null;
   }
   
+  public Patch buildPatch() {
+    return this.patch != null ? this.patch.build() : null;
+  }
+  
   protected void copyInstance(Flow instance) {
     instance = instance != null ? instance : new Flow();
     if (instance != null) {
         this.withDependsOn(instance.getDependsOn());
         this.withName(instance.getName());
+        this.withPatch(instance.getPatch());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -71,6 +77,18 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
   
   public DependsOnNested<A> editOrNewDependsOnLike(DependsOn item) {
     return this.withNewDependsOnLike(Optional.ofNullable(this.buildDependsOn()).orElse(item));
+  }
+  
+  public PatchNested<A> editOrNewPatch() {
+    return this.withNewPatchLike(Optional.ofNullable(this.buildPatch()).orElse(new PatchBuilder().build()));
+  }
+  
+  public PatchNested<A> editOrNewPatchLike(Patch item) {
+    return this.withNewPatchLike(Optional.ofNullable(this.buildPatch()).orElse(item));
+  }
+  
+  public PatchNested<A> editPatch() {
+    return this.withNewPatchLike(Optional.ofNullable(this.buildPatch()).orElse(null));
   }
   
   public boolean equals(Object o) {
@@ -88,6 +106,9 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
       return false;
     }
     if (!(Objects.equals(name, that.name))) {
+      return false;
+    }
+    if (!(Objects.equals(patch, that.patch))) {
       return false;
     }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
@@ -116,8 +137,12 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
     return this.name != null;
   }
   
+  public boolean hasPatch() {
+    return this.patch != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(dependsOn, name, additionalProperties);
+    return Objects.hash(dependsOn, name, patch, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -155,6 +180,11 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
     if (!(name == null)) {
         sb.append("name:");
         sb.append(name);
+        sb.append(",");
+    }
+    if (!(patch == null)) {
+        sb.append("patch:");
+        sb.append(patch);
         sb.append(",");
     }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
@@ -198,6 +228,26 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
   public DependsOnNested<A> withNewDependsOnLike(DependsOn item) {
     return new DependsOnNested(item);
   }
+  
+  public PatchNested<A> withNewPatch() {
+    return new PatchNested(null);
+  }
+  
+  public PatchNested<A> withNewPatchLike(Patch item) {
+    return new PatchNested(item);
+  }
+  
+  public A withPatch(Patch patch) {
+    this._visitables.remove("patch");
+    if (patch != null) {
+        this.patch = new PatchBuilder(patch);
+        this._visitables.get("patch").add(this.patch);
+    } else {
+        this.patch = null;
+        this._visitables.get("patch").remove(this.patch);
+    }
+    return (A) this;
+  }
   public class DependsOnNested<N> extends DependsOnFluent<DependsOnNested<N>> implements Nested<N>{
   
     DependsOnBuilder builder;
@@ -211,6 +261,23 @@ public class FlowFluent<A extends io.fabric8.volcano.api.model.flow.v1alpha1.Flo
     }
     
     public N endDependsOn() {
+      return and();
+    }
+    
+  }
+  public class PatchNested<N> extends PatchFluent<PatchNested<N>> implements Nested<N>{
+  
+    PatchBuilder builder;
+  
+    PatchNested(Patch item) {
+      this.builder = new PatchBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) FlowFluent.this.withPatch(builder.build());
+    }
+    
+    public N endPatch() {
       return and();
     }
     

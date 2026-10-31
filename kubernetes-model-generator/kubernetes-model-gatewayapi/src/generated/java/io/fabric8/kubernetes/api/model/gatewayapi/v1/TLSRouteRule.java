@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -31,11 +30,12 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
  * TLSRouteRule is the configuration for a given rule.
  */
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "backendRefs",
@@ -87,7 +87,7 @@ public class TLSRouteRule implements Editable<TLSRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> When a TLSRoute is attached to a listener in Terminate mode, a BackendTLSPolicy can be used to enable re-encryption of the traffic to the backends.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended<br><p> <br><p> Support for BackendTLSPolicy: Extended
      */
     @JsonProperty("backendRefs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -96,7 +96,7 @@ public class TLSRouteRule implements Editable<TLSRouteRuleBuilder>, KubernetesRe
     }
 
     /**
-     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended
+     * BackendRefs defines the backend(s) where matching requests should be sent. If unspecified or invalid (refers to a nonexistent resource or a Service with no endpoints), the rule performs no forwarding; if no filters are specified that would result in a response being sent, the underlying implementation must actively reject request attempts to this backend, by rejecting the connection. Request rejections must respect weight; if an invalid backend is requested to have 80% of requests, then 80% of requests must be rejected instead.<br><p> <br><p> When a TLSRoute is attached to a listener in Terminate mode, a BackendTLSPolicy can be used to enable re-encryption of the traffic to the backends.<br><p> <br><p> Support: Core for Kubernetes Service<br><p> <br><p> Support: Extended for Kubernetes ServiceImport<br><p> <br><p> Support: Implementation-specific for any other resource<br><p> <br><p> Support for weight: Extended<br><p> <br><p> Support for BackendTLSPolicy: Extended
      */
     @JsonProperty("backendRefs")
     public void setBackendRefs(List<BackendRef> backendRefs) {

@@ -25,10 +25,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.net.InetSocketAddress;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.fabric8.kubernetes.client.utils.HttpClientUtils.basicCredentials;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -92,6 +94,17 @@ class VertxHttpClientBuilderTest {
     assertThat(builder.vertx)
         .asInstanceOf(InstanceOfAssertFactories.type(VertxImpl.class))
         .returns(true, vi -> vi.closeFuture().isClosed());
+  }
+
+  @Test
+  @DisplayName("Decodable Basic proxy credentials don't add a Proxy-Authorization request header, which HTTPS requests would carry through the tunnel")
+  void decodableProxyCredentialsAddNoProxyAuthorizationInterceptor() {
+    final var builder = new VertxHttpClientFactory().newBuilder()
+        .proxyAddress(InetSocketAddress.createUnresolved("proxy.example.com", 8080))
+        .proxyAuthorization(basicCredentials("user", "pa:ss"));
+    try (HttpClient ignored = builder.build()) {
+      assertThat(builder.getInterceptors()).doesNotContainKey("PROXY-AUTH");
+    }
   }
 
   @Nested

@@ -25,7 +25,7 @@ public class DiscoveredClusterConditionBuilder extends DiscoveredClusterConditio
   }
 
   public DiscoveredClusterCondition build() {
-    DiscoveredClusterCondition buildable = new DiscoveredClusterCondition(fluent.getLastTransitionTime(), fluent.getLastUpdateTime(), fluent.getStatus(), fluent.getType());
+    DiscoveredClusterCondition buildable = new DiscoveredClusterCondition(fluent.getLastTransitionTime(), fluent.getMessage(), fluent.getObservedGeneration(), fluent.getReason(), fluent.getStatus(), fluent.getType());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

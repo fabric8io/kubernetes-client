@@ -28,6 +28,7 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
   private String allocationMode;
   private CapacityRequirementsBuilder capacity;
   private Long count;
+  private ArrayList<DeviceDerivedAttributeBuilder> derivedAttributes = new ArrayList<DeviceDerivedAttributeBuilder>();
   private String deviceClassName;
   private String name;
   private ArrayList<DeviceSelectorBuilder> selectors = new ArrayList<DeviceSelectorBuilder>();
@@ -40,6 +41,18 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     this.copyInstance(instance);
   }
 
+  public A addAllToDerivedAttributes(Collection<DeviceDerivedAttribute> items) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").add(builder);
+        this.derivedAttributes.add(builder);
+    }
+    return (A) this;
+  }
+  
   public A addAllToSelectors(Collection<DeviceSelector> items) {
     if (this.selectors == null) {
       this.selectors = new ArrayList();
@@ -62,6 +75,18 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
         this.tolerations.add(builder);
     }
     return (A) this;
+  }
+  
+  public DerivedAttributesNested<A> addNewDerivedAttribute() {
+    return new DerivedAttributesNested(-1, null);
+  }
+  
+  public A addNewDerivedAttribute(String expression,String name) {
+    return (A) this.addToDerivedAttributes(new DeviceDerivedAttribute(expression, name));
+  }
+  
+  public DerivedAttributesNested<A> addNewDerivedAttributeLike(DeviceDerivedAttribute item) {
+    return new DerivedAttributesNested(-1, item);
   }
   
   public SelectorsNested<A> addNewSelector() {
@@ -100,6 +125,33 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     }
     if (key != null && value != null) {
       this.additionalProperties.put(key, value);
+    }
+    return (A) this;
+  }
+  
+  public A addToDerivedAttributes(DeviceDerivedAttribute... items) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").add(builder);
+        this.derivedAttributes.add(builder);
+    }
+    return (A) this;
+  }
+  
+  public A addToDerivedAttributes(int index,DeviceDerivedAttribute item) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+    if (index < 0 || index >= derivedAttributes.size()) {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(builder);
+    } else {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(index, builder);
     }
     return (A) this;
   }
@@ -162,6 +214,18 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return this.capacity != null ? this.capacity.build() : null;
   }
   
+  public DeviceDerivedAttribute buildDerivedAttribute(int index) {
+    return this.derivedAttributes.get(index).build();
+  }
+  
+  public List<DeviceDerivedAttribute> buildDerivedAttributes() {
+    return this.derivedAttributes != null ? build(derivedAttributes) : null;
+  }
+  
+  public DeviceDerivedAttribute buildFirstDerivedAttribute() {
+    return this.derivedAttributes.get(0).build();
+  }
+  
   public DeviceSelector buildFirstSelector() {
     return this.selectors.get(0).build();
   }
@@ -170,12 +234,25 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return this.tolerations.get(0).build();
   }
   
+  public DeviceDerivedAttribute buildLastDerivedAttribute() {
+    return this.derivedAttributes.get(derivedAttributes.size() - 1).build();
+  }
+  
   public DeviceSelector buildLastSelector() {
     return this.selectors.get(selectors.size() - 1).build();
   }
   
   public DeviceToleration buildLastToleration() {
     return this.tolerations.get(tolerations.size() - 1).build();
+  }
+  
+  public DeviceDerivedAttribute buildMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+      for (DeviceDerivedAttributeBuilder item : derivedAttributes) {
+        if (predicate.test(item)) {
+          return item.build();
+        }
+      }
+      return null;
   }
   
   public DeviceSelector buildMatchingSelector(Predicate<DeviceSelectorBuilder> predicate) {
@@ -218,6 +295,7 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
         this.withAllocationMode(instance.getAllocationMode());
         this.withCapacity(instance.getCapacity());
         this.withCount(instance.getCount());
+        this.withDerivedAttributes(instance.getDerivedAttributes());
         this.withDeviceClassName(instance.getDeviceClassName());
         this.withName(instance.getName());
         this.withSelectors(instance.getSelectors());
@@ -228,6 +306,20 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
   
   public CapacityNested<A> editCapacity() {
     return this.withNewCapacityLike(Optional.ofNullable(this.buildCapacity()).orElse(null));
+  }
+  
+  public DerivedAttributesNested<A> editDerivedAttribute(int index) {
+    if (derivedAttributes.size() <= index) {
+      throw new RuntimeException(String.format("Can't edit %s. Index exceeds size.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
+  }
+  
+  public DerivedAttributesNested<A> editFirstDerivedAttribute() {
+    if (derivedAttributes.size() == 0) {
+      throw new RuntimeException(String.format("Can't edit first %s. The list is empty.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(0, this.buildDerivedAttribute(0));
   }
   
   public SelectorsNested<A> editFirstSelector() {
@@ -244,6 +336,14 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return this.setNewTolerationLike(0, this.buildToleration(0));
   }
   
+  public DerivedAttributesNested<A> editLastDerivedAttribute() {
+    int index = derivedAttributes.size() - 1;
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
+  }
+  
   public SelectorsNested<A> editLastSelector() {
     int index = selectors.size() - 1;
     if (index < 0) {
@@ -258,6 +358,20 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
       throw new RuntimeException(String.format("Can't edit last %s. The list is empty.", "tolerations"));
     }
     return this.setNewTolerationLike(index, this.buildToleration(index));
+  }
+  
+  public DerivedAttributesNested<A> editMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+    int index = -1;
+    for (int i = 0;i < derivedAttributes.size();i++) {
+      if (predicate.test(derivedAttributes.get(i))) {
+          index = i;
+          break;
+      }
+    }
+    if (index < 0) {
+      throw new RuntimeException(String.format("Can't edit matching %s. No match found.", "derivedAttributes"));
+    }
+    return this.setNewDerivedAttributeLike(index, this.buildDerivedAttribute(index));
   }
   
   public SelectorsNested<A> editMatchingSelector(Predicate<DeviceSelectorBuilder> predicate) {
@@ -330,6 +444,9 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     if (!(Objects.equals(count, that.count))) {
       return false;
     }
+    if (!(Objects.equals(derivedAttributes, that.derivedAttributes))) {
+      return false;
+    }
     if (!(Objects.equals(deviceClassName, that.deviceClassName))) {
       return false;
     }
@@ -384,8 +501,21 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return this.count != null;
   }
   
+  public boolean hasDerivedAttributes() {
+    return this.derivedAttributes != null && !(this.derivedAttributes.isEmpty());
+  }
+  
   public boolean hasDeviceClassName() {
     return this.deviceClassName != null;
+  }
+  
+  public boolean hasMatchingDerivedAttribute(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+      for (DeviceDerivedAttributeBuilder item : derivedAttributes) {
+        if (predicate.test(item)) {
+          return true;
+        }
+      }
+      return false;
   }
   
   public boolean hasMatchingSelector(Predicate<DeviceSelectorBuilder> predicate) {
@@ -419,7 +549,19 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
   }
   
   public int hashCode() {
-    return Objects.hash(allocationMode, capacity, count, deviceClassName, name, selectors, tolerations, additionalProperties);
+    return Objects.hash(allocationMode, capacity, count, derivedAttributes, deviceClassName, name, selectors, tolerations, additionalProperties);
+  }
+  
+  public A removeAllFromDerivedAttributes(Collection<DeviceDerivedAttribute> items) {
+    if (this.derivedAttributes == null) {
+      return (A) this;
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").remove(builder);
+        this.derivedAttributes.remove(builder);
+    }
+    return (A) this;
   }
   
   public A removeAllFromSelectors(Collection<DeviceSelector> items) {
@@ -470,6 +612,18 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return (A) this;
   }
   
+  public A removeFromDerivedAttributes(DeviceDerivedAttribute... items) {
+    if (this.derivedAttributes == null) {
+      return (A) this;
+    }
+    for (DeviceDerivedAttribute item : items) {
+        DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+        _visitables.get("derivedAttributes").remove(builder);
+        this.derivedAttributes.remove(builder);
+    }
+    return (A) this;
+  }
+  
   public A removeFromSelectors(DeviceSelector... items) {
     if (this.selectors == null) {
       return (A) this;
@@ -490,6 +644,22 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
         DeviceTolerationBuilder builder = new DeviceTolerationBuilder(item);
         _visitables.get("tolerations").remove(builder);
         this.tolerations.remove(builder);
+    }
+    return (A) this;
+  }
+  
+  public A removeMatchingFromDerivedAttributes(Predicate<DeviceDerivedAttributeBuilder> predicate) {
+    if (derivedAttributes == null) {
+      return (A) this;
+    }
+    Iterator<DeviceDerivedAttributeBuilder> each = derivedAttributes.iterator();
+    List visitables = _visitables.get("derivedAttributes");
+    while (each.hasNext()) {
+        DeviceDerivedAttributeBuilder builder = each.next();
+        if (predicate.test(builder)) {
+            visitables.remove(builder);
+            each.remove();
+        }
     }
     return (A) this;
   }
@@ -526,12 +696,31 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     return (A) this;
   }
   
+  public DerivedAttributesNested<A> setNewDerivedAttributeLike(int index,DeviceDerivedAttribute item) {
+    return new DerivedAttributesNested(index, item);
+  }
+  
   public SelectorsNested<A> setNewSelectorLike(int index,DeviceSelector item) {
     return new SelectorsNested(index, item);
   }
   
   public TolerationsNested<A> setNewTolerationLike(int index,DeviceToleration item) {
     return new TolerationsNested(index, item);
+  }
+  
+  public A setToDerivedAttributes(int index,DeviceDerivedAttribute item) {
+    if (this.derivedAttributes == null) {
+      this.derivedAttributes = new ArrayList();
+    }
+    DeviceDerivedAttributeBuilder builder = new DeviceDerivedAttributeBuilder(item);
+    if (index < 0 || index >= derivedAttributes.size()) {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.add(builder);
+    } else {
+        _visitables.get("derivedAttributes").add(builder);
+        derivedAttributes.set(index, builder);
+    }
+    return (A) this;
   }
   
   public A setToSelectors(int index,DeviceSelector item) {
@@ -580,6 +769,11 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     if (!(count == null)) {
         sb.append("count:");
         sb.append(count);
+        sb.append(",");
+    }
+    if (!(derivedAttributes == null) && !(derivedAttributes.isEmpty())) {
+        sb.append("derivedAttributes:");
+        sb.append(derivedAttributes);
         sb.append(",");
     }
     if (!(deviceClassName == null)) {
@@ -638,6 +832,34 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
   
   public A withCount(Long count) {
     this.count = count;
+    return (A) this;
+  }
+  
+  public A withDerivedAttributes(List<DeviceDerivedAttribute> derivedAttributes) {
+    if (this.derivedAttributes != null) {
+      this._visitables.get("derivedAttributes").clear();
+    }
+    if (derivedAttributes != null) {
+        this.derivedAttributes = new ArrayList();
+        for (DeviceDerivedAttribute item : derivedAttributes) {
+          this.addToDerivedAttributes(item);
+        }
+    } else {
+      this.derivedAttributes = null;
+    }
+    return (A) this;
+  }
+  
+  public A withDerivedAttributes(DeviceDerivedAttribute... derivedAttributes) {
+    if (this.derivedAttributes != null) {
+        this.derivedAttributes.clear();
+        _visitables.remove("derivedAttributes");
+    }
+    if (derivedAttributes != null) {
+      for (DeviceDerivedAttribute item : derivedAttributes) {
+        this.addToDerivedAttributes(item);
+      }
+    }
     return (A) this;
   }
   
@@ -727,6 +949,25 @@ public class DeviceSubRequestFluent<A extends io.fabric8.kubernetes.api.model.re
     }
     
     public N endCapacity() {
+      return and();
+    }
+    
+  }
+  public class DerivedAttributesNested<N> extends DeviceDerivedAttributeFluent<DerivedAttributesNested<N>> implements Nested<N>{
+  
+    DeviceDerivedAttributeBuilder builder;
+    int index;
+  
+    DerivedAttributesNested(int index,DeviceDerivedAttribute item) {
+      this.index = index;
+      this.builder = new DeviceDerivedAttributeBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) DeviceSubRequestFluent.this.setToDerivedAttributes(index, builder.build());
+    }
+    
+    public N endDerivedAttribute() {
       return and();
     }
     

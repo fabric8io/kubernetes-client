@@ -2,7 +2,6 @@ package io.fabric8.openshift.api.model.installer.aws.v1;
 
 import io.fabric8.kubernetes.api.builder.BaseFluent;
 import java.lang.Integer;
-import java.lang.Long;
 import java.lang.Object;
 import java.lang.String;
 import java.lang.StringBuilder;
@@ -21,7 +20,7 @@ public class EC2RootVolumeFluent<A extends io.fabric8.openshift.api.model.instal
   private Integer iops;
   private String kmsKeyARN;
   private Integer size;
-  private Long throughput;
+  private Integer throughput;
   private String type;
 
   public EC2RootVolumeFluent() {
@@ -111,7 +110,7 @@ public class EC2RootVolumeFluent<A extends io.fabric8.openshift.api.model.instal
     return this.size;
   }
   
-  public Long getThroughput() {
+  public Integer getThroughput() {
     return this.throughput;
   }
   
@@ -231,7 +230,7 @@ public class EC2RootVolumeFluent<A extends io.fabric8.openshift.api.model.instal
     return (A) this;
   }
   
-  public A withThroughput(Long throughput) {
+  public A withThroughput(Integer throughput) {
     this.throughput = throughput;
     return (A) this;
   }

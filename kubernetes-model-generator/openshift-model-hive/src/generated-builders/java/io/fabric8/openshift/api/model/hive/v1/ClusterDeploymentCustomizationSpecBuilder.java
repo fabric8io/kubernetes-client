@@ -25,7 +25,7 @@ public class ClusterDeploymentCustomizationSpecBuilder extends ClusterDeployment
   }
 
   public ClusterDeploymentCustomizationSpec build() {
-    ClusterDeploymentCustomizationSpec buildable = new ClusterDeploymentCustomizationSpec(fluent.buildInstallConfigPatches());
+    ClusterDeploymentCustomizationSpec buildable = new ClusterDeploymentCustomizationSpec(fluent.buildInstallConfigPatches(), fluent.buildInstallerManifestPatches());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

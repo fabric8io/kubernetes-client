@@ -15,8 +15,6 @@
  */
 package io.fabric8.kubernetes.client.impl;
 
-import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddress;
-import io.fabric8.kubernetes.api.model.networking.v1beta1.IPAddressList;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.Ingress;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClass;
 import io.fabric8.kubernetes.api.model.networking.v1beta1.IngressClassList;
@@ -31,17 +29,12 @@ public class V1beta1NetworkAPIGroupClient extends ClientAdapter<V1beta1NetworkAP
     implements V1beta1NetworkAPIGroupDSL {
 
   @Override
-  public NonNamespaceOperation<IPAddress, IPAddressList, Resource<IPAddress>> ipAddresses() {
-    return resources(IPAddress.class, IPAddressList.class);
-  }
-
-  @Override
   public MixedOperation<Ingress, IngressList, Resource<Ingress>> ingresses() {
     return resources(Ingress.class, IngressList.class);
   }
 
   @Override
-  public MixedOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses() {
+  public NonNamespaceOperation<IngressClass, IngressClassList, Resource<IngressClass>> ingressClasses() {
     return resources(IngressClass.class, IngressClassList.class);
   }
 

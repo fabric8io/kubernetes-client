@@ -1,5 +1,7 @@
 io.fabric8.kubernetes.api.model.resource.v1.DeviceClass
 io.fabric8.kubernetes.api.model.resource.v1.DeviceClassList
+io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRule
+io.fabric8.kubernetes.api.model.resource.v1.DeviceTaintRuleList
 io.fabric8.kubernetes.api.model.resource.v1.ResourceClaim
 io.fabric8.kubernetes.api.model.resource.v1.ResourceClaimList
 io.fabric8.kubernetes.api.model.resource.v1.ResourceClaimTemplate

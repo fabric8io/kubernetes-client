@@ -10,7 +10,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -30,8 +29,9 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "node"
@@ -78,7 +78,7 @@ public class AttachMetadata implements Editable<AttachMetadataBuilder>, Kubernet
     }
 
     /**
-     * node when set to true, Prometheus attaches node metadata to the discovered targets.<br><p> <br><p> The Prometheus service account must have the `list` and `watch` permissions on the `Nodes` objects.
+     * node when set to true, Prometheus attaches node metadata to the discovered targets.<br><p> <br><p> The Prometheus service account must have the `list` and `watch` permissions on the `Nodes` objects.<br><p> <br><p> Node metadata labels are not automatically added to scraped metrics. They are exposed as `__meta_kubernetes_node_&#42;` labels and can be copied to timeseries with relabeling configuration.
      */
     @JsonProperty("node")
     public Boolean getNode() {
@@ -86,7 +86,7 @@ public class AttachMetadata implements Editable<AttachMetadataBuilder>, Kubernet
     }
 
     /**
-     * node when set to true, Prometheus attaches node metadata to the discovered targets.<br><p> <br><p> The Prometheus service account must have the `list` and `watch` permissions on the `Nodes` objects.
+     * node when set to true, Prometheus attaches node metadata to the discovered targets.<br><p> <br><p> The Prometheus service account must have the `list` and `watch` permissions on the `Nodes` objects.<br><p> <br><p> Node metadata labels are not automatically added to scraped metrics. They are exposed as `__meta_kubernetes_node_&#42;` labels and can be copied to timeseries with relabeling configuration.
      */
     @JsonProperty("node")
     public void setNode(Boolean node) {

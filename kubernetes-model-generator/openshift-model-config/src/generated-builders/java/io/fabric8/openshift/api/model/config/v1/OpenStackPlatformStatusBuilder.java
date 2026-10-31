@@ -25,7 +25,7 @@ public class OpenStackPlatformStatusBuilder extends OpenStackPlatformStatusFluen
   }
 
   public OpenStackPlatformStatus build() {
-    OpenStackPlatformStatus buildable = new OpenStackPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getCloudName(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
+    OpenStackPlatformStatus buildable = new OpenStackPlatformStatus(fluent.getApiServerInternalIP(), fluent.getApiServerInternalIPs(), fluent.getCloudName(), fluent.getDnsRecordsType(), fluent.getIngressIP(), fluent.getIngressIPs(), fluent.buildLoadBalancer(), fluent.getMachineNetworks(), fluent.getNodeDNSIP());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

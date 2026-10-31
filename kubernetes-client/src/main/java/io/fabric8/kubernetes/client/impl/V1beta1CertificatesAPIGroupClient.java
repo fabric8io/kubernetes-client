@@ -19,6 +19,9 @@ import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRe
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.CertificateSigningRequestList;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundle;
 import io.fabric8.kubernetes.api.model.certificates.v1beta1.ClusterTrustBundleList;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequest;
+import io.fabric8.kubernetes.api.model.certificates.v1beta1.PodCertificateRequestList;
+import io.fabric8.kubernetes.client.dsl.MixedOperation;
 import io.fabric8.kubernetes.client.dsl.NonNamespaceOperation;
 import io.fabric8.kubernetes.client.dsl.Resource;
 import io.fabric8.kubernetes.client.dsl.V1beta1CertificateSigningRequestResource;
@@ -38,6 +41,11 @@ public class V1beta1CertificatesAPIGroupClient extends ClientAdapter<V1beta1Cert
   @Override
   public NonNamespaceOperation<ClusterTrustBundle, ClusterTrustBundleList, Resource<ClusterTrustBundle>> clusterTrustBundles() {
     return resources(ClusterTrustBundle.class, ClusterTrustBundleList.class);
+  }
+
+  @Override
+  public MixedOperation<PodCertificateRequest, PodCertificateRequestList, Resource<PodCertificateRequest>> podCertificateRequests() {
+    return resources(PodCertificateRequest.class, PodCertificateRequestList.class);
   }
 
   @Override

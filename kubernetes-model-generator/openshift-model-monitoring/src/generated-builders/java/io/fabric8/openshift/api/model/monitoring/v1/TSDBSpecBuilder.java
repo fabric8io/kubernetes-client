@@ -25,7 +25,7 @@ public class TSDBSpecBuilder extends TSDBSpecFluent<TSDBSpecBuilder> implements 
   }
 
   public TSDBSpec build() {
-    TSDBSpec buildable = new TSDBSpec(fluent.getOutOfOrderTimeWindow());
+    TSDBSpec buildable = new TSDBSpec(fluent.buildChunkEncoding(), fluent.getOutOfOrderTimeWindow(), fluent.getStaleSeriesCompactionThreshold());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

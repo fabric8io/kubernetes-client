@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.Container;
 import io.fabric8.kubernetes.api.model.ContainerPort;
@@ -32,11 +31,13 @@ import io.sundr.builder.annotations.BuildableReference;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import tools.jackson.databind.annotation.JsonDeserialize;
 
-@JsonDeserialize(using = com.fasterxml.jackson.databind.JsonDeserializer.None.class)
+@JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "audiences",
+    "discoveryURL",
     "issuerCertificateAuthority",
     "issuerURL"
 })
@@ -68,6 +69,8 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     @JsonProperty("audiences")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private List<String> audiences = new ArrayList<>();
+    @JsonProperty("discoveryURL")
+    private String discoveryURL;
     @JsonProperty("issuerCertificateAuthority")
     private ConfigMapNameReference issuerCertificateAuthority;
     @JsonProperty("issuerURL")
@@ -81,9 +84,10 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     public TokenIssuer() {
     }
 
-    public TokenIssuer(List<String> audiences, ConfigMapNameReference issuerCertificateAuthority, String issuerURL) {
+    public TokenIssuer(List<String> audiences, String discoveryURL, ConfigMapNameReference issuerCertificateAuthority, String issuerURL) {
         super();
         this.audiences = audiences;
+        this.discoveryURL = discoveryURL;
         this.issuerCertificateAuthority = issuerCertificateAuthority;
         this.issuerURL = issuerURL;
     }
@@ -103,6 +107,22 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
     @JsonProperty("audiences")
     public void setAudiences(List<String> audiences) {
         this.audiences = audiences;
+    }
+
+    /**
+     * discoveryURL is an optional field that, if specified, overrides the default discovery endpoint used to retrieve OIDC configuration metadata. By default, the discovery URL is derived from `issuerURL` as "{issuerURL}/.well-known/openid-configuration".<br><p> <br><p> The discoveryURL must be a valid absolute HTTPS URL. It must not contain query parameters, user information, or fragments. Additionally, it must differ from the value of `issuerURL` (ignoring trailing slashes). The discoveryURL value must be at least 1 character long and no longer than 2048 characters.
+     */
+    @JsonProperty("discoveryURL")
+    public String getDiscoveryURL() {
+        return discoveryURL;
+    }
+
+    /**
+     * discoveryURL is an optional field that, if specified, overrides the default discovery endpoint used to retrieve OIDC configuration metadata. By default, the discovery URL is derived from `issuerURL` as "{issuerURL}/.well-known/openid-configuration".<br><p> <br><p> The discoveryURL must be a valid absolute HTTPS URL. It must not contain query parameters, user information, or fragments. Additionally, it must differ from the value of `issuerURL` (ignoring trailing slashes). The discoveryURL value must be at least 1 character long and no longer than 2048 characters.
+     */
+    @JsonProperty("discoveryURL")
+    public void setDiscoveryURL(String discoveryURL) {
+        this.discoveryURL = discoveryURL;
     }
 
     @JsonProperty("issuerCertificateAuthority")

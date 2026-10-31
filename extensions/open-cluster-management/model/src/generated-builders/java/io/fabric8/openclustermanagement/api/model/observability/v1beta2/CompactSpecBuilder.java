@@ -25,7 +25,7 @@ public class CompactSpecBuilder extends CompactSpecFluent<CompactSpecBuilder> im
   }
 
   public CompactSpec build() {
-    CompactSpec buildable = new CompactSpec(fluent.buildContainers(), fluent.buildResources(), fluent.getServiceAccountAnnotations());
+    CompactSpec buildable = new CompactSpec(fluent.buildContainers(), fluent.buildDebug(), fluent.buildResources(), fluent.getServiceAccountAnnotations());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

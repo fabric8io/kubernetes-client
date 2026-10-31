@@ -18,22 +18,20 @@ package io.fabric8.kubernetes.api.model;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.ObjectCodec;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.JsonSerializer;
-import com.fasterxml.jackson.databind.SerializerProvider;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.sundr.builder.annotations.Buildable;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.core.JsonParser;
+import tools.jackson.databind.DeserializationContext;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.SerializationContext;
+import tools.jackson.databind.ValueDeserializer;
+import tools.jackson.databind.ValueSerializer;
+import tools.jackson.databind.annotation.JsonDeserialize;
+import tools.jackson.databind.annotation.JsonSerialize;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -345,11 +343,11 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     this.additionalProperties.put(name, value);
   }
 
-  public static class Serializer extends JsonSerializer<Quantity> {
+  public static class Serializer extends ValueSerializer<Quantity> {
 
     @Override
-    public void serialize(Quantity value, JsonGenerator jgen, SerializerProvider provider)
-        throws IOException, JsonProcessingException {
+    public void serialize(Quantity value, JsonGenerator jgen, SerializationContext provider)
+        throws JacksonException {
       if (value != null) {
         StringBuilder objAsStringBuilder = new StringBuilder();
         if (value.getAmount() != null) {
@@ -365,13 +363,12 @@ public class Quantity implements Serializable, Comparable<Quantity> {
     }
   }
 
-  public static class Deserializer extends JsonDeserializer<Quantity> {
+  public static class Deserializer extends ValueDeserializer<Quantity> {
 
     @Override
     public Quantity deserialize(JsonParser jsonParser, DeserializationContext ctxt)
-        throws IOException, JsonProcessingException {
-      ObjectCodec oc = jsonParser.getCodec();
-      JsonNode node = oc.readTree(jsonParser);
+        throws JacksonException {
+      JsonNode node = jsonParser.readValueAsTree();
       Quantity quantity = null;
       if (node.get("amount") != null && node.get("format") != null) {
         quantity = new Quantity(node.get("amount").asText(), node.get("format").asText());
