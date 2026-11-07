@@ -29,6 +29,7 @@ import io.fabric8.kubernetes.client.http.HttpResponse;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
@@ -67,7 +68,11 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
       };
       for (ByteBuffer content : b) {
-        for (char c : StandardCharsets.UTF_8.decode(content).array()) {
+        final CharBuffer charBuffer = StandardCharsets.UTF_8.decode(content);
+        final char[] chars = charBuffer.array();
+        final int length = charBuffer.limit();
+        for (int i = 0; i < length; i++) {
+          final char c = chars[i];
           if (c == '\n') {
             pending.incrementAndGet();
             onMessage(buffer.toString(), state, maybeConsume);
