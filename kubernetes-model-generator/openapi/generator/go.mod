@@ -57,7 +57,7 @@ require (
 	github.com/openshift/installer v1.5.0-rc-1
 	github.com/operator-framework/api v0.45.0
 	github.com/operator-framework/operator-lifecycle-manager v0.46.0
-	github.com/ovn-kubernetes/ovn-kubernetes/go-controller v0.0.0-20261016181840-5ff49b32879c
+	github.com/ovn-kubernetes/ovn-kubernetes/go-controller v0.0.0-20261113123836-b17ddc47aba4
 	github.com/prometheus-operator/prometheus-operator/pkg/apis/monitoring v0.94.1
 	github.com/spf13/cobra v1.10.2
 	github.com/stolostron/discovery v0.0.0-20260922145900-ea34ca3eb97c
@@ -192,7 +192,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/stolostron/backplane-operator v0.0.0-20260721224254-b16f694b49ea // indirect
 	github.com/stolostron/cluster-lifecycle-api v0.0.0-20240813023109-42b5c115d0a3 // indirect
-	github.com/stretchr/testify v1.12.1 // indirect
 	github.com/vincent-petithory/dataurl v1.0.0 // indirect
 	github.com/x448/float16 v0.8.4 // indirect
 	go.mongodb.org/mongo-driver v1.17.7 // indirect
