@@ -41,7 +41,7 @@ replace (
 )
 
 require (
-	github.com/cert-manager/cert-manager v1.21.2
+	github.com/cert-manager/cert-manager v1.21.3
 	github.com/chaos-mesh/chaos-mesh/api v0.0.0-20260906172039-d70b66ad97ac
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/k8snetworkplumbingwg/network-attachment-definition-client v1.7.7
