@@ -73,6 +73,8 @@ import static org.junit.jupiter.api.condition.OS.WINDOWS;
     "kubernetes.max.concurrent.requests",
     "kubernetes.max.concurrent.requests.per.host",
     "kubernetes.namespace",
+    "kubernetes.pod.copy.max.file.bytes",
+    "kubernetes.pod.copy.max.total.bytes",
     "kubernetes.request.timeout",
     "kubernetes.scale.timeout",
     "kubernetes.tls.versions",
@@ -160,6 +162,8 @@ class ConfigTest {
       System.setProperty("kubernetes.max.concurrent.requests.per.host", "20");
       System.setProperty("kubernetes.watch.reconnectInterval", "5000");
       System.setProperty("kubernetes.watch.reconnectLimit", "5");
+      System.setProperty("kubernetes.pod.copy.max.file.bytes", "1234");
+      System.setProperty("kubernetes.pod.copy.max.total.bytes", "5678");
       System.setProperty("kubernetes.request.timeout", "5000");
       System.setProperty("http.proxy", "httpProxy");
       System.setProperty("kubernetes.tls.versions", "TLSv1.2,TLSv1.1");
@@ -200,6 +204,8 @@ class ConfigTest {
           .hasFieldOrPropertyWithValue("httpProxy", "httpProxy")
           .hasFieldOrPropertyWithValue("watchReconnectInterval", 5000)
           .hasFieldOrPropertyWithValue("watchReconnectLimit", 5)
+          .hasFieldOrPropertyWithValue("podCopyMaxFileBytes", 1234L)
+          .hasFieldOrPropertyWithValue("podCopyMaxTotalBytes", 5678L)
           .hasFieldOrPropertyWithValue("requestTimeout", 5000)
           .hasFieldOrPropertyWithValue("requestConfig.uploadRequestTimeout", 600000)
           .hasFieldOrPropertyWithValue("tlsVersions", new TlsVersion[] { TlsVersion.TLS_1_2, TlsVersion.TLS_1_1 })
