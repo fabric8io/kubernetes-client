@@ -22,6 +22,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.File;
 import java.io.IOException;
@@ -186,17 +188,17 @@ class ConfigProxySourceTest {
       }
 
       @Test
-      @DisplayName("proxy-url with sock5 scheme, masterUrl with http scheme, then Config sets httpProxy")
-      void whenProxyUrlSocks5MasterUrlHttp_thenHttpProxySetInConfig() {
+      @DisplayName("socks5 proxy-url with HTTP master is stored")
+      void whenProxyUrlSocks5MasterUrlHttp_thenConfigStoresProxyUrl() {
         // When + Then
         assertThat(new ConfigBuilder().build())
             .hasFieldOrPropertyWithValue("httpProxy", "socks5://proxy-server.example:80")
-            .hasFieldOrPropertyWithValue("httpsProxy", null);
+            .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-server.example:80");
       }
 
       @Test
-      @DisplayName("proxy-url with http scheme, masterUrl with http scheme, then Config sets httpProxy")
-      void whenProxyUrlHttp_thenHttpProxySetInConfig() throws IOException {
+      @DisplayName("http proxy-url with HTTP master is stored")
+      void whenProxyUrlHttp_thenConfigStoresProxyUrl() throws IOException {
         // Given
         System.setProperty("kubeconfig",
             createKubeConfigWithCluster("http://kubernetes-remote-server.example:6443", "http://proxy-server.example:80")
@@ -204,7 +206,7 @@ class ConfigProxySourceTest {
         // When + Then
         assertThat(new ConfigBuilder().build())
             .hasFieldOrPropertyWithValue("httpProxy", "http://proxy-server.example:80")
-            .hasFieldOrPropertyWithValue("httpsProxy", null);
+            .hasFieldOrPropertyWithValue("httpsProxy", "http://proxy-server.example:80");
       }
 
       @Test
@@ -381,26 +383,65 @@ class ConfigProxySourceTest {
       }
 
       @Test
-      @DisplayName("proxy-url with socks5 scheme, masterUrl with https scheme, then Config sets httpsProxy")
-      void whenProxyUrlSocks5_thenHttpsProxySetInConfig() {
+      @DisplayName("socks5 proxy-url with HTTPS master is stored")
+      void whenProxyUrlSocks5_thenConfigStoresProxyUrl() {
         // Given
         System.setProperty("kubeconfig", Utils
             .filePath(ConfigTest.class.getResource("/config-proxy-source/kubeconfig-with-proxy-url")));
         // When + Then
         assertThat(new ConfigBuilder().build())
-            .hasFieldOrPropertyWithValue("httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
+            .hasFieldOrPropertyWithValue(
+                "httpProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080")
+            .hasFieldOrPropertyWithValue(
+                "httpsProxy", "socks5://proxy-via-kubeconfig-proxy-url:1080");
       }
 
       @Test
-      @DisplayName("proxy-url with https scheme, masterUrl with https scheme, then Config sets httpsProxy")
-      void whenProxyUrlHttps_thenHttpsProxySetInConfig() throws IOException {
+      @DisplayName("https proxy-url with HTTPS master is stored")
+      void whenProxyUrlHttps_thenConfigStoresProxyUrl() throws IOException {
         // Given
         System.setProperty("kubeconfig",
-            createKubeConfigWithCluster("https://kubernetes-remote-server.example:6443", "https://proxy-server.example:80")
+            createKubeConfigWithCluster(
+                "https://kubernetes-remote-server.example:6443",
+                "https://proxy-server.example:80")
                 .getAbsolutePath());
         // When + Then
         assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "https://proxy-server.example:80")
             .hasFieldOrPropertyWithValue("httpsProxy", "https://proxy-server.example:80");
+      }
+
+      @ParameterizedTest(name = "server={0}, proxy-url={1}")
+      @CsvSource({
+          "https://kubernetes-remote-server.example:6443, http://proxy-server.example:80",
+          "https://kubernetes-remote-server.example:6443, https://proxy-server.example:80",
+          "http://kubernetes-remote-server.example:6443, http://proxy-server.example:80",
+          "http://kubernetes-remote-server.example:6443, https://proxy-server.example:80"
+      })
+      @DisplayName("kubeconfig proxy-url applies to both HTTP and HTTPS destination proxy fields")
+      void whenKubeConfigProxyUrlSet_thenProxyUrlAppliesToBothConfigFields(
+          String masterUrl, String proxyUrl) throws IOException {
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster(masterUrl, proxyUrl).getAbsolutePath());
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", proxyUrl)
+            .hasFieldOrPropertyWithValue("httpsProxy", proxyUrl);
+      }
+
+      @Test
+      @DisplayName("proxy-url scheme comparison is case-insensitive")
+      void whenProxyUrlSchemeIsUppercase_thenConfigStoresProxyUrl() throws IOException {
+        // Given
+        System.setProperty("kubeconfig",
+            createKubeConfigWithCluster(
+                "HTTPS://kubernetes-remote-server.example:6443", "HTTP://proxy-server.example:80")
+                .getAbsolutePath());
+        // When + Then
+        assertThat(new ConfigBuilder().build())
+            .hasFieldOrPropertyWithValue("httpProxy", "HTTP://proxy-server.example:80")
+            .hasFieldOrPropertyWithValue("httpsProxy", "HTTP://proxy-server.example:80");
       }
 
       @Test
