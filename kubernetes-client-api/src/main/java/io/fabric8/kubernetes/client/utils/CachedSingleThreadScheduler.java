@@ -63,10 +63,14 @@ public class CachedSingleThreadScheduler {
   private void startExecutor() {
     if (executor == null) {
       // start the executor and add a ttl task
-      executor = new ScheduledThreadPoolExecutor(1, Utils.daemonThreadFactory(this));
+      executor = createExecutor();
       executor.setRemoveOnCancelPolicy(true);
       executor.scheduleWithFixedDelay(this::shutdownCheck, ttlMillis, ttlMillis, TimeUnit.MILLISECONDS);
     }
+  }
+
+  ScheduledThreadPoolExecutor createExecutor() {
+    return new ScheduledThreadPoolExecutor(1, Utils.daemonThreadFactory(this));
   }
 
   /**
@@ -76,8 +80,13 @@ public class CachedSingleThreadScheduler {
    */
   private synchronized void shutdownCheck() {
     if (executor.getQueue().isEmpty()) {
-      executor.shutdownNow();
-      executor = null;
+      try {
+        executor.shutdownNow();
+      } finally {
+        // clear the reference even if shutdownNow() throws (for example an OutOfMemoryError),
+        // so that startExecutor() creates a new executor instead of reusing a terminated one
+        executor = null;
+      }
     }
   }
 

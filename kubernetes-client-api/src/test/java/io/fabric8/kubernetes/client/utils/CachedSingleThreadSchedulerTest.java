@@ -15,12 +15,17 @@
  */
 package io.fabric8.kubernetes.client.utils;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,5 +46,37 @@ class CachedSingleThreadSchedulerTest {
     // should start again
     future = scheduler.scheduleWithFixedDelay(latch::countDown, 50, 50, TimeUnit.MILLISECONDS);
     assertTrue(scheduler.hasExecutor());
+  }
+
+  @Test
+  @DisplayName("schedules tasks again after the idle shutdown fails with an Error thrown by shutdownNow()")
+  void recoversWhenShutdownNowThrows() throws InterruptedException {
+    AtomicInteger shutdownFailures = new AtomicInteger();
+    CachedSingleThreadScheduler scheduler = new CachedSingleThreadScheduler(50) {
+      @Override
+      ScheduledThreadPoolExecutor createExecutor() {
+        return new ScheduledThreadPoolExecutor(1, Utils.daemonThreadFactory(this)) {
+          @Override
+          public List<Runnable> shutdownNow() {
+            // the executor is already shut down when the Error is thrown, like an
+            // OutOfMemoryError raised by the allocations at the end of shutdownNow()
+            List<Runnable> tasks = super.shutdownNow();
+            if (shutdownFailures.getAndIncrement() == 0) {
+              throw new OutOfMemoryError("simulated failure after the executor was shut down");
+            }
+            return tasks;
+          }
+        };
+      }
+    };
+    CountDownLatch first = new CountDownLatch(1);
+    scheduler.schedule(first::countDown, 1, TimeUnit.MILLISECONDS);
+    assertThat(first.await(5, TimeUnit.SECONDS)).isTrue();
+
+    await().atMost(5, TimeUnit.SECONDS).until(() -> shutdownFailures.get() > 0 && !scheduler.hasExecutor());
+
+    CountDownLatch second = new CountDownLatch(1);
+    scheduler.schedule(second::countDown, 1, TimeUnit.MILLISECONDS);
+    assertThat(second.await(5, TimeUnit.SECONDS)).isTrue();
   }
 }
