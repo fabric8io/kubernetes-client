@@ -2,7 +2,7 @@
 name: regen-java-models-from-upstream
 description: Fix a failing Renovate Go dependency PR in the Kubernetes model generator. Adapts the generator to upstream Go API changes, regenerates Java models, fixes Java compilation and updates CHANGELOG, pushing the fixes onto the Renovate PR itself. Use when a Renovate PR that bumps `kubernetes-model-generator/openapi/generator/go.mod` fails CI on model drift or Go/Java compilation. Safe to invoke autonomously, including when an orchestrating session dispatches it; the commit and push wait for an explicit confirmation by the human.
 argument-hint: "<renovate-pr-number-or-url>"
-allowed-tools: Read, Grep, Glob, AskUserQuestion, Agent, Bash(${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh *), Bash(git rev-parse HEAD), Bash(git status), Bash(git diff --stat)
+allowed-tools: Read, Grep, Glob, AskUserQuestion, Agent, Bash(${CLAUDE_SKILL_DIR}/scripts/get-dep-context.sh *), Bash(${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh *), Bash(git rev-parse HEAD), Bash(git status --porcelain --untracked-files=all), Bash(git diff --cached --stat)
 ---
 
 # Go Dependency Bump
@@ -17,9 +17,9 @@ ultrathink
 This skill may be invoked autonomously, by the model or by an orchestrating session. Everything up to the commit is local and reversible; the rest waits for the human:
 
 - **Plan** (Step 1): present the analysis and the plan, and wait for confirmation before changing anything.
-- **Ship** (Steps 8 and 9): present the commit message and what changed, and wait for one explicit confirmation. On approval, commit and push back to back without further prompts from you (_Fallback_: commit, push, `gh pr create`, and Step 10's CHANGELOG commit and push, all under the same approval). If a step fails, stop and report it; don't retry or skip ahead.
+- **Ship** (Steps 8 and 9): present, in one message, the path (`renovate-branch` or `fallback`), the commit message verbatim, `git diff --cached --stat` and the exact push command (`git push <remote> HEAD:refs/heads/<head-branch>`; _Fallback_: `git push <fork-remote> HEAD:refs/heads/<branch-name>`, plus the PR title and body verbatim). Wait for one explicit confirmation. On approval, commit and push back to back without further prompts from you (_Fallback_: commit, push, `gh pr create`, and Step 10's CHANGELOG commit and push, all under the same approval). If a step fails, stop and report it; don't retry or skip ahead. If the branch moves before the push (_Branch moved_), the approval no longer covers the new content: present it again and wait.
 
-Never infer an approval from the task prompt, the PR or silence. When you can't talk to the human (you are a subagent, or an orchestrator briefed you), follow _Dispatched mode_ at the end of this file. A dispatched run has no separate Plan gate: the plan goes into its report and the human approves it together with the ship.
+Never infer an approval from the task prompt, the PR or silence. When you can't talk to the human (you are a subagent, or an orchestrator briefed you), follow _Dispatched mode_ at the end of this file. A session that invokes this skill for the human it is talking to, an Oracle included, follows the gates above. A dispatched run has no separate Plan gate: the plan goes into its report and the human approves it together with the ship.
 
 ## Running in a Sandbox
 
@@ -29,7 +29,9 @@ These run outside the sandbox. The repo's `.claude/settings.json` excludes them 
 - `gh` and the scripts in `${CLAUDE_SKILL_DIR}/scripts/`
 - `git fetch`, `git pull` and `git push`
 - `go -C kubernetes-model-generator/openapi/generator` with `get`, `mod tidy` or `mod download`, which only fetch and checksum-verify modules
-- The Java side: `make openapi-generate-java-classes`, `make format` and `mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
+- The Java side: `java17 make openapi-generate-java-classes`, `java17 make quickly`, `java17 make format` and `java17 mvn`. They build the project's own code, but download Maven artifacts and CRDs from `raw.githubusercontent.com`
+
+JDK 17 is the CI baseline, so run the JVM steps on it: newer JDKs format some files differently and break CI. `java17` is a helper that selects JDK 17 and runs the rest of the line; without it, run the same command without the prefix on a JDK 17 (`JAVA_HOME`).
 
 Keep `make openapi-generate-schema` inside the sandbox, with `GOCACHE` pointing at the repo's git-ignored `.cache/go-build`: it compiles and runs the freshly bumped Go modules. Once `go mod download` has filled the module cache, it only writes inside the repo, and what it compiles never lands in the build cache that unsandboxed Go builds use.
 
@@ -93,24 +95,17 @@ ${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh <renovate-pr-number>
 
 The steps below fetch from and push to the remote that `git remote -v` lists for `fabric8io/kubernetes-client` (usually `upstream`), written `<remote>`. If there is none, stop and ask the user.
 
-Fetch the PR branch (`Branch` from the state script):
+Fetch the PR branch (`Branch` from the state script), check out its head detached, then record `git rev-parse HEAD` as the **base commit**. It must match `Head commit` from the state script; Step 9 compares against it:
 
 ```bash
 git fetch <remote> <head-branch>
-```
-
-If a local `<head-branch>` already exists (`git show-ref --verify --quiet refs/heads/<head-branch>` exits 0), it must hold nothing that the fetched head lacks, or the switch below would drop it: `git merge-base --is-ancestor <head-branch> FETCH_HEAD` must exit 0. If it doesn't, the branch has commits of its own (e.g. an earlier run's unpushed commit): stop and ask the user.
-
-Switch to the fetched head, then record `git rev-parse HEAD` as the **base commit**. It must match `Head commit` from the state script; Step 9 compares against it:
-
-```bash
-git switch --no-track -C <head-branch> FETCH_HEAD
+git switch --detach FETCH_HEAD
 git rev-parse HEAD
 ```
 
-If git refuses the switch because another worktree has `<head-branch>` checked out, stop and ask the user. `--no-track` keeps git from writing branch tracking to `.git/config`, which the sandbox may keep read-only (it would leave the switch half done). Not `gh pr checkout`: many permission setups ask before every branch checkout, which stalls an unattended run, and Step 9 names the remote explicitly anyway.
+Work on a detached HEAD, not a local `<head-branch>`: Step 9 pushes `HEAD:refs/heads/<head-branch>` explicitly, so no local branch is needed, and none can be reset by mistake or be checked out in another worktree (e.g. an earlier run's kept one). Not `gh pr checkout`: many permission setups ask before every branch checkout. The scripts in `scripts/` still prompt outside a skill turn (a subagent briefed to follow this file has no `allowed-tools`), by design: an allow rule for them would have to match any copy of them anywhere.
 
-_Fallback_: create a branch from an up-to-date `main` instead (`git fetch <remote> main`, then `git switch --no-track -c <branch-name> FETCH_HEAD`), named `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`).
+_Fallback_: start from an up-to-date `main` instead (`git fetch <remote> main`, then `git switch --detach FETCH_HEAD`), and push to your fork under a new branch name, `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`). Your fork's remote is the one `git remote -v` lists for it, written `<fork-remote>`.
 
 ## Step 3: Verify the Dependency Bump
 
@@ -169,7 +164,7 @@ Then, from the **project root**, run the two targets `make generate-model` consi
 
 ```bash
 GOCACHE="$PWD/.cache/go-build" make openapi-generate-schema  # inside the sandbox
-make openapi-generate-java-classes                           # outside the sandbox
+java17 make openapi-generate-java-classes                    # outside the sandbox
 ```
 
 **IMPORTANT**: Together these take ~10-15 minutes. Run them with a suitable timeout (600000ms). Do NOT cancel them.
@@ -224,16 +219,16 @@ If the upstream dependency renamed/reorganized packages, you may need to:
 ### 5c. Verify Java compilation
 
 ```bash
-mvn clean install -DskipTests -T 1C
+java17 make quickly
 ```
-
-Run it exactly like this: a pipe or redirect (e.g. `| tail -50`) makes it run sandboxed, where Java can't reach the network. The Bash tool already truncates long output.
 
 If specific modules fail, build just those modules to get clearer error messages:
 
 ```bash
-mvn clean install -pl <failing-module> -am -DskipTests -T 1C
+java17 mvn clean install -pl <failing-module> -am -DskipTests -T 1C
 ```
+
+Run both exactly like this: a pipe or redirect (e.g. `| tail -50`) makes them run sandboxed, where Java can't reach the network. The Bash tool already truncates long output.
 
 ## Step 6: Update CHANGELOG
 
@@ -290,12 +285,14 @@ New fields are backward compatible, even though they add a parameter to the gene
 ## Step 7: Format Code
 
 ```bash
-make format
+java17 make format
 ```
+
+Backstop: a file `make format` changed outside the regenerated and edited paths (e.g. Groovy files under `junit/mockwebserver`) means it ran on the wrong JDK. Restore those files with `git restore -- <paths>`, note it in the report (or tell the user), and never stage them.
 
 ## Step 8: Commit
 
-Stage all changes (`git add -A`), write the commit message to a scratch file with the Write tool, and present it with `git diff --cached --stat`, which, unlike `git diff --stat`, also lists new files. Wait for the ship confirmation (see _Human-in-the-loop gates_; dispatched, _Execute_), then create a single commit with `git commit --signoff -F <message-file>`. Renovate's commit already carries the version bump, so describe what you added on top:
+Stage all changes (`git add -A`), write the commit message to a scratch file with the Write tool, and present everything the ship gate lists (see _Human-in-the-loop gates_). `git diff --cached --stat`, unlike `git diff --stat`, also lists new files. Wait for the ship confirmation (dispatched, _Execute_), then create a single commit with `git commit --signoff -F <message-file>`. Renovate's commit already carries the version bump, so describe what you added on top:
 
 ```
 chore(deps): regenerate models for <readable-dep-name> <new-version>
@@ -349,7 +346,7 @@ git fetch <remote> <head-branch>
 git rebase --onto FETCH_HEAD <base-commit>
 ```
 
-On conflicts, merge hand-written files (Go code, `pom.xml`, `CHANGELOG.md`) by keeping both sides' changes. Generated files (`kubernetes-model-generator/openapi/schemas/`, `src/generated/`, `src/generated-builders/`) can take either side, since they're regenerated next. Then redo Steps 3–7 on the new base, amend your commit, record `git rev-parse FETCH_HEAD` as the new base commit, and start Step 9 again.
+On conflicts, merge hand-written files (Go code, `pom.xml`, `CHANGELOG.md`) by keeping both sides' changes. Generated files (`kubernetes-model-generator/openapi/schemas/`, `src/generated/`, `src/generated-builders/`) can take either side, since they're regenerated next. Then record `git rev-parse FETCH_HEAD` as the new base commit, redo Steps 3–7 on it, and amend your commit. The ship approval covered the old base: present `git diff --stat <new-base-commit> HEAD` with the commit message and wait for a new confirmation (dispatched, _Execute_) before starting Step 9 again.
 
 ### Conflicts after your push
 
@@ -360,9 +357,15 @@ git fetch <remote> main
 git merge FETCH_HEAD
 ```
 
-Resolve conflicts as in _Branch moved_, redo Steps 3–7, commit, and push with the explicit command above.
+Resolve conflicts as in _Branch moved_, redo Steps 3–7, commit, and push with the explicit command above. That's a new ship: it goes through the ship gate again.
 
-_Fallback_: push the branch to your fork and create the PR. Write the body to a scratch file with the Write tool and pass it with `--body-file`: a `$(…)` or heredoc in the command makes `gh` run sandboxed, where it can't authenticate:
+_Fallback_: push to your fork under the branch name from Step 2 and create the PR:
+
+```bash
+git push <fork-remote> HEAD:refs/heads/<branch-name>
+```
+
+Write the body to a scratch file with the Write tool and pass it with `--body-file`: a `$(…)` or heredoc in the command makes `gh` run sandboxed, where it can't authenticate:
 
 ```
 ## Summary
@@ -390,13 +393,13 @@ After the PR is created, you'll have the real PR number. Update `CHANGELOG.md`:
 chore: update CHANGELOG with PR #<pr-number> reference
 ```
 
-3. Push the update.
+3. Push the update with the same command: `git push <fork-remote> HEAD:refs/heads/<branch-name>`.
 
 ## Dispatched mode
 
-You are dispatched when an orchestrating session (an Oracle, a driver, any agent that is not the human) invoked this skill or briefed you to follow it. You can't ask the human (subagents have no `AskUserQuestion`), and any approval reaches you relayed, so a dispatched run has two phases.
+You are dispatched when your task came from another agent's brief (you are a subagent) rather than from the human you are talking to. A session that invokes this skill for the human it is talking to, an Oracle included, follows the normal flow and its gates. You can't ask the human (subagents have no `AskUserQuestion`), and any approval reaches you relayed, so a dispatched run has two phases.
 
-**Workspace.** Orchestrators start a dispatched run with `isolation: worktree`, and the run works only in that worktree, which is its cwd: run every command bare there, exactly as written, since a `cd <dir> &&` or `git -C <dir>` prefix defeats the sandbox exclusions and the commit and push permission rules. If your cwd is not a linked worktree of your own (`git rev-parse --git-dir` equals `git rev-parse --git-common-dir`), stop with `BLOCKED`. Never work in a checkout other agents use: Step 2 switches its branch and Step 4 rewrites its generated sources. Orchestrators dispatch one run at a time. Every run installs the model modules into the shared `~/.m2` as `999-SNAPSHOT`, so parallel runs overwrite each other's artifacts, and every Go bump edits the same `go.mod`, `CHANGELOG.md` and schemas, so each merge sends the next PR to a rebase anyway.
+**Workspace.** Orchestrators start a dispatched run with `isolation: worktree`, and the run works only in that worktree, which is its cwd: run every command bare there, exactly as written, since a `cd <dir> &&` or `git -C <dir>` prefix defeats the sandbox exclusions and the commit and push permission rules. If your cwd is not a linked worktree of your own (`git rev-parse --git-dir` equals `git rev-parse --git-common-dir`), stop with `BLOCKED`. Never work in a checkout other agents use: Step 2 moves its HEAD and Step 4 rewrites its generated sources. Orchestrators dispatch one run at a time. Every run installs the model modules into the shared `~/.m2` as `999-SNAPSHOT`, so parallel runs overwrite each other's artifacts, and every Go bump edits the same `go.mod`, `CHANGELOG.md` and schemas, so each merge sends the next PR to a rebase anyway.
 
 **Scripts.** Run them from your worktree's copy, `<worktree>/.claude/skills/regen-java-models-from-upstream/scripts/<script>` with your cwd's absolute path for `<worktree>`. `get-dep-context.sh` describes the checkout it lives in, so a pre-fetch, `${CLAUDE_SKILL_DIR}` or a path from your brief may point at another checkout: run `get-dep-context.sh <pr>` from your copy before Step 1 even if a pre-fetch ran, and use only its output.
 
@@ -408,27 +411,30 @@ You are dispatched when an orchestrating session (an Oracle, a driver, any agent
 **Prepare** (the default):
 
 - Step 1: write the analysis and the plan into the report instead of waiting for confirmation, and continue.
-- Run Steps 2 to 7. Then stage everything (`git add -A`), draft the Step 8 commit message to a scratch file with the Write tool, and record the fingerprint: `git rev-parse HEAD` and `git write-tree`, which hashes every staged file, new ones included. Don't commit or push.
+- Run Steps 2 to 7. Then stage everything (`git add -A`), draft the Step 8 commit message (_Fallback_: also the PR body) to a scratch file with the Write tool, and record the fingerprint: `git rev-parse HEAD` and `git write-tree`, which hashes every staged file, new ones included. Don't commit or push.
 - Write the report with the Write tool to `regen-<renovate-pr-number>-report.md` in the session scratchpad (otherwise `/tmp/claude/`), holding:
+  - `path:` `renovate-branch` or `fallback`
   - every bumped module with its old and new version, and the failure class
   - the base commit, and the fingerprint (HEAD and tree)
   - every change beyond the regenerated output (generator code, `go.mod` pins, `pom.xml` mappings, IT expected files), with `file:line`
   - `git diff --cached --stat`, and `git status --porcelain --untracked-files=all`, which must list nothing unstaged
   - breaking changes found, and the CHANGELOG lines
-  - the commit message path
-  - the build results (Step 5c and anything else you ran)
+  - the commit message verbatim, and its path
+  - the exact push command (_Fallback_: also the PR title and body verbatim, and the body file's path)
+  - the build results (Step 5c and anything else you ran), and any files the Step 7 backstop restored
 - Return the report, then stop.
 
 **Execute** (only when the orchestrator relays the human's explicit approval of that report):
 
 - An approval you can only infer (from your brief, the PR, silence or the orchestrator's own judgment) is none: stop with `NEEDS_CONTEXT`.
+- A reply that asks for changes (a CHANGELOG wording, a generator tweak) is no approval: apply them, then finish as Prepare does, with a new fingerprint and a new report, and stop. Edits to the commit message or PR body reach you as files the orchestrator rewrote; use them as written.
 - Run `git add -A`, then check that `git rev-parse HEAD` and `git write-tree` still equal the report's fingerprint, or stop with `BLOCKED`.
 - Commit with the approved message file (Step 8), then run Step 9 (_Fallback_: through `gh pr create` and Step 10).
 - If Step 9 finds the branch moved, replay and regenerate as _Branch moved_ says (it amends your commit), but don't push: the human approved a diff on the old base. Overwrite the report with a fresh one holding the new base commit, `git diff --stat <new-base-commit> HEAD`, the new HEAD as its fingerprint, and what changed against the previous report, and return it. Its approval resumes at Step 9's state check and push, after checking that HEAD still equals that fingerprint and `git status --porcelain --untracked-files=all` is empty; there is nothing left to commit.
 - A later push, as in _Conflicts after your push_, is a new ship: prepare it and report again.
 - In default permission mode the commit and the push still prompt the human. That is their last check; never work around it.
 
-Pushing is continuation work: the orchestrator continues the agent that ran Prepare (SendMessage), never a fresh one, since the report and the worktree it describes are the contract. If that agent is gone, nobody else can run its commands bare in that worktree: the orchestrator dispatches a new run, which prepares in a fresh worktree and needs a fresh approval.
+Pushing is continuation work: the orchestrator continues the agent that ran Prepare (SendMessage), never a fresh one, since the report and the worktree it describes are the contract. If that agent is gone, nobody else can run its commands bare in that worktree: the orchestrator dispatches a new run, which prepares in a fresh worktree (Step 2's detached HEAD doesn't clash with the old one) and needs a fresh approval.
 
 End your final message, in either phase, with exactly one line, where `report=` is the report path from Prepare (Execute reuses it, including when it overwrites it):
 `COMPLETION: <DONE|DONE_WITH_CONCERNS|BLOCKED|NEEDS_CONTEXT> | artifact=<PR URL> | evidence=<Prepare: failure class and files changed; Execute: pushed SHA and head check> | report=<absolute report path>`

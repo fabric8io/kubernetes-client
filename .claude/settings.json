@@ -15,12 +15,13 @@
       "Bash(go -C kubernetes-model-generator/openapi/generator mod tidy)",
       "Bash(go -C kubernetes-model-generator/openapi/generator mod download)",
       "Bash(java -version)",
-      "Bash(mvn clean install -DskipTests -T 1C)",
-      "Bash(mvn clean install -pl * -am -DskipTests -T 1C)",
       "Bash(make quickly)",
       "Bash(make format)",
       "Bash(make openapi-generate-java-classes)",
-      "Bash(make generate-javadoc-links)"
+      "Bash(make generate-javadoc-links)",
+      "Bash(java17 make quickly)",
+      "Bash(java17 make format)",
+      "Bash(java17 make openapi-generate-java-classes)"
     ]
   },
   "sandbox": {
@@ -42,6 +43,10 @@
       "make format",
       "make openapi-generate-java-classes",
       "make generate-javadoc-links",
+      "java17 mvn *",
+      "java17 make quickly",
+      "java17 make format",
+      "java17 make openapi-generate-java-classes",
       "*.claude/skills/gh-issue-release/scripts/get-release-context.sh *",
       "*.claude/skills/k8s-model-update/scripts/download-k8s-schema.sh *",
       "*.claude/skills/k8s-model-update/scripts/get-update-context.sh *",
