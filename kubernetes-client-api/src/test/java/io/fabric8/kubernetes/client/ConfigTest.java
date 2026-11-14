@@ -131,7 +131,13 @@ class ConfigTest {
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth-ec-invalid"));
   private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC_INVALID = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth-ec-invalid"));
+  private static final String TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH_EC = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-cert-auth-ec"));
+  private static final String TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC = Utils
+      .filePath(ConfigTest.class.getResource("/test-kubeconfig-exec-win-cert-auth-ec"));
   private static final String TEST_CERT_GENERATOR_FILE = Utils.filePath(ConfigTest.class.getResource("/cert-generator"));
+  private static final String TEST_CERT_GENERATOR_EC_FILE = Utils
+      .filePath(ConfigTest.class.getResource("/cert-generator-ec"));
   private static final String TEST_KUBECONFIG_TLS_SERVER_NAME_FILE = Utils
       .filePath(ConfigTest.class.getResource("/test-kubeconfig-tls-server-name"));
 
@@ -795,6 +801,27 @@ class ConfigTest {
     assertThat(config)
         .hasFieldOrPropertyWithValue("clientCertData", null)
         .hasFieldOrPropertyWithValue("clientKeyData", null);
+  }
+
+  @Test
+  @DisplayName("when exec returns ECDSA client key, then identify client key algorithm as EC (#8022)")
+  void autoConfigure_whenExecReturnsEcdsaClientKey_thenSetClientKeyAlgoToEc() throws Exception {
+    // Given
+    if (FileSystem.getCurrent() == FileSystem.WINDOWS) {
+      System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_WIN_FILE_CERT_AUTH_EC);
+    } else {
+      Files.setPosixFilePermissions(Paths.get(TEST_CERT_GENERATOR_EC_FILE), PosixFilePermissions.fromString("rwxrwxr-x"));
+      System.setProperty("kubeconfig", TEST_KUBECONFIG_EXEC_FILE_CERT_AUTH_EC);
+    }
+    // When
+    Config config = Config.autoConfigure(null);
+    // Then
+    assertThat(config)
+        .isNotNull()
+        .hasFieldOrPropertyWithValue("clientKeyAlgo", "EC")
+        .extracting(Config::getClientKeyData, InstanceOfAssertFactories.STRING)
+        .contains("BEGIN EC PRIVATE KEY");
+    assertThat(config.getClientCertData()).contains("BEGIN CERTIFICATE");
   }
 
   @Test
