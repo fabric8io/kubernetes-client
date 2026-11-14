@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.fabric8.openshift.api.model.hive.nutanix.v1.PrismEndpoint;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "certificatesSecretRef",
     "credentialsSecretRef",
     "prismCentral"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class NutanixClusterDeprovision implements Editable<NutanixClusterDeprovi
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NutanixClusterDeprovision)) {
+            return false;
+        }
+        NutanixClusterDeprovision other = (NutanixClusterDeprovision) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$certificatesSecretRef = this.getCertificatesSecretRef();
+        Object other$certificatesSecretRef = other.getCertificatesSecretRef();
+        if (this$certificatesSecretRef == null ? other$certificatesSecretRef != null : !this$certificatesSecretRef.equals(other$certificatesSecretRef)) {
+            return false;
+        }
+        Object this$credentialsSecretRef = this.getCredentialsSecretRef();
+        Object other$credentialsSecretRef = other.getCredentialsSecretRef();
+        if (this$credentialsSecretRef == null ? other$credentialsSecretRef != null : !this$credentialsSecretRef.equals(other$credentialsSecretRef)) {
+            return false;
+        }
+        Object this$prismCentral = this.getPrismCentral();
+        Object other$prismCentral = other.getPrismCentral();
+        if (this$prismCentral == null ? other$prismCentral != null : !this$prismCentral.equals(other$prismCentral)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NutanixClusterDeprovision;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $certificatesSecretRef = this.getCertificatesSecretRef();
+        result = result * prime + ($certificatesSecretRef == null ? 43 : $certificatesSecretRef.hashCode());
+        Object $credentialsSecretRef = this.getCredentialsSecretRef();
+        result = result * prime + ($credentialsSecretRef == null ? 43 : $credentialsSecretRef.hashCode());
+        Object $prismCentral = this.getPrismCentral();
+        result = result * prime + ($prismCentral == null ? 43 : $prismCentral.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NutanixClusterDeprovision(" + "certificatesSecretRef=" + this.getCertificatesSecretRef() + ", credentialsSecretRef=" + this.getCredentialsSecretRef() + ", prismCentral=" + this.getPrismCentral() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

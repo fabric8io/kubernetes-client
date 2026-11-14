@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "isCompliant",
     "message",
     "requiredChannel"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class MCEVersionComplianceStatus implements Editable<MCEVersionCompliance
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MCEVersionComplianceStatus)) {
+            return false;
+        }
+        MCEVersionComplianceStatus other = (MCEVersionComplianceStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$currentVersion = this.getCurrentVersion();
+        Object other$currentVersion = other.getCurrentVersion();
+        if (this$currentVersion == null ? other$currentVersion != null : !this$currentVersion.equals(other$currentVersion)) {
+            return false;
+        }
+        Object this$isCompliant = this.getIsCompliant();
+        Object other$isCompliant = other.getIsCompliant();
+        if (this$isCompliant == null ? other$isCompliant != null : !this$isCompliant.equals(other$isCompliant)) {
+            return false;
+        }
+        Object this$message = this.getMessage();
+        Object other$message = other.getMessage();
+        if (this$message == null ? other$message != null : !this$message.equals(other$message)) {
+            return false;
+        }
+        Object this$requiredChannel = this.getRequiredChannel();
+        Object other$requiredChannel = other.getRequiredChannel();
+        if (this$requiredChannel == null ? other$requiredChannel != null : !this$requiredChannel.equals(other$requiredChannel)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MCEVersionComplianceStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $currentVersion = this.getCurrentVersion();
+        result = result * prime + ($currentVersion == null ? 43 : $currentVersion.hashCode());
+        Object $isCompliant = this.getIsCompliant();
+        result = result * prime + ($isCompliant == null ? 43 : $isCompliant.hashCode());
+        Object $message = this.getMessage();
+        result = result * prime + ($message == null ? 43 : $message.hashCode());
+        Object $requiredChannel = this.getRequiredChannel();
+        result = result * prime + ($requiredChannel == null ? 43 : $requiredChannel.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MCEVersionComplianceStatus(" + "currentVersion=" + this.getCurrentVersion() + ", isCompliant=" + this.getIsCompliant() + ", message=" + this.getMessage() + ", requiredChannel=" + this.getRequiredChannel() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "path",
     "value",
     "valueJSON"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -200,6 +191,78 @@ public class PatchEntity implements Editable<PatchEntityBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PatchEntity)) {
+            return false;
+        }
+        PatchEntity other = (PatchEntity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$from = this.getFrom();
+        Object other$from = other.getFrom();
+        if (this$from == null ? other$from != null : !this$from.equals(other$from)) {
+            return false;
+        }
+        Object this$op = this.getOp();
+        Object other$op = other.getOp();
+        if (this$op == null ? other$op != null : !this$op.equals(other$op)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$value = this.getValue();
+        Object other$value = other.getValue();
+        if (this$value == null ? other$value != null : !this$value.equals(other$value)) {
+            return false;
+        }
+        Object this$valueJSON = this.getValueJSON();
+        Object other$valueJSON = other.getValueJSON();
+        if (this$valueJSON == null ? other$valueJSON != null : !this$valueJSON.equals(other$valueJSON)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PatchEntity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $from = this.getFrom();
+        result = result * prime + ($from == null ? 43 : $from.hashCode());
+        Object $op = this.getOp();
+        result = result * prime + ($op == null ? 43 : $op.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $value = this.getValue();
+        result = result * prime + ($value == null ? 43 : $value.hashCode());
+        Object $valueJSON = this.getValueJSON();
+        result = result * prime + ($valueJSON == null ? 43 : $valueJSON.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PatchEntity(" + "from=" + this.getFrom() + ", op=" + this.getOp() + ", path=" + this.getPath() + ", value=" + this.getValue() + ", valueJSON=" + this.getValueJSON() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

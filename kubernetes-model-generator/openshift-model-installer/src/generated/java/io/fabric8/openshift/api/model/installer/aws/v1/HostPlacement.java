@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "affinity",
     "dedicatedHost"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class HostPlacement implements Editable<HostPlacementBuilder>, Kubernetes
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HostPlacement)) {
+            return false;
+        }
+        HostPlacement other = (HostPlacement) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$affinity = this.getAffinity();
+        Object other$affinity = other.getAffinity();
+        if (this$affinity == null ? other$affinity != null : !this$affinity.equals(other$affinity)) {
+            return false;
+        }
+        Object this$dedicatedHost = this.getDedicatedHost();
+        Object other$dedicatedHost = other.getDedicatedHost();
+        if (this$dedicatedHost == null ? other$dedicatedHost != null : !this$dedicatedHost.equals(other$dedicatedHost)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HostPlacement;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $affinity = this.getAffinity();
+        result = result * prime + ($affinity == null ? 43 : $affinity.hashCode());
+        Object $dedicatedHost = this.getDedicatedHost();
+        result = result * prime + ($dedicatedHost == null ? 43 : $dedicatedHost.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HostPlacement(" + "affinity=" + this.getAffinity() + ", dedicatedHost=" + this.getDedicatedHost() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "capacityKey",
     "capacityMultiplier",
     "deviceMultiplier"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -161,6 +152,64 @@ public class NodeAllocatableMapping implements Editable<NodeAllocatableMappingBu
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof NodeAllocatableMapping)) {
+            return false;
+        }
+        NodeAllocatableMapping other = (NodeAllocatableMapping) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$capacityKey = this.getCapacityKey();
+        Object other$capacityKey = other.getCapacityKey();
+        if (this$capacityKey == null ? other$capacityKey != null : !this$capacityKey.equals(other$capacityKey)) {
+            return false;
+        }
+        Object this$capacityMultiplier = this.getCapacityMultiplier();
+        Object other$capacityMultiplier = other.getCapacityMultiplier();
+        if (this$capacityMultiplier == null ? other$capacityMultiplier != null : !this$capacityMultiplier.equals(other$capacityMultiplier)) {
+            return false;
+        }
+        Object this$deviceMultiplier = this.getDeviceMultiplier();
+        Object other$deviceMultiplier = other.getDeviceMultiplier();
+        if (this$deviceMultiplier == null ? other$deviceMultiplier != null : !this$deviceMultiplier.equals(other$deviceMultiplier)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof NodeAllocatableMapping;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $capacityKey = this.getCapacityKey();
+        result = result * prime + ($capacityKey == null ? 43 : $capacityKey.hashCode());
+        Object $capacityMultiplier = this.getCapacityMultiplier();
+        result = result * prime + ($capacityMultiplier == null ? 43 : $capacityMultiplier.hashCode());
+        Object $deviceMultiplier = this.getDeviceMultiplier();
+        result = result * prime + ($deviceMultiplier == null ? 43 : $deviceMultiplier.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "NodeAllocatableMapping(" + "capacityKey=" + this.getCapacityKey() + ", capacityMultiplier=" + this.getCapacityMultiplier() + ", deviceMultiplier=" + this.getDeviceMultiplier() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -41,12 +38,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "destination",
     "headers",
     "weight"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class HTTPRouteDestination implements Editable<HTTPRouteDestinationBuilde
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof HTTPRouteDestination)) {
+            return false;
+        }
+        HTTPRouteDestination other = (HTTPRouteDestination) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$destination = this.getDestination();
+        Object other$destination = other.getDestination();
+        if (this$destination == null ? other$destination != null : !this$destination.equals(other$destination)) {
+            return false;
+        }
+        Object this$headers = this.getHeaders();
+        Object other$headers = other.getHeaders();
+        if (this$headers == null ? other$headers != null : !this$headers.equals(other$headers)) {
+            return false;
+        }
+        Object this$weight = this.getWeight();
+        Object other$weight = other.getWeight();
+        if (this$weight == null ? other$weight != null : !this$weight.equals(other$weight)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof HTTPRouteDestination;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $destination = this.getDestination();
+        result = result * prime + ($destination == null ? 43 : $destination.hashCode());
+        Object $headers = this.getHeaders();
+        result = result * prime + ($headers == null ? 43 : $headers.hashCode());
+        Object $weight = this.getWeight();
+        result = result * prime + ($weight == null ? 43 : $weight.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "HTTPRouteDestination(" + "destination=" + this.getDestination() + ", headers=" + this.getHeaders() + ", weight=" + this.getWeight() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

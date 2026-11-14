@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -41,12 +38,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "intent",
     "requester",
     "target"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -160,6 +151,64 @@ public class EvictionRequestSpec implements Editable<EvictionRequestSpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EvictionRequestSpec)) {
+            return false;
+        }
+        EvictionRequestSpec other = (EvictionRequestSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$intent = this.getIntent();
+        Object other$intent = other.getIntent();
+        if (this$intent == null ? other$intent != null : !this$intent.equals(other$intent)) {
+            return false;
+        }
+        Object this$requester = this.getRequester();
+        Object other$requester = other.getRequester();
+        if (this$requester == null ? other$requester != null : !this$requester.equals(other$requester)) {
+            return false;
+        }
+        Object this$target = this.getTarget();
+        Object other$target = other.getTarget();
+        if (this$target == null ? other$target != null : !this$target.equals(other$target)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EvictionRequestSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $intent = this.getIntent();
+        result = result * prime + ($intent == null ? 43 : $intent.hashCode());
+        Object $requester = this.getRequester();
+        result = result * prime + ($requester == null ? 43 : $requester.hashCode());
+        Object $target = this.getTarget();
+        result = result * prime + ($target == null ? 43 : $target.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EvictionRequestSpec(" + "intent=" + this.getIntent() + ", requester=" + this.getRequester() + ", target=" + this.getTarget() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -31,9 +31,6 @@ import io.fabric8.kubernetes.model.annotation.Group;
 import io.fabric8.kubernetes.model.annotation.Version;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -49,12 +46,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "maximumVolumeSize",
     "nodeTopology",
     "storageClassName"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -246,6 +237,92 @@ public class CSIStorageCapacity implements Editable<CSIStorageCapacityBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof CSIStorageCapacity)) {
+            return false;
+        }
+        CSIStorageCapacity other = (CSIStorageCapacity) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$apiVersion = this.getApiVersion();
+        Object other$apiVersion = other.getApiVersion();
+        if (this$apiVersion == null ? other$apiVersion != null : !this$apiVersion.equals(other$apiVersion)) {
+            return false;
+        }
+        Object this$capacity = this.getCapacity();
+        Object other$capacity = other.getCapacity();
+        if (this$capacity == null ? other$capacity != null : !this$capacity.equals(other$capacity)) {
+            return false;
+        }
+        Object this$kind = this.getKind();
+        Object other$kind = other.getKind();
+        if (this$kind == null ? other$kind != null : !this$kind.equals(other$kind)) {
+            return false;
+        }
+        Object this$maximumVolumeSize = this.getMaximumVolumeSize();
+        Object other$maximumVolumeSize = other.getMaximumVolumeSize();
+        if (this$maximumVolumeSize == null ? other$maximumVolumeSize != null : !this$maximumVolumeSize.equals(other$maximumVolumeSize)) {
+            return false;
+        }
+        Object this$metadata = this.getMetadata();
+        Object other$metadata = other.getMetadata();
+        if (this$metadata == null ? other$metadata != null : !this$metadata.equals(other$metadata)) {
+            return false;
+        }
+        Object this$nodeTopology = this.getNodeTopology();
+        Object other$nodeTopology = other.getNodeTopology();
+        if (this$nodeTopology == null ? other$nodeTopology != null : !this$nodeTopology.equals(other$nodeTopology)) {
+            return false;
+        }
+        Object this$storageClassName = this.getStorageClassName();
+        Object other$storageClassName = other.getStorageClassName();
+        if (this$storageClassName == null ? other$storageClassName != null : !this$storageClassName.equals(other$storageClassName)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof CSIStorageCapacity;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $apiVersion = this.getApiVersion();
+        result = result * prime + ($apiVersion == null ? 43 : $apiVersion.hashCode());
+        Object $capacity = this.getCapacity();
+        result = result * prime + ($capacity == null ? 43 : $capacity.hashCode());
+        Object $kind = this.getKind();
+        result = result * prime + ($kind == null ? 43 : $kind.hashCode());
+        Object $maximumVolumeSize = this.getMaximumVolumeSize();
+        result = result * prime + ($maximumVolumeSize == null ? 43 : $maximumVolumeSize.hashCode());
+        Object $metadata = this.getMetadata();
+        result = result * prime + ($metadata == null ? 43 : $metadata.hashCode());
+        Object $nodeTopology = this.getNodeTopology();
+        result = result * prime + ($nodeTopology == null ? 43 : $nodeTopology.hashCode());
+        Object $storageClassName = this.getStorageClassName();
+        result = result * prime + ($storageClassName == null ? 43 : $storageClassName.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CSIStorageCapacity(" + "apiVersion=" + this.getApiVersion() + ", capacity=" + this.getCapacity() + ", kind=" + this.getKind() + ", maximumVolumeSize=" + this.getMaximumVolumeSize() + ", metadata=" + this.getMetadata() + ", nodeTopology=" + this.getNodeTopology() + ", storageClassName=" + this.getStorageClassName() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

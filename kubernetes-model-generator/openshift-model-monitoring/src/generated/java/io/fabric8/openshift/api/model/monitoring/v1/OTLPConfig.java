@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -48,12 +45,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "promoteResourceAttributes",
     "promoteScopeMetadata",
     "translationStrategy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -285,6 +276,106 @@ public class OTLPConfig implements Editable<OTLPConfigBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OTLPConfig)) {
+            return false;
+        }
+        OTLPConfig other = (OTLPConfig) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$convertHistogramsToNHCB = this.getConvertHistogramsToNHCB();
+        Object other$convertHistogramsToNHCB = other.getConvertHistogramsToNHCB();
+        if (this$convertHistogramsToNHCB == null ? other$convertHistogramsToNHCB != null : !this$convertHistogramsToNHCB.equals(other$convertHistogramsToNHCB)) {
+            return false;
+        }
+        Object this$ignoreResourceAttributes = this.getIgnoreResourceAttributes();
+        Object other$ignoreResourceAttributes = other.getIgnoreResourceAttributes();
+        if (this$ignoreResourceAttributes == null ? other$ignoreResourceAttributes != null : !this$ignoreResourceAttributes.equals(other$ignoreResourceAttributes)) {
+            return false;
+        }
+        Object this$keepIdentifyingResourceAttributes = this.getKeepIdentifyingResourceAttributes();
+        Object other$keepIdentifyingResourceAttributes = other.getKeepIdentifyingResourceAttributes();
+        if (this$keepIdentifyingResourceAttributes == null ? other$keepIdentifyingResourceAttributes != null : !this$keepIdentifyingResourceAttributes.equals(other$keepIdentifyingResourceAttributes)) {
+            return false;
+        }
+        Object this$labelNamePreserveMultipleUnderscores = this.getLabelNamePreserveMultipleUnderscores();
+        Object other$labelNamePreserveMultipleUnderscores = other.getLabelNamePreserveMultipleUnderscores();
+        if (this$labelNamePreserveMultipleUnderscores == null ? other$labelNamePreserveMultipleUnderscores != null : !this$labelNamePreserveMultipleUnderscores.equals(other$labelNamePreserveMultipleUnderscores)) {
+            return false;
+        }
+        Object this$labelNameUnderscoreSanitization = this.getLabelNameUnderscoreSanitization();
+        Object other$labelNameUnderscoreSanitization = other.getLabelNameUnderscoreSanitization();
+        if (this$labelNameUnderscoreSanitization == null ? other$labelNameUnderscoreSanitization != null : !this$labelNameUnderscoreSanitization.equals(other$labelNameUnderscoreSanitization)) {
+            return false;
+        }
+        Object this$promoteAllResourceAttributes = this.getPromoteAllResourceAttributes();
+        Object other$promoteAllResourceAttributes = other.getPromoteAllResourceAttributes();
+        if (this$promoteAllResourceAttributes == null ? other$promoteAllResourceAttributes != null : !this$promoteAllResourceAttributes.equals(other$promoteAllResourceAttributes)) {
+            return false;
+        }
+        Object this$promoteResourceAttributes = this.getPromoteResourceAttributes();
+        Object other$promoteResourceAttributes = other.getPromoteResourceAttributes();
+        if (this$promoteResourceAttributes == null ? other$promoteResourceAttributes != null : !this$promoteResourceAttributes.equals(other$promoteResourceAttributes)) {
+            return false;
+        }
+        Object this$promoteScopeMetadata = this.getPromoteScopeMetadata();
+        Object other$promoteScopeMetadata = other.getPromoteScopeMetadata();
+        if (this$promoteScopeMetadata == null ? other$promoteScopeMetadata != null : !this$promoteScopeMetadata.equals(other$promoteScopeMetadata)) {
+            return false;
+        }
+        Object this$translationStrategy = this.getTranslationStrategy();
+        Object other$translationStrategy = other.getTranslationStrategy();
+        if (this$translationStrategy == null ? other$translationStrategy != null : !this$translationStrategy.equals(other$translationStrategy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OTLPConfig;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $convertHistogramsToNHCB = this.getConvertHistogramsToNHCB();
+        result = result * prime + ($convertHistogramsToNHCB == null ? 43 : $convertHistogramsToNHCB.hashCode());
+        Object $ignoreResourceAttributes = this.getIgnoreResourceAttributes();
+        result = result * prime + ($ignoreResourceAttributes == null ? 43 : $ignoreResourceAttributes.hashCode());
+        Object $keepIdentifyingResourceAttributes = this.getKeepIdentifyingResourceAttributes();
+        result = result * prime + ($keepIdentifyingResourceAttributes == null ? 43 : $keepIdentifyingResourceAttributes.hashCode());
+        Object $labelNamePreserveMultipleUnderscores = this.getLabelNamePreserveMultipleUnderscores();
+        result = result * prime + ($labelNamePreserveMultipleUnderscores == null ? 43 : $labelNamePreserveMultipleUnderscores.hashCode());
+        Object $labelNameUnderscoreSanitization = this.getLabelNameUnderscoreSanitization();
+        result = result * prime + ($labelNameUnderscoreSanitization == null ? 43 : $labelNameUnderscoreSanitization.hashCode());
+        Object $promoteAllResourceAttributes = this.getPromoteAllResourceAttributes();
+        result = result * prime + ($promoteAllResourceAttributes == null ? 43 : $promoteAllResourceAttributes.hashCode());
+        Object $promoteResourceAttributes = this.getPromoteResourceAttributes();
+        result = result * prime + ($promoteResourceAttributes == null ? 43 : $promoteResourceAttributes.hashCode());
+        Object $promoteScopeMetadata = this.getPromoteScopeMetadata();
+        result = result * prime + ($promoteScopeMetadata == null ? 43 : $promoteScopeMetadata.hashCode());
+        Object $translationStrategy = this.getTranslationStrategy();
+        result = result * prime + ($translationStrategy == null ? 43 : $translationStrategy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OTLPConfig(" + "convertHistogramsToNHCB=" + this.getConvertHistogramsToNHCB() + ", ignoreResourceAttributes=" + this.getIgnoreResourceAttributes() + ", keepIdentifyingResourceAttributes=" + this.getKeepIdentifyingResourceAttributes() + ", labelNamePreserveMultipleUnderscores=" + this.getLabelNamePreserveMultipleUnderscores() + ", labelNameUnderscoreSanitization=" + this.getLabelNameUnderscoreSanitization() + ", promoteAllResourceAttributes=" + this.getPromoteAllResourceAttributes() + ", promoteResourceAttributes=" + this.getPromoteResourceAttributes() + ", promoteScopeMetadata=" + this.getPromoteScopeMetadata() + ", translationStrategy=" + this.getTranslationStrategy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

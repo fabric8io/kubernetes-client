@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -40,12 +37,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "discoveryURL",
     "issuerCertificateAuthority",
     "issuerURL"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -174,6 +165,71 @@ public class TokenIssuer implements Editable<TokenIssuerBuilder>, KubernetesReso
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof TokenIssuer)) {
+            return false;
+        }
+        TokenIssuer other = (TokenIssuer) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$audiences = this.getAudiences();
+        Object other$audiences = other.getAudiences();
+        if (this$audiences == null ? other$audiences != null : !this$audiences.equals(other$audiences)) {
+            return false;
+        }
+        Object this$discoveryURL = this.getDiscoveryURL();
+        Object other$discoveryURL = other.getDiscoveryURL();
+        if (this$discoveryURL == null ? other$discoveryURL != null : !this$discoveryURL.equals(other$discoveryURL)) {
+            return false;
+        }
+        Object this$issuerCertificateAuthority = this.getIssuerCertificateAuthority();
+        Object other$issuerCertificateAuthority = other.getIssuerCertificateAuthority();
+        if (this$issuerCertificateAuthority == null ? other$issuerCertificateAuthority != null : !this$issuerCertificateAuthority.equals(other$issuerCertificateAuthority)) {
+            return false;
+        }
+        Object this$issuerURL = this.getIssuerURL();
+        Object other$issuerURL = other.getIssuerURL();
+        if (this$issuerURL == null ? other$issuerURL != null : !this$issuerURL.equals(other$issuerURL)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof TokenIssuer;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $audiences = this.getAudiences();
+        result = result * prime + ($audiences == null ? 43 : $audiences.hashCode());
+        Object $discoveryURL = this.getDiscoveryURL();
+        result = result * prime + ($discoveryURL == null ? 43 : $discoveryURL.hashCode());
+        Object $issuerCertificateAuthority = this.getIssuerCertificateAuthority();
+        result = result * prime + ($issuerCertificateAuthority == null ? 43 : $issuerCertificateAuthority.hashCode());
+        Object $issuerURL = this.getIssuerURL();
+        result = result * prime + ($issuerURL == null ? 43 : $issuerURL.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "TokenIssuer(" + "audiences=" + this.getAudiences() + ", discoveryURL=" + this.getDiscoveryURL() + ", issuerCertificateAuthority=" + this.getIssuerCertificateAuthority() + ", issuerURL=" + this.getIssuerURL() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

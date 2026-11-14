@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -45,12 +42,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "resourceLabels",
     "resourceTags",
     "universeDomain"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class GCPPlatformStatus implements Editable<GCPPlatformStatusBuilder>, Ku
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof GCPPlatformStatus)) {
+            return false;
+        }
+        GCPPlatformStatus other = (GCPPlatformStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$cloudLoadBalancerConfig = this.getCloudLoadBalancerConfig();
+        Object other$cloudLoadBalancerConfig = other.getCloudLoadBalancerConfig();
+        if (this$cloudLoadBalancerConfig == null ? other$cloudLoadBalancerConfig != null : !this$cloudLoadBalancerConfig.equals(other$cloudLoadBalancerConfig)) {
+            return false;
+        }
+        Object this$projectID = this.getProjectID();
+        Object other$projectID = other.getProjectID();
+        if (this$projectID == null ? other$projectID != null : !this$projectID.equals(other$projectID)) {
+            return false;
+        }
+        Object this$region = this.getRegion();
+        Object other$region = other.getRegion();
+        if (this$region == null ? other$region != null : !this$region.equals(other$region)) {
+            return false;
+        }
+        Object this$resourceLabels = this.getResourceLabels();
+        Object other$resourceLabels = other.getResourceLabels();
+        if (this$resourceLabels == null ? other$resourceLabels != null : !this$resourceLabels.equals(other$resourceLabels)) {
+            return false;
+        }
+        Object this$resourceTags = this.getResourceTags();
+        Object other$resourceTags = other.getResourceTags();
+        if (this$resourceTags == null ? other$resourceTags != null : !this$resourceTags.equals(other$resourceTags)) {
+            return false;
+        }
+        Object this$universeDomain = this.getUniverseDomain();
+        Object other$universeDomain = other.getUniverseDomain();
+        if (this$universeDomain == null ? other$universeDomain != null : !this$universeDomain.equals(other$universeDomain)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof GCPPlatformStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $cloudLoadBalancerConfig = this.getCloudLoadBalancerConfig();
+        result = result * prime + ($cloudLoadBalancerConfig == null ? 43 : $cloudLoadBalancerConfig.hashCode());
+        Object $projectID = this.getProjectID();
+        result = result * prime + ($projectID == null ? 43 : $projectID.hashCode());
+        Object $region = this.getRegion();
+        result = result * prime + ($region == null ? 43 : $region.hashCode());
+        Object $resourceLabels = this.getResourceLabels();
+        result = result * prime + ($resourceLabels == null ? 43 : $resourceLabels.hashCode());
+        Object $resourceTags = this.getResourceTags();
+        result = result * prime + ($resourceTags == null ? 43 : $resourceTags.hashCode());
+        Object $universeDomain = this.getUniverseDomain();
+        result = result * prime + ($universeDomain == null ? 43 : $universeDomain.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "GCPPlatformStatus(" + "cloudLoadBalancerConfig=" + this.getCloudLoadBalancerConfig() + ", projectID=" + this.getProjectID() + ", region=" + this.getRegion() + ", resourceLabels=" + this.getResourceLabels() + ", resourceTags=" + this.getResourceTags() + ", universeDomain=" + this.getUniverseDomain() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
