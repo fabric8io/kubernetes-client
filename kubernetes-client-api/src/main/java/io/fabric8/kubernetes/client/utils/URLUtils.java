@@ -182,6 +182,29 @@ public class URLUtils {
     return buffer.toString();
   }
 
+  public static String encodePathSegment(String segment) {
+    if (segment == null) {
+      throw new IllegalArgumentException("Path segment cannot be null");
+    }
+    if (isUnsafePathSegment(segment)) {
+      throw new IllegalArgumentException(
+          "Path segment must not contain separators or traversal syntax: " + segment);
+    }
+    try {
+      return new URI(null, null, "/" + segment, null).getRawPath().substring(1);
+    } catch (URISyntaxException e) {
+      throw new IllegalArgumentException("Path segment contains invalid syntax: " + segment, e);
+    }
+  }
+
+  private static boolean isUnsafePathSegment(String segment) {
+    return segment.isEmpty()
+        || segment.indexOf('/') != -1
+        || segment.indexOf('%') != -1
+        || ".".equals(segment)
+        || "..".equals(segment);
+  }
+
   public static boolean isValidURL(String url) {
     if (url != null) {
       try {

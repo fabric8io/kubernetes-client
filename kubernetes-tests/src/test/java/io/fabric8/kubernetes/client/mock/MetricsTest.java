@@ -38,6 +38,7 @@ import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @EnableKubernetesMockClient(https = false)
 class MetricsTest {
@@ -87,6 +88,14 @@ class MetricsTest {
     // Then
     assertEquals(1, podMetricsList.getItems().size());
     assertEquals("foo", podMetricsList.getItems().get(0).getMetadata().getName());
+  }
+
+  @Test
+  void podMetricsRejectTraversalPathSegments() {
+    assertThrows(IllegalArgumentException.class,
+        () -> client.top().pods().inNamespace("../nodes").metrics());
+    assertThrows(IllegalArgumentException.class,
+        () -> client.top().pods().inNamespace("ns").withName("../secrets/s").metrics());
   }
 
   @Test

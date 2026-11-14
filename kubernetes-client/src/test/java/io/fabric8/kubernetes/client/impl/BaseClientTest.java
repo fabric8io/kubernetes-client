@@ -37,6 +37,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockConstruction;
@@ -197,6 +198,17 @@ class BaseClientTest {
       // Then
       assertThat(result).isTrue();
     }
+  }
+
+  @Test
+  void getApiGroupRejectsTraversalName() {
+    assertThrows(IllegalArgumentException.class, () -> baseClient.getApiGroup("../api/v1"));
+  }
+
+  @Test
+  void getApiResourcesRejectsTraversalGroupVersion() {
+    assertThrows(IllegalArgumentException.class, () -> baseClient.getApiResources("../api/v1"));
+    assertThrows(IllegalArgumentException.class, () -> baseClient.getApiResources("apps/%2e%2e"));
   }
 
 }
