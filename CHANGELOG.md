@@ -21,6 +21,7 @@
 * Fix #8192: bump volcano.sh/apis from 1.15.2 to 1.16.0
 
 #### New Features
+* Fix #8111: Allow configuring the minimum watch lifetime per informer with `SharedIndexInformer#minWatchTimeout(Duration)`
 * Fix #8147: (open-virtual-networking) DSL support for `ClusterNetworkConnect`, `ClusterUserDefinedNetwork`, `RouteAdvertisements` and `VTEP` (`k8s.ovn.org/v1`)
 * Fix #8192: (volcano) DSL support for `NamespaceQueue` (`scheduling.volcano.sh/v1beta1`)
 

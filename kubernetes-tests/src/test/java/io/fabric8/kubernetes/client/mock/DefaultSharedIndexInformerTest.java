@@ -63,6 +63,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
 import java.time.Duration;
@@ -76,14 +79,18 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
 import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.params.provider.Arguments.argumentSet;
 
 @EnableKubernetesMockClient(https = false)
 class DefaultSharedIndexInformerTest {
@@ -119,6 +126,79 @@ class DefaultSharedIndexInformerTest {
   @AfterEach
   void tearDown() {
     factory.stopAllRegisteredInformers();
+  }
+
+  @Test
+  @DisplayName("minWatchTimeout, when set before starting, requests the watch with twice the duration as timeoutSeconds")
+  void minWatchTimeoutSetsWatchRequestTimeoutSeconds() throws Exception {
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(200, getList("1000", Pod.class))
+        .once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=1000&timeoutSeconds=3600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+
+    informer.minWatchTimeout(Duration.ofMinutes(30)).start().toCompletableFuture().get(10, TimeUnit.SECONDS);
+
+    assertThat(informer.isRunning()).isTrue();
+  }
+
+  @Test
+  @DisplayName("minWatchTimeout, when the informer has already started, throws KubernetesClientException")
+  void minWatchTimeoutFailsAfterStart() throws Exception {
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?resourceVersion=0")
+        .andReturn(200, getList("1000", Pod.class))
+        .once();
+    server.expect()
+        .withPath("/api/v1/namespaces/test/pods?allowWatchBookmarks=true&resourceVersion=1000&timeoutSeconds=600&watch=true")
+        .andUpgradeToWebSocket()
+        .open()
+        .done()
+        .always();
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+    informer.start().toCompletableFuture().get(10, TimeUnit.SECONDS);
+
+    assertThatExceptionOfType(KubernetesClientException.class)
+        .isThrownBy(() -> informer.minWatchTimeout(Duration.ofMinutes(30)));
+  }
+
+  @ParameterizedTest
+  @MethodSource("invalidMinWatchTimeouts")
+  @DisplayName("minWatchTimeout throws IllegalArgumentException when the duration is under 5 minutes, or over 4611686018 seconds where the API server would overflow converting twice the value to nanoseconds")
+  void minWatchTimeoutRejectsOutOfRangeDuration(Duration minWatchTimeout) {
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+
+    assertThatIllegalArgumentException().isThrownBy(() -> informer.minWatchTimeout(minWatchTimeout));
+  }
+
+  static Stream<Arguments> invalidMinWatchTimeouts() {
+    return Stream.of(
+        argumentSet("negative", Duration.ofSeconds(-1)),
+        argumentSet("zero", Duration.ZERO),
+        argumentSet("5 minutes minus 1 nanosecond", Duration.ofMinutes(5).minusNanos(1)),
+        argumentSet("4611686019 seconds", Duration.ofSeconds(4_611_686_019L)),
+        argumentSet("Long.MAX_VALUE seconds", Duration.ofSeconds(Long.MAX_VALUE)));
+  }
+
+  @ParameterizedTest
+  @MethodSource("validMinWatchTimeouts")
+  @DisplayName("minWatchTimeout accepts durations from 5 minutes through 4611686018 seconds")
+  void minWatchTimeoutAcceptsInRangeDuration(Duration minWatchTimeout) {
+    SharedIndexInformer<Pod> informer = factory.inNamespace("test").sharedIndexInformerFor(Pod.class, 0);
+
+    assertThat(informer.minWatchTimeout(minWatchTimeout)).isSameAs(informer);
+  }
+
+  static Stream<Arguments> validMinWatchTimeouts() {
+    return Stream.of(
+        argumentSet("5 minutes", Duration.ofMinutes(5)),
+        argumentSet("4611686018 seconds", Duration.ofSeconds(4_611_686_018L)));
   }
 
   @Test

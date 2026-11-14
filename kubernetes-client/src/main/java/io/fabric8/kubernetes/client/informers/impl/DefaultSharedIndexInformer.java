@@ -32,6 +32,7 @@ import io.fabric8.kubernetes.client.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CancellationException;
@@ -49,6 +50,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
   private static final Logger logger = LoggerFactory.getLogger(DefaultSharedIndexInformer.class);
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
+
+  // The watch requests twice the minimum timeout as timeoutSeconds, which the API server converts to int64 nanoseconds
+  private static final long MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS = Long.MAX_VALUE / 2_000_000_000L;
 
   // resyncCheckPeriod is how often we want the reflector's resync timer to fire so it can
   // call shouldResync to check if any of our listeners need a resync.
@@ -317,6 +321,20 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       throw new KubernetesClientException("Informer cannot be running when setting item store");
     }
     this.indexer.setItemStore(itemStore);
+    return this;
+  }
+
+  @Override
+  public synchronized SharedIndexInformer<T> minWatchTimeout(Duration minWatchTimeout) {
+    if (started.get()) {
+      throw new KubernetesClientException("Informer cannot be running when minimum watch timeout is set");
+    }
+    long minTimeoutSeconds = minWatchTimeout.getSeconds();
+    if (minTimeoutSeconds < 300 || minTimeoutSeconds > MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS) {
+      throw new IllegalArgumentException("Minimum watch timeout must be at least 5 minutes and no greater than "
+          + MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS + " seconds");
+    }
+    this.reflector.setMinTimeout(minTimeoutSeconds);
     return this;
   }
 
