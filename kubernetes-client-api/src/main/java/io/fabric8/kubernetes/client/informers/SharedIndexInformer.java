@@ -191,7 +191,9 @@ public interface SharedIndexInformer<T> extends AutoCloseable {
    * {@code client.pods().runnableInformer(0).addEventHandler(handler).minWatchTimeout(Duration.ofMinutes(30)).run()}
    * or configure an informer obtained from {@link SharedInformerFactory} before starting it.
    *
-   * @param minWatchTimeout a duration of at least 5 minutes and no greater than {@code Long.MAX_VALUE / 2} whole seconds
+   * @param minWatchTimeout a duration of at least 5 minutes and no greater than {@code Long.MAX_VALUE / 2_000_000_000}
+   *        whole seconds (about 146 years), so that the API server can convert the requested {@code timeoutSeconds}
+   *        to nanoseconds
    * @return this informer
    * @throws IllegalArgumentException if the duration is outside the allowed range
    * @throws io.fabric8.kubernetes.client.KubernetesClientException if the informer has already started

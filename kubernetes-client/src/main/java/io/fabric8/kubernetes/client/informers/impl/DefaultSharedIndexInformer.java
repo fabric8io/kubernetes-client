@@ -51,6 +51,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
 
   private static final long MINIMUM_RESYNC_PERIOD_MILLIS = 1000L;
 
+  // The watch requests twice the minimum timeout as timeoutSeconds, which the API server converts to int64 nanoseconds
+  private static final long MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS = Long.MAX_VALUE / 2_000_000_000L;
+
   // resyncCheckPeriod is how often we want the reflector's resync timer to fire so it can
   // call shouldResync to check if any of our listeners need a resync.
   private long resyncCheckPeriodMillis;
@@ -327,9 +330,9 @@ public class DefaultSharedIndexInformer<T extends HasMetadata, L extends Kuberne
       throw new KubernetesClientException("Informer cannot be running when minimum watch timeout is set");
     }
     long minTimeoutSeconds = minWatchTimeout.getSeconds();
-    if (minTimeoutSeconds < 300 || minTimeoutSeconds > Long.MAX_VALUE / 2) {
-      throw new IllegalArgumentException(
-          "Minimum watch timeout must be at least 5 minutes and no greater than Long.MAX_VALUE / 2 seconds");
+    if (minTimeoutSeconds < 300 || minTimeoutSeconds > MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS) {
+      throw new IllegalArgumentException("Minimum watch timeout must be at least 5 minutes and no greater than "
+          + MAXIMUM_MIN_WATCH_TIMEOUT_SECONDS + " seconds");
     }
     this.reflector.setMinTimeout(minTimeoutSeconds);
     return this;
