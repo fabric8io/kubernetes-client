@@ -135,7 +135,9 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     if (webSocket.isOutputClosed()) {
       return false;
     }
-    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(code, reason == null ? "Closing" : reason);
+    // 1000 rather than an echo of a code the JDK rejects, such as 1006 (closed abnormally) after the connection dropped
+    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(isLegalToSend(code) ? code : 1000,
+        reason == null ? "Closing" : reason);
     cf = cf.whenComplete((w, t) -> {
       if (t != null) {
         logger.warn("Queued close did not succeed", t);
@@ -147,6 +149,14 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
       }
     });
     return !cf.isCompletedExceptionally();
+  }
+
+  /**
+   * Whether {@link java.net.http.WebSocket#sendClose(int, String)} accepts the code; it throws an
+   * {@link IllegalArgumentException} for the others.
+   */
+  private static boolean isLegalToSend(int code) {
+    return code == 1000 || code == 1001 || code == 1008 || code == 1011 || (code >= 3000 && code <= 4999);
   }
 
   private void abort() {
