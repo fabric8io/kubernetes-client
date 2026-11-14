@@ -210,14 +210,21 @@ class ServiceOperationsImplTest {
       }
 
       @Test
-      @DisplayName("should use original port when target port is a named port (String)")
-      void whenTargetPortIsNamedPort_shouldFallbackToOriginalPort() throws Exception {
+      @DisplayName("should resolve named target port from selected pod container ports")
+      void whenTargetPortIsNamedPort_shouldResolvePodContainerPort() throws Exception {
         // Given - Service with named target port
         TestStandardHttpClient httpClient = factory.getInstance(0);
         httpClient.expect("/api/v1/namespaces/test/services/test-service", 200,
             "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
                 "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":80,\"targetPort\":\"http\"}]}}");
-        httpClient.expect("/api/v1/namespaces/test/pods", 200, POD_LIST_JSON);
+        httpClient.expect("/api/v1/namespaces/test/pods", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[" +
+                "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"containers\":[{\"name\":\"web\",\"ports\":[" +
+                "{\"name\":\"admin\",\"containerPort\":80,\"protocol\":\"TCP\"}," +
+                "{\"name\":\"http\",\"containerPort\":8080,\"protocol\":\"TCP\"}" +
+                "]}]}}" +
+                "]}");
         httpClient.wsExpect(".*/portforward.*",
             new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
 
@@ -234,14 +241,128 @@ class ServiceOperationsImplTest {
         assertThat(pf).isNotNull();
         pf.close();
 
-        // Then - Named ports are not resolved, so it falls back to the original port
+        // Then - Named targetPorts must resolve to the selected Pod's container port.
         assertThat(httpClient.getRecordedBuildWebSocketDirects())
             .hasSize(1)
             .first()
             .satisfies(recorded -> {
               String uri = recorded.getStandardWebSocketBuilder().asHttpRequest().uri().toString();
               assertThat(uri)
-                  .as("WebSocket URL should fall back to original port 80 when targetPort is a named port")
+                  .as("WebSocket URL should contain named targetPort http as container port 8080, not service port 80")
+                  .contains("portforward?ports=8080");
+            });
+      }
+
+      @Test
+      @DisplayName("should resolve named target port from selected pod sidecar ports")
+      void whenTargetPortIsNamedPortOnSidecar_shouldResolvePodContainerPort() throws Exception {
+        // Given - Service with named target port on a restartable init sidecar
+        TestStandardHttpClient httpClient = factory.getInstance(0);
+        httpClient.expect("/api/v1/namespaces/test/services/test-service", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":9090,\"targetPort\":\"metrics\"}]}}");
+        httpClient.expect("/api/v1/namespaces/test/pods", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[" +
+                "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"containers\":[{\"name\":\"web\",\"ports\":[" +
+                "{\"name\":\"http\",\"containerPort\":8080,\"protocol\":\"TCP\"}" +
+                "]}],\"initContainers\":[{\"name\":\"metrics-sidecar\",\"restartPolicy\":\"Always\",\"ports\":[" +
+                "{\"name\":\"metrics\",\"containerPort\":9091,\"protocol\":\"TCP\"}" +
+                "]}]}}" +
+                "]}");
+        httpClient.wsExpect(".*/portforward.*",
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
+
+        PipedOutputStream out = new PipedOutputStream();
+        PipedInputStream in = new PipedInputStream(out);
+        ReadableByteChannel inChannel = Channels.newChannel(in);
+        WritableByteChannel outChannel = Channels.newChannel(out);
+
+        PortForward pf = client.services()
+            .inNamespace("test")
+            .withName("test-service")
+            .portForward(9090, inChannel, outChannel);
+        assertThat(pf).isNotNull();
+        pf.close();
+
+        assertThat(httpClient.getRecordedBuildWebSocketDirects())
+            .hasSize(1)
+            .first()
+            .satisfies(recorded -> {
+              String uri = recorded.getStandardWebSocketBuilder().asHttpRequest().uri().toString();
+              assertThat(uri)
+                  .as("WebSocket URL should contain sidecar targetPort metrics as container port 9091")
+                  .contains("portforward?ports=9091");
+            });
+      }
+
+      @Test
+      @DisplayName("should fail closed when named target port cannot be resolved")
+      void whenTargetPortNameIsMissing_shouldThrowException() {
+        // Given - Service with named target port absent from selected pod
+        TestStandardHttpClient httpClient = factory.getInstance(0);
+        httpClient.expect("/api/v1/namespaces/test/services/test-service", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"selector\":{\"app\":\"test\"},\"ports\":[{\"port\":80,\"targetPort\":\"http\"}]}}");
+        httpClient.expect("/api/v1/namespaces/test/pods", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[" +
+                "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"containers\":[{\"name\":\"web\",\"ports\":[" +
+                "{\"name\":\"admin\",\"containerPort\":80,\"protocol\":\"TCP\"}" +
+                "]}]}}" +
+                "]}");
+
+        PipedOutputStream out = new PipedOutputStream();
+        PipedInputStream in = new PipedInputStream();
+        ReadableByteChannel inChannel = Channels.newChannel(in);
+        WritableByteChannel outChannel = Channels.newChannel(out);
+
+        assertThatThrownBy(() -> client.services()
+            .inNamespace("test")
+            .withName("test-service")
+            .portForward(80, inChannel, outChannel))
+            .isInstanceOf(IllegalStateException.class)
+            .hasMessageContaining("Could not resolve targetPort 'http'");
+      }
+
+      @Test
+      @DisplayName("should keep service port for headless services")
+      void whenServiceIsHeadless_shouldUseOriginalPortInWebSocketUrl() throws Exception {
+        // Given - kubectl keeps the service port when ClusterIP is None
+        TestStandardHttpClient httpClient = factory.getInstance(0);
+        httpClient.expect("/api/v1/namespaces/test/services/test-service", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"Service\",\"metadata\":{\"name\":\"test-service\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"clusterIP\":\"None\",\"selector\":{\"app\":\"test\"},\"ports\":" +
+                "[{\"port\":80,\"targetPort\":\"http\"}]}}");
+        httpClient.expect("/api/v1/namespaces/test/pods", 200,
+            "{\"apiVersion\":\"v1\",\"kind\":\"PodList\",\"items\":[" +
+                "{\"apiVersion\":\"v1\",\"kind\":\"Pod\",\"metadata\":{\"name\":\"test-pod\",\"namespace\":\"test\"}," +
+                "\"spec\":{\"containers\":[{\"name\":\"web\",\"ports\":[" +
+                "{\"name\":\"http\",\"containerPort\":8080,\"protocol\":\"TCP\"}" +
+                "]}]}}" +
+                "]}");
+        httpClient.wsExpect(".*/portforward.*",
+            new WebSocketResponse(new WebSocketUpgradeResponse(null), new TestWebSocket()));
+
+        PipedOutputStream out = new PipedOutputStream();
+        PipedInputStream in = new PipedInputStream(out);
+        ReadableByteChannel inChannel = Channels.newChannel(in);
+        WritableByteChannel outChannel = Channels.newChannel(out);
+
+        PortForward pf = client.services()
+            .inNamespace("test")
+            .withName("test-service")
+            .portForward(80, inChannel, outChannel);
+        assertThat(pf).isNotNull();
+        pf.close();
+
+        assertThat(httpClient.getRecordedBuildWebSocketDirects())
+            .hasSize(1)
+            .first()
+            .satisfies(recorded -> {
+              String uri = recorded.getStandardWebSocketBuilder().asHttpRequest().uri().toString();
+              assertThat(uri)
+                  .as("WebSocket URL should keep the service port for headless services")
                   .contains("portforward?ports=80");
             });
       }
