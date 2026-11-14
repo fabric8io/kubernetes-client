@@ -146,7 +146,7 @@ public class CustomResourceCollector {
       packages.stream()
           .filter(Objects::nonNull)
           .map(pkg -> (Predicate<String>) s -> !s.startsWith(pkg))
-          .reduce(Predicate::or)
+          .reduce(Predicate::and)
           .ifPresent(this.classNamePredicates::add);
     }
     return this;
