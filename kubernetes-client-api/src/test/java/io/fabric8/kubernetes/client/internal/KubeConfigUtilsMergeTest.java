@@ -47,6 +47,46 @@ class KubeConfigUtilsMergeTest {
   }
 
   @Test
+  void userInfoCopiesKubeconfigImpersonationFields() {
+    result = Config.empty();
+
+    final var kubeconfig = new io.fabric8.kubernetes.api.model.ConfigBuilder()
+        .withCurrentContext("context")
+        .addNewCluster()
+        .withName("cluster")
+        .withNewCluster()
+        .withServer("https://cluster.example.com")
+        .endCluster()
+        .endCluster()
+        .addNewContext()
+        .withName("context")
+        .withNewContext()
+        .withCluster("cluster")
+        .withUser("user")
+        .endContext()
+        .endContext()
+        .addNewUser()
+        .withName("user")
+        .withNewUser()
+        .withToken("token")
+        .withAs("tenant-user")
+        .withAsGroups("tenant-viewers", "audit-readers")
+        .addToAsUserExtra("scopes", Collections.singletonList("read-only"))
+        .endUser()
+        .endUser()
+        .build();
+
+    KubeConfigUtils.merge(result, null, kubeconfig);
+
+    assertThat(result)
+        .hasFieldOrPropertyWithValue("impersonateUsername", "tenant-user");
+    assertThat(result.getImpersonateGroups())
+        .containsExactly("tenant-viewers", "audit-readers");
+    assertThat(result.getImpersonateExtras())
+        .containsEntry("scopes", Collections.singletonList("read-only"));
+  }
+
+  @Test
   void incompleteContextProvidedLeavesConfigUnchanged() {
     result = new ConfigBuilder(Config.empty())
         .addToContexts(new NamedContextBuilder()
