@@ -123,6 +123,23 @@ class Jackson2JdkTypesModuleTest {
       assertThat(mapper.writeValueAsString(Map.of(Locale.forLanguageTag("zh-Hant-TW"), "zh")))
           .isEqualTo("{\"zh_TW_#Hant\":\"zh\"}");
     }
+
+    @ParameterizedTest(name = "\"{0}\"") // the root locale is ""
+    @MethodSource("io.fabric8.kubernetes.model.jackson.Jackson2JdkTypesModuleTest#keyLocales")
+    @DisplayName("writes every Locale map key as Locale#toString, like Jackson 2, not as a language tag")
+    void writesLocaleKeysAsToString(Locale locale) {
+      assertThat(mapper.writeValueAsString(Map.of(locale, "a"))).isEqualTo("{\"" + locale + "\":\"a\"}");
+    }
+
+    @ParameterizedTest(name = "\"{0}\"")
+    @MethodSource("io.fabric8.kubernetes.model.jackson.Jackson2JdkTypesModuleTest#keyLocales")
+    @DisplayName("reads the Locale map keys it writes back into the same locale")
+    void readsBackLocaleKeys(Locale locale) {
+      final String json = mapper.writeValueAsString(Map.of(locale, "a"));
+
+      assertThat(mapper.readValue(json, new TypeReference<Map<Locale, String>>() {
+      })).containsOnlyKeys(locale);
+    }
   }
 
   /**
@@ -286,6 +303,16 @@ class Jackson2JdkTypesModuleTest {
       })).containsOnlyKeys(Locale.ROOT);
     }
 
+    @ParameterizedTest(name = "{0}")
+    @ValueSource(strings = { "en", "un", "unde", "c" })
+    @SuppressWarnings("deprecation") // Locale.of needs Java 19
+    @DisplayName("reads a language alone other than und as that language, not as the root locale (values and map keys)")
+    void readsOtherLanguagesAsLanguage(String language) {
+      assertThat(mapper.readValue("\"" + language + "\"", Locale.class)).isEqualTo(new Locale(language));
+      assertThat(mapper.readValue("{\"" + language + "\":\"a\"}", new TypeReference<Map<Locale, String>>() {
+      })).containsOnlyKeys(new Locale(language));
+    }
+
     @Test
     @DisplayName("reads an empty map key as the root locale, like Jackson 2 did")
     void readsEmptyKeyAsRoot() {
@@ -327,6 +354,10 @@ class Jackson2JdkTypesModuleTest {
         "en-US-x-priv-lvariant-POSIX")
         .map(Locale::forLanguageTag)
         .map(Arguments::of);
+  }
+
+  static Stream<Arguments> keyLocales() {
+    return Stream.of(locales(), legacyLocales(), Stream.of(Arguments.of(Locale.ROOT))).flatMap(s -> s);
   }
 
   public static class Plain {

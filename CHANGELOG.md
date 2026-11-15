@@ -8,6 +8,7 @@
 * Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs
 * Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
 * Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
+* Fix #8237: (kubernetes-model-common) `Jackson2JdkTypesModule` keeps writing `Locale` map keys as `zh_TW_#Hant` and reading `und` as the root locale with Jackson 3.2.4 and 3.3
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
