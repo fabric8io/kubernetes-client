@@ -304,9 +304,9 @@ class Jackson2JdkTypesModuleTest {
     }
 
     @ParameterizedTest(name = "{0}")
-    @ValueSource(strings = { "en", "un", "unde", "c" })
+    @ValueSource(strings = { "en", "un", "unde", "c", "UND", "Und" })
     @SuppressWarnings("deprecation") // Locale.of needs Java 19
-    @DisplayName("reads a language alone other than und as that language, not as the root locale (values and map keys)")
+    @DisplayName("reads a language alone other than lowercase und as that language, not as the root locale (values and map keys)")
     void readsOtherLanguagesAsLanguage(String language) {
       assertThat(mapper.readValue("\"" + language + "\"", Locale.class)).isEqualTo(new Locale(language));
       assertThat(mapper.readValue("{\"" + language + "\":\"a\"}", new TypeReference<Map<Locale, String>>() {

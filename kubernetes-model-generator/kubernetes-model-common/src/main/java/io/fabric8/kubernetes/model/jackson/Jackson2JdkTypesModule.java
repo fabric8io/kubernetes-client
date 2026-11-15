@@ -256,7 +256,7 @@ public class Jackson2JdkTypesModule extends SimpleModule {
       final int separator = firstSeparator(value, 0);
       if (separator < 0) {
         // any language, also one that isn't valid BCP 47 (e.g. "c", how 7.x wrote the POSIX locale new Locale("C"))
-        return "und".equalsIgnoreCase(value) ? Locale.ROOT : new Locale(value);
+        return "und".equals(value) ? Locale.ROOT : new Locale(value);
       }
       if (value.charAt(separator) == '-') {
         return Locale.forLanguageTag(value);
@@ -281,6 +281,9 @@ public class Jackson2JdkTypesModule extends SimpleModule {
 
   /**
    * Jackson 3.3 writes Locale keys as language tags, like the values.
+   * <p>
+   * Like Jackson 2, keys aren't unique: a locale with neither language nor region (e.g. {@code und-Latn}) writes
+   * {@code ""}, which reads back as {@link Locale#ROOT}.
    */
   static final class Jackson2LocaleKeySerializer extends StdSerializer<Locale> {
 
