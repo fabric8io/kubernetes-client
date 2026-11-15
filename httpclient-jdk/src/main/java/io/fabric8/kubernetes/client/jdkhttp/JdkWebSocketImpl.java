@@ -135,8 +135,7 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
     if (webSocket.isOutputClosed()) {
       return false;
     }
-    // 1000 rather than an echo of a code the JDK rejects, such as 1006 (closed abnormally) after the connection dropped
-    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(isLegalToSend(code) ? code : 1000,
+    CompletableFuture<java.net.http.WebSocket> cf = webSocket.sendClose(closeCode(code),
         reason == null ? "Closing" : reason);
     cf = cf.whenComplete((w, t) -> {
       if (t != null) {
@@ -152,11 +151,22 @@ class JdkWebSocketImpl implements WebSocket, java.net.http.WebSocket.Listener {
   }
 
   /**
-   * Whether {@link java.net.http.WebSocket#sendClose(int, String)} accepts the code; it throws an
-   * {@link IllegalArgumentException} for the others.
+   * The code to pass to {@link java.net.http.WebSocket#sendClose(int, String)}, which throws an
+   * {@link IllegalArgumentException} for codes other than 1000, 1001, 1008, 1011 and 3000-4999.
+   * <p>
+   * The codes it refuses that are valid on the wire, like the 1002 (protocol error) of port forwarding, are sent as
+   * 1008 (policy violation) so the server still learns that something went wrong. The others, like the 1006 (closed
+   * abnormally) a listener echoes after the connection dropped, must never be sent and are replaced with 1000, which is
+   * also what the JDK replies itself after receiving 1005 or 1006.
    */
-  private static boolean isLegalToSend(int code) {
-    return code == 1000 || code == 1001 || code == 1008 || code == 1011 || (code >= 3000 && code <= 4999);
+  private static int closeCode(int code) {
+    if (code == 1000 || code == 1001 || code == 1008 || code == 1011 || (code >= 3000 && code <= 4999)) {
+      return code;
+    }
+    if (code == 1002 || code == 1003 || code == 1007 || code == 1009 || code == 1010) {
+      return 1008;
+    }
+    return 1000;
   }
 
   private void abort() {

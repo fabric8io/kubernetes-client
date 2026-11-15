@@ -20,6 +20,8 @@ import io.fabric8.kubernetes.client.http.WebSocket;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,6 +42,8 @@ import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.after;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
@@ -95,6 +99,25 @@ class JdkWebSocketImplTest {
     new JdkWebSocketImpl(new WebSocket.Listener() {
     }, null).onOpen(jdkWebSocket);
     verify(jdkWebSocket, after(200).never()).sendPing(any());
+  }
+
+  @ParameterizedTest(name = "{0} is sent as {1}")
+  @CsvSource({
+      "1000, 1000", "1001, 1001", "1008, 1008", "1011, 1011", "3000, 3000", "4999, 4999",
+      "1002, 1008", "1003, 1008", "1007, 1008", "1009, 1008", "1010, 1008",
+      "999, 1000", "1005, 1000", "1006, 1000", "1012, 1000", "1015, 1000", "2999, 1000", "5000, 1000"
+  })
+  @DisplayName("sendClose passes on the codes the JDK accepts and replaces the ones it refuses")
+  void sendCloseReplacesCodesTheJdkRefuses(int code, int sentCode) {
+    // Given
+    when(jdkWebSocket.sendClose(anyInt(), anyString())).thenReturn(CompletableFuture.completedFuture(jdkWebSocket));
+    final JdkWebSocketImpl webSocket = new JdkWebSocketImpl(new WebSocket.Listener() {
+    }, null);
+    webSocket.onOpen(jdkWebSocket);
+    // When
+    webSocket.sendClose(code, "reason");
+    // Then
+    verify(jdkWebSocket).sendClose(sentCode, "reason");
   }
 
   @Test
