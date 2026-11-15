@@ -105,7 +105,7 @@ git rev-parse HEAD
 
 Work on a detached HEAD, not a local `<head-branch>`: Step 9 pushes `HEAD:refs/heads/<head-branch>` explicitly, so no local branch is needed, and none can be reset by mistake or be checked out in another worktree (e.g. an earlier run's kept one). Not `gh pr checkout`: many permission setups ask before every branch checkout. The scripts in `scripts/` still prompt outside a skill turn (a subagent briefed to follow this file has no `allowed-tools`), by design: an allow rule for them would have to match any copy of them anywhere.
 
-_Fallback_: start from an up-to-date `main` instead (`git fetch <remote> main`, then `git switch --detach FETCH_HEAD`), and push to your fork under a new branch name, `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`). Your fork's remote is the one `git remote -v` lists for it, written `<fork-remote>`.
+_Fallback_: start from an up-to-date `main` instead (`git fetch <remote> main`, then `git switch --detach FETCH_HEAD`), record `git rev-parse HEAD` (`main`'s head, not the PR's `Head commit`) as the base commit, and push to your fork under a new branch name, `chore/bump-<short-dep-name>-<new-version>` (e.g., `kustomize-api-0.21.1`, `cert-manager-1.20.0`). For grouped PRs use the group and the shared target version (`chore/bump-kubernetes-0.36.0`), or just the group name when there is none (`chore/bump-knative-group`). Your fork's remote is the one `git remote -v` lists for it, written `<fork-remote>`.
 
 ## Step 3: Verify the Dependency Bump
 
@@ -327,6 +327,8 @@ ${CLAUDE_SKILL_DIR}/scripts/get-pr-state.sh <renovate-pr-number>
 - `UNKNOWN` — run the script again.
 - `MERGEABLE` with the same head commit — push.
 
+_Fallback_: your base is `main`, not the PR's head, so skip the state script: run `git fetch <remote> main` and `git rev-parse FETCH_HEAD`. If that differs from the base commit, `main` moved: follow _Branch moved_ with `main` in place of `<head-branch>`. Otherwise push to your fork as the _Fallback_ note after _Conflicts after your push_ describes.
+
 Push explicitly to the PR's head branch on `<remote>` (Step 2). A bare `git push` follows `remote.pushDefault`, which may point at your fork:
 
 ```bash
@@ -343,10 +345,13 @@ Replay your commit onto the new head. The new base can change the generator's ou
 
 ```bash
 git fetch <remote> <head-branch>
-git rebase --onto FETCH_HEAD <base-commit>
+git rev-parse FETCH_HEAD
+git rebase --onto <new-base-commit> <base-commit>
 ```
 
-On conflicts, merge hand-written files (Go code, `pom.xml`, `CHANGELOG.md`) by keeping both sides' changes. Generated files (`kubernetes-model-generator/openapi/schemas/`, `src/generated/`, `src/generated-builders/`) can take either side, since they're regenerated next. Then record `git rev-parse FETCH_HEAD` as the new base commit, redo Steps 3–7 on it, and amend your commit. The ship approval covered the old base: present `git diff --stat <new-base-commit> HEAD` with the commit message and wait for a new confirmation (dispatched, _Execute_) before starting Step 9 again.
+Record the `git rev-parse FETCH_HEAD` output as the **new base commit** right after the fetch and use that SHA from then on, since a later fetch overwrites `FETCH_HEAD`. (_Fallback_: fetch `main` instead of `<head-branch>`.)
+
+On conflicts, merge hand-written files (Go code, `pom.xml`, `CHANGELOG.md`) by keeping both sides' changes. Generated files (`kubernetes-model-generator/openapi/schemas/`, `src/generated/`, `src/generated-builders/`) can take either side, since they're regenerated next. Then redo Steps 3–7 on the new base commit, and amend your commit. The ship approval covered the old base: present `git diff --stat <new-base-commit> HEAD` with the commit message and wait for a new confirmation (dispatched, _Execute_) before starting Step 9 again.
 
 ### Conflicts after your push
 
@@ -387,7 +392,7 @@ gh pr create --repo fabric8io/kubernetes-client --head <fork-owner>:<branch-name
 After the PR is created, you'll have the real PR number. Update `CHANGELOG.md`:
 
 1. Replace all `PLACEHOLDER` references for this bump with the actual PR number
-2. Commit the update:
+2. Commit the update: write this message to a scratch file with the Write tool, then run `git add CHANGELOG.md` and `git commit --signoff -F <message-file>`:
 
 ```
 chore: update CHANGELOG with PR #<pr-number> reference
@@ -399,7 +404,7 @@ chore: update CHANGELOG with PR #<pr-number> reference
 
 You are dispatched when your task came from another agent's brief (you are a subagent) rather than from the human you are talking to. A session that invokes this skill for the human it is talking to, an Oracle included, follows the normal flow and its gates. You can't ask the human (subagents have no `AskUserQuestion`), and any approval reaches you relayed, so a dispatched run has two phases.
 
-**Workspace.** Orchestrators start a dispatched run with `isolation: worktree`, and the run works only in that worktree, which is its cwd: run every command bare there, exactly as written, since a `cd <dir> &&` or `git -C <dir>` prefix defeats the sandbox exclusions and the commit and push permission rules. If your cwd is not a linked worktree of your own (`git rev-parse --git-dir` equals `git rev-parse --git-common-dir`), stop with `BLOCKED`. Never work in a checkout other agents use: Step 2 moves its HEAD and Step 4 rewrites its generated sources. Orchestrators dispatch one run at a time. Every run installs the model modules into the shared `~/.m2` as `999-SNAPSHOT`, so parallel runs overwrite each other's artifacts, and every Go bump edits the same `go.mod`, `CHANGELOG.md` and schemas, so each merge sends the next PR to a rebase anyway.
+**Workspace.** Orchestrators start a dispatched run with `isolation: worktree`, and the run works only in that worktree, which is its cwd: run every command bare there, exactly as written, since a `cd <dir> &&` or `git -C <dir>` prefix defeats the sandbox exclusions and the commit and push permission rules. If your cwd is not a linked worktree of your own (`git rev-parse --path-format=absolute --git-dir` equals `git rev-parse --path-format=absolute --git-common-dir`; the absolute form keeps a subdirectory of the main checkout from passing), stop with `BLOCKED`. Never work in a checkout other agents use: Step 2 moves its HEAD and Step 4 rewrites its generated sources. Orchestrators dispatch one run at a time. Every run installs the model modules into the shared `~/.m2` as `999-SNAPSHOT`, so parallel runs overwrite each other's artifacts, and every Go bump edits the same `go.mod`, `CHANGELOG.md` and schemas, so each merge sends the next PR to a rebase anyway.
 
 **Scripts.** Run them from your worktree's copy, `<worktree>/.claude/skills/regen-java-models-from-upstream/scripts/<script>` with your cwd's absolute path for `<worktree>`. `get-dep-context.sh` describes the checkout it lives in, so a pre-fetch, `${CLAUDE_SKILL_DIR}` or a path from your brief may point at another checkout: run `get-dep-context.sh <pr>` from your copy before Step 1 even if a pre-fetch ran, and use only its output.
 
