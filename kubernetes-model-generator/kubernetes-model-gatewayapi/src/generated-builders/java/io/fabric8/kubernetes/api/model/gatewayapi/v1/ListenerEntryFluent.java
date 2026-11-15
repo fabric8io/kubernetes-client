@@ -20,6 +20,7 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
 
   private Map<String,Object> additionalProperties;
   private AllowedRoutesBuilder allowedRoutes;
+  private ListenerFiltersBuilder filters;
   private String hostname;
   private String name;
   private Integer port;
@@ -57,6 +58,10 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     return this.allowedRoutes != null ? this.allowedRoutes.build() : null;
   }
   
+  public ListenerFilters buildFilters() {
+    return this.filters != null ? this.filters.build() : null;
+  }
+  
   public ListenerTLSConfig buildTls() {
     return this.tls != null ? this.tls.build() : null;
   }
@@ -65,6 +70,7 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     instance = instance != null ? instance : new ListenerEntry();
     if (instance != null) {
         this.withAllowedRoutes(instance.getAllowedRoutes());
+        this.withFilters(instance.getFilters());
         this.withHostname(instance.getHostname());
         this.withName(instance.getName());
         this.withPort(instance.getPort());
@@ -78,12 +84,24 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     return this.withNewAllowedRoutesLike(Optional.ofNullable(this.buildAllowedRoutes()).orElse(null));
   }
   
+  public FiltersNested<A> editFilters() {
+    return this.withNewFiltersLike(Optional.ofNullable(this.buildFilters()).orElse(null));
+  }
+  
   public AllowedRoutesNested<A> editOrNewAllowedRoutes() {
     return this.withNewAllowedRoutesLike(Optional.ofNullable(this.buildAllowedRoutes()).orElse(new AllowedRoutesBuilder().build()));
   }
   
   public AllowedRoutesNested<A> editOrNewAllowedRoutesLike(AllowedRoutes item) {
     return this.withNewAllowedRoutesLike(Optional.ofNullable(this.buildAllowedRoutes()).orElse(item));
+  }
+  
+  public FiltersNested<A> editOrNewFilters() {
+    return this.withNewFiltersLike(Optional.ofNullable(this.buildFilters()).orElse(new ListenerFiltersBuilder().build()));
+  }
+  
+  public FiltersNested<A> editOrNewFiltersLike(ListenerFilters item) {
+    return this.withNewFiltersLike(Optional.ofNullable(this.buildFilters()).orElse(item));
   }
   
   public TlsNested<A> editOrNewTls() {
@@ -110,6 +128,9 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     }
     ListenerEntryFluent that = (ListenerEntryFluent) o;
     if (!(Objects.equals(allowedRoutes, that.allowedRoutes))) {
+      return false;
+    }
+    if (!(Objects.equals(filters, that.filters))) {
       return false;
     }
     if (!(Objects.equals(hostname, that.hostname))) {
@@ -161,6 +182,10 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     return this.allowedRoutes != null;
   }
   
+  public boolean hasFilters() {
+    return this.filters != null;
+  }
+  
   public boolean hasHostname() {
     return this.hostname != null;
   }
@@ -182,7 +207,7 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
   }
   
   public int hashCode() {
-    return Objects.hash(allowedRoutes, hostname, name, port, protocol, tls, additionalProperties);
+    return Objects.hash(allowedRoutes, filters, hostname, name, port, protocol, tls, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -215,6 +240,11 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     if (!(allowedRoutes == null)) {
         sb.append("allowedRoutes:");
         sb.append(allowedRoutes);
+        sb.append(",");
+    }
+    if (!(filters == null)) {
+        sb.append("filters:");
+        sb.append(filters);
         sb.append(",");
     }
     if (!(hostname == null)) {
@@ -271,6 +301,18 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     return (A) this;
   }
   
+  public A withFilters(ListenerFilters filters) {
+    this._visitables.remove("filters");
+    if (filters != null) {
+        this.filters = new ListenerFiltersBuilder(filters);
+        this._visitables.get("filters").add(this.filters);
+    } else {
+        this.filters = null;
+        this._visitables.get("filters").remove(this.filters);
+    }
+    return (A) this;
+  }
+  
   public A withHostname(String hostname) {
     this.hostname = hostname;
     return (A) this;
@@ -287,6 +329,14 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
   
   public AllowedRoutesNested<A> withNewAllowedRoutesLike(AllowedRoutes item) {
     return new AllowedRoutesNested(item);
+  }
+  
+  public FiltersNested<A> withNewFilters() {
+    return new FiltersNested(null);
+  }
+  
+  public FiltersNested<A> withNewFiltersLike(ListenerFilters item) {
+    return new FiltersNested(item);
   }
   
   public TlsNested<A> withNewTls() {
@@ -331,6 +381,23 @@ public class ListenerEntryFluent<A extends io.fabric8.kubernetes.api.model.gatew
     }
     
     public N endAllowedRoutes() {
+      return and();
+    }
+    
+  }
+  public class FiltersNested<N> extends ListenerFiltersFluent<FiltersNested<N>> implements Nested<N>{
+  
+    ListenerFiltersBuilder builder;
+  
+    FiltersNested(ListenerFilters item) {
+      this.builder = new ListenerFiltersBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) ListenerEntryFluent.this.withFilters(builder.build());
+    }
+    
+    public N endFilters() {
       return and();
     }
     

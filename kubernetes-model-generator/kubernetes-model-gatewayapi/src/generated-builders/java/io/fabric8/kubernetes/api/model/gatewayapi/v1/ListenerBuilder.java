@@ -25,7 +25,7 @@ public class ListenerBuilder extends ListenerFluent<ListenerBuilder> implements 
   }
 
   public Listener build() {
-    Listener buildable = new Listener(fluent.buildAllowedRoutes(), fluent.getHostname(), fluent.getName(), fluent.getPort(), fluent.getProtocol(), fluent.buildTls());
+    Listener buildable = new Listener(fluent.buildAllowedRoutes(), fluent.buildFilters(), fluent.getHostname(), fluent.getName(), fluent.getPort(), fluent.getProtocol(), fluent.buildTls());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

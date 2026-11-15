@@ -36,7 +36,9 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "lifetimeType"
+    "lifetimeType",
+    "name",
+    "path"
 })
 @ToString
 @EqualsAndHashCode
@@ -65,6 +67,10 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
 
     @JsonProperty("lifetimeType")
     private String lifetimeType;
+    @JsonProperty("name")
+    private String name;
+    @JsonProperty("path")
+    private String path;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
@@ -74,9 +80,11 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
     public CookieConfig() {
     }
 
-    public CookieConfig(String lifetimeType) {
+    public CookieConfig(String lifetimeType, String name, String path) {
         super();
         this.lifetimeType = lifetimeType;
+        this.name = name;
+        this.path = path;
     }
 
     /**
@@ -93,6 +101,38 @@ public class CookieConfig implements Editable<CookieConfigBuilder>, KubernetesRe
     @JsonProperty("lifetimeType")
     public void setLifetimeType(String lifetimeType) {
         this.lifetimeType = lifetimeType;
+    }
+
+    /**
+     * Name defines the name of the cookie used for session persistence. If not specified, a unique cookie name SHOULD be generated. Users should avoid reusing cookie names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; This field is Extended because not all implementations can control the cookie name. Implementations SHOULD support this field if the underlying dataplane allows configuring the cookie name. &lt;/gateway:util:excludeFromCRD&gt;<br><p> <br><p> Support: Extended
+     */
+    @JsonProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Name defines the name of the cookie used for session persistence. If not specified, a unique cookie name SHOULD be generated. Users should avoid reusing cookie names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; This field is Extended because not all implementations can control the cookie name. Implementations SHOULD support this field if the underlying dataplane allows configuring the cookie name. &lt;/gateway:util:excludeFromCRD&gt;<br><p> <br><p> Support: Extended
+     */
+    @JsonProperty("name")
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Path defines the cookie Path attribute. When not specified, implementations MUST default the cookie path to "/".<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; This field is Extended because not all dataplanes support configuring the cookie path (e.g. HAProxy hardcodes path=/). Implementations SHOULD support this field if the underlying dataplane allows setting the cookie path attribute. &lt;/gateway:util:excludeFromCRD&gt;<br><p> <br><p> Support: Extended
+     */
+    @JsonProperty("path")
+    public String getPath() {
+        return path;
+    }
+
+    /**
+     * Path defines the cookie Path attribute. When not specified, implementations MUST default the cookie path to "/".<br><p> <br><p> &lt;gateway:util:excludeFromCRD&gt; This field is Extended because not all dataplanes support configuring the cookie path (e.g. HAProxy hardcodes path=/). Implementations SHOULD support this field if the underlying dataplane allows setting the cookie path attribute. &lt;/gateway:util:excludeFromCRD&gt;<br><p> <br><p> Support: Extended
+     */
+    @JsonProperty("path")
+    public void setPath(String path) {
+        this.path = path;
     }
 
     @JsonIgnore

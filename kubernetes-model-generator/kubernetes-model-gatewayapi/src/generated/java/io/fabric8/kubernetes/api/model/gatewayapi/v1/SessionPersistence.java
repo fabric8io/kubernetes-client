@@ -37,8 +37,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "absoluteTimeout",
-    "cookieConfig",
-    "sessionName",
+    "cookie",
+    "header",
     "type"
 })
 @ToString
@@ -68,10 +68,10 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
 
     @JsonProperty("absoluteTimeout")
     private String absoluteTimeout;
-    @JsonProperty("cookieConfig")
-    private CookieConfig cookieConfig;
-    @JsonProperty("sessionName")
-    private String sessionName;
+    @JsonProperty("cookie")
+    private CookieConfig cookie;
+    @JsonProperty("header")
+    private HeaderConfig header;
     @JsonProperty("type")
     private String type;
     @JsonIgnore
@@ -83,11 +83,11 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     public SessionPersistence() {
     }
 
-    public SessionPersistence(String absoluteTimeout, CookieConfig cookieConfig, String sessionName, String type) {
+    public SessionPersistence(String absoluteTimeout, CookieConfig cookie, HeaderConfig header, String type) {
         super();
         this.absoluteTimeout = absoluteTimeout;
-        this.cookieConfig = cookieConfig;
-        this.sessionName = sessionName;
+        this.cookie = cookie;
+        this.header = header;
         this.type = type;
     }
 
@@ -110,33 +110,33 @@ public class SessionPersistence implements Editable<SessionPersistenceBuilder>, 
     /**
      * SessionPersistence defines the desired state of SessionPersistence.
      */
-    @JsonProperty("cookieConfig")
-    public CookieConfig getCookieConfig() {
-        return cookieConfig;
+    @JsonProperty("cookie")
+    public CookieConfig getCookie() {
+        return cookie;
     }
 
     /**
      * SessionPersistence defines the desired state of SessionPersistence.
      */
-    @JsonProperty("cookieConfig")
-    public void setCookieConfig(CookieConfig cookieConfig) {
-        this.cookieConfig = cookieConfig;
+    @JsonProperty("cookie")
+    public void setCookie(CookieConfig cookie) {
+        this.cookie = cookie;
     }
 
     /**
-     * SessionName defines the name of the persistent session token which may be reflected in the cookie or the header. Users should avoid reusing session names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> Support: Implementation-specific
+     * SessionPersistence defines the desired state of SessionPersistence.
      */
-    @JsonProperty("sessionName")
-    public String getSessionName() {
-        return sessionName;
+    @JsonProperty("header")
+    public HeaderConfig getHeader() {
+        return header;
     }
 
     /**
-     * SessionName defines the name of the persistent session token which may be reflected in the cookie or the header. Users should avoid reusing session names to prevent unintended consequences, such as rejection or unpredictable behavior.<br><p> <br><p> Support: Implementation-specific
+     * SessionPersistence defines the desired state of SessionPersistence.
      */
-    @JsonProperty("sessionName")
-    public void setSessionName(String sessionName) {
-        this.sessionName = sessionName;
+    @JsonProperty("header")
+    public void setHeader(HeaderConfig header) {
+        this.header = header;
     }
 
     /**

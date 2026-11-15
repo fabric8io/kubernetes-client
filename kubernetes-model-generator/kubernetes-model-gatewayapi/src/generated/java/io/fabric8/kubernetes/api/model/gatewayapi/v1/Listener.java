@@ -31,12 +31,13 @@ import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
- * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+ * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
  */
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allowedRoutes",
+    "filters",
     "hostname",
     "name",
     "port",
@@ -70,6 +71,8 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
 
     @JsonProperty("allowedRoutes")
     private AllowedRoutes allowedRoutes;
+    @JsonProperty("filters")
+    private ListenerFilters filters;
     @JsonProperty("hostname")
     private String hostname;
     @JsonProperty("name")
@@ -89,9 +92,10 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     public Listener() {
     }
 
-    public Listener(AllowedRoutes allowedRoutes, String hostname, String name, Integer port, String protocol, ListenerTLSConfig tls) {
+    public Listener(AllowedRoutes allowedRoutes, ListenerFilters filters, String hostname, String name, Integer port, String protocol, ListenerTLSConfig tls) {
         super();
         this.allowedRoutes = allowedRoutes;
+        this.filters = filters;
         this.hostname = hostname;
         this.name = name;
         this.port = port;
@@ -100,7 +104,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
      */
     @JsonProperty("allowedRoutes")
     public AllowedRoutes getAllowedRoutes() {
@@ -108,11 +112,27 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
      */
     @JsonProperty("allowedRoutes")
     public void setAllowedRoutes(AllowedRoutes allowedRoutes) {
         this.allowedRoutes = allowedRoutes;
+    }
+
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
+     */
+    @JsonProperty("filters")
+    public ListenerFilters getFilters() {
+        return filters;
+    }
+
+    /**
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
+     */
+    @JsonProperty("filters")
+    public void setFilters(ListenerFilters filters) {
+        this.filters = filters;
     }
 
     /**
@@ -180,7 +200,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
      */
     @JsonProperty("tls")
     public ListenerTLSConfig getTls() {
@@ -188,7 +208,7 @@ public class Listener implements Editable<ListenerBuilder>, KubernetesResource
     }
 
     /**
-     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.
+     * Listener embodies the concept of a logical endpoint where a Gateway accepts network connections.<br><p> <br><p> &lt;gateway:experimental:validation:XValidation:message="filters may only be set when protocol is HTTP or HTTPS",rule="!has(self.filters) || self.protocol in ['HTTP', 'HTTPS']"&gt;
      */
     @JsonProperty("tls")
     public void setTls(ListenerTLSConfig tls) {

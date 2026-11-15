@@ -25,7 +25,7 @@ public class ListenerEntryBuilder extends ListenerEntryFluent<ListenerEntryBuild
   }
 
   public ListenerEntry build() {
-    ListenerEntry buildable = new ListenerEntry(fluent.buildAllowedRoutes(), fluent.getHostname(), fluent.getName(), fluent.getPort(), fluent.getProtocol(), fluent.buildTls());
+    ListenerEntry buildable = new ListenerEntry(fluent.buildAllowedRoutes(), fluent.buildFilters(), fluent.getHostname(), fluent.getName(), fluent.getPort(), fluent.getProtocol(), fluent.buildTls());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

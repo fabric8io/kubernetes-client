@@ -40,6 +40,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "fields",
     "includeSelectors",
     "includeTemplates",
+    "includeVolumeClaimTemplates",
     "pairs"
 })
 @ToString
@@ -74,6 +75,8 @@ public class Label implements Editable<LabelBuilder>, KubernetesResource
     private Boolean includeSelectors;
     @JsonProperty("includeTemplates")
     private Boolean includeTemplates;
+    @JsonProperty("includeVolumeClaimTemplates")
+    private Boolean includeVolumeClaimTemplates;
     @JsonProperty("pairs")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
     private Map<String, String> pairs = new LinkedHashMap<>();
@@ -86,11 +89,12 @@ public class Label implements Editable<LabelBuilder>, KubernetesResource
     public Label() {
     }
 
-    public Label(List<FieldSpec> fields, Boolean includeSelectors, Boolean includeTemplates, Map<String, String> pairs) {
+    public Label(List<FieldSpec> fields, Boolean includeSelectors, Boolean includeTemplates, Boolean includeVolumeClaimTemplates, Map<String, String> pairs) {
         super();
         this.fields = fields;
         this.includeSelectors = includeSelectors;
         this.includeTemplates = includeTemplates;
+        this.includeVolumeClaimTemplates = includeVolumeClaimTemplates;
         this.pairs = pairs;
     }
 
@@ -123,6 +127,16 @@ public class Label implements Editable<LabelBuilder>, KubernetesResource
     @JsonProperty("includeTemplates")
     public void setIncludeTemplates(Boolean includeTemplates) {
         this.includeTemplates = includeTemplates;
+    }
+
+    @JsonProperty("includeVolumeClaimTemplates")
+    public Boolean getIncludeVolumeClaimTemplates() {
+        return includeVolumeClaimTemplates;
+    }
+
+    @JsonProperty("includeVolumeClaimTemplates")
+    public void setIncludeVolumeClaimTemplates(Boolean includeVolumeClaimTemplates) {
+        this.includeVolumeClaimTemplates = includeVolumeClaimTemplates;
     }
 
     @JsonProperty("pairs")

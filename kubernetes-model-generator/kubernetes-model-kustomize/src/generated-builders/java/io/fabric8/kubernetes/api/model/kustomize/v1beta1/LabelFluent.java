@@ -27,6 +27,7 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
   private ArrayList<FieldSpecBuilder> fields = new ArrayList<FieldSpecBuilder>();
   private Boolean includeSelectors;
   private Boolean includeTemplates;
+  private Boolean includeVolumeClaimTemplates;
   private Map<String,String> pairs;
 
   public LabelFluent() {
@@ -158,6 +159,7 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
         this.withFields(instance.getFields());
         this.withIncludeSelectors(instance.getIncludeSelectors());
         this.withIncludeTemplates(instance.getIncludeTemplates());
+        this.withIncludeVolumeClaimTemplates(instance.getIncludeVolumeClaimTemplates());
         this.withPairs(instance.getPairs());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
@@ -219,6 +221,9 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
     if (!(Objects.equals(includeTemplates, that.includeTemplates))) {
       return false;
     }
+    if (!(Objects.equals(includeVolumeClaimTemplates, that.includeVolumeClaimTemplates))) {
+      return false;
+    }
     if (!(Objects.equals(pairs, that.pairs))) {
       return false;
     }
@@ -238,6 +243,10 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
   
   public Boolean getIncludeTemplates() {
     return this.includeTemplates;
+  }
+  
+  public Boolean getIncludeVolumeClaimTemplates() {
+    return this.includeVolumeClaimTemplates;
   }
   
   public Map<String,String> getPairs() {
@@ -260,6 +269,10 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
     return this.includeTemplates != null;
   }
   
+  public boolean hasIncludeVolumeClaimTemplates() {
+    return this.includeVolumeClaimTemplates != null;
+  }
+  
   public boolean hasMatchingField(Predicate<FieldSpecBuilder> predicate) {
       for (FieldSpecBuilder item : fields) {
         if (predicate.test(item)) {
@@ -274,7 +287,7 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
   }
   
   public int hashCode() {
-    return Objects.hash(fields, includeSelectors, includeTemplates, pairs, additionalProperties);
+    return Objects.hash(fields, includeSelectors, includeTemplates, includeVolumeClaimTemplates, pairs, additionalProperties);
   }
   
   public A removeAllFromFields(Collection<FieldSpec> items) {
@@ -402,6 +415,11 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
         sb.append(includeTemplates);
         sb.append(",");
     }
+    if (!(includeVolumeClaimTemplates == null)) {
+        sb.append("includeVolumeClaimTemplates:");
+        sb.append(includeVolumeClaimTemplates);
+        sb.append(",");
+    }
     if (!(pairs == null) && !(pairs.isEmpty())) {
         sb.append("pairs:");
         sb.append(pairs);
@@ -467,6 +485,15 @@ public class LabelFluent<A extends io.fabric8.kubernetes.api.model.kustomize.v1b
   
   public A withIncludeTemplates(Boolean includeTemplates) {
     this.includeTemplates = includeTemplates;
+    return (A) this;
+  }
+  
+  public A withIncludeVolumeClaimTemplates() {
+    return withIncludeVolumeClaimTemplates(true);
+  }
+  
+  public A withIncludeVolumeClaimTemplates(Boolean includeVolumeClaimTemplates) {
+    this.includeVolumeClaimTemplates = includeVolumeClaimTemplates;
     return (A) this;
   }
   

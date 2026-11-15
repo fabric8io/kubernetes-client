@@ -36,6 +36,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "routability",
     "type",
     "value"
 })
@@ -64,6 +65,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class GatewaySpecAddress implements Editable<GatewaySpecAddressBuilder>, KubernetesResource
 {
 
+    @JsonProperty("routability")
+    private String routability;
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")
@@ -77,10 +80,27 @@ public class GatewaySpecAddress implements Editable<GatewaySpecAddressBuilder>, 
     public GatewaySpecAddress() {
     }
 
-    public GatewaySpecAddress(String type, String value) {
+    public GatewaySpecAddress(String routability, String type, String value) {
         super();
+        this.routability = routability;
         this.type = type;
         this.value = value;
+    }
+
+    /**
+     * Routability specifies the requested reachability scope of this address. Valid values are empty, `Cluster`, or a prefixed implementation-specific value. The `k8s.io` domain and all its subdomains are reserved. When unset or empty, this field uses the implementation's default routability behavior.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("routability")
+    public String getRoutability() {
+        return routability;
+    }
+
+    /**
+     * Routability specifies the requested reachability scope of this address. Valid values are empty, `Cluster`, or a prefixed implementation-specific value. The `k8s.io` domain and all its subdomains are reserved. When unset or empty, this field uses the implementation's default routability behavior.<br><p> <br><p> Support: Extended<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("routability")
+    public void setRoutability(String routability) {
+        this.routability = routability;
     }
 
     /**

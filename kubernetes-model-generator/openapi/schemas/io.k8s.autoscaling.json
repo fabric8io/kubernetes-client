@@ -15,7 +15,7 @@
           "type": "string"
         },
         "controlledResources": {
-          "description": "Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [ResourceCPU, ResourceMemory] will be used.",
+          "description": "Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [cpu, memory] will be used.",
           "type": "array",
           "items": {
             "type": "string"

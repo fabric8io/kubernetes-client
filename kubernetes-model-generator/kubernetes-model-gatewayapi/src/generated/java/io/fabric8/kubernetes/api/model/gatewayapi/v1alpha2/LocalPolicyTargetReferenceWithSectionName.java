@@ -139,7 +139,7 @@ public class LocalPolicyTargetReferenceWithSectionName implements Editable<Local
     }
 
     /**
-     * SectionName is the name of a section within the target resource. When unspecified, this targetRef targets the entire resource. In the following resources, SectionName is interpreted as the following:<br><p> <br><p> &#42; Gateway: Listener name &#42; HTTPRoute: HTTPRouteRule name &#42; Service: Port name<br><p> <br><p> If a SectionName is specified, but does not exist on the targeted object, the Policy must fail to attach, and the policy implementation should record a `ResolvedRefs` or similar Condition in the Policy's status.
+     * SectionName is the name of a section within the target resource. When unspecified, this targetRef targets the entire resource. In the following resources, SectionName is interpreted as the following:<br><p> <br><p> &#42; Gateway: Listener name &#42; ListenerSet: Listener name &#42; HTTPRoute: HTTPRouteRule name &#42; Service: Port name<br><p> <br><p> If a SectionName is specified, but does not exist on the targeted object, the Policy must fail to attach, and the policy implementation should record a `ResolvedRefs` or similar Condition in the Policy's status.
      */
     @JsonProperty("sectionName")
     public String getSectionName() {
@@ -147,7 +147,7 @@ public class LocalPolicyTargetReferenceWithSectionName implements Editable<Local
     }
 
     /**
-     * SectionName is the name of a section within the target resource. When unspecified, this targetRef targets the entire resource. In the following resources, SectionName is interpreted as the following:<br><p> <br><p> &#42; Gateway: Listener name &#42; HTTPRoute: HTTPRouteRule name &#42; Service: Port name<br><p> <br><p> If a SectionName is specified, but does not exist on the targeted object, the Policy must fail to attach, and the policy implementation should record a `ResolvedRefs` or similar Condition in the Policy's status.
+     * SectionName is the name of a section within the target resource. When unspecified, this targetRef targets the entire resource. In the following resources, SectionName is interpreted as the following:<br><p> <br><p> &#42; Gateway: Listener name &#42; ListenerSet: Listener name &#42; HTTPRoute: HTTPRouteRule name &#42; Service: Port name<br><p> <br><p> If a SectionName is specified, but does not exist on the targeted object, the Policy must fail to attach, and the policy implementation should record a `ResolvedRefs` or similar Condition in the Policy's status.
      */
     @JsonProperty("sectionName")
     public void setSectionName(String sectionName) {

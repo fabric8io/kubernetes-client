@@ -144,7 +144,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     /**
-     * Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [ResourceCPU, ResourceMemory] will be used.
+     * Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [cpu, memory] will be used.
      */
     @JsonProperty("controlledResources")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -153,7 +153,7 @@ public class ContainerResourcePolicy implements Editable<ContainerResourcePolicy
     }
 
     /**
-     * Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [ResourceCPU, ResourceMemory] will be used.
+     * Specifies the type of recommendations that will be computed (and possibly applied) by VPA. If not specified, the default of [cpu, memory] will be used.
      */
     @JsonProperty("controlledResources")
     public void setControlledResources(List<String> controlledResources) {

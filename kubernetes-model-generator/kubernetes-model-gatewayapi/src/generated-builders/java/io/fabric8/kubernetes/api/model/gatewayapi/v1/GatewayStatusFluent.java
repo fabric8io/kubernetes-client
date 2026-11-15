@@ -75,8 +75,8 @@ public class GatewayStatusFluent<A extends io.fabric8.kubernetes.api.model.gatew
     return new AddressesNested(-1, null);
   }
   
-  public A addNewAddress(String type,String value) {
-    return (A) this.addToAddresses(new GatewayStatusAddress(type, value));
+  public A addNewAddress(String routability,String type,String value) {
+    return (A) this.addToAddresses(new GatewayStatusAddress(routability, type, value));
   }
   
   public AddressesNested<A> addNewAddressLike(GatewayStatusAddress item) {
