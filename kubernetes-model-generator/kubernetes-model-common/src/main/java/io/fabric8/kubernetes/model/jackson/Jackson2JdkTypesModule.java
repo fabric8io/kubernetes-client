@@ -37,24 +37,23 @@ import tools.jackson.databind.jsonFormatVisitors.JsonValueFormat;
 import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.Serializers;
 import tools.jackson.databind.ser.jdk.EnumSerializer;
+import tools.jackson.databind.ser.std.StdSerializer;
 import tools.jackson.databind.ser.std.ToStringSerializer;
 
-import java.net.MalformedURLException;
-import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.IllformedLocaleException;
 import java.util.Locale;
 import java.util.StringJoiner;
 
 /**
  * Writes the JDK types whose format changed with Jackson 3 as Jackson 2 did: {@link Year} as {@code "2024"} (not
  * {@code 2024}), {@link Month} as {@code "JANUARY"} (not {@code 0}), {@link java.sql.Date} as {@code "2024-01-15"} (not a
- * UTC date-time) and {@link Locale} as {@link Locale#toString()} ({@code "zh_TW_#Hant"}, not {@code "zh-Hant-TW"}).
+ * UTC date-time) and {@link Locale}, also as a map key, as {@link Locale#toString()} ({@code "zh_TW_#Hant"}, not
+ * {@code "zh-Hant-TW"}).
  * {@code @JsonFormat} and {@link DateTimeFeature#WRITE_DATES_AS_TIMESTAMPS} apply as they did in Jackson 2.
  * <p>
  * Both forms are read. A {@code yyyy-MM-dd} {@link java.sql.Date} is read as a local date, so it keeps its day in any
@@ -77,6 +76,7 @@ public class Jackson2JdkTypesModule extends SimpleModule {
       addDeserializer(java.sql.Date.class, new Jackson2SqlDateDeserializer());
     }
     addSerializer(Locale.class, ToStringSerializer.instance);
+    addKeySerializer(Locale.class, new Jackson2LocaleKeySerializer());
     addDeserializer(Locale.class, (ValueDeserializer) new Jackson2LocaleDeserializer());
     addKeyDeserializer(Locale.class, new Jackson2LocaleKeyDeserializer());
   }
@@ -99,8 +99,7 @@ public class Jackson2JdkTypesModule extends SimpleModule {
   /**
    * Parses the {@link Locale#toString()} of a locale with a script or extensions, the form Jackson 2 wrote:
    * {@code language_REGION_variant_#script_extensions}. Jackson 3 doesn't know the {@code _#} marker and reads the
-   * script and extensions as part of the variant, it reads the rest of the Jackson 2 forms like Jackson 2 did, except a
-   * language that isn't valid BCP 47 (see {@link Jackson2LocaleDeserializer}).
+   * script and extensions as part of the variant.
    */
   private static Locale fromLocaleString(String value) {
     final int marker = value.indexOf("_#");
@@ -238,6 +237,10 @@ public class Jackson2JdkTypesModule extends SimpleModule {
     }
   }
 
+  /**
+   * Parses every form itself, because Jackson's parsing changes between releases (3.2.4 reads {@code und} as a language,
+   * 3.2.3 as the root locale).
+   */
   static final class Jackson2LocaleDeserializer extends JDKFromStringDeserializer {
 
     Jackson2LocaleDeserializer() {
@@ -246,18 +249,51 @@ public class Jackson2JdkTypesModule extends SimpleModule {
 
     @Override
     @SuppressWarnings("deprecation") // Locale.of needs Java 19
-    public Object _deserialize(String value, DeserializationContext ctxt)
-        throws MalformedURLException, UnknownHostException {
+    public Object _deserialize(String value, DeserializationContext ctxt) {
       if (value.contains("_#")) {
         return fromLocaleString(value);
       }
-      try {
-        return super._deserialize(value, ctxt);
-      } catch (IllformedLocaleException e) {
-        // Jackson 3 only takes a valid BCP 47 language without separators, Jackson 2 took any (e.g. "c", which is
-        // how 7.x wrote the POSIX locale new Locale("C"))
-        return new Locale(value);
+      final int separator = firstSeparator(value, 0);
+      if (separator < 0) {
+        // any language, also one that isn't valid BCP 47 (e.g. "c", how 7.x wrote the POSIX locale new Locale("C"))
+        return "und".equals(value) ? Locale.ROOT : new Locale(value);
       }
+      if (value.charAt(separator) == '-') {
+        return Locale.forLanguageTag(value);
+      }
+      final int variant = firstSeparator(value, separator + 1);
+      if (variant < 0) {
+        return new Locale(value.substring(0, separator), value.substring(separator + 1));
+      }
+      return new Locale(value.substring(0, separator), value.substring(separator + 1, variant),
+          value.substring(variant + 1));
+    }
+
+    private static int firstSeparator(String value, int from) {
+      for (int i = from; i < value.length(); i++) {
+        if (value.charAt(i) == '_' || value.charAt(i) == '-') {
+          return i;
+        }
+      }
+      return -1;
+    }
+  }
+
+  /**
+   * Jackson 3.3 writes Locale keys as language tags, like the values.
+   * <p>
+   * Like Jackson 2, keys aren't unique: a locale with neither language nor region (e.g. {@code und-Latn}) writes
+   * {@code ""}, which reads back as {@link Locale#ROOT}.
+   */
+  static final class Jackson2LocaleKeySerializer extends StdSerializer<Locale> {
+
+    Jackson2LocaleKeySerializer() {
+      super(Locale.class);
+    }
+
+    @Override
+    public void serialize(Locale value, JsonGenerator g, SerializationContext ctxt) {
+      g.writeName(value.toString());
     }
   }
 
