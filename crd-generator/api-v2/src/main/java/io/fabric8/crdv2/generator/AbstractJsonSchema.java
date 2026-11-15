@@ -876,8 +876,9 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
    * Jackson's serializers describe {@code byte[]} and {@code ByteBuffer} as arrays of integers and {@code char[]} and
    * {@code QName} as an array and an object (or a reference to the first QName), but write them as strings (base64 for
    * the binary types). A DOM {@code Node} keeps the any schema Jackson reported before 3.3, which describes it as a
-   * string, so the CRD doesn't depend on the Jackson version. Only these default descriptions are replaced, a value with
-   * its own serializer keeps its schema unless it reports the same one.
+   * string, so the CRD doesn't depend on the Jackson version. Only these default descriptions are replaced: a property
+   * with its own serializer keeps its schema, and so does a serializer registered on the mapper unless it reports the
+   * same shape.
    */
   private static JsonSchema wireSchema(JavaType type, JsonSchema schema, boolean ownSerializer) {
     final JavaType valueType = unwrapReferenceType(type);
