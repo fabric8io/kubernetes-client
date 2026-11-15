@@ -25,7 +25,7 @@ public class CertificateACMEARIStatusBuilder extends CertificateACMEARIStatusFlu
   }
 
   public CertificateACMEARIStatus build() {
-    CertificateACMEARIStatus buildable = new CertificateACMEARIStatus(fluent.getExplanationURL(), fluent.getLastChecked(), fluent.getLastError(), fluent.getNextCheck(), fluent.buildSuggestedWindow());
+    CertificateACMEARIStatus buildable = new CertificateACMEARIStatus(fluent.getCertID(), fluent.getExplanationURL(), fluent.getLastChecked(), fluent.getLastError(), fluent.getNextCheck(), fluent.buildSuggestedWindow());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

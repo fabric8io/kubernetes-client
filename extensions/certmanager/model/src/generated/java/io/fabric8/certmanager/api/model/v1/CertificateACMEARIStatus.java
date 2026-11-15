@@ -35,6 +35,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "certID",
     "explanationURL",
     "lastChecked",
     "lastError",
@@ -66,6 +67,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class CertificateACMEARIStatus implements Editable<CertificateACMEARIStatusBuilder>, KubernetesResource
 {
 
+    @JsonProperty("certID")
+    private String certID;
     @JsonProperty("explanationURL")
     private String explanationURL;
     @JsonProperty("lastChecked")
@@ -85,13 +88,30 @@ public class CertificateACMEARIStatus implements Editable<CertificateACMEARIStat
     public CertificateACMEARIStatus() {
     }
 
-    public CertificateACMEARIStatus(String explanationURL, String lastChecked, String lastError, String nextCheck, ACMERenewalWindow suggestedWindow) {
+    public CertificateACMEARIStatus(String certID, String explanationURL, String lastChecked, String lastError, String nextCheck, ACMERenewalWindow suggestedWindow) {
         super();
+        this.certID = certID;
         this.explanationURL = explanationURL;
         this.lastChecked = lastChecked;
         this.lastError = lastError;
         this.nextCheck = nextCheck;
         this.suggestedWindow = suggestedWindow;
+    }
+
+    /**
+     * CertID is the ARI CertID (RFC 9773) of the certificate this renewal information was fetched for. This is used to determine if we need to re-fetch the renewal information as changed cert id means that ARI fetched before is stale.
+     */
+    @JsonProperty("certID")
+    public String getCertID() {
+        return certID;
+    }
+
+    /**
+     * CertID is the ARI CertID (RFC 9773) of the certificate this renewal information was fetched for. This is used to determine if we need to re-fetch the renewal information as changed cert id means that ARI fetched before is stale.
+     */
+    @JsonProperty("certID")
+    public void setCertID(String certID) {
+        this.certID = certID;
     }
 
     /**
