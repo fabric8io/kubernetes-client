@@ -42,6 +42,7 @@ This document contains common usages of different resources using Fabric8 Kubern
   * [Resource Typed API vs. Resource Typeless API](#resource-typed-api-vs-resource-typeless-api)
   * [CertificateSigningRequest](#certificatesigningrequest)
   * [SharedInformers](#sharedinformers)
+  * [Recording Events](#recording-events)
   * [List Options](#list-options)
   * [Delete Options](#delete-options)
   * [Watch Options](#watch-options)
@@ -2306,6 +2307,36 @@ SharedIndexInformer<Dummy> dummyInformer = client.resources(Dummy.class).inNames
 },  60 * 1000L);
 ```
 When using the inform methods the informers will already be started/running.
+
+### Recording Events
+Kubernetes Client provides an `EventRecorder`, modelled on the go client's `tools/events` package, to record `events.k8s.io/v1` events on behalf of a controller. Recording an event only queues it, so it never blocks or breaks the caller; a background thread writes it to the cluster, retrying a server it cannot reach.
+
+Repeats are folded into the `series` of the event already recorded, rather than written again, which is what makes `kubectl describe` report a repeating event once with a count. Two events are repeats when everything but their note matches: the object, the type, the reason, the action and the reporting controller and instance.
+
+- Record an event about an object:
+```java
+try (EventBroadcaster broadcaster = EventBroadcaster.newBroadcaster(client)) {
+  broadcaster.startRecordingToSink();
+  EventRecorder recorder = broadcaster.newRecorder("example.com/my-controller");
+
+  recorder.event(pod, EventType.NORMAL, "Started", "Starting", "Started the pod");
+  recorder.event(pod, EventType.WARNING, "Failed", "Pulling", "Could not pull the image");
+}
+```
+- Record an event that also concerns a second object, with annotations:
+```java
+recorder.event(deployment, pod, Collections.singletonMap("example.com/trace-id", traceId),
+    EventType.WARNING, "Failed", "Creating", "Could not create the pod");
+```
+- Override the defaults, for instance to record somewhere other than the cluster:
+```java
+EventBroadcaster broadcaster = new EventBroadcasterBuilder()
+    .withSink(myEventSink)
+    .withMaxQueuedEvents(100)
+    .withFinishTime(Duration.ofMinutes(2))
+    .build();
+```
+Recording needs `create` and `patch` on `events` in the `events.k8s.io` API group. Events about a cluster scoped object are created in the `default` namespace, following the Kubernetes convention.
 
 ### List Options
 There are various options provided by Kubernetes Client API when it comes to listing resources. Here are some of the common examples provided:
