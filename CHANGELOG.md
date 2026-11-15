@@ -19,6 +19,7 @@
 * Fix #8224: bump cert-manager from 1.21.2 to 1.21.3
 * Fix #8150: bump cluster-api-provider-metal3 from 1.14.0 to 1.14.1
 * Fix #8147: bump ovn-kubernetes/go-controller from a68ef49 to 5ff49b3 (module moved from `github.com/ovn-org` to `github.com/ovn-kubernetes`)
+* Fix #8216: bump ovn-kubernetes/go-controller from 5ff49b3 to b17ddc4
 * Fix #8192: bump volcano.sh/apis from 1.15.2 to 1.16.0
 
 #### New Features
