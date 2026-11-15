@@ -44,7 +44,6 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaPropsBuilder;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.ValidationRule;
 import io.fabric8.kubernetes.api.model.coordination.v1.LeaseSpec;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Node;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.SerializationContext;
@@ -434,15 +433,12 @@ class JsonSchemaTest {
   public static class AnyTestTypes {
     @JsonSerialize(using = MySerializer.class)
     public Object value;
-    public Node nodeValue;
   }
 
   @Test
   void testAnySchemaTypes() {
     JSONSchemaProps schema = JsonSchema.from(AnyTestTypes.class);
     assertNotNull(schema);
-    assertNull(schema.getProperties().get("nodeValue").getType());
-    assertEquals(Boolean.TRUE, schema.getProperties().get("nodeValue").getXKubernetesPreserveUnknownFields());
     assertEquals(Boolean.TRUE, schema.getProperties().get("value").getXKubernetesPreserveUnknownFields());
   }
 

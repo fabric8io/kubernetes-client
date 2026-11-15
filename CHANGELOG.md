@@ -9,6 +9,7 @@
 * Fix #8182: (kubernetes-client-api) `KubernetesResourceUtil.areLabelsValid` and `isValidKey` accept label keys with uppercase names (`example.com/MyKey`) or prefixes of up to 253 characters, and label values with uppercase, `_`, `.` or empty, like Kubernetes does
 * Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
 * Fix #8237: (kubernetes-model-common) `Jackson2JdkTypesModule` keeps writing `Locale` map keys as `zh_TW_#Hant` and reading `und` as the root locale with Jackson 3.2.4 and 3.3
+* Fix #8239: (crd-generator) `org.w3c.dom.Node` properties keep the schema that accepts any value on Jackson 3.3, which describes them as strings
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.

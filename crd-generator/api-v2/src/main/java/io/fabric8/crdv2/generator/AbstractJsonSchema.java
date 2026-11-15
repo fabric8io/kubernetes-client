@@ -51,6 +51,7 @@ import io.fabric8.kubernetes.model.annotation.SpecReplicas;
 import io.fabric8.kubernetes.model.annotation.StatusReplicas;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Node;
 import tools.jackson.databind.BeanDescription;
 import tools.jackson.databind.BeanProperty;
 import tools.jackson.databind.JavaType;
@@ -62,6 +63,7 @@ import tools.jackson.databind.node.ObjectNode;
 import tools.jackson.databind.ser.BeanPropertyWriter;
 import tools.jackson.databind.util.Converter;
 import tools.jackson.module.jsonSchema.JsonSchema;
+import tools.jackson.module.jsonSchema.types.AnySchema;
 import tools.jackson.module.jsonSchema.types.ArraySchema;
 import tools.jackson.module.jsonSchema.types.ArraySchema.Items;
 import tools.jackson.module.jsonSchema.types.IntegerSchema;
@@ -873,12 +875,18 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
   /**
    * Jackson's serializers describe {@code byte[]} and {@code ByteBuffer} as arrays of integers and {@code char[]} and
    * {@code QName} as an array and an object (or a reference to the first QName), but write them as strings (base64 for
-   * the binary types). Only these default descriptions are replaced, a value with its own serializer keeps its schema.
+   * the binary types). A DOM {@code Node} keeps the any schema Jackson reported before 3.3, which describes it as a
+   * string, so the CRD doesn't depend on the Jackson version. Only these default descriptions are replaced: a property
+   * with its own serializer keeps its schema, and so does a serializer registered on the mapper unless it reports the
+   * same shape.
    */
   private static JsonSchema wireSchema(JavaType type, JsonSchema schema, boolean ownSerializer) {
     final JavaType valueType = unwrapReferenceType(type);
     if (valueType == null || ownSerializer) {
       return schema;
+    }
+    if ((schema.isAnySchema() || schema.isStringSchema()) && Node.class.isAssignableFrom(valueType.getRawClass())) {
+      return new AnySchema();
     }
     if (schema.isArraySchema() && isBinary(valueType)) {
       return new Base64Schema();
