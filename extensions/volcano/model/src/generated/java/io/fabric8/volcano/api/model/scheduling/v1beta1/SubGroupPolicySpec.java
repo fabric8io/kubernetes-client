@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "name",
     "networkTopology",
     "subGroupSize"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -209,6 +200,85 @@ public class SubGroupPolicySpec implements Editable<SubGroupPolicySpecBuilder>, 
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof SubGroupPolicySpec)) {
+            return false;
+        }
+        SubGroupPolicySpec other = (SubGroupPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$labelSelector = this.getLabelSelector();
+        Object other$labelSelector = other.getLabelSelector();
+        if (this$labelSelector == null ? other$labelSelector != null : !this$labelSelector.equals(other$labelSelector)) {
+            return false;
+        }
+        Object this$matchLabelKeys = this.getMatchLabelKeys();
+        Object other$matchLabelKeys = other.getMatchLabelKeys();
+        if (this$matchLabelKeys == null ? other$matchLabelKeys != null : !this$matchLabelKeys.equals(other$matchLabelKeys)) {
+            return false;
+        }
+        Object this$minSubGroups = this.getMinSubGroups();
+        Object other$minSubGroups = other.getMinSubGroups();
+        if (this$minSubGroups == null ? other$minSubGroups != null : !this$minSubGroups.equals(other$minSubGroups)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$networkTopology = this.getNetworkTopology();
+        Object other$networkTopology = other.getNetworkTopology();
+        if (this$networkTopology == null ? other$networkTopology != null : !this$networkTopology.equals(other$networkTopology)) {
+            return false;
+        }
+        Object this$subGroupSize = this.getSubGroupSize();
+        Object other$subGroupSize = other.getSubGroupSize();
+        if (this$subGroupSize == null ? other$subGroupSize != null : !this$subGroupSize.equals(other$subGroupSize)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof SubGroupPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $labelSelector = this.getLabelSelector();
+        result = result * prime + ($labelSelector == null ? 43 : $labelSelector.hashCode());
+        Object $matchLabelKeys = this.getMatchLabelKeys();
+        result = result * prime + ($matchLabelKeys == null ? 43 : $matchLabelKeys.hashCode());
+        Object $minSubGroups = this.getMinSubGroups();
+        result = result * prime + ($minSubGroups == null ? 43 : $minSubGroups.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $networkTopology = this.getNetworkTopology();
+        result = result * prime + ($networkTopology == null ? 43 : $networkTopology.hashCode());
+        Object $subGroupSize = this.getSubGroupSize();
+        result = result * prime + ($subGroupSize == null ? 43 : $subGroupSize.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "SubGroupPolicySpec(" + "labelSelector=" + this.getLabelSelector() + ", matchLabelKeys=" + this.getMatchLabelKeys() + ", minSubGroups=" + this.getMinSubGroups() + ", name=" + this.getName() + ", networkTopology=" + this.getNetworkTopology() + ", subGroupSize=" + this.getSubGroupSize() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

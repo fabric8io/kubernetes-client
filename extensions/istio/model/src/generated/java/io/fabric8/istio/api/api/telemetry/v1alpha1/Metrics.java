@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "overrides",
     "providers",
     "reportingInterval"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -166,6 +157,64 @@ public class Metrics implements Editable<MetricsBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Metrics)) {
+            return false;
+        }
+        Metrics other = (Metrics) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$overrides = this.getOverrides();
+        Object other$overrides = other.getOverrides();
+        if (this$overrides == null ? other$overrides != null : !this$overrides.equals(other$overrides)) {
+            return false;
+        }
+        Object this$providers = this.getProviders();
+        Object other$providers = other.getProviders();
+        if (this$providers == null ? other$providers != null : !this$providers.equals(other$providers)) {
+            return false;
+        }
+        Object this$reportingInterval = this.getReportingInterval();
+        Object other$reportingInterval = other.getReportingInterval();
+        if (this$reportingInterval == null ? other$reportingInterval != null : !this$reportingInterval.equals(other$reportingInterval)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof Metrics;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $overrides = this.getOverrides();
+        result = result * prime + ($overrides == null ? 43 : $overrides.hashCode());
+        Object $providers = this.getProviders();
+        result = result * prime + ($providers == null ? 43 : $providers.hashCode());
+        Object $reportingInterval = this.getReportingInterval();
+        result = result * prime + ($reportingInterval == null ? 43 : $reportingInterval.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Metrics(" + "overrides=" + this.getOverrides() + ", providers=" + this.getProviders() + ", reportingInterval=" + this.getReportingInterval() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonPropertyOrder({
     "availableStreams",
     "defaultStream"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -144,6 +135,57 @@ public class OSImageStreamStatus implements Editable<OSImageStreamStatusBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OSImageStreamStatus)) {
+            return false;
+        }
+        OSImageStreamStatus other = (OSImageStreamStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$availableStreams = this.getAvailableStreams();
+        Object other$availableStreams = other.getAvailableStreams();
+        if (this$availableStreams == null ? other$availableStreams != null : !this$availableStreams.equals(other$availableStreams)) {
+            return false;
+        }
+        Object this$defaultStream = this.getDefaultStream();
+        Object other$defaultStream = other.getDefaultStream();
+        if (this$defaultStream == null ? other$defaultStream != null : !this$defaultStream.equals(other$defaultStream)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OSImageStreamStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $availableStreams = this.getAvailableStreams();
+        result = result * prime + ($availableStreams == null ? 43 : $availableStreams.hashCode());
+        Object $defaultStream = this.getDefaultStream();
+        result = result * prime + ($defaultStream == null ? 43 : $defaultStream.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OSImageStreamStatus(" + "availableStreams=" + this.getAvailableStreams() + ", defaultStream=" + this.getDefaultStream() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

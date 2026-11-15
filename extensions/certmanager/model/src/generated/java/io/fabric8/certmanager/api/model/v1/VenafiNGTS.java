@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -42,12 +39,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "tokenEndpoint",
     "tsgID",
     "url"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -180,6 +171,71 @@ public class VenafiNGTS implements Editable<VenafiNGTSBuilder>, KubernetesResour
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof VenafiNGTS)) {
+            return false;
+        }
+        VenafiNGTS other = (VenafiNGTS) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$credentialsRef = this.getCredentialsRef();
+        Object other$credentialsRef = other.getCredentialsRef();
+        if (this$credentialsRef == null ? other$credentialsRef != null : !this$credentialsRef.equals(other$credentialsRef)) {
+            return false;
+        }
+        Object this$tokenEndpoint = this.getTokenEndpoint();
+        Object other$tokenEndpoint = other.getTokenEndpoint();
+        if (this$tokenEndpoint == null ? other$tokenEndpoint != null : !this$tokenEndpoint.equals(other$tokenEndpoint)) {
+            return false;
+        }
+        Object this$tsgID = this.getTsgID();
+        Object other$tsgID = other.getTsgID();
+        if (this$tsgID == null ? other$tsgID != null : !this$tsgID.equals(other$tsgID)) {
+            return false;
+        }
+        Object this$url = this.getUrl();
+        Object other$url = other.getUrl();
+        if (this$url == null ? other$url != null : !this$url.equals(other$url)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof VenafiNGTS;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $credentialsRef = this.getCredentialsRef();
+        result = result * prime + ($credentialsRef == null ? 43 : $credentialsRef.hashCode());
+        Object $tokenEndpoint = this.getTokenEndpoint();
+        result = result * prime + ($tokenEndpoint == null ? 43 : $tokenEndpoint.hashCode());
+        Object $tsgID = this.getTsgID();
+        result = result * prime + ($tsgID == null ? 43 : $tsgID.hashCode());
+        Object $url = this.getUrl();
+        result = result * prime + ($url == null ? 43 : $url.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "VenafiNGTS(" + "credentialsRef=" + this.getCredentialsRef() + ", tokenEndpoint=" + this.getTokenEndpoint() + ", tsgID=" + this.getTsgID() + ", url=" + this.getUrl() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

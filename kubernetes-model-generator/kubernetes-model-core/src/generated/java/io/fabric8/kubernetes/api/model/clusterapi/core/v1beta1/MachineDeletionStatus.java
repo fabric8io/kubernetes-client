@@ -13,9 +13,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.fabric8.kubernetes.api.builder.Editable;
 import io.fabric8.kubernetes.api.model.KubernetesResource;
 import io.sundr.builder.annotations.Buildable;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -25,12 +22,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "waitForNodeVolumeDetachStartTime",
     "waitForPreDrainHookStartTime",
     "waitForPreTerminateHookStartTime"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder")
 @Generated("io.fabric8.kubernetes.schema.generator.model.ModelGenerator")
@@ -125,6 +116,71 @@ public class MachineDeletionStatus implements Editable<MachineDeletionStatusBuil
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof MachineDeletionStatus)) {
+            return false;
+        }
+        MachineDeletionStatus other = (MachineDeletionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$nodeDrainStartTime = this.getNodeDrainStartTime();
+        Object other$nodeDrainStartTime = other.getNodeDrainStartTime();
+        if (this$nodeDrainStartTime == null ? other$nodeDrainStartTime != null : !this$nodeDrainStartTime.equals(other$nodeDrainStartTime)) {
+            return false;
+        }
+        Object this$waitForNodeVolumeDetachStartTime = this.getWaitForNodeVolumeDetachStartTime();
+        Object other$waitForNodeVolumeDetachStartTime = other.getWaitForNodeVolumeDetachStartTime();
+        if (this$waitForNodeVolumeDetachStartTime == null ? other$waitForNodeVolumeDetachStartTime != null : !this$waitForNodeVolumeDetachStartTime.equals(other$waitForNodeVolumeDetachStartTime)) {
+            return false;
+        }
+        Object this$waitForPreDrainHookStartTime = this.getWaitForPreDrainHookStartTime();
+        Object other$waitForPreDrainHookStartTime = other.getWaitForPreDrainHookStartTime();
+        if (this$waitForPreDrainHookStartTime == null ? other$waitForPreDrainHookStartTime != null : !this$waitForPreDrainHookStartTime.equals(other$waitForPreDrainHookStartTime)) {
+            return false;
+        }
+        Object this$waitForPreTerminateHookStartTime = this.getWaitForPreTerminateHookStartTime();
+        Object other$waitForPreTerminateHookStartTime = other.getWaitForPreTerminateHookStartTime();
+        if (this$waitForPreTerminateHookStartTime == null ? other$waitForPreTerminateHookStartTime != null : !this$waitForPreTerminateHookStartTime.equals(other$waitForPreTerminateHookStartTime)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof MachineDeletionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $nodeDrainStartTime = this.getNodeDrainStartTime();
+        result = result * prime + ($nodeDrainStartTime == null ? 43 : $nodeDrainStartTime.hashCode());
+        Object $waitForNodeVolumeDetachStartTime = this.getWaitForNodeVolumeDetachStartTime();
+        result = result * prime + ($waitForNodeVolumeDetachStartTime == null ? 43 : $waitForNodeVolumeDetachStartTime.hashCode());
+        Object $waitForPreDrainHookStartTime = this.getWaitForPreDrainHookStartTime();
+        result = result * prime + ($waitForPreDrainHookStartTime == null ? 43 : $waitForPreDrainHookStartTime.hashCode());
+        Object $waitForPreTerminateHookStartTime = this.getWaitForPreTerminateHookStartTime();
+        result = result * prime + ($waitForPreTerminateHookStartTime == null ? 43 : $waitForPreTerminateHookStartTime.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "MachineDeletionStatus(" + "nodeDrainStartTime=" + this.getNodeDrainStartTime() + ", waitForNodeVolumeDetachStartTime=" + this.getWaitForNodeVolumeDetachStartTime() + ", waitForPreDrainHookStartTime=" + this.getWaitForPreDrainHookStartTime() + ", waitForPreTerminateHookStartTime=" + this.getWaitForPreTerminateHookStartTime() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

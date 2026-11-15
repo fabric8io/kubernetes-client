@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -38,12 +35,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "name",
     "osExtensionsImage",
     "osImage"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -157,6 +148,64 @@ public class OSImageStreamSet implements Editable<OSImageStreamSetBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OSImageStreamSet)) {
+            return false;
+        }
+        OSImageStreamSet other = (OSImageStreamSet) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$osExtensionsImage = this.getOsExtensionsImage();
+        Object other$osExtensionsImage = other.getOsExtensionsImage();
+        if (this$osExtensionsImage == null ? other$osExtensionsImage != null : !this$osExtensionsImage.equals(other$osExtensionsImage)) {
+            return false;
+        }
+        Object this$osImage = this.getOsImage();
+        Object other$osImage = other.getOsImage();
+        if (this$osImage == null ? other$osImage != null : !this$osImage.equals(other$osImage)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OSImageStreamSet;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $osExtensionsImage = this.getOsExtensionsImage();
+        result = result * prime + ($osExtensionsImage == null ? 43 : $osExtensionsImage.hashCode());
+        Object $osImage = this.getOsImage();
+        result = result * prime + ($osImage == null ? 43 : $osImage.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OSImageStreamSet(" + "name=" + this.getName() + ", osExtensionsImage=" + this.getOsExtensionsImage() + ", osImage=" + this.getOsImage() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

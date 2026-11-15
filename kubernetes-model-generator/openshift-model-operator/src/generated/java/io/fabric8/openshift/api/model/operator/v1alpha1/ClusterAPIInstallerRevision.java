@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -43,12 +40,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "name",
     "revision",
     "unmanagedCustomResourceDefinitions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -225,6 +216,85 @@ public class ClusterAPIInstallerRevision implements Editable<ClusterAPIInstaller
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterAPIInstallerRevision)) {
+            return false;
+        }
+        ClusterAPIInstallerRevision other = (ClusterAPIInstallerRevision) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$components = this.getComponents();
+        Object other$components = other.getComponents();
+        if (this$components == null ? other$components != null : !this$components.equals(other$components)) {
+            return false;
+        }
+        Object this$contentID = this.getContentID();
+        Object other$contentID = other.getContentID();
+        if (this$contentID == null ? other$contentID != null : !this$contentID.equals(other$contentID)) {
+            return false;
+        }
+        Object this$manifestSubstitutions = this.getManifestSubstitutions();
+        Object other$manifestSubstitutions = other.getManifestSubstitutions();
+        if (this$manifestSubstitutions == null ? other$manifestSubstitutions != null : !this$manifestSubstitutions.equals(other$manifestSubstitutions)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$revision = this.getRevision();
+        Object other$revision = other.getRevision();
+        if (this$revision == null ? other$revision != null : !this$revision.equals(other$revision)) {
+            return false;
+        }
+        Object this$unmanagedCustomResourceDefinitions = this.getUnmanagedCustomResourceDefinitions();
+        Object other$unmanagedCustomResourceDefinitions = other.getUnmanagedCustomResourceDefinitions();
+        if (this$unmanagedCustomResourceDefinitions == null ? other$unmanagedCustomResourceDefinitions != null : !this$unmanagedCustomResourceDefinitions.equals(other$unmanagedCustomResourceDefinitions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterAPIInstallerRevision;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $components = this.getComponents();
+        result = result * prime + ($components == null ? 43 : $components.hashCode());
+        Object $contentID = this.getContentID();
+        result = result * prime + ($contentID == null ? 43 : $contentID.hashCode());
+        Object $manifestSubstitutions = this.getManifestSubstitutions();
+        result = result * prime + ($manifestSubstitutions == null ? 43 : $manifestSubstitutions.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $revision = this.getRevision();
+        result = result * prime + ($revision == null ? 43 : $revision.hashCode());
+        Object $unmanagedCustomResourceDefinitions = this.getUnmanagedCustomResourceDefinitions();
+        result = result * prime + ($unmanagedCustomResourceDefinitions == null ? 43 : $unmanagedCustomResourceDefinitions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterAPIInstallerRevision(" + "components=" + this.getComponents() + ", contentID=" + this.getContentID() + ", manifestSubstitutions=" + this.getManifestSubstitutions() + ", name=" + this.getName() + ", revision=" + this.getRevision() + ", unmanagedCustomResourceDefinitions=" + this.getUnmanagedCustomResourceDefinitions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -50,12 +47,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "minHealthPercent",
     "outlierDetectionHttpErrorCodes",
     "splitExternalLocalOriginErrors"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -304,6 +295,113 @@ public class OutlierDetection implements Editable<OutlierDetectionBuilder>, Kube
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof OutlierDetection)) {
+            return false;
+        }
+        OutlierDetection other = (OutlierDetection) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$baseEjectionTime = this.getBaseEjectionTime();
+        Object other$baseEjectionTime = other.getBaseEjectionTime();
+        if (this$baseEjectionTime == null ? other$baseEjectionTime != null : !this$baseEjectionTime.equals(other$baseEjectionTime)) {
+            return false;
+        }
+        Object this$consecutive5xxErrors = this.getConsecutive5xxErrors();
+        Object other$consecutive5xxErrors = other.getConsecutive5xxErrors();
+        if (this$consecutive5xxErrors == null ? other$consecutive5xxErrors != null : !this$consecutive5xxErrors.equals(other$consecutive5xxErrors)) {
+            return false;
+        }
+        Object this$consecutiveErrors = this.getConsecutiveErrors();
+        Object other$consecutiveErrors = other.getConsecutiveErrors();
+        if (this$consecutiveErrors == null ? other$consecutiveErrors != null : !this$consecutiveErrors.equals(other$consecutiveErrors)) {
+            return false;
+        }
+        Object this$consecutiveGatewayErrors = this.getConsecutiveGatewayErrors();
+        Object other$consecutiveGatewayErrors = other.getConsecutiveGatewayErrors();
+        if (this$consecutiveGatewayErrors == null ? other$consecutiveGatewayErrors != null : !this$consecutiveGatewayErrors.equals(other$consecutiveGatewayErrors)) {
+            return false;
+        }
+        Object this$consecutiveLocalOriginFailures = this.getConsecutiveLocalOriginFailures();
+        Object other$consecutiveLocalOriginFailures = other.getConsecutiveLocalOriginFailures();
+        if (this$consecutiveLocalOriginFailures == null ? other$consecutiveLocalOriginFailures != null : !this$consecutiveLocalOriginFailures.equals(other$consecutiveLocalOriginFailures)) {
+            return false;
+        }
+        Object this$interval = this.getInterval();
+        Object other$interval = other.getInterval();
+        if (this$interval == null ? other$interval != null : !this$interval.equals(other$interval)) {
+            return false;
+        }
+        Object this$maxEjectionPercent = this.getMaxEjectionPercent();
+        Object other$maxEjectionPercent = other.getMaxEjectionPercent();
+        if (this$maxEjectionPercent == null ? other$maxEjectionPercent != null : !this$maxEjectionPercent.equals(other$maxEjectionPercent)) {
+            return false;
+        }
+        Object this$minHealthPercent = this.getMinHealthPercent();
+        Object other$minHealthPercent = other.getMinHealthPercent();
+        if (this$minHealthPercent == null ? other$minHealthPercent != null : !this$minHealthPercent.equals(other$minHealthPercent)) {
+            return false;
+        }
+        Object this$outlierDetectionHttpErrorCodes = this.getOutlierDetectionHttpErrorCodes();
+        Object other$outlierDetectionHttpErrorCodes = other.getOutlierDetectionHttpErrorCodes();
+        if (this$outlierDetectionHttpErrorCodes == null ? other$outlierDetectionHttpErrorCodes != null : !this$outlierDetectionHttpErrorCodes.equals(other$outlierDetectionHttpErrorCodes)) {
+            return false;
+        }
+        Object this$splitExternalLocalOriginErrors = this.getSplitExternalLocalOriginErrors();
+        Object other$splitExternalLocalOriginErrors = other.getSplitExternalLocalOriginErrors();
+        if (this$splitExternalLocalOriginErrors == null ? other$splitExternalLocalOriginErrors != null : !this$splitExternalLocalOriginErrors.equals(other$splitExternalLocalOriginErrors)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof OutlierDetection;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $baseEjectionTime = this.getBaseEjectionTime();
+        result = result * prime + ($baseEjectionTime == null ? 43 : $baseEjectionTime.hashCode());
+        Object $consecutive5xxErrors = this.getConsecutive5xxErrors();
+        result = result * prime + ($consecutive5xxErrors == null ? 43 : $consecutive5xxErrors.hashCode());
+        Object $consecutiveErrors = this.getConsecutiveErrors();
+        result = result * prime + ($consecutiveErrors == null ? 43 : $consecutiveErrors.hashCode());
+        Object $consecutiveGatewayErrors = this.getConsecutiveGatewayErrors();
+        result = result * prime + ($consecutiveGatewayErrors == null ? 43 : $consecutiveGatewayErrors.hashCode());
+        Object $consecutiveLocalOriginFailures = this.getConsecutiveLocalOriginFailures();
+        result = result * prime + ($consecutiveLocalOriginFailures == null ? 43 : $consecutiveLocalOriginFailures.hashCode());
+        Object $interval = this.getInterval();
+        result = result * prime + ($interval == null ? 43 : $interval.hashCode());
+        Object $maxEjectionPercent = this.getMaxEjectionPercent();
+        result = result * prime + ($maxEjectionPercent == null ? 43 : $maxEjectionPercent.hashCode());
+        Object $minHealthPercent = this.getMinHealthPercent();
+        result = result * prime + ($minHealthPercent == null ? 43 : $minHealthPercent.hashCode());
+        Object $outlierDetectionHttpErrorCodes = this.getOutlierDetectionHttpErrorCodes();
+        result = result * prime + ($outlierDetectionHttpErrorCodes == null ? 43 : $outlierDetectionHttpErrorCodes.hashCode());
+        Object $splitExternalLocalOriginErrors = this.getSplitExternalLocalOriginErrors();
+        result = result * prime + ($splitExternalLocalOriginErrors == null ? 43 : $splitExternalLocalOriginErrors.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "OutlierDetection(" + "baseEjectionTime=" + this.getBaseEjectionTime() + ", consecutive5xxErrors=" + this.getConsecutive5xxErrors() + ", consecutiveErrors=" + this.getConsecutiveErrors() + ", consecutiveGatewayErrors=" + this.getConsecutiveGatewayErrors() + ", consecutiveLocalOriginFailures=" + this.getConsecutiveLocalOriginFailures() + ", interval=" + this.getInterval() + ", maxEjectionPercent=" + this.getMaxEjectionPercent() + ", minHealthPercent=" + this.getMinHealthPercent() + ", outlierDetectionHttpErrorCodes=" + this.getOutlierDetectionHttpErrorCodes() + ", splitExternalLocalOriginErrors=" + this.getSplitExternalLocalOriginErrors() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

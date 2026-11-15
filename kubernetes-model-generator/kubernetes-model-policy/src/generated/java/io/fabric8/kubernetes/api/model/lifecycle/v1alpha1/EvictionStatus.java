@@ -30,9 +30,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -46,12 +43,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "requesters",
     "responders",
     "targetResponders"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -211,6 +202,78 @@ public class EvictionStatus implements Editable<EvictionStatusBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof EvictionStatus)) {
+            return false;
+        }
+        EvictionStatus other = (EvictionStatus) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$conditions = this.getConditions();
+        Object other$conditions = other.getConditions();
+        if (this$conditions == null ? other$conditions != null : !this$conditions.equals(other$conditions)) {
+            return false;
+        }
+        Object this$observedGeneration = this.getObservedGeneration();
+        Object other$observedGeneration = other.getObservedGeneration();
+        if (this$observedGeneration == null ? other$observedGeneration != null : !this$observedGeneration.equals(other$observedGeneration)) {
+            return false;
+        }
+        Object this$requesters = this.getRequesters();
+        Object other$requesters = other.getRequesters();
+        if (this$requesters == null ? other$requesters != null : !this$requesters.equals(other$requesters)) {
+            return false;
+        }
+        Object this$responders = this.getResponders();
+        Object other$responders = other.getResponders();
+        if (this$responders == null ? other$responders != null : !this$responders.equals(other$responders)) {
+            return false;
+        }
+        Object this$targetResponders = this.getTargetResponders();
+        Object other$targetResponders = other.getTargetResponders();
+        if (this$targetResponders == null ? other$targetResponders != null : !this$targetResponders.equals(other$targetResponders)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof EvictionStatus;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $conditions = this.getConditions();
+        result = result * prime + ($conditions == null ? 43 : $conditions.hashCode());
+        Object $observedGeneration = this.getObservedGeneration();
+        result = result * prime + ($observedGeneration == null ? 43 : $observedGeneration.hashCode());
+        Object $requesters = this.getRequesters();
+        result = result * prime + ($requesters == null ? 43 : $requesters.hashCode());
+        Object $responders = this.getResponders();
+        result = result * prime + ($responders == null ? 43 : $responders.hashCode());
+        Object $targetResponders = this.getTargetResponders();
+        result = result * prime + ($targetResponders == null ? 43 : $targetResponders.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "EvictionStatus(" + "conditions=" + this.getConditions() + ", observedGeneration=" + this.getObservedGeneration() + ", requesters=" + this.getRequesters() + ", responders=" + this.getResponders() + ", targetResponders=" + this.getTargetResponders() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

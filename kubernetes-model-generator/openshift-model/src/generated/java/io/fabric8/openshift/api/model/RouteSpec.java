@@ -28,9 +28,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -48,12 +45,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "tls",
     "to",
     "wildcardPolicy"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -283,6 +274,106 @@ public class RouteSpec implements Editable<RouteSpecBuilder>, KubernetesResource
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof RouteSpec)) {
+            return false;
+        }
+        RouteSpec other = (RouteSpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$alternateBackends = this.getAlternateBackends();
+        Object other$alternateBackends = other.getAlternateBackends();
+        if (this$alternateBackends == null ? other$alternateBackends != null : !this$alternateBackends.equals(other$alternateBackends)) {
+            return false;
+        }
+        Object this$host = this.getHost();
+        Object other$host = other.getHost();
+        if (this$host == null ? other$host != null : !this$host.equals(other$host)) {
+            return false;
+        }
+        Object this$httpHeaders = this.getHttpHeaders();
+        Object other$httpHeaders = other.getHttpHeaders();
+        if (this$httpHeaders == null ? other$httpHeaders != null : !this$httpHeaders.equals(other$httpHeaders)) {
+            return false;
+        }
+        Object this$path = this.getPath();
+        Object other$path = other.getPath();
+        if (this$path == null ? other$path != null : !this$path.equals(other$path)) {
+            return false;
+        }
+        Object this$port = this.getPort();
+        Object other$port = other.getPort();
+        if (this$port == null ? other$port != null : !this$port.equals(other$port)) {
+            return false;
+        }
+        Object this$subdomain = this.getSubdomain();
+        Object other$subdomain = other.getSubdomain();
+        if (this$subdomain == null ? other$subdomain != null : !this$subdomain.equals(other$subdomain)) {
+            return false;
+        }
+        Object this$tls = this.getTls();
+        Object other$tls = other.getTls();
+        if (this$tls == null ? other$tls != null : !this$tls.equals(other$tls)) {
+            return false;
+        }
+        Object this$to = this.getTo();
+        Object other$to = other.getTo();
+        if (this$to == null ? other$to != null : !this$to.equals(other$to)) {
+            return false;
+        }
+        Object this$wildcardPolicy = this.getWildcardPolicy();
+        Object other$wildcardPolicy = other.getWildcardPolicy();
+        if (this$wildcardPolicy == null ? other$wildcardPolicy != null : !this$wildcardPolicy.equals(other$wildcardPolicy)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof RouteSpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $alternateBackends = this.getAlternateBackends();
+        result = result * prime + ($alternateBackends == null ? 43 : $alternateBackends.hashCode());
+        Object $host = this.getHost();
+        result = result * prime + ($host == null ? 43 : $host.hashCode());
+        Object $httpHeaders = this.getHttpHeaders();
+        result = result * prime + ($httpHeaders == null ? 43 : $httpHeaders.hashCode());
+        Object $path = this.getPath();
+        result = result * prime + ($path == null ? 43 : $path.hashCode());
+        Object $port = this.getPort();
+        result = result * prime + ($port == null ? 43 : $port.hashCode());
+        Object $subdomain = this.getSubdomain();
+        result = result * prime + ($subdomain == null ? 43 : $subdomain.hashCode());
+        Object $tls = this.getTls();
+        result = result * prime + ($tls == null ? 43 : $tls.hashCode());
+        Object $to = this.getTo();
+        result = result * prime + ($to == null ? 43 : $to.hashCode());
+        Object $wildcardPolicy = this.getWildcardPolicy();
+        result = result * prime + ($wildcardPolicy == null ? 43 : $wildcardPolicy.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RouteSpec(" + "alternateBackends=" + this.getAlternateBackends() + ", host=" + this.getHost() + ", httpHeaders=" + this.getHttpHeaders() + ", path=" + this.getPath() + ", port=" + this.getPort() + ", subdomain=" + this.getSubdomain() + ", tls=" + this.getTls() + ", to=" + this.getTo() + ", wildcardPolicy=" + this.getWildcardPolicy() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

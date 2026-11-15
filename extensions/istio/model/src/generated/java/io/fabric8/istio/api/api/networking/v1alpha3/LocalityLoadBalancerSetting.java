@@ -29,9 +29,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -44,12 +41,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "enabled",
     "failover",
     "failoverPriority"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -188,6 +179,71 @@ public class LocalityLoadBalancerSetting implements Editable<LocalityLoadBalance
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof LocalityLoadBalancerSetting)) {
+            return false;
+        }
+        LocalityLoadBalancerSetting other = (LocalityLoadBalancerSetting) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$distribute = this.getDistribute();
+        Object other$distribute = other.getDistribute();
+        if (this$distribute == null ? other$distribute != null : !this$distribute.equals(other$distribute)) {
+            return false;
+        }
+        Object this$enabled = this.getEnabled();
+        Object other$enabled = other.getEnabled();
+        if (this$enabled == null ? other$enabled != null : !this$enabled.equals(other$enabled)) {
+            return false;
+        }
+        Object this$failover = this.getFailover();
+        Object other$failover = other.getFailover();
+        if (this$failover == null ? other$failover != null : !this$failover.equals(other$failover)) {
+            return false;
+        }
+        Object this$failoverPriority = this.getFailoverPriority();
+        Object other$failoverPriority = other.getFailoverPriority();
+        if (this$failoverPriority == null ? other$failoverPriority != null : !this$failoverPriority.equals(other$failoverPriority)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof LocalityLoadBalancerSetting;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $distribute = this.getDistribute();
+        result = result * prime + ($distribute == null ? 43 : $distribute.hashCode());
+        Object $enabled = this.getEnabled();
+        result = result * prime + ($enabled == null ? 43 : $enabled.hashCode());
+        Object $failover = this.getFailover();
+        result = result * prime + ($failover == null ? 43 : $failover.hashCode());
+        Object $failoverPriority = this.getFailoverPriority();
+        result = result * prime + ($failoverPriority == null ? 43 : $failoverPriority.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "LocalityLoadBalancerSetting(" + "distribute=" + this.getDistribute() + ", enabled=" + this.getEnabled() + ", failover=" + this.getFailover() + ", failoverPriority=" + this.getFailoverPriority() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

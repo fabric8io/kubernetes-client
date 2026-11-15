@@ -29,9 +29,6 @@ import io.fabric8.openshift.api.model.config.v1.ConfigMapNameReference;
 import io.fabric8.openshift.api.model.operator.v1.IngressControllerTuningOptions;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 /**
@@ -47,12 +44,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "routeSelector",
     "servingCertificate",
     "tuningOptions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -242,6 +233,92 @@ public class ClusterIngress implements Editable<ClusterIngressBuilder>, Kubernet
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof ClusterIngress)) {
+            return false;
+        }
+        ClusterIngress other = (ClusterIngress) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$domain = this.getDomain();
+        Object other$domain = other.getDomain();
+        if (this$domain == null ? other$domain != null : !this$domain.equals(other$domain)) {
+            return false;
+        }
+        Object this$httpErrorCodePages = this.getHttpErrorCodePages();
+        Object other$httpErrorCodePages = other.getHttpErrorCodePages();
+        if (this$httpErrorCodePages == null ? other$httpErrorCodePages != null : !this$httpErrorCodePages.equals(other$httpErrorCodePages)) {
+            return false;
+        }
+        Object this$name = this.getName();
+        Object other$name = other.getName();
+        if (this$name == null ? other$name != null : !this$name.equals(other$name)) {
+            return false;
+        }
+        Object this$namespaceSelector = this.getNamespaceSelector();
+        Object other$namespaceSelector = other.getNamespaceSelector();
+        if (this$namespaceSelector == null ? other$namespaceSelector != null : !this$namespaceSelector.equals(other$namespaceSelector)) {
+            return false;
+        }
+        Object this$routeSelector = this.getRouteSelector();
+        Object other$routeSelector = other.getRouteSelector();
+        if (this$routeSelector == null ? other$routeSelector != null : !this$routeSelector.equals(other$routeSelector)) {
+            return false;
+        }
+        Object this$servingCertificate = this.getServingCertificate();
+        Object other$servingCertificate = other.getServingCertificate();
+        if (this$servingCertificate == null ? other$servingCertificate != null : !this$servingCertificate.equals(other$servingCertificate)) {
+            return false;
+        }
+        Object this$tuningOptions = this.getTuningOptions();
+        Object other$tuningOptions = other.getTuningOptions();
+        if (this$tuningOptions == null ? other$tuningOptions != null : !this$tuningOptions.equals(other$tuningOptions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof ClusterIngress;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $domain = this.getDomain();
+        result = result * prime + ($domain == null ? 43 : $domain.hashCode());
+        Object $httpErrorCodePages = this.getHttpErrorCodePages();
+        result = result * prime + ($httpErrorCodePages == null ? 43 : $httpErrorCodePages.hashCode());
+        Object $name = this.getName();
+        result = result * prime + ($name == null ? 43 : $name.hashCode());
+        Object $namespaceSelector = this.getNamespaceSelector();
+        result = result * prime + ($namespaceSelector == null ? 43 : $namespaceSelector.hashCode());
+        Object $routeSelector = this.getRouteSelector();
+        result = result * prime + ($routeSelector == null ? 43 : $routeSelector.hashCode());
+        Object $servingCertificate = this.getServingCertificate();
+        result = result * prime + ($servingCertificate == null ? 43 : $servingCertificate.hashCode());
+        Object $tuningOptions = this.getTuningOptions();
+        result = result * prime + ($tuningOptions == null ? 43 : $tuningOptions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "ClusterIngress(" + "domain=" + this.getDomain() + ", httpErrorCodePages=" + this.getHttpErrorCodePages() + ", name=" + this.getName() + ", namespaceSelector=" + this.getNamespaceSelector() + ", routeSelector=" + this.getRouteSelector() + ", servingCertificate=" + this.getServingCertificate() + ", tuningOptions=" + this.getTuningOptions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }

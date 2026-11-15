@@ -27,9 +27,6 @@ import io.fabric8.kubernetes.api.model.Volume;
 import io.fabric8.kubernetes.api.model.VolumeMount;
 import io.sundr.builder.annotations.Buildable;
 import io.sundr.builder.annotations.BuildableReference;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import lombok.experimental.Accessors;
 import tools.jackson.databind.annotation.JsonDeserialize;
 
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
@@ -39,12 +36,6 @@ import tools.jackson.databind.annotation.JsonDeserialize;
     "networkTopology",
     "partitionSize",
     "totalPartitions"
-})
-@ToString
-@EqualsAndHashCode
-@Accessors(prefix = {
-    "_",
-    ""
 })
 @Buildable(editableEnabled = false, validationEnabled = false, generateBuilderPackage = false, lazyCollectionInitEnabled = false, builderPackage = "io.fabric8.kubernetes.api.builder", refs = {
     @BuildableReference(ObjectMeta.class),
@@ -171,6 +162,71 @@ public class PartitionPolicySpec implements Editable<PartitionPolicySpecBuilder>
 
     public void setAdditionalProperties(Map<String, Object> additionalProperties) {
         this.additionalProperties = additionalProperties;
+    }
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof PartitionPolicySpec)) {
+            return false;
+        }
+        PartitionPolicySpec other = (PartitionPolicySpec) o;
+        if (!other.canEqual(this)) {
+            return false;
+        }
+        Object this$minPartitions = this.getMinPartitions();
+        Object other$minPartitions = other.getMinPartitions();
+        if (this$minPartitions == null ? other$minPartitions != null : !this$minPartitions.equals(other$minPartitions)) {
+            return false;
+        }
+        Object this$networkTopology = this.getNetworkTopology();
+        Object other$networkTopology = other.getNetworkTopology();
+        if (this$networkTopology == null ? other$networkTopology != null : !this$networkTopology.equals(other$networkTopology)) {
+            return false;
+        }
+        Object this$partitionSize = this.getPartitionSize();
+        Object other$partitionSize = other.getPartitionSize();
+        if (this$partitionSize == null ? other$partitionSize != null : !this$partitionSize.equals(other$partitionSize)) {
+            return false;
+        }
+        Object this$totalPartitions = this.getTotalPartitions();
+        Object other$totalPartitions = other.getTotalPartitions();
+        if (this$totalPartitions == null ? other$totalPartitions != null : !this$totalPartitions.equals(other$totalPartitions)) {
+            return false;
+        }
+        Object this$additionalProperties = this.getAdditionalProperties();
+        Object other$additionalProperties = other.getAdditionalProperties();
+        if (this$additionalProperties == null ? other$additionalProperties != null : !this$additionalProperties.equals(other$additionalProperties)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean canEqual(Object other) {
+        return other instanceof PartitionPolicySpec;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 59;
+        int result = 1;
+        Object $minPartitions = this.getMinPartitions();
+        result = result * prime + ($minPartitions == null ? 43 : $minPartitions.hashCode());
+        Object $networkTopology = this.getNetworkTopology();
+        result = result * prime + ($networkTopology == null ? 43 : $networkTopology.hashCode());
+        Object $partitionSize = this.getPartitionSize();
+        result = result * prime + ($partitionSize == null ? 43 : $partitionSize.hashCode());
+        Object $totalPartitions = this.getTotalPartitions();
+        result = result * prime + ($totalPartitions == null ? 43 : $totalPartitions.hashCode());
+        Object $additionalProperties = this.getAdditionalProperties();
+        result = result * prime + ($additionalProperties == null ? 43 : $additionalProperties.hashCode());
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "PartitionPolicySpec(" + "minPartitions=" + this.getMinPartitions() + ", networkTopology=" + this.getNetworkTopology() + ", partitionSize=" + this.getPartitionSize() + ", totalPartitions=" + this.getTotalPartitions() + ", additionalProperties=" + this.getAdditionalProperties() + ")";
     }
 
 }
