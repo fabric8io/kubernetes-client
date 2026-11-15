@@ -18,6 +18,7 @@ import java.util.Optional;
 public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api.model.v1.CertificateACMEARIStatusFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String certID;
   private String explanationURL;
   private String lastChecked;
   private String lastError;
@@ -58,6 +59,7 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
   protected void copyInstance(CertificateACMEARIStatus instance) {
     instance = instance != null ? instance : new CertificateACMEARIStatus();
     if (instance != null) {
+        this.withCertID(instance.getCertID());
         this.withExplanationURL(instance.getExplanationURL());
         this.withLastChecked(instance.getLastChecked());
         this.withLastError(instance.getLastError());
@@ -90,6 +92,9 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
       return false;
     }
     CertificateACMEARIStatusFluent that = (CertificateACMEARIStatusFluent) o;
+    if (!(Objects.equals(certID, that.certID))) {
+      return false;
+    }
     if (!(Objects.equals(explanationURL, that.explanationURL))) {
       return false;
     }
@@ -115,6 +120,10 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
     return this.additionalProperties;
   }
   
+  public String getCertID() {
+    return this.certID;
+  }
+  
   public String getExplanationURL() {
     return this.explanationURL;
   }
@@ -133,6 +142,10 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
   
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
+  }
+  
+  public boolean hasCertID() {
+    return this.certID != null;
   }
   
   public boolean hasExplanationURL() {
@@ -156,7 +169,7 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
   }
   
   public int hashCode() {
-    return Objects.hash(explanationURL, lastChecked, lastError, nextCheck, suggestedWindow, additionalProperties);
+    return Objects.hash(certID, explanationURL, lastChecked, lastError, nextCheck, suggestedWindow, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -186,6 +199,11 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(certID == null)) {
+        sb.append("certID:");
+        sb.append(certID);
+        sb.append(",");
+    }
     if (!(explanationURL == null)) {
         sb.append("explanationURL:");
         sb.append(explanationURL);
@@ -225,6 +243,11 @@ public class CertificateACMEARIStatusFluent<A extends io.fabric8.certmanager.api
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withCertID(String certID) {
+    this.certID = certID;
     return (A) this;
   }
   

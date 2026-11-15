@@ -1574,6 +1574,10 @@
     "io.cert-manager.v1.CertificateACMEARIStatus": {
       "type": "object",
       "properties": {
+        "certID": {
+          "description": "CertID is the ARI CertID (RFC 9773) of the certificate this renewal information was fetched for. This is used to determine if we need to re-fetch the renewal information as changed cert id means that ARI fetched before is stale.",
+          "type": "string"
+        },
         "explanationURL": {
           "description": "ExplanationURL is a human-readable URL that may explain why the suggested window has its current value.",
           "type": "string"
