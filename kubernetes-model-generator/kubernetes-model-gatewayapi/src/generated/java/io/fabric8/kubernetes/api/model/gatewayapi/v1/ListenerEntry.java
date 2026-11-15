@@ -34,6 +34,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
     "allowedRoutes",
+    "filters",
     "hostname",
     "name",
     "port",
@@ -67,6 +68,8 @@ public class ListenerEntry implements Editable<ListenerEntryBuilder>, Kubernetes
 
     @JsonProperty("allowedRoutes")
     private AllowedRoutes allowedRoutes;
+    @JsonProperty("filters")
+    private ListenerFilters filters;
     @JsonProperty("hostname")
     private String hostname;
     @JsonProperty("name")
@@ -86,9 +89,10 @@ public class ListenerEntry implements Editable<ListenerEntryBuilder>, Kubernetes
     public ListenerEntry() {
     }
 
-    public ListenerEntry(AllowedRoutes allowedRoutes, String hostname, String name, Integer port, String protocol, ListenerTLSConfig tls) {
+    public ListenerEntry(AllowedRoutes allowedRoutes, ListenerFilters filters, String hostname, String name, Integer port, String protocol, ListenerTLSConfig tls) {
         super();
         this.allowedRoutes = allowedRoutes;
+        this.filters = filters;
         this.hostname = hostname;
         this.name = name;
         this.port = port;
@@ -104,6 +108,16 @@ public class ListenerEntry implements Editable<ListenerEntryBuilder>, Kubernetes
     @JsonProperty("allowedRoutes")
     public void setAllowedRoutes(AllowedRoutes allowedRoutes) {
         this.allowedRoutes = allowedRoutes;
+    }
+
+    @JsonProperty("filters")
+    public ListenerFilters getFilters() {
+        return filters;
+    }
+
+    @JsonProperty("filters")
+    public void setFilters(ListenerFilters filters) {
+        this.filters = filters;
     }
 
     /**

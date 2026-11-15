@@ -25,7 +25,7 @@ public class LabelBuilder extends LabelFluent<LabelBuilder> implements Visitable
   }
 
   public Label build() {
-    Label buildable = new Label(fluent.buildFields(), fluent.getIncludeSelectors(), fluent.getIncludeTemplates(), fluent.getPairs());
+    Label buildable = new Label(fluent.buildFields(), fluent.getIncludeSelectors(), fluent.getIncludeTemplates(), fluent.getIncludeVolumeClaimTemplates(), fluent.getPairs());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

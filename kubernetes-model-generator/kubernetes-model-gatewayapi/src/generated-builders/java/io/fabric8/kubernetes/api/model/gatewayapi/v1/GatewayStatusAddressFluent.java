@@ -16,6 +16,7 @@ import java.util.Objects;
 public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.model.gatewayapi.v1.GatewayStatusAddressFluent<A>> extends BaseFluent<A>{
 
   private Map<String,Object> additionalProperties;
+  private String routability;
   private String type;
   private String value;
 
@@ -49,6 +50,7 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
   protected void copyInstance(GatewayStatusAddress instance) {
     instance = instance != null ? instance : new GatewayStatusAddress();
     if (instance != null) {
+        this.withRoutability(instance.getRoutability());
         this.withType(instance.getType());
         this.withValue(instance.getValue());
         this.withAdditionalProperties(instance.getAdditionalProperties());
@@ -66,6 +68,9 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
       return false;
     }
     GatewayStatusAddressFluent that = (GatewayStatusAddressFluent) o;
+    if (!(Objects.equals(routability, that.routability))) {
+      return false;
+    }
     if (!(Objects.equals(type, that.type))) {
       return false;
     }
@@ -82,6 +87,10 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
     return this.additionalProperties;
   }
   
+  public String getRoutability() {
+    return this.routability;
+  }
+  
   public String getType() {
     return this.type;
   }
@@ -94,6 +103,10 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
     return this.additionalProperties != null;
   }
   
+  public boolean hasRoutability() {
+    return this.routability != null;
+  }
+  
   public boolean hasType() {
     return this.type != null;
   }
@@ -103,7 +116,7 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
   }
   
   public int hashCode() {
-    return Objects.hash(type, value, additionalProperties);
+    return Objects.hash(routability, type, value, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -133,6 +146,11 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("{");
+    if (!(routability == null)) {
+        sb.append("routability:");
+        sb.append(routability);
+        sb.append(",");
+    }
     if (!(type == null)) {
         sb.append("type:");
         sb.append(type);
@@ -157,6 +175,11 @@ public class GatewayStatusAddressFluent<A extends io.fabric8.kubernetes.api.mode
     } else {
       this.additionalProperties = new LinkedHashMap(additionalProperties);
     }
+    return (A) this;
+  }
+  
+  public A withRoutability(String routability) {
+    this.routability = routability;
     return (A) this;
   }
   

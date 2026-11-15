@@ -25,7 +25,7 @@ public class CookieConfigBuilder extends CookieConfigFluent<CookieConfigBuilder>
   }
 
   public CookieConfig build() {
-    CookieConfig buildable = new CookieConfig(fluent.getLifetimeType());
+    CookieConfig buildable = new CookieConfig(fluent.getLifetimeType(), fluent.getName(), fluent.getPath());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

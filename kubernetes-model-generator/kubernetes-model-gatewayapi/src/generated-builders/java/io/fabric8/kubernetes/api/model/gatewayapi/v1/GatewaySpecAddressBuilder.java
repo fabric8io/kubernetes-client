@@ -25,7 +25,7 @@ public class GatewaySpecAddressBuilder extends GatewaySpecAddressFluent<GatewayS
   }
 
   public GatewaySpecAddress build() {
-    GatewaySpecAddress buildable = new GatewaySpecAddress(fluent.getType(), fluent.getValue());
+    GatewaySpecAddress buildable = new GatewaySpecAddress(fluent.getRoutability(), fluent.getType(), fluent.getValue());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

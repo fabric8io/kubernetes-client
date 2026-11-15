@@ -18,8 +18,22 @@
 * Fix #8150: bump baremetal-operator/apis from 0.13.0 to 0.14.1
 * Fix #8224: bump cert-manager from 1.21.2 to 1.21.3
 * Fix #8200: bump cluster-api from 1.14.2 to 1.14.3
+* Fix #8240: bump cluster-api from 1.14.3 to 1.14.4
 * Fix #8150: bump cluster-api-provider-metal3 from 1.14.0 to 1.14.1
 * Fix #8200: bump cluster-api-provider-metal3 from 1.14.1 to 1.14.2
+* Fix #8240: bump controller-runtime from 0.25.1 to 0.25.2
+* Fix #8240: bump gateway-api from 1.6.2 to 1.7.0
+* Fix #8240: bump k8s.io/api from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/apiextensions-apiserver from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/apimachinery from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/autoscaler/vertical-pod-autoscaler from 1.7.1 to 1.8.1
+* Fix #8240: bump k8s.io/client-go from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/cloud-provider from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/csi-translation-lib from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/kube-scheduler from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/metrics from 0.37.0 to 0.37.2
+* Fix #8240: bump k8s.io/mount-utils from 0.37.0 to 0.37.2
+* Fix #8240: bump kustomize/api from 0.21.1 to 0.21.3
 * Fix #8147: bump ovn-kubernetes/go-controller from a68ef49 to 5ff49b3 (module moved from `github.com/ovn-org` to `github.com/ovn-kubernetes`)
 * Fix #8216: bump ovn-kubernetes/go-controller from 5ff49b3 to b17ddc4
 * Fix #8192: bump volcano.sh/apis from 1.15.2 to 1.16.0
@@ -30,6 +44,7 @@
 * Fix #8192: (volcano) DSL support for `NamespaceQueue` (`scheduling.volcano.sh/v1beta1`)
 
 #### _**Note**_: Breaking changes
+* Fix #8240: (gateway-api) Experimental `SessionPersistence` field `cookieConfig` renamed to `cookie`, and `sessionName` replaced by `CookieConfig.name` and the new `header` (`HeaderConfig`)
 * Fix #8147: (open-virtual-networking) `Layer2Config` field `ipamLifecycle` replaced by `ipam` (`IPAMConfig`, the lifecycle moves to `ipam.lifecycle`)
 
 ### 8.0.0 (2026-09-24)

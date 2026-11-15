@@ -36,6 +36,7 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 @JsonDeserialize(using = tools.jackson.databind.ValueDeserializer.None.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
+    "routability",
     "type",
     "value"
 })
@@ -64,6 +65,8 @@ import tools.jackson.databind.annotation.JsonDeserialize;
 public class GatewayStatusAddress implements Editable<GatewayStatusAddressBuilder>, KubernetesResource
 {
 
+    @JsonProperty("routability")
+    private String routability;
     @JsonProperty("type")
     private String type;
     @JsonProperty("value")
@@ -77,10 +80,27 @@ public class GatewayStatusAddress implements Editable<GatewayStatusAddressBuilde
     public GatewayStatusAddress() {
     }
 
-    public GatewayStatusAddress(String type, String value) {
+    public GatewayStatusAddress(String routability, String type, String value) {
         super();
+        this.routability = routability;
         this.type = type;
         this.value = value;
+    }
+
+    /**
+     * Routability reports the reachability scope of this address. When empty or unset, this field uses the implementation's default routability behavior. The `k8s.io` domain and all its subdomains are reserved for well-known values.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("routability")
+    public String getRoutability() {
+        return routability;
+    }
+
+    /**
+     * Routability reports the reachability scope of this address. When empty or unset, this field uses the implementation's default routability behavior. The `k8s.io` domain and all its subdomains are reserved for well-known values.<br><p> <br><p> &lt;gateway:experimental&gt;
+     */
+    @JsonProperty("routability")
+    public void setRoutability(String routability) {
+        this.routability = routability;
     }
 
     /**

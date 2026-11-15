@@ -19,8 +19,8 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
 
   private String absoluteTimeout;
   private Map<String,Object> additionalProperties;
-  private CookieConfigBuilder cookieConfig;
-  private String sessionName;
+  private CookieConfigBuilder cookie;
+  private HeaderConfigBuilder header;
   private String type;
 
   public SessionPersistenceFluent() {
@@ -50,31 +50,47 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     return (A) this;
   }
   
-  public CookieConfig buildCookieConfig() {
-    return this.cookieConfig != null ? this.cookieConfig.build() : null;
+  public CookieConfig buildCookie() {
+    return this.cookie != null ? this.cookie.build() : null;
+  }
+  
+  public HeaderConfig buildHeader() {
+    return this.header != null ? this.header.build() : null;
   }
   
   protected void copyInstance(SessionPersistence instance) {
     instance = instance != null ? instance : new SessionPersistence();
     if (instance != null) {
         this.withAbsoluteTimeout(instance.getAbsoluteTimeout());
-        this.withCookieConfig(instance.getCookieConfig());
-        this.withSessionName(instance.getSessionName());
+        this.withCookie(instance.getCookie());
+        this.withHeader(instance.getHeader());
         this.withType(instance.getType());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
   
-  public CookieConfigNested<A> editCookieConfig() {
-    return this.withNewCookieConfigLike(Optional.ofNullable(this.buildCookieConfig()).orElse(null));
+  public CookieNested<A> editCookie() {
+    return this.withNewCookieLike(Optional.ofNullable(this.buildCookie()).orElse(null));
   }
   
-  public CookieConfigNested<A> editOrNewCookieConfig() {
-    return this.withNewCookieConfigLike(Optional.ofNullable(this.buildCookieConfig()).orElse(new CookieConfigBuilder().build()));
+  public HeaderNested<A> editHeader() {
+    return this.withNewHeaderLike(Optional.ofNullable(this.buildHeader()).orElse(null));
   }
   
-  public CookieConfigNested<A> editOrNewCookieConfigLike(CookieConfig item) {
-    return this.withNewCookieConfigLike(Optional.ofNullable(this.buildCookieConfig()).orElse(item));
+  public CookieNested<A> editOrNewCookie() {
+    return this.withNewCookieLike(Optional.ofNullable(this.buildCookie()).orElse(new CookieConfigBuilder().build()));
+  }
+  
+  public CookieNested<A> editOrNewCookieLike(CookieConfig item) {
+    return this.withNewCookieLike(Optional.ofNullable(this.buildCookie()).orElse(item));
+  }
+  
+  public HeaderNested<A> editOrNewHeader() {
+    return this.withNewHeaderLike(Optional.ofNullable(this.buildHeader()).orElse(new HeaderConfigBuilder().build()));
+  }
+  
+  public HeaderNested<A> editOrNewHeaderLike(HeaderConfig item) {
+    return this.withNewHeaderLike(Optional.ofNullable(this.buildHeader()).orElse(item));
   }
   
   public boolean equals(Object o) {
@@ -91,10 +107,10 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     if (!(Objects.equals(absoluteTimeout, that.absoluteTimeout))) {
       return false;
     }
-    if (!(Objects.equals(cookieConfig, that.cookieConfig))) {
+    if (!(Objects.equals(cookie, that.cookie))) {
       return false;
     }
-    if (!(Objects.equals(sessionName, that.sessionName))) {
+    if (!(Objects.equals(header, that.header))) {
       return false;
     }
     if (!(Objects.equals(type, that.type))) {
@@ -114,10 +130,6 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     return this.additionalProperties;
   }
   
-  public String getSessionName() {
-    return this.sessionName;
-  }
-  
   public String getType() {
     return this.type;
   }
@@ -130,12 +142,12 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     return this.additionalProperties != null;
   }
   
-  public boolean hasCookieConfig() {
-    return this.cookieConfig != null;
+  public boolean hasCookie() {
+    return this.cookie != null;
   }
   
-  public boolean hasSessionName() {
-    return this.sessionName != null;
+  public boolean hasHeader() {
+    return this.header != null;
   }
   
   public boolean hasType() {
@@ -143,7 +155,7 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
   }
   
   public int hashCode() {
-    return Objects.hash(absoluteTimeout, cookieConfig, sessionName, type, additionalProperties);
+    return Objects.hash(absoluteTimeout, cookie, header, type, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -178,14 +190,14 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
         sb.append(absoluteTimeout);
         sb.append(",");
     }
-    if (!(cookieConfig == null)) {
-        sb.append("cookieConfig:");
-        sb.append(cookieConfig);
+    if (!(cookie == null)) {
+        sb.append("cookie:");
+        sb.append(cookie);
         sb.append(",");
     }
-    if (!(sessionName == null)) {
-        sb.append("sessionName:");
-        sb.append(sessionName);
+    if (!(header == null)) {
+        sb.append("header:");
+        sb.append(header);
         sb.append(",");
     }
     if (!(type == null)) {
@@ -215,52 +227,88 @@ public class SessionPersistenceFluent<A extends io.fabric8.kubernetes.api.model.
     return (A) this;
   }
   
-  public A withCookieConfig(CookieConfig cookieConfig) {
-    this._visitables.remove("cookieConfig");
-    if (cookieConfig != null) {
-        this.cookieConfig = new CookieConfigBuilder(cookieConfig);
-        this._visitables.get("cookieConfig").add(this.cookieConfig);
+  public A withCookie(CookieConfig cookie) {
+    this._visitables.remove("cookie");
+    if (cookie != null) {
+        this.cookie = new CookieConfigBuilder(cookie);
+        this._visitables.get("cookie").add(this.cookie);
     } else {
-        this.cookieConfig = null;
-        this._visitables.get("cookieConfig").remove(this.cookieConfig);
+        this.cookie = null;
+        this._visitables.get("cookie").remove(this.cookie);
     }
     return (A) this;
   }
   
-  public CookieConfigNested<A> withNewCookieConfig() {
-    return new CookieConfigNested(null);
-  }
-  
-  public A withNewCookieConfig(String lifetimeType) {
-    return (A) this.withCookieConfig(new CookieConfig(lifetimeType));
-  }
-  
-  public CookieConfigNested<A> withNewCookieConfigLike(CookieConfig item) {
-    return new CookieConfigNested(item);
-  }
-  
-  public A withSessionName(String sessionName) {
-    this.sessionName = sessionName;
+  public A withHeader(HeaderConfig header) {
+    this._visitables.remove("header");
+    if (header != null) {
+        this.header = new HeaderConfigBuilder(header);
+        this._visitables.get("header").add(this.header);
+    } else {
+        this.header = null;
+        this._visitables.get("header").remove(this.header);
+    }
     return (A) this;
+  }
+  
+  public CookieNested<A> withNewCookie() {
+    return new CookieNested(null);
+  }
+  
+  public A withNewCookie(String lifetimeType,String name,String path) {
+    return (A) this.withCookie(new CookieConfig(lifetimeType, name, path));
+  }
+  
+  public CookieNested<A> withNewCookieLike(CookieConfig item) {
+    return new CookieNested(item);
+  }
+  
+  public HeaderNested<A> withNewHeader() {
+    return new HeaderNested(null);
+  }
+  
+  public A withNewHeader(String name) {
+    return (A) this.withHeader(new HeaderConfig(name));
+  }
+  
+  public HeaderNested<A> withNewHeaderLike(HeaderConfig item) {
+    return new HeaderNested(item);
   }
   
   public A withType(String type) {
     this.type = type;
     return (A) this;
   }
-  public class CookieConfigNested<N> extends CookieConfigFluent<CookieConfigNested<N>> implements Nested<N>{
+  public class CookieNested<N> extends CookieConfigFluent<CookieNested<N>> implements Nested<N>{
   
     CookieConfigBuilder builder;
   
-    CookieConfigNested(CookieConfig item) {
+    CookieNested(CookieConfig item) {
       this.builder = new CookieConfigBuilder(this, item);
     }
   
     public N and() {
-      return (N) SessionPersistenceFluent.this.withCookieConfig(builder.build());
+      return (N) SessionPersistenceFluent.this.withCookie(builder.build());
     }
     
-    public N endCookieConfig() {
+    public N endCookie() {
+      return and();
+    }
+    
+  }
+  public class HeaderNested<N> extends HeaderConfigFluent<HeaderNested<N>> implements Nested<N>{
+  
+    HeaderConfigBuilder builder;
+  
+    HeaderNested(HeaderConfig item) {
+      this.builder = new HeaderConfigBuilder(this, item);
+    }
+  
+    public N and() {
+      return (N) SessionPersistenceFluent.this.withHeader(builder.build());
+    }
+    
+    public N endHeader() {
       return and();
     }
     

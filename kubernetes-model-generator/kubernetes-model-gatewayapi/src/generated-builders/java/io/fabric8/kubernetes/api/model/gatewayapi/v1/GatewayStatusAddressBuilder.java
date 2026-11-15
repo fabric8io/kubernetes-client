@@ -25,7 +25,7 @@ public class GatewayStatusAddressBuilder extends GatewayStatusAddressFluent<Gate
   }
 
   public GatewayStatusAddress build() {
-    GatewayStatusAddress buildable = new GatewayStatusAddress(fluent.getType(), fluent.getValue());
+    GatewayStatusAddress buildable = new GatewayStatusAddress(fluent.getRoutability(), fluent.getType(), fluent.getValue());
     buildable.setAdditionalProperties(fluent.getAdditionalProperties());
     return buildable;
   }

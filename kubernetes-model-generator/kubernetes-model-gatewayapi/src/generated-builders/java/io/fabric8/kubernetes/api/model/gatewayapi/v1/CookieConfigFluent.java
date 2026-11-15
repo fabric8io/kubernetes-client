@@ -17,6 +17,8 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
 
   private Map<String,Object> additionalProperties;
   private String lifetimeType;
+  private String name;
+  private String path;
 
   public CookieConfigFluent() {
   }
@@ -49,6 +51,8 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
     instance = instance != null ? instance : new CookieConfig();
     if (instance != null) {
         this.withLifetimeType(instance.getLifetimeType());
+        this.withName(instance.getName());
+        this.withPath(instance.getPath());
         this.withAdditionalProperties(instance.getAdditionalProperties());
     }
   }
@@ -67,6 +71,12 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
     if (!(Objects.equals(lifetimeType, that.lifetimeType))) {
       return false;
     }
+    if (!(Objects.equals(name, that.name))) {
+      return false;
+    }
+    if (!(Objects.equals(path, that.path))) {
+      return false;
+    }
     if (!(Objects.equals(additionalProperties, that.additionalProperties))) {
       return false;
     }
@@ -81,6 +91,14 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
     return this.lifetimeType;
   }
   
+  public String getName() {
+    return this.name;
+  }
+  
+  public String getPath() {
+    return this.path;
+  }
+  
   public boolean hasAdditionalProperties() {
     return this.additionalProperties != null;
   }
@@ -89,8 +107,16 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
     return this.lifetimeType != null;
   }
   
+  public boolean hasName() {
+    return this.name != null;
+  }
+  
+  public boolean hasPath() {
+    return this.path != null;
+  }
+  
   public int hashCode() {
-    return Objects.hash(lifetimeType, additionalProperties);
+    return Objects.hash(lifetimeType, name, path, additionalProperties);
   }
   
   public A removeFromAdditionalProperties(String key) {
@@ -125,6 +151,16 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
         sb.append(lifetimeType);
         sb.append(",");
     }
+    if (!(name == null)) {
+        sb.append("name:");
+        sb.append(name);
+        sb.append(",");
+    }
+    if (!(path == null)) {
+        sb.append("path:");
+        sb.append(path);
+        sb.append(",");
+    }
     if (!(additionalProperties == null) && !(additionalProperties.isEmpty())) {
         sb.append("additionalProperties:");
         sb.append(additionalProperties);
@@ -144,6 +180,16 @@ public class CookieConfigFluent<A extends io.fabric8.kubernetes.api.model.gatewa
   
   public A withLifetimeType(String lifetimeType) {
     this.lifetimeType = lifetimeType;
+    return (A) this;
+  }
+  
+  public A withName(String name) {
+    this.name = name;
+    return (A) this;
+  }
+  
+  public A withPath(String path) {
+    this.path = path;
     return (A) this;
   }
   

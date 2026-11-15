@@ -18,6 +18,9 @@ replace (
 	k8s.io/client-go => k8s.io/client-go v0.37.2
 	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.2
 	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.37.2
+	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
+	// (a replace, since sigs.k8s.io/kustomize v0.21.3 requires a newer one; kustomize only uses its smd-free pkg/validation)
+	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
 	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.37.2
 	k8s.io/mount-utils => k8s.io/mount-utils v0.37.2
 
@@ -74,7 +77,7 @@ require (
 	k8s.io/autoscaler/vertical-pod-autoscaler v1.8.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
-	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
+	// Held back by the replace above (structured-merge-diff/v7)
 	k8s.io/kube-openapi v0.0.0-20261001230523-97fa35140926
 	k8s.io/metrics v0.37.2
 	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
@@ -244,6 +247,5 @@ require (
 	sigs.k8s.io/kustomize/kyaml v0.21.3 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
-	sigs.k8s.io/structured-merge-diff/v7 v7.0.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )

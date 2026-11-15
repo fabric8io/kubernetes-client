@@ -67,8 +67,8 @@ public class GatewaySpecFluent<A extends io.fabric8.kubernetes.api.model.gateway
     return new AddressesNested(-1, null);
   }
   
-  public A addNewAddress(String type,String value) {
-    return (A) this.addToAddresses(new GatewaySpecAddress(type, value));
+  public A addNewAddress(String routability,String type,String value) {
+    return (A) this.addToAddresses(new GatewaySpecAddress(routability, type, value));
   }
   
   public AddressesNested<A> addNewAddressLike(GatewaySpecAddress item) {
