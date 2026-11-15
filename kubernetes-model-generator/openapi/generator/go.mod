@@ -14,22 +14,22 @@ replace (
 	github.com/openshift/installer => github.com/openshift/installer v1.4.22-ec5 // Most up-to-date 4.22 tag, release-4.22 pseudo-versions aren't in sum.golang.org https://issues.redhat.com/browse/OCPBUGS-42448
 
 	// Keep in line with k8s.io/apimachinery (client-go is otherwise resolved to v12.0.0+incompatible)
-	k8s.io/api => k8s.io/api v0.37.0
-	k8s.io/client-go => k8s.io/client-go v0.37.0
-	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.0
-	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.37.0
-	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.37.0
-	k8s.io/mount-utils => k8s.io/mount-utils v0.37.0
+	k8s.io/api => k8s.io/api v0.37.2
+	k8s.io/client-go => k8s.io/client-go v0.37.2
+	k8s.io/cloud-provider => k8s.io/cloud-provider v0.37.2
+	k8s.io/csi-translation-lib => k8s.io/csi-translation-lib v0.37.2
+	k8s.io/kube-scheduler => k8s.io/kube-scheduler v0.37.2
+	k8s.io/mount-utils => k8s.io/mount-utils v0.37.2
 
 	// Pin knative.dev/pkg to a known-good pseudo-version (dependabot picks invalid tagged major versions)
 	knative.dev/pkg => knative.dev/pkg v0.0.0-20260918182429-5dc1978f0042
 
-	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.3
+	sigs.k8s.io/cluster-api => sigs.k8s.io/cluster-api v1.14.4
 	// cluster-api v1.14+ requires its api module at a placeholder version (resolved by a local replace upstream)
-	sigs.k8s.io/cluster-api/api => sigs.k8s.io/cluster-api/api v1.14.3
+	sigs.k8s.io/cluster-api/api => sigs.k8s.io/cluster-api/api v1.14.4
 
 	// Must match the k8s.io minor above (v0.25.x is built on k8s.io v0.37.x); governance-policy-propagator v0.19+ needs at least v0.23
-	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.25.1
+	sigs.k8s.io/controller-runtime => sigs.k8s.io/controller-runtime v0.25.2
 )
 
 // Issues with dependabot, force pseudo-versions as replacements since dependabot will try to replace with invalid tagged major versions
@@ -68,15 +68,15 @@ require (
 	github.com/tektoncd/pipeline v1.16.0
 	github.com/tektoncd/triggers v0.37.1
 	istio.io/client-go v1.31.2
-	k8s.io/api v0.37.0
-	k8s.io/apiextensions-apiserver v0.37.0
-	k8s.io/apimachinery v0.37.0
-	k8s.io/autoscaler/vertical-pod-autoscaler v1.7.1
+	k8s.io/api v0.37.2
+	k8s.io/apiextensions-apiserver v0.37.2
+	k8s.io/apimachinery v0.37.2
+	k8s.io/autoscaler/vertical-pod-autoscaler v1.8.1
 	k8s.io/client-go v12.0.0+incompatible
 	k8s.io/gengo/v2 v2.0.0-20260408192533-25e2208e0dc3
 	// Last commit before kube-openapi moved to structured-merge-diff/v7, which k8s.io/apimachinery v0.37.x doesn't support
-	k8s.io/kube-openapi v0.0.0-20260821135717-be32def86098
-	k8s.io/metrics v0.37.0
+	k8s.io/kube-openapi v0.0.0-20261001230523-97fa35140926
+	k8s.io/metrics v0.37.2
 	knative.dev/caching v0.0.0-20260821014320-af6341f3ab2b
 	knative.dev/eventing v0.50.0
 	knative.dev/eventing-awssqs v0.29.0
@@ -91,9 +91,9 @@ require (
 	open-cluster-management.io/governance-policy-propagator v0.20.0
 	open-cluster-management.io/multicloud-operators-channel v0.16.0
 	open-cluster-management.io/multicloud-operators-subscription v0.16.0
-	sigs.k8s.io/cluster-api/api v1.14.3
-	sigs.k8s.io/gateway-api v1.6.2
-	sigs.k8s.io/kustomize/api v0.21.1
+	sigs.k8s.io/cluster-api/api v1.14.4
+	sigs.k8s.io/gateway-api v1.7.0
+	sigs.k8s.io/kustomize/api v0.21.3
 	// This version is older than v1.10.0 see replacements below
 	volcano.sh/apis v1.19.6
 )
@@ -121,15 +121,15 @@ require (
 	github.com/emicklei/go-restful/v3 v3.13.0 // indirect
 	github.com/evanphx/json-patch/v5 v5.9.11 // indirect
 	github.com/fsnotify/fsnotify v1.10.1 // indirect
-	github.com/fxamacker/cbor/v2 v2.9.3 // indirect
+	github.com/fxamacker/cbor/v2 v2.9.6 // indirect
 	github.com/go-errors/errors v1.5.1 // indirect
 	github.com/go-logr/logr v1.4.4 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
 	github.com/go-logr/zapr v1.3.0 // indirect
 	github.com/go-openapi/analysis v0.23.0 // indirect
 	github.com/go-openapi/errors v0.22.4 // indirect
-	github.com/go-openapi/jsonpointer v1.0.1 // indirect
-	github.com/go-openapi/jsonreference v1.0.2 // indirect
+	github.com/go-openapi/jsonpointer v1.0.2 // indirect
+	github.com/go-openapi/jsonreference v1.0.3 // indirect
 	github.com/go-openapi/loads v0.22.0 // indirect
 	github.com/go-openapi/spec v0.21.0 // indirect
 	github.com/go-openapi/strfmt v0.25.0 // indirect
@@ -180,10 +180,10 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/prometheus/client_golang v1.24.1 // indirect
-	github.com/prometheus/client_model v0.6.2 // indirect
+	github.com/prometheus/client_model v0.6.3 // indirect
 	github.com/prometheus/common v0.70.1 // indirect
 	github.com/prometheus/otlptranslator v1.0.0 // indirect
-	github.com/prometheus/procfs v0.21.1 // indirect
+	github.com/prometheus/procfs v0.22.0 // indirect
 	github.com/rickb777/date v1.14.1 // indirect
 	github.com/rickb777/plural v1.2.2 // indirect
 	github.com/robfig/cron/v3 v3.0.1 // indirect
@@ -214,17 +214,17 @@ require (
 	go.uber.org/zap v1.28.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
-	golang.org/x/crypto v0.57.0 // indirect
+	golang.org/x/crypto v0.58.0 // indirect
 	golang.org/x/exp v0.0.0-20260824195058-e88cd73687aa // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.60.0 // indirect
-	golang.org/x/oauth2 v0.36.0 // indirect
-	golang.org/x/sync v0.23.0 // indirect
-	golang.org/x/sys v0.48.0 // indirect
-	golang.org/x/term v0.46.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
-	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.49.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
+	golang.org/x/oauth2 v0.37.0 // indirect
+	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sys v0.49.0 // indirect
+	golang.org/x/term v0.47.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
+	golang.org/x/time v0.16.0 // indirect
+	golang.org/x/tools v0.51.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260904194346-d0f1323225a4 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260825221802-da73d73af1c5 // indirect
@@ -241,8 +241,9 @@ require (
 	sigs.k8s.io/cluster-api-provider-azure v1.27.0 // indirect
 	sigs.k8s.io/controller-runtime v0.25.0 // indirect
 	sigs.k8s.io/json v0.0.0-20250730193827-2d320260d730 // indirect
-	sigs.k8s.io/kustomize/kyaml v0.21.1 // indirect
+	sigs.k8s.io/kustomize/kyaml v0.21.3 // indirect
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.4.2 // indirect
+	sigs.k8s.io/structured-merge-diff/v7 v7.0.0 // indirect
 	sigs.k8s.io/yaml v1.6.0 // indirect
 )
