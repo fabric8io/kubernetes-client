@@ -136284,8 +136284,7 @@
       "type": "object",
       "required": [
         "key",
-        "operator",
-        "values"
+        "operator"
       ],
       "properties": {
         "key": {
@@ -136297,7 +136296,7 @@
           "type": "string"
         },
         "values": {
-          "description": "values is an array of string of required values.",
+          "description": "values is an array of string of required values. An empty list is valid and required for operators that take no values, such as \"exists\" and \"!\". Field presence is therefore not required: an empty slice is dropped by omitempty, and a nil slice would marshal to null and be pruned, so requiring presence would reject valid selectors.",
           "type": "array",
           "items": {
             "type": "string"
@@ -138336,8 +138335,7 @@
       "required": [
         "bondMode",
         "id",
-        "macAddress",
-        "parameters"
+        "macAddress"
       ],
       "properties": {
         "bondLinks": {
@@ -138374,7 +138372,7 @@
           "type": "string"
         },
         "parameters": {
-          "description": "parameters blob passed without any validation/modifications into cloud-init config",
+          "description": "parameters blob passed without any validation/modifications into cloud-init config Bond parameters are optional cloud-init extras, and were optional in v1beta1, so neither field presence nor a minimum item count can be required without rejecting existing bond links that set none.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/io.x-k8s.cluster.infrastructure.v1beta2.NetworkDataLinkBondParam"
