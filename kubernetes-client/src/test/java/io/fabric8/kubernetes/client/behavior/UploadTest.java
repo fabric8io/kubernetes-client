@@ -126,7 +126,7 @@ class UploadTest {
         .extracting(StandardWebSocketBuilder::asHttpRequest)
         .extracting(StandardHttpRequest::uri)
         .extracting(URI::getQuery).asString()
-        .contains("command=rm /target/fabric8-");
+        .contains("command=rm -- '/target/fabric8-");
   }
 
   @Nested
@@ -224,7 +224,7 @@ class UploadTest {
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
             .matches(
-                ".+command=mkdir -p '/target-dir/'; tar -C '/target-dir/' -xmf /target-dir/fabric8-.+\\.tar; e=\\$\\?; rm /target-dir/fabric8-.+");
+                ".+command=mkdir -p -- '/target-dir/'; tar -C '/target-dir/' -xmf '/target-dir/fabric8-.+\\.tar'; e=\\$\\?; rm -- '/target-dir/fabric8-.+\\.tar'; exit \\$e.*");
       }
 
       @Nested
@@ -359,7 +359,7 @@ class UploadTest {
             .extracting(StandardHttpRequest::uri)
             .extracting(URI::getQuery).asString()
             .matches(
-                ".+command=mkdir -p '/target-dir/location/'; tar -C '/target-dir/location/' -xmf /target-dir/location/fabric8-.+\\.tar; e=\\$\\?; rm /target-dir/location/fabric8-.+");
+                ".+command=mkdir -p -- '/target-dir/location/'; tar -C '/target-dir/location/' -xmf '/target-dir/location/fabric8-.+\\.tar'; e=\\$\\?; rm -- '/target-dir/location/fabric8-.+\\.tar'; exit \\$e.*");
       }
 
     }

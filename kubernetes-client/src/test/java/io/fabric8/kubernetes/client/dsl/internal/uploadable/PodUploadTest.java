@@ -79,4 +79,28 @@ class PodUploadTest {
     }
   }
 
+  @Nested
+  @DisplayName("extractTarCommand")
+  class ExtractTarCommand {
+
+    @Test
+    void withNormalDirectory_shouldCreateValidExtractCommand() {
+      // When
+      String result = PodUpload.extractTarCommand("/target-dir/", "/target-dir/fabric8-copy.tar");
+      // Then
+      assertThat(result).isEqualTo(
+          "mkdir -p -- '/target-dir/'; tar -C '/target-dir/' -xmf '/target-dir/fabric8-copy.tar'; e=$?; rm -- '/target-dir/fabric8-copy.tar'; exit $e");
+    }
+
+    @Test
+    void withShellMetacharactersInTarPath_shouldQuoteTarPath() {
+      // When
+      String result = PodUpload.extractTarCommand(
+          "/tmp/u; touch /tmp/pwned; #/", "/tmp/u; touch /tmp/pwned; #/fabric8-copy.tar");
+      // Then
+      assertThat(result).isEqualTo(
+          "mkdir -p -- '/tmp/u; touch /tmp/pwned; #/'; tar -C '/tmp/u; touch /tmp/pwned; #/' -xmf '/tmp/u; touch /tmp/pwned; #/fabric8-copy.tar'; e=$?; rm -- '/tmp/u; touch /tmp/pwned; #/fabric8-copy.tar'; exit $e");
+    }
+  }
+
 }
