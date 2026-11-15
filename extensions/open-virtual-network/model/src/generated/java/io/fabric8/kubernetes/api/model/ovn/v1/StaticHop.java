@@ -102,7 +102,7 @@ public class StaticHop implements Editable<StaticHopBuilder>, KubernetesResource
     }
 
     /**
-     * IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.
+     * IP defines the static IP to be used for egress traffic. It must be a valid IPv4 or IPv6 address; malformed values are rejected during admission.
      */
     @JsonProperty("ip")
     public String getIp() {
@@ -110,7 +110,7 @@ public class StaticHop implements Editable<StaticHopBuilder>, KubernetesResource
     }
 
     /**
-     * IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.
+     * IP defines the static IP to be used for egress traffic. It must be a valid IPv4 or IPv6 address; malformed values are rejected during admission.
      */
     @JsonProperty("ip")
     public void setIp(String ip) {

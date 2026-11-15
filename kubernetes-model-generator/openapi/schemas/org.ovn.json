@@ -1322,7 +1322,7 @@
           "x-kubernetes-list-type": "atomic"
         },
         "static": {
-          "description": "StaticHops defines a slice of StaticHop. This field is optional.",
+          "description": "StaticHops defines a slice of StaticHop. This field is optional. The limit is an API bound, not a guarantee of dataplane capacity.",
           "type": "array",
           "items": {
             "$ref": "#/definitions/org.ovn.k8s.v1.StaticHop"
@@ -1814,7 +1814,7 @@
           "default": false
         },
         "ip": {
-          "description": "IP defines the static IP to be used for egress traffic. The IP can be either IPv4 or IPv6.",
+          "description": "IP defines the static IP to be used for egress traffic. It must be a valid IPv4 or IPv6 address; malformed values are rejected during admission.",
           "type": "string",
           "default": ""
         }

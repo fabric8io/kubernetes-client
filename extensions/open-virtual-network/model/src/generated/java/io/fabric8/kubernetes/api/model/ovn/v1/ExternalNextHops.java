@@ -107,7 +107,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * StaticHops defines a slice of StaticHop. This field is optional.
+     * StaticHops defines a slice of StaticHop. This field is optional. The limit is an API bound, not a guarantee of dataplane capacity.
      */
     @JsonProperty("static")
     @JsonInclude(JsonInclude.Include.NON_EMPTY)
@@ -116,7 +116,7 @@ public class ExternalNextHops implements Editable<ExternalNextHopsBuilder>, Kube
     }
 
     /**
-     * StaticHops defines a slice of StaticHop. This field is optional.
+     * StaticHops defines a slice of StaticHop. This field is optional. The limit is an API bound, not a guarantee of dataplane capacity.
      */
     @JsonProperty("static")
     public void setStatic(List<StaticHop> _static) {
