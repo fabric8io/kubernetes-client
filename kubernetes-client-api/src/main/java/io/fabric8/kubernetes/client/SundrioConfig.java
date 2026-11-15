@@ -99,6 +99,8 @@ public class SundrioConfig {
   private Integer requestTimeout;
   private Long scaleTimeout;
   private Integer loggingInterval;
+  private Long podCopyMaxFileBytes;
+  private Long podCopyMaxTotalBytes;
   private String impersonateUsername;
   private String[] impersonateGroups;
   private Map<String, List<String>> impersonateExtras;
