@@ -325,6 +325,9 @@ public class KubeConfigUtils {
             && Utils.isNotNullOrEmpty(ec.status.clientKeyData)) {
           config.setClientCertData(ec.status.clientCertificateData);
           config.setClientKeyData(ec.status.clientKeyData);
+          // Detect key algorithm from exec-provided material (same as static kubeconfig keys).
+          // Without this, clientKeyAlgo stays unset and CertUtils defaults to RSA, which fails for ECDSA.
+          config.setClientKeyAlgo(getKeyAlgorithm(null, config.getClientKeyData()));
         } else {
           logger.warn("No token or certificate returned");
         }
