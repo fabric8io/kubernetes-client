@@ -16,6 +16,7 @@
 // Ported from https://github.com/manusa/yakc/blob/9272d649bfe05cd536d417fec64dcf679877bd14/buildSrc/src/main/java/com/marcnuri/yakc/schema/SchemaUtils.java
 package io.fabric8.kubernetes.schema.generator.schema;
 
+import io.fabric8.kubernetes.schema.generator.GeneratorException;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
 import io.fabric8.kubernetes.schema.generator.ImportManager;
 import io.fabric8.kubernetes.schema.generator.PropertyOrderComparator;
@@ -43,8 +44,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import javax.lang.model.SourceVersion;
 
 @Getter
 public class SchemaUtils {
@@ -53,6 +58,8 @@ public class SchemaUtils {
 
   private static final String OBJECT_PRIMITIVE = "Object";
   private static final String STRING_PRIMITIVE = "String";
+  private static final Pattern ENUM_VALUE_PATTERN = Pattern.compile("([^()]*)\\((-?[0-9]+)\\)");
+  private static final Set<String> JAVA_LITERALS = Set.of("false", "null", "true");
 
   private static final Map<String, String> REF_TO_JAVA_TYPE_MAP = new LinkedHashMap<>();
   static {
@@ -282,10 +289,37 @@ public class SchemaUtils {
   public static Collection<String> enumValues(Schema<?> schema) {
     if (isEnum(schema) && hasExtensionStringValue(schema, "x-kubernetes-fabric8-enum-values")) {
       return Stream.of(schema.getExtensions().get("x-kubernetes-fabric8-enum-values").toString().split(","))
+          .map(SchemaUtils::validatedEnumValue)
           .sorted()
           .collect(Collectors.toList());
     }
     return Collections.emptyList();
+  }
+
+  private static String validatedEnumValue(String enumValue) {
+    final Matcher matcher = ENUM_VALUE_PATTERN.matcher(enumValue);
+    if (!matcher.matches() || !isValidEnumConstantName(matcher.group(1))) {
+      throw invalidEnumValue(enumValue, null);
+    }
+    try {
+      return matcher.group(1) + "(" + Integer.parseInt(matcher.group(2)) + ")";
+    } catch (NumberFormatException e) {
+      throw invalidEnumValue(enumValue, e);
+    }
+  }
+
+  private static boolean isValidEnumConstantName(String name) {
+    return SourceVersion.isIdentifier(name)
+        && !SourceVersion.isKeyword(name)
+        && !JAVA_LITERALS.contains(name);
+  }
+
+  private static GeneratorException invalidEnumValue(String enumValue, Exception cause) {
+    final String message = "Invalid x-kubernetes-fabric8-enum-values entry: " + enumValue;
+    if (cause == null) {
+      return new GeneratorException(message);
+    }
+    return new GeneratorException(message, cause);
   }
 
   public static boolean isInterface(Schema<?> schema) {
@@ -413,8 +447,10 @@ public class SchemaUtils {
   }
 
   public static String sanitizeDescription(String description) {
-    return Optional.ofNullable(description).orElse("")
+    String escaped = Optional.ofNullable(description).orElse("")
         .replace("&", "&amp;")
+        .replace("\\u", "&#92;u");
+    return escaped
         .replace("*", "&#42;")
         .replace("<", "&lt;")
         .replace(">", "&gt;")

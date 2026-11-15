@@ -15,6 +15,7 @@
  */
 package io.fabric8.kubernetes.schema.generator.schema;
 
+import io.fabric8.kubernetes.schema.generator.GeneratorException;
 import io.fabric8.kubernetes.schema.generator.GeneratorSettings;
 import io.fabric8.kubernetes.schema.generator.ImportManager;
 import io.fabric8.kubernetes.schema.generator.ImportOrderComparator;
@@ -48,6 +49,7 @@ import java.util.TreeSet;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -59,6 +61,12 @@ class SchemaUtilsTest {
   void setUp(@TempDir File tempDir) {
     generatorSettingsBuilder = GeneratorSettings.builder()
         .outputDirectory(tempDir);
+  }
+
+  @Test
+  void sanitizeDescriptionEscapesUnicodeEscapeIntroducers() {
+    assertThat(SchemaUtils.sanitizeDescription("HKEY\\Path & <tag> " + "\\" + "u002a/"))
+        .isEqualTo("HKEY\\Path &amp; &lt;tag&gt; &#92;u002a/");
   }
 
   @ParameterizedTest
@@ -264,9 +272,23 @@ class SchemaUtilsTest {
     Stream<Arguments> enumValuesData() {
       return Stream.of(
           Arguments.of("ONE(0),TWO(1),THREE(3)", new String[] { "ONE(0)", "THREE(3)", "TWO(1)" }),
-          Arguments.of("A,B,C,Z", new String[] { "A", "B", "C", "Z" }),
+          Arguments.of("A(0),B(1),C(2),Z(3)", new String[] { "A(0)", "B(1)", "C(2)", "Z(3)" }),
           Arguments.of("", new String[0]),
           Arguments.of(null, new String[0]));
+    }
+
+    @Test
+    void enumValuesRejectSourceInjection() {
+      final var schema = new ObjectSchema();
+      schema.setExtensions(new HashMap<>());
+      schema.getExtensions().put("x-kubernetes-fabric8-type", "enum");
+      schema.getExtensions().put(
+          "x-kubernetes-fabric8-enum-values",
+          "ACTIVE(0),INJECTED(1); static { System.exit(0); } //");
+
+      assertThatThrownBy(() -> SchemaUtils.enumValues(schema))
+          .isInstanceOf(GeneratorException.class)
+          .hasMessageContaining("Invalid x-kubernetes-fabric8-enum-values entry");
     }
 
   }
