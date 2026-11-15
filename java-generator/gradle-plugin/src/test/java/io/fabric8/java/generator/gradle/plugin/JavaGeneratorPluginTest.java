@@ -16,11 +16,11 @@
 package io.fabric8.java.generator.gradle.plugin;
 
 import io.fabric8.java.generator.gradle.plugin.task.JavaGeneratorCrd2JavaTask;
+import org.gradle.api.Action;
 import org.gradle.api.Project;
 import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
 
 class JavaGeneratorPluginTest {
   private Project project;
@@ -34,6 +34,7 @@ class JavaGeneratorPluginTest {
     verify(project.getExtensions(), times(1))
         .create(JavaGeneratorPluginExtension.NAME, JavaGeneratorPluginExtension.class);
     verify(project.getTasks(), times(1))
-        .register(JavaGeneratorCrd2JavaTask.NAME, JavaGeneratorCrd2JavaTask.class, JavaGeneratorPluginExtension.class);
+        .register(eq(JavaGeneratorCrd2JavaTask.NAME), eq(JavaGeneratorCrd2JavaTask.class),
+            any(Action.class));
   }
 }
