@@ -17,7 +17,9 @@ package io.fabric8.crdv2.generator.v1;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.fabric8.crdv2.generator.ResolvingContext;
 import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
+import io.fabric8.kubernetes.client.utils.KubernetesSerialization;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -26,9 +28,12 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import tools.jackson.core.JsonGenerator;
 import tools.jackson.databind.JavaType;
+import tools.jackson.databind.ObjectMapper;
 import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.json.JsonMapper;
 import tools.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
+import tools.jackson.databind.module.SimpleModule;
 import tools.jackson.databind.ser.std.StdSerializer;
 
 import java.util.List;
@@ -111,7 +116,7 @@ class PreservedContentTest {
    * Jackson 3.3 describes a DOM Node as the string of XML it writes, earlier versions as any value.
    */
   @Nested
-  @DisplayName("DOM nodes accept any JSON value, whatever the Jackson version")
+  @DisplayName("DOM nodes get the same schema, whatever the Jackson version")
   class DomNodes {
 
     private final Map<String, JSONSchemaProps> properties = JsonSchema.from(DomNodeSpec.class).getProperties();
@@ -154,6 +159,19 @@ class PreservedContentTest {
     void nodeWithOwnSerializer() {
       assertThat(properties.get("serializedNode"))
           .returns("string", JSONSchemaProps::getType)
+          .returns(null, JSONSchemaProps::getXKubernetesPreserveUnknownFields);
+    }
+
+    @Test
+    @DisplayName("A Node serializer registered on the mapper keeps the schema that serializer reports")
+    void nodeWithMapperSerializer() {
+      final ObjectMapper mapper = JsonMapper.builderWithJackson2Defaults()
+          .addModule(new SimpleModule().addSerializer(Node.class, new XmlObjectSerializer()))
+          .build();
+      final ResolvingContext context = new ResolvingContext(mapper, new KubernetesSerialization(mapper, false), false);
+
+      assertThat(new JsonSchema(context, SingleNodeSpec.class).getSchema().getProperties().get("node"))
+          .returns("object", JSONSchemaProps::getType)
           .returns(null, JSONSchemaProps::getXKubernetesPreserveUnknownFields);
     }
   }
@@ -338,6 +356,29 @@ class PreservedContentTest {
     @Override
     public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) {
       visitStringFormat(visitor, typeHint);
+    }
+  }
+
+  public static class SingleNodeSpec {
+    public Node node;
+  }
+
+  public static class XmlObjectSerializer extends StdSerializer<Node> {
+
+    public XmlObjectSerializer() {
+      super(Node.class);
+    }
+
+    @Override
+    public void serialize(Node value, JsonGenerator gen, SerializationContext ctxt) {
+      gen.writeStartObject();
+      gen.writeStringProperty("text", value.getTextContent());
+      gen.writeEndObject();
+    }
+
+    @Override
+    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) {
+      visitor.expectObjectFormat(typeHint);
     }
   }
 

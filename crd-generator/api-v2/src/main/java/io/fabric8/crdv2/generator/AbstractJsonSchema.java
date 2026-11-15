@@ -877,14 +877,14 @@ public abstract class AbstractJsonSchema<T extends KubernetesJSONSchemaProps, V 
    * {@code QName} as an array and an object (or a reference to the first QName), but write them as strings (base64 for
    * the binary types). A DOM {@code Node} keeps the any schema Jackson reported before 3.3, which describes it as a
    * string, so the CRD doesn't depend on the Jackson version. Only these default descriptions are replaced, a value with
-   * its own serializer keeps its schema.
+   * its own serializer keeps its schema unless it reports the same one.
    */
   private static JsonSchema wireSchema(JavaType type, JsonSchema schema, boolean ownSerializer) {
     final JavaType valueType = unwrapReferenceType(type);
     if (valueType == null || ownSerializer) {
       return schema;
     }
-    if (Node.class.isAssignableFrom(valueType.getRawClass())) {
+    if ((schema.isAnySchema() || schema.isStringSchema()) && Node.class.isAssignableFrom(valueType.getRawClass())) {
       return new AnySchema();
     }
     if (schema.isArraySchema() && isBinary(valueType)) {
