@@ -21,7 +21,15 @@ import io.fabric8.kubernetes.api.model.apiextensions.v1.JSONSchemaProps;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.JavaType;
+import tools.jackson.databind.SerializationContext;
 import tools.jackson.databind.annotation.JsonSerialize;
+import tools.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
+import tools.jackson.databind.ser.std.StdSerializer;
 
 import java.util.List;
 import java.util.Map;
@@ -96,6 +104,57 @@ class PreservedContentTest {
       final JSONSchemaProps outer = JsonSchema.from(NestedSerializedAsSpec.class).getProperties().get("outer");
       assertDescribes(outer, "inner");
       assertDescribes(outer.getProperties().get("inner"), "name");
+    }
+  }
+
+  /**
+   * Jackson 3.3 describes a DOM Node as the string of XML it writes, earlier versions as any value.
+   */
+  @Nested
+  @DisplayName("DOM nodes accept any JSON value, whatever the Jackson version")
+  class DomNodes {
+
+    private final Map<String, JSONSchemaProps> properties = JsonSchema.from(DomNodeSpec.class).getProperties();
+
+    @Test
+    @DisplayName("A Node property accepts any JSON value")
+    void nodeProperty() {
+      assertAcceptsAnyValue(properties.get("node"));
+    }
+
+    @Test
+    @DisplayName("A Node subtype property accepts any JSON value")
+    void nodeSubtypeProperty() {
+      assertAcceptsAnyValue(properties.get("document"));
+      assertAcceptsAnyValue(properties.get("element"));
+    }
+
+    @Test
+    @DisplayName("An Optional<Node> property accepts any JSON value")
+    void optionalNodeProperty() {
+      assertAcceptsAnyValue(properties.get("optionalNode"));
+    }
+
+    @Test
+    @DisplayName("A List<Node> is an array whose items accept any JSON value")
+    void nodeList() {
+      assertThat(properties.get("nodes").getType()).isEqualTo("array");
+      assertAcceptsAnyValue(properties.get("nodes").getItems().getSchema());
+    }
+
+    @Test
+    @DisplayName("A Map<String, Node> is an object whose values accept any JSON value")
+    void nodeMap() {
+      assertThat(properties.get("nodesByName").getType()).isEqualTo("object");
+      assertAcceptsAnyValue(properties.get("nodesByName").getAdditionalProperties().getSchema());
+    }
+
+    @Test
+    @DisplayName("A Node with its own serializer keeps the schema that serializer reports")
+    void nodeWithOwnSerializer() {
+      assertThat(properties.get("serializedNode"))
+          .returns("string", JSONSchemaProps::getType)
+          .returns(null, JSONSchemaProps::getXKubernetesPreserveUnknownFields);
     }
   }
 
@@ -252,6 +311,34 @@ class PreservedContentTest {
 
   public static class Counted {
     public int count;
+  }
+
+  public static class DomNodeSpec {
+    public Node node;
+    public Document document;
+    public Element element;
+    public Optional<Node> optionalNode;
+    public List<Node> nodes;
+    public Map<String, Node> nodesByName;
+    @JsonSerialize(using = XmlTextSerializer.class)
+    public Node serializedNode;
+  }
+
+  public static class XmlTextSerializer extends StdSerializer<Node> {
+
+    public XmlTextSerializer() {
+      super(Node.class);
+    }
+
+    @Override
+    public void serialize(Node value, JsonGenerator gen, SerializationContext ctxt) {
+      gen.writeString(value.getTextContent());
+    }
+
+    @Override
+    public void acceptJsonFormatVisitor(JsonFormatVisitorWrapper visitor, JavaType typeHint) {
+      visitStringFormat(visitor, typeHint);
+    }
   }
 
   public static class OptionalsSpec {
