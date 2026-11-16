@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Dependency Upgrade
+* Fix #8197: bump okhttp.version from 5.4.0 to 5.5.1
+
 ### 7.9.0 (2026-09-04)
 
 #### Bugs
