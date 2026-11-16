@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Dependency Upgrade
+* Fix #8197: bump Vert.x 4 from 4.5.31 to 4.5.36
+
 ### 7.9.0 (2026-09-04)
 
 #### Bugs
