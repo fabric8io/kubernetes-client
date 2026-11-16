@@ -3,6 +3,7 @@
 ### 8.1-SNAPSHOT
 
 #### Bugs
+* Fix #8210: Watch events containing multi-byte UTF-8 characters (accented letters, emoji, CJK codepoints) no longer cause `JsonParseException: unexpected character (code 0)`. The byte-loop in `WatchHTTPManager` now accumulates raw bytes and decodes each line once at the newline boundary, so null padding from `CharBuffer.array()` is never appended and characters split across chunk boundaries are decoded correctly.
 * Fix #7041: (crd-generator) Files to scan that don't exist, like Gradle's `build/classes/java/main` in a Kotlin-only project, are skipped with a warning instead of failing with "Not a class file, JAR file or directory". The Gradle build-script recipes only pass existing class directories
 * Fix #8103: informer indexes no longer keep entries for objects a custom `ItemStore` does not retain
 * Fix #8178: (kube-api-test) certificates in the kubeapitest directory are regenerated when they are expired, about to expire, unreadable or don't match their key files, instead of every test failing with `Kube API Server did not start properly`; the regeneration is also guarded by a lock file against concurrent test JVMs

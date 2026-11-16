@@ -153,6 +153,90 @@ class WatchHttpManagerTest {
     assertThat(captured).isEmpty();
   }
 
+  @Test
+  @DisplayName("non-ASCII event followed by another event in the next chunk: both frames are delivered without null bytes")
+  @SuppressWarnings("unchecked")
+  void nonAsciiEventFollowedByNextChunkIsDeliveredCorrectly() throws Exception {
+    // Given
+    final LinkedBlockingDeque<Runnable> captured = new LinkedBlockingDeque<>();
+    final HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    final BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation(captured::add);
+    Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
+    final ArgumentCaptor<AsyncBody.Consumer<List<ByteBuffer>>> consumerCaptor = ArgumentCaptor
+        .forClass(AsyncBody.Consumer.class);
+    Mockito.when(client.consumeBytes(Mockito.any(), consumerCaptor.capture()))
+        .thenReturn(new CompletableFuture<>());
+    final WatchHTTPManager<HasMetadata, KubernetesResourceList<HasMetadata>> manager = new WatchHTTPManager<>(
+        client, baseOperation, Mockito.mock(ListOptions.class), Mockito.mock(Watcher.class), 1, 60_000);
+    manager.latestRequestState.closed.set(true);
+    final AsyncBody.Consumer<List<ByteBuffer>> consumer = consumerCaptor.getValue();
+    final AsyncBody asyncBody = Mockito.mock(AsyncBody.class);
+
+    // When: first chunk contains a JSON event with a non-ASCII character ('é' = 0xC3 0xA9, 2 bytes)
+    // The previous char-array loop would append a '\0' null byte after 'café' due to capacity > limit.
+    final byte[] chunk1Bytes = "event1:café\n".getBytes(StandardCharsets.UTF_8);
+    consumer.consume(Collections.singletonList(ByteBuffer.wrap(chunk1Bytes)), asyncBody);
+    // Drain the first frame
+    assertThat(captured).hasSize(1);
+    captured.poll().run();
+    Mockito.verify(asyncBody, Mockito.times(1)).consume();
+
+    // When: second chunk arrives as a separate delivery
+    final byte[] chunk2Bytes = "event2:plain\n".getBytes(StandardCharsets.UTF_8);
+    final AsyncBody asyncBody2 = Mockito.mock(AsyncBody.class);
+    consumer.consume(Collections.singletonList(ByteBuffer.wrap(chunk2Bytes)), asyncBody2);
+    assertThat(captured).hasSize(1);
+    captured.poll().run();
+    // Then: second chunk's asyncBody.consume() fires; no null byte from chunk1 prepended to event2
+    Mockito.verify(asyncBody2, Mockito.times(1)).consume();
+  }
+
+  @Test
+  @DisplayName("multi-byte character split across two ByteBuffers: the character is decoded correctly, not as U+FFFD")
+  @SuppressWarnings("unchecked")
+  void multiByteSplitAcrossBuffersIsDecodedCorrectly() throws Exception {
+    // Given
+    final LinkedBlockingDeque<Runnable> captured = new LinkedBlockingDeque<>();
+    final HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
+    final BaseOperation baseOperation = AbstractWatchManagerTest.mockOperation(captured::add);
+    Mockito.when(baseOperation.getNamespacedUrl()).thenReturn(new URL("http://localhost"));
+    final ArgumentCaptor<AsyncBody.Consumer<List<ByteBuffer>>> consumerCaptor = ArgumentCaptor
+        .forClass(AsyncBody.Consumer.class);
+    Mockito.when(client.consumeBytes(Mockito.any(), consumerCaptor.capture()))
+        .thenReturn(new CompletableFuture<>());
+    final WatchHTTPManager<HasMetadata, KubernetesResourceList<HasMetadata>> manager = new WatchHTTPManager<>(
+        client, baseOperation, Mockito.mock(ListOptions.class), Mockito.mock(Watcher.class), 1, 60_000);
+    manager.latestRequestState.closed.set(true);
+    final AsyncBody.Consumer<List<ByteBuffer>> consumer = consumerCaptor.getValue();
+
+    // 'é' in UTF-8 is 0xC3 0xA9.  Split it: first ByteBuffer ends with 0xC3, second starts with 0xA9.
+    // The full JSON line is: {"v":"café"}\n
+    final byte[] fullBytes = "{\"v\":\"café\"}\n".getBytes(StandardCharsets.UTF_8);
+    // Find the index of the first byte of 'é' (0xC3)
+    int splitPoint = -1;
+    for (int i = 0; i < fullBytes.length; i++) {
+      if ((fullBytes[i] & 0xFF) == 0xC3) {
+        splitPoint = i;
+        break;
+      }
+    }
+    assertThat(splitPoint).isGreaterThan(0);
+
+    final ByteBuffer buf1 = ByteBuffer.wrap(fullBytes, 0, splitPoint + 1); // includes 0xC3
+    final ByteBuffer buf2 = ByteBuffer.wrap(fullBytes, splitPoint + 1, fullBytes.length - splitPoint - 1); // 0xA9 … \n
+
+    // When: both ByteBuffers arrive in a single consumer invocation (same chunk delivery)
+    final AsyncBody asyncBody = Mockito.mock(AsyncBody.class);
+    consumer.consume(List.of(buf1, buf2), asyncBody);
+
+    // Then: exactly one frame is dispatched (one newline in the input)
+    assertThat(captured).hasSize(1);
+    // Drain the frame — the manager has closed=true so onMessage short-circuits after the
+    // state.closed check, but the pending counter still fires maybeConsume correctly.
+    captured.poll().run();
+    Mockito.verify(asyncBody, Mockito.times(1)).consume();
+  }
+
   private void setupHttpWatch(CompletableFuture<HttpResponse<AsyncBody>> future, CountDownLatch reconnect)
       throws MalformedURLException {
     HttpClient client = Mockito.mock(HttpClient.class, Mockito.RETURNS_DEEP_STUBS);
