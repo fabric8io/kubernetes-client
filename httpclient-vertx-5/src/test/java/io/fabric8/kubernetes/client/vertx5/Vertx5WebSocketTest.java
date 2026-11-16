@@ -21,6 +21,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketCloseStatus;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
+import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClosedException;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,11 +35,13 @@ import org.mockito.MockitoAnnotations;
 import java.io.IOException;
 import java.net.ProtocolException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -427,5 +430,48 @@ class Vertx5WebSocketTest {
   @DisplayName("Should return zero queue size initially")
   void queueSize_shouldReturnZeroInitially() {
     assertThat(webSocket.queueSize()).isZero();
+  }
+
+  @Test
+  @DisplayName("startPings, each timer tick sends a ping while the WebSocket is open")
+  void startPings_tickSendsPing() {
+    final Vertx vertx = mock(Vertx.class);
+    final ArgumentCaptor<Handler<Long>> tick = ArgumentCaptor.captor();
+    when(vertx.setPeriodic(eq(30_000L), tick.capture())).thenReturn(42L);
+    webSocket.startPings(vertx, Duration.ofSeconds(30));
+
+    tick.getValue().handle(42L);
+
+    verify(vertxWebSocket).writePing(any());
+    verify(vertx, never()).cancelTimer(42L);
+  }
+
+  @Test
+  @DisplayName("startPings, closing the WebSocket cancels the ping timer")
+  void startPings_closeCancelsTimer() {
+    final Vertx vertx = mock(Vertx.class);
+    final ArgumentCaptor<Handler<Void>> closeHandler = ArgumentCaptor.captor();
+    when(vertx.setPeriodic(eq(30_000L), any())).thenReturn(42L);
+    when(vertxWebSocket.closeHandler(closeHandler.capture())).thenReturn(vertxWebSocket);
+    webSocket.startPings(vertx, Duration.ofSeconds(30));
+
+    closeHandler.getValue().handle(null);
+
+    verify(vertx).cancelTimer(42L);
+  }
+
+  @Test
+  @DisplayName("startPings, a tick on an already closed WebSocket cancels the timer instead of pinging")
+  void startPings_tickOnClosedWebSocketCancelsTimer() {
+    final Vertx vertx = mock(Vertx.class);
+    final ArgumentCaptor<Handler<Long>> tick = ArgumentCaptor.captor();
+    when(vertx.setPeriodic(eq(30_000L), tick.capture())).thenReturn(42L);
+    when(vertxWebSocket.isClosed()).thenReturn(true);
+    webSocket.startPings(vertx, Duration.ofSeconds(30));
+
+    tick.getValue().handle(42L);
+
+    verify(vertx).cancelTimer(42L);
+    verify(vertxWebSocket, never()).writePing(any());
   }
 }

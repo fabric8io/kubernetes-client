@@ -23,7 +23,6 @@ import okhttp3.Dispatcher;
 import okhttp3.OkHttpClient;
 
 import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 
 public class OkHttpClientFactory implements HttpClient.Factory {
 
@@ -68,10 +67,6 @@ public class OkHttpClientFactory implements HttpClient.Factory {
 
       if (config.isTrustCerts() || config.isDisableHostnameVerification()) {
         httpClientBuilder.hostnameVerifier((s, sslSession) -> true);
-      }
-
-      if (config.getWebsocketPingInterval() > 0) {
-        httpClientBuilder.pingInterval(config.getWebsocketPingInterval(), TimeUnit.MILLISECONDS);
       }
 
       HttpClientUtils.applyCommonConfiguration(config, builderWrapper, this);

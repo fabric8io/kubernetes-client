@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Bugs
+* Fix #8152: (httpclient-vertx, httpclient-vertx-5, httpclient-jdk) WebSockets send a ping every `Config#websocketPingInterval` (30s by default), like OkHttp already did, so load balancers that close idle connections no longer drop quiet watches
+
 ### 7.9.0 (2026-09-04)
 
 #### Bugs

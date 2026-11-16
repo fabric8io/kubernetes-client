@@ -50,6 +50,12 @@ public abstract class WebSocketListener {
   }
 
   /**
+   * Invoked when a ping control frame is received from the remote peer (the pong reply is sent automatically).
+   */
+  public void onPing(WebSocket webSocket, byte[] payload) {
+  }
+
+  /**
    * Invoked when the remote peer has indicated that no more incoming messages will be
    * transmitted.
    */
