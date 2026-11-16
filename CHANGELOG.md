@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Dependency Upgrade
+* Fix #8197: bump Jackson from 2.21.4 to 2.21.8
+
 ### 7.9.0 (2026-09-04)
 
 #### Bugs
