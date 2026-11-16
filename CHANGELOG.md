@@ -1,5 +1,10 @@
 ## CHANGELOG
 
+### 7.9-SNAPSHOT
+
+#### Dependency Upgrade
+* Fix #8197: bump vertx5.version from 5.1.5 to 5.2.3
+
 ### 7.9.0 (2026-09-04)
 
 #### Bugs
