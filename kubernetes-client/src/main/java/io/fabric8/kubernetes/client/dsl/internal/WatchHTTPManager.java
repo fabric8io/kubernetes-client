@@ -26,10 +26,10 @@ import io.fabric8.kubernetes.client.http.HttpClient;
 import io.fabric8.kubernetes.client.http.HttpRequest;
 import io.fabric8.kubernetes.client.http.HttpResponse;
 
+import java.io.ByteArrayOutputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Optional;
@@ -53,7 +53,7 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
   protected synchronized void start(URL url, Map<String, String> headers, WatchRequestState state) {
     HttpRequest.Builder builder = client.newHttpRequestBuilder().url(url).forStreaming();
     headers.forEach(builder::header);
-    StringBuffer buffer = new StringBuffer();
+    ByteArrayOutputStream line = new ByteArrayOutputStream();
     call = client.consumeBytes(builder.build(), (b, a) -> {
       state.started.set(true);
       // Track in-flight deserialize+dispatch tasks for this chunk so a.consume()
@@ -68,17 +68,17 @@ public class WatchHTTPManager<T extends HasMetadata, L extends KubernetesResourc
         }
       };
       for (ByteBuffer content : b) {
-        final CharBuffer charBuffer = StandardCharsets.UTF_8.decode(content);
-        final char[] chars = charBuffer.array();
-        final int length = charBuffer.limit();
-        for (int i = 0; i < length; i++) {
-          final char c = chars[i];
-          if (c == '\n') {
+        // Accumulate raw bytes and decode at the newline boundary.
+        // This correctly handles multi-byte UTF-8 sequences split across chunk boundaries,
+        // since 0x0A ('\n') never appears inside a multi-byte sequence.
+        while (content.hasRemaining()) {
+          final byte next = content.get();
+          if (next == '\n') {
             pending.incrementAndGet();
-            onMessage(buffer.toString(), state, maybeConsume);
-            buffer.setLength(0);
+            onMessage(line.toString(StandardCharsets.UTF_8), state, maybeConsume);
+            line.reset();
           } else {
-            buffer.append(c);
+            line.write(next);
           }
         }
       }
