@@ -15,8 +15,10 @@
  */
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
+import io.fabric8.kubernetes.client.Config;
 import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.utils.Utils;
@@ -98,7 +100,7 @@ public class LeaderElector {
         CompletableFuture<?> renewFuture = renewWithTimeout();
         result.whenComplete((v1, t1) -> renewFuture.cancel(true));
         renewFuture.whenComplete((v1, t1) -> {
-          stopLeading();
+          stopLeading(result.isCancelled());
           if (t1 != null) {
             result.completeExceptionally(t1);
           } else {
@@ -111,7 +113,7 @@ public class LeaderElector {
         }
         // there's a possibility that we'll obtain the lock, but get cancelled
         // before completing the future
-        stopLeading();
+        stopLeading(result.isCancelled());
       }
     });
     result.whenComplete((v, t) -> {
@@ -120,13 +122,13 @@ public class LeaderElector {
     return result;
   }
 
-  private synchronized void stopLeading() {
+  private synchronized void stopLeading(boolean cancelled) {
     stopped = true;
     LeaderElectionRecord current = observedRecord.get();
     if (current == null || !isLeader(current)) {
       return; // not leading
     }
-    if (leaderElectionConfig.isReleaseOnCancel()) {
+    if (cancelled && leaderElectionConfig.isReleaseOnCancel()) {
       try {
         if (release()) {
           return;
@@ -195,17 +197,23 @@ public class LeaderElector {
   private CompletableFuture<Void> renewWithTimeout() {
     final String lockDescription = leaderElectionConfig.getLock().describe();
     logger.debug("Attempting to renew leader lease '{}'...", lockDescription);
-    AtomicLong renewBy = new AtomicLong(System.currentTimeMillis() + leaderElectionConfig.getRenewDeadline().toMillis());
+    final long renewDeadlineNanos = leaderElectionConfig.getRenewDeadline().toNanos();
+    AtomicLong renewBy = new AtomicLong(System.nanoTime() + renewDeadlineNanos);
     return loop(completion -> {
-      if (System.currentTimeMillis() > renewBy.get()) {
+      final long deadline = renewBy.get();
+      if (isDeadlineReached(deadline)) {
         logger.debug("Renew deadline reached after {} seconds while renewing lock {}",
             leaderElectionConfig.getRenewDeadline().get(ChronoUnit.SECONDS), lockDescription);
         completion.complete(null);
         return;
       }
       try {
-        if (tryAcquireOrRenew()) {
-          renewBy.set(System.currentTimeMillis() + leaderElectionConfig.getRenewDeadline().toMillis());
+        if (tryAcquireOrRenew(deadline)) {
+          if (isDeadlineReached(deadline)) {
+            completion.complete(null);
+          } else {
+            renewBy.set(System.nanoTime() + renewDeadlineNanos);
+          }
         } else {
           // renewal failed, exit
           completion.complete(null);
@@ -214,21 +222,47 @@ public class LeaderElector {
         // this is always a warning as conflict is not expected for renewal, however it is possible
         // should some other actor make an unrelated change to the lock
         logger.warn("Exception occurred while acquiring lock '{} retrying...'", lockDescription, exception);
+        if (isDeadlineReached(deadline)) {
+          completion.complete(null);
+        }
       }
-    }, () -> leaderElectionConfig.getRetryPeriod().toMillis(), executor);
+    }, () -> Math.max(0, Math.min(leaderElectionConfig.getRetryPeriod().toMillis(),
+        TimeUnit.NANOSECONDS.toMillis(renewBy.get() - System.nanoTime()))), executor);
   }
 
   synchronized boolean tryAcquireOrRenew() {
+    return tryAcquireOrRenew(kubernetesClient, Long.MAX_VALUE);
+  }
+
+  private synchronized boolean tryAcquireOrRenew(long deadlineNanos) {
+    return tryAcquireOrRenew(kubernetesClient, deadlineNanos);
+  }
+
+  private synchronized boolean tryAcquireOrRenew(KubernetesClient client, long deadlineNanos) {
     if (stopped) {
       return false;
     }
     final Lock lock = leaderElectionConfig.getLock();
     final ZonedDateTime now = now();
-    final LeaderElectionRecord oldLeaderElectionRecord = lock.get(kubernetesClient);
+    final KubernetesClient getClient = clientForDeadline(client, deadlineNanos);
+    if (getClient == null) {
+      return false;
+    }
+    final LeaderElectionRecord oldLeaderElectionRecord = lock.get(getClient);
+    if (isDeadlineReached(deadlineNanos)) {
+      return false;
+    }
     if (oldLeaderElectionRecord == null) {
       final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
           lock.identity(), leaderElectionConfig.getLeaseDuration(), now, now, 0);
-      lock.create(kubernetesClient, newLeaderElectionRecord);
+      final KubernetesClient createClient = clientForDeadline(client, deadlineNanos);
+      if (createClient == null) {
+        return false;
+      }
+      lock.create(createClient, newLeaderElectionRecord);
+      if (isDeadlineReached(deadlineNanos)) {
+        return false;
+      }
       updateObserved(newLeaderElectionRecord);
       return true;
     }
@@ -246,9 +280,55 @@ public class LeaderElector {
         isLeader ? oldLeaderElectionRecord.getAcquireTime() : now,
         now,
         oldLeaderElectionRecord.getLeaderTransitions() + (isLeader ? 0 : 1));
-    lock.update(kubernetesClient, newLeaderElectionRecord);
+    final KubernetesClient updateClient = clientForDeadline(client, deadlineNanos);
+    if (updateClient == null) {
+      return false;
+    }
+    lock.update(updateClient, newLeaderElectionRecord);
+    if (isDeadlineReached(deadlineNanos)) {
+      return false;
+    }
     updateObserved(newLeaderElectionRecord);
     return true;
+  }
+
+  private KubernetesClient clientForDeadline(KubernetesClient client, long deadlineNanos) {
+    if (deadlineNanos == Long.MAX_VALUE) {
+      return client;
+    }
+    // StandardHttpClient may wait for up to twice the configured request timeout. Leave
+    // this margin so each individual lock request (including a later update) fits in the
+    // time remaining before renewDeadline.
+    final long requestTimeoutMillis = TimeUnit.NANOSECONDS.toMillis(deadlineNanos - System.nanoTime()) / 2;
+    if (requestTimeoutMillis < 1) {
+      return null;
+    }
+    final RequestConfig current = client.getConfiguration().getRequestConfig();
+    final RequestConfig bounded = getBoundedConfig(current, requestTimeoutMillis);
+    if (current != null) {
+      bounded.setImpersonateUsername(current.getImpersonateUsername());
+      bounded.setImpersonateGroups(current.getImpersonateGroups());
+      bounded.setImpersonateExtras(current.getImpersonateExtras());
+    }
+    return client.newClient(bounded).adapt(KubernetesClient.class);
+  }
+
+  private static RequestConfig getBoundedConfig(RequestConfig current, long requestTimeoutMillis) {
+    final int configuredRequestTimeout = current == null || current.getRequestTimeout() == null
+        || current.getRequestTimeout() <= 0 ? Config.DEFAULT_REQUEST_TIMEOUT : current.getRequestTimeout();
+    return new RequestConfig(
+        current == null ? null : current.getWatchReconnectLimit(),
+        current == null ? null : current.getWatchReconnectInterval(),
+        (int) Math.min(requestTimeoutMillis, configuredRequestTimeout),
+        current == null ? null : current.getScaleTimeout(),
+        current == null ? null : current.getLoggingInterval(),
+        0,
+        current == null ? null : current.getRequestRetryBackoffInterval(),
+        current == null ? null : current.getUploadRequestTimeout());
+  }
+
+  private static boolean isDeadlineReached(long deadlineNanos) {
+    return deadlineNanos != Long.MAX_VALUE && System.nanoTime() >= deadlineNanos;
   }
 
   private void updateObserved(LeaderElectionRecord leaderElectionRecord) {

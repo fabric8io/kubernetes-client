@@ -16,13 +16,17 @@
 package io.fabric8.kubernetes.client.extended.leaderelection;
 
 import io.fabric8.kubernetes.api.model.StatusBuilder;
+import io.fabric8.kubernetes.client.Config;
+import io.fabric8.kubernetes.client.KubernetesClient;
 import io.fabric8.kubernetes.client.KubernetesClientException;
 import io.fabric8.kubernetes.client.NamespacedKubernetesClient;
+import io.fabric8.kubernetes.client.RequestConfig;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.LeaderElectionRecord;
 import io.fabric8.kubernetes.client.extended.leaderelection.resourcelock.Lock;
 import io.fabric8.kubernetes.client.utils.CommonThreadPool;
 import io.fabric8.kubernetes.client.utils.Utils;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 import org.mockito.Mockito;
@@ -63,27 +67,75 @@ import static org.mockito.Mockito.when;
 class LeaderElectorTest {
 
   @Test
+  @DisplayName("Stops leading within the renew deadline when a renewal request stalls")
   void runShouldAbortAfterRenewDeadlineExpired() throws Exception {
     // Given
     final long renewDeadlineMillis = 1000L;
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
+    when(lec.isReleaseOnCancel()).thenReturn(true);
     final Lock mockedLock = lec.getLock();
+    final NamespacedKubernetesClient kubernetesClient = mock(NamespacedKubernetesClient.class);
+    final NamespacedKubernetesClient renewalClient = mock(NamespacedKubernetesClient.class);
+    final Config baseConfiguration = Config.empty();
+    baseConfiguration.setRequestTimeout(10_000);
+    when(kubernetesClient.getConfiguration()).thenReturn(baseConfiguration);
+    when(kubernetesClient.newClient(any(RequestConfig.class))).thenAnswer(invocation -> {
+      final RequestConfig requestConfig = invocation.getArgument(0);
+      final Config renewalConfiguration = Config.empty();
+      renewalConfiguration.setRequestTimeout(requestConfig.getRequestTimeout());
+      renewalConfiguration.setRequestRetryBackoffLimit(requestConfig.getRequestRetryBackoffLimit());
+      when(renewalClient.getConfiguration()).thenReturn(renewalConfiguration);
+      return renewalClient;
+    });
+    when(renewalClient.adapt(KubernetesClient.class)).thenReturn(renewalClient);
+    AtomicReference<RequestConfig> renewalRequestConfig = new AtomicReference<>();
     doNothing().doAnswer(invocation -> {
-      // Sleep so that RENEW DEADLINE is reached
-      Thread.sleep(renewDeadlineMillis * 2);
+      final KubernetesClient requestClient = invocation.getArgument(0);
+      final RequestConfig requestConfig = requestClient.getConfiguration().getRequestConfig();
+      renewalRequestConfig.set(requestConfig);
+      // Simulate StandardHttpClient's configured request timeout plus its equal timeout margin.
+      Thread.sleep(requestConfig.getRequestTimeout() * 2L);
       throw new KubernetesClientException("");
     }).when(mockedLock).update(any(), any());
+    final long startedAtNanos = System.nanoTime();
     // When
-    CompletableFuture<?> future = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get())
+    CompletableFuture<?> future = new LeaderElector(kubernetesClient, lec, CommonThreadPool.get())
         .start();
 
     // Then
     future.get(10, TimeUnit.SECONDS);
+    final long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAtNanos);
+    assertThat(elapsedMillis).isLessThan(renewDeadlineMillis + 250);
+    assertThat(renewalRequestConfig.get().getRequestTimeout()).isLessThanOrEqualTo((int) renewDeadlineMillis / 2);
+    assertEquals(0, renewalRequestConfig.get().getRequestRetryBackoffLimit());
     verify(mockedLock, atLeast(2)).get(any());
     verify(mockedLock, times(1)).create(any(), any());
-    verify(mockedLock, atLeast(2)).update(any(), any());
+    verify(mockedLock, times(2)).update(any(), any());
     verify(lec.getLeaderCallbacks(), atLeast(1)).onNewLeader(eq("1337"));
+    verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
+    verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
+  }
+
+  @Test
+  @DisplayName("Does not reset the renew deadline when a renewal call succeeds after it")
+  void lateSuccessfulRenewalDoesNotResetDeadline() throws Exception {
+    final long renewDeadlineMillis = 200L;
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
+    when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
+    final Lock mockedLock = lec.getLock();
+    doNothing().doAnswer(invocation -> {
+      final KubernetesClient requestClient = invocation.getArgument(0);
+      final int requestTimeout = requestClient.getConfiguration().getRequestTimeout();
+      // Simulate a late successful response from a lock implementation that does not honor the client timeout.
+      Thread.sleep(requestTimeout * 2L + 50L);
+      return null;
+    }).when(mockedLock).update(any(), any());
+
+    final CompletableFuture<?> future = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get()).start();
+
+    future.get(2, TimeUnit.SECONDS);
+
     verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
     verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
   }
@@ -101,7 +153,7 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).update(any(), any());
     // When
-    LeaderElector le = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    LeaderElector le = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get());
     executor.submit(le::run);
     signal.await(10, TimeUnit.SECONDS);
     // Then
@@ -135,7 +187,7 @@ class LeaderElectorTest {
     }).when(mockedLock).update(any(), any());
 
     // When
-    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    LeaderElector leaderElector = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get());
     CompletableFuture<?> started = leaderElector.start();
     assertTrue(signal.await(10, TimeUnit.SECONDS));
     started.cancel(true);
@@ -146,7 +198,7 @@ class LeaderElectorTest {
     assertNull(activeLer.get().getHolderIdentity());
 
     // create a new elector, they are no good after a single use
-    leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    leaderElector = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get());
     // the leader is now empty/null, we should be able to re-acquire
     assertTrue(leaderElector.tryAcquireOrRenew());
 
@@ -175,7 +227,7 @@ class LeaderElectorTest {
     }).when(mockedLock).update(any(), any());
 
     // When
-    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    LeaderElector leaderElector = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get());
     CompletableFuture<?> started = leaderElector.start();
     assertTrue(signal.await(10, TimeUnit.SECONDS));
     started.cancel(true);
@@ -199,7 +251,7 @@ class LeaderElectorTest {
     }).when(mockedLock).update(any(), any());
 
     // When
-    LeaderElector leaderElector = new LeaderElector(mock(NamespacedKubernetesClient.class), lec, CommonThreadPool.get());
+    LeaderElector leaderElector = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get());
     CompletableFuture<?> started = leaderElector.start();
     assertTrue(signal.await(10, TimeUnit.SECONDS));
 
@@ -385,5 +437,23 @@ class LeaderElectorTest {
       return null;
     }).when(mockedLock).create(any(), any());
     return lec;
+  }
+
+  private NamespacedKubernetesClient mockKubernetesClient() {
+    final NamespacedKubernetesClient kubernetesClient = mock(NamespacedKubernetesClient.class);
+    final NamespacedKubernetesClient requestClient = mock(NamespacedKubernetesClient.class);
+    final Config configuration = Config.empty();
+    configuration.setRequestTimeout(10_000);
+    when(kubernetesClient.getConfiguration()).thenReturn(configuration);
+    when(kubernetesClient.newClient(any(RequestConfig.class))).thenAnswer(invocation -> {
+      final RequestConfig requestConfig = invocation.getArgument(0);
+      final Config requestConfiguration = Config.empty();
+      requestConfiguration.setRequestTimeout(requestConfig.getRequestTimeout());
+      requestConfiguration.setRequestRetryBackoffLimit(requestConfig.getRequestRetryBackoffLimit());
+      when(requestClient.getConfiguration()).thenReturn(requestConfiguration);
+      return requestClient;
+    });
+    when(requestClient.adapt(KubernetesClient.class)).thenReturn(requestClient);
+    return kubernetesClient;
   }
 }
