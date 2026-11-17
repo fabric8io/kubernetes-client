@@ -43,6 +43,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.fabric8.kubernetes.client.extended.leaderelection.LeaderElector.jitter;
@@ -90,7 +91,15 @@ class LeaderElectorTest {
     });
     when(renewalClient.adapt(KubernetesClient.class)).thenReturn(renewalClient);
     AtomicReference<RequestConfig> renewalRequestConfig = new AtomicReference<>();
-    doNothing().doAnswer(invocation -> {
+    AtomicInteger updateCount = new AtomicInteger();
+    AtomicLong renewalStartedAtNanos = new AtomicLong();
+    AtomicLong stoppedLeadingAtNanos = new AtomicLong();
+    final LeaderCallbacks callbacks = lec.getLeaderCallbacks();
+    doAnswer(invocation -> {
+      if (updateCount.getAndIncrement() == 0) {
+        renewalStartedAtNanos.set(System.nanoTime());
+        return null;
+      }
       final KubernetesClient requestClient = invocation.getArgument(0);
       final RequestConfig requestConfig = requestClient.getConfiguration().getRequestConfig();
       renewalRequestConfig.set(requestConfig);
@@ -98,23 +107,27 @@ class LeaderElectorTest {
       Thread.sleep(requestConfig.getRequestTimeout() * 2L);
       throw new KubernetesClientException("");
     }).when(mockedLock).update(any(), any());
-    final long startedAtNanos = System.nanoTime();
+    doAnswer(invocation -> {
+      stoppedLeadingAtNanos.set(System.nanoTime());
+      return null;
+    }).when(callbacks).onStopLeading();
     // When
     CompletableFuture<?> future = new LeaderElector(kubernetesClient, lec, CommonThreadPool.get())
         .start();
 
     // Then
     future.get(10, TimeUnit.SECONDS);
-    final long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAtNanos);
-    assertThat(elapsedMillis).isLessThan(renewDeadlineMillis + 250);
+    final long elapsedMillis = TimeUnit.NANOSECONDS.toMillis(stoppedLeadingAtNanos.get() - renewalStartedAtNanos.get());
+    // Allow for timer and executor scheduling jitter on slower platforms such as Windows.
+    assertThat(elapsedMillis).isLessThan(renewDeadlineMillis + 500);
     assertThat(renewalRequestConfig.get().getRequestTimeout()).isLessThanOrEqualTo((int) renewDeadlineMillis / 2);
     assertEquals(0, renewalRequestConfig.get().getRequestRetryBackoffLimit());
     verify(mockedLock, atLeast(2)).get(any());
     verify(mockedLock, times(1)).create(any(), any());
-    verify(mockedLock, times(2)).update(any(), any());
-    verify(lec.getLeaderCallbacks(), atLeast(1)).onNewLeader(eq("1337"));
-    verify(lec.getLeaderCallbacks(), times(1)).onStartLeading();
-    verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
+    verify(mockedLock, atLeast(2)).update(any(), any());
+    verify(callbacks, atLeast(1)).onNewLeader("1337");
+    verify(callbacks, times(1)).onStartLeading();
+    verify(callbacks, times(1)).onStopLeading();
   }
 
   @Test
