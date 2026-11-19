@@ -331,7 +331,7 @@ public class LeaderElector {
   }
 
   private static RequestConfig getBoundedConfig(RequestConfig current, long requestTimeoutMillis) {
-    final Integer configuredRequestTimeout = current == null || current.getRequestTimeout() == null
+    final int configuredRequestTimeout = current == null || current.getRequestTimeout() == null
         ? Config.DEFAULT_REQUEST_TIMEOUT
         : current.getRequestTimeout();
     final long requestTimeout = configuredRequestTimeout <= 0 ? requestTimeoutMillis

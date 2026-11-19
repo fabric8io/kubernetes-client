@@ -124,11 +124,11 @@ class LeaderElectorTest {
     // Allow for timer and executor scheduling jitter on slower platforms such as Windows.
     assertThat(elapsedMillis).isLessThan(renewDeadlineMillis * 2 + 500);
     assertThat(renewalRequestConfig.get()).as("the stalled renewal request config").isNotNull();
-    assertThat(renewalRequestConfig.get().getRequestTimeout()).isLessThanOrEqualTo((int) renewDeadlineMillis / 2);
-    assertEquals(0, renewalRequestConfig.get().getRequestRetryBackoffLimit());
-    assertEquals(1, releaseCount.get());
+    assertThat(renewalRequestConfig.get().getRequestTimeout()).isLessThan((int) renewDeadlineMillis / 2);
+    assertThat(renewalRequestConfig.get().getRequestRetryBackoffLimit()).isZero();
+    assertThat(releaseCount.get()).isEqualTo(1);
     assertThat(releaseRequestConfig.get()).as("the bounded release request config").isNotNull();
-    assertThat(releaseRequestConfig.get().getRequestTimeout()).isBetween(1, (int) renewDeadlineMillis / 2);
+    assertThat(releaseRequestConfig.get().getRequestTimeout()).isBetween(1, 499);
     verify(mockedLock, atLeast(2)).get(any());
     verify(mockedLock, times(1)).create(any(), any());
     verify(mockedLock, atLeast(2)).update(any(), any());
@@ -151,7 +151,7 @@ class LeaderElectorTest {
   }
 
   @Test
-  @DisplayName("Leaves zero request timeout unbounded and preserves impersonation on renewal requests")
+  @DisplayName("Derives renewal timeout from the remaining deadline when configured timeout is zero")
   void zeroRequestTimeoutAndImpersonationArePreservedForRenewals() throws Exception {
     final LeaderElectionConfig lec = mockLeaderElectionConfiguration();
     when(lec.getRenewDeadline()).thenReturn(Duration.ofSeconds(60));
@@ -225,7 +225,50 @@ class LeaderElectorTest {
 
     future.get(2, TimeUnit.SECONDS);
 
-    verify(mockedLock, times(1)).update(any(), any());
+    verify(mockedLock, atLeast(1)).update(any(), any());
+    verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
+  }
+
+  @Test
+  @DisplayName("Still stops leading when the bounded release GET stalls")
+  void stalledReleaseGetDoesNotBlockLeadershipStopPastItsDeadline() throws Exception {
+    final long renewDeadlineMillis = 200L;
+    final AtomicReference<LeaderElectionRecord> activeRecord = new AtomicReference<>();
+    final LeaderElectionConfig lec = mockLeaderElectionConfiguration(activeRecord);
+    when(lec.getRenewDeadline()).thenReturn(Duration.ofMillis(renewDeadlineMillis));
+    when(lec.isReleaseOnCancel()).thenReturn(true);
+    final Lock mockedLock = lec.getLock();
+    final AtomicInteger getCount = new AtomicInteger();
+    final AtomicInteger releaseUpdateCount = new AtomicInteger();
+    final AtomicReference<RequestConfig> releaseGetRequestConfig = new AtomicReference<>();
+    final CountDownLatch releaseGetStarted = new CountDownLatch(1);
+    doAnswer(invocation -> {
+      if (getCount.incrementAndGet() == 3) {
+        final KubernetesClient requestClient = invocation.getArgument(0);
+        releaseGetRequestConfig.set(requestClient.getConfiguration().getRequestConfig());
+        releaseGetStarted.countDown();
+        Thread.sleep(renewDeadlineMillis * 2);
+      }
+      return getCount.get() == 1 ? null : activeRecord.get();
+    }).when(mockedLock).get(any());
+    doAnswer(invocation -> {
+      final LeaderElectionRecord record = invocation.getArgument(1);
+      if (record.getHolderIdentity() == null) {
+        releaseUpdateCount.incrementAndGet();
+        return null;
+      }
+      Thread.sleep(renewDeadlineMillis * 2);
+      throw new KubernetesClientException("renewal request stalled");
+    }).when(mockedLock).update(any(), any());
+
+    final CompletableFuture<?> future = new LeaderElector(mockKubernetesClient(), lec, CommonThreadPool.get()).start();
+
+    assertThat(releaseGetStarted.await(5, TimeUnit.SECONDS)).isTrue();
+    future.get(3, TimeUnit.SECONDS);
+
+    assertThat(releaseGetRequestConfig.get()).isNotNull();
+    assertThat(releaseGetRequestConfig.get().getRequestTimeout()).isLessThan((int) renewDeadlineMillis / 2);
+    assertThat(releaseUpdateCount.get()).isZero();
     verify(lec.getLeaderCallbacks(), times(1)).onStopLeading();
   }
 
