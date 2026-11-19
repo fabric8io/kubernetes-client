@@ -100,7 +100,7 @@ public class LeaderElector {
         CompletableFuture<?> renewFuture = renewWithTimeout();
         result.whenComplete((v1, t1) -> renewFuture.cancel(true));
         renewFuture.whenComplete((v1, t1) -> {
-          stopLeading(result.isCancelled());
+          stopLeading();
           if (t1 != null) {
             result.completeExceptionally(t1);
           } else {
@@ -113,7 +113,7 @@ public class LeaderElector {
         }
         // there's a possibility that we'll obtain the lock, but get cancelled
         // before completing the future
-        stopLeading(result.isCancelled());
+        stopLeading();
       }
     });
     result.whenComplete((v, t) -> {
@@ -122,21 +122,22 @@ public class LeaderElector {
     return result;
   }
 
-  private synchronized void stopLeading(boolean cancelled) {
+  private synchronized void stopLeading() {
     stopped = true;
     LeaderElectionRecord current = observedRecord.get();
     if (current == null || !isLeader(current)) {
       return; // not leading
     }
-    if (cancelled && leaderElectionConfig.isReleaseOnCancel()) {
+    if (leaderElectionConfig.isReleaseOnCancel()) {
       try {
-        if (release()) {
+        final long releaseDeadline = System.nanoTime() + leaderElectionConfig.getRenewDeadline().toNanos();
+        if (release(kubernetesClient, releaseDeadline)) {
           return;
         }
       } catch (KubernetesClientException e) {
         final String lockDescription = leaderElectionConfig.getLock().describe();
         if (e.getCode() != HttpURLConnection.HTTP_CONFLICT) {
-          logger.error("Exception occurred while releasing lock '{}' on cancel", lockDescription, e);
+          logger.error("Exception occurred while releasing lock '{}' when stopping leadership", lockDescription, e);
         } else {
           logger.debug("Leadership was likely already lost '{}'", lockDescription, e);
         }
@@ -152,9 +153,21 @@ public class LeaderElector {
    * @return true if the lock was successfully released. false if there is no lock, or this is not the leader
    */
   public synchronized boolean release() {
-    LeaderElectionRecord current = leaderElectionConfig.getLock().get(kubernetesClient);
+    return release(kubernetesClient, Long.MAX_VALUE);
+  }
+
+  private boolean release(KubernetesClient client, long deadlineNanos) {
+    final Lock lock = leaderElectionConfig.getLock();
+    final KubernetesClient getClient = clientForDeadline(client, deadlineNanos);
+    if (getClient == null) {
+      return false;
+    }
+    LeaderElectionRecord current = lock.get(getClient);
     if (current == null || !isLeader(current)) {
       return false; // lost leadership already
+    }
+    if (isDeadlineReached(deadlineNanos)) {
+      return false;
     }
     ZonedDateTime now = now();
     final LeaderElectionRecord newLeaderElectionRecord = new LeaderElectionRecord(
@@ -164,7 +177,11 @@ public class LeaderElector {
         now,
         current.getLeaderTransitions());
 
-    leaderElectionConfig.getLock().update(kubernetesClient, newLeaderElectionRecord);
+    final KubernetesClient updateClient = clientForDeadline(client, deadlineNanos);
+    if (updateClient == null) {
+      return false;
+    }
+    lock.update(updateClient, newLeaderElectionRecord);
     updateObserved(newLeaderElectionRecord);
     return true;
   }
@@ -234,7 +251,7 @@ public class LeaderElector {
     return tryAcquireOrRenew(kubernetesClient, Long.MAX_VALUE);
   }
 
-  private synchronized boolean tryAcquireOrRenew(long deadlineNanos) {
+  synchronized boolean tryAcquireOrRenew(long deadlineNanos) {
     return tryAcquireOrRenew(kubernetesClient, deadlineNanos);
   }
 
@@ -314,12 +331,15 @@ public class LeaderElector {
   }
 
   private static RequestConfig getBoundedConfig(RequestConfig current, long requestTimeoutMillis) {
-    final int configuredRequestTimeout = current == null || current.getRequestTimeout() == null
-        || current.getRequestTimeout() <= 0 ? Config.DEFAULT_REQUEST_TIMEOUT : current.getRequestTimeout();
+    final Integer configuredRequestTimeout = current == null || current.getRequestTimeout() == null
+        ? Config.DEFAULT_REQUEST_TIMEOUT
+        : current.getRequestTimeout();
+    final long requestTimeout = configuredRequestTimeout <= 0 ? requestTimeoutMillis
+        : Math.min(requestTimeoutMillis, configuredRequestTimeout);
     return new RequestConfig(
         current == null ? null : current.getWatchReconnectLimit(),
         current == null ? null : current.getWatchReconnectInterval(),
-        (int) Math.min(requestTimeoutMillis, configuredRequestTimeout),
+        (int) Math.min(requestTimeout, Integer.MAX_VALUE),
         current == null ? null : current.getScaleTimeout(),
         current == null ? null : current.getLoggingInterval(),
         0,
