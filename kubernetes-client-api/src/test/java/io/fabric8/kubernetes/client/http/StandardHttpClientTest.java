@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mockito;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ConnectException;
@@ -249,6 +250,121 @@ class StandardHttpClientTest {
     assertEquals(200, consumeFuture.get(2, TimeUnit.MINUTES).code());
 
     // only 2 requests issued
+    assertThat(client.getRecordedConsumeBytesDirects())
+        .hasSize(2);
+  }
+
+  @Test
+  void testNoRetryOnIOExceptionWhenBodyIsNonReplayableInputStream() {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+    client.expect(".*", new IOException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost")
+            .post("application/octet-stream", new ByteArrayInputStream(new byte[] { 1, 2, 3 }), 3).build(),
+        (value, asyncBody) -> {
+        });
+
+    // an InputStream can be consumed only once: retrying would send an empty body
+    assertThatThrownBy(() -> consumeFuture.get(2, TimeUnit.MINUTES))
+        .isInstanceOf(ExecutionException.class)
+        .cause()
+        .isInstanceOf(IOException.class)
+        .hasMessage("connection closed");
+    assertThat(client.getRecordedConsumeBytesDirects())
+        .hasSize(1);
+  }
+
+  @Test
+  void testNoRetryOnServerErrorWhenBodyIsNonReplayableInputStream() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(503).withBody(new TestAsyncBody()));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost")
+            .post("application/octet-stream", new ByteArrayInputStream(new byte[] { 1, 2, 3 }), 3).build(),
+        (value, asyncBody) -> {
+        });
+
+    assertEquals(503, consumeFuture.get(2, TimeUnit.MINUTES).code());
+    assertThat(client.getRecordedConsumeBytesDirects())
+        .hasSize(1);
+  }
+
+  @Test
+  void testInterceptorNotifiedOfConnectionFailureWhenBodyIsNonReplayableInputStream() {
+    final List<Throwable> failures = new java.util.concurrent.CopyOnWriteArrayList<>();
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public void afterConnectionFailure(HttpRequest request, Throwable failure) {
+            failures.add(failure);
+          }
+        })
+        .build();
+    client.expect(".*", new IOException("connection closed"));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost")
+            .post("application/octet-stream", new ByteArrayInputStream(new byte[] { 1, 2, 3 }), 3).build(),
+        (value, asyncBody) -> {
+        });
+
+    assertThatThrownBy(() -> consumeFuture.get(2, TimeUnit.MINUTES)).isInstanceOf(ExecutionException.class);
+    // the retry is skipped, but the interceptor contract (invoked on each failed connection attempt) still holds
+    assertThat(failures).hasSize(1);
+  }
+
+  @Test
+  void testNoInterceptorReplayWhenBodyIsNonReplayableInputStream() throws Exception {
+    client = client.newBuilder()
+        .addOrReplaceInterceptor("test", new Interceptor() {
+          @Override
+          public CompletableFuture<Boolean> afterFailure(BasicBuilder builder, HttpResponse<?> response, RequestTags tags) {
+            return CompletableFuture.completedFuture(true);
+          }
+        })
+        .build();
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(401).withBody(new TestAsyncBody()));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost")
+            .post("application/octet-stream", new ByteArrayInputStream(new byte[] { 1, 2, 3 }), 3).build(),
+        (value, asyncBody) -> {
+        });
+
+    // replaying the request would send the already consumed stream again
+    assertEquals(401, consumeFuture.get(2, TimeUnit.MINUTES).code());
+    assertThat(client.getRecordedConsumeBytesDirects())
+        .hasSize(1);
+  }
+
+  @Test
+  void testRetryStillHappensWhenBodyIsReplayable() throws Exception {
+    client = client.newBuilder().tag(new RequestConfigBuilder()
+        .withRequestRetryBackoffLimit(3)
+        .withRequestRetryBackoffInterval(50).build())
+        .build();
+    client.expect(".*", new IOException("connection closed"));
+    client.expect(".*", new TestHttpResponse<AsyncBody>().withCode(200));
+
+    CompletableFuture<HttpResponse<AsyncBody>> consumeFuture = client.consumeBytes(
+        client.newHttpRequestBuilder().uri("http://localhost").post("text/plain", "payload").build(),
+        (value, asyncBody) -> {
+        });
+
+    assertEquals(200, consumeFuture.get(2, TimeUnit.MINUTES).code());
     assertThat(client.getRecordedConsumeBytesDirects())
         .hasSize(2);
   }
