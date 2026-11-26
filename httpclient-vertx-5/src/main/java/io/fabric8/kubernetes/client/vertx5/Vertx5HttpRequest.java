@@ -103,15 +103,15 @@ class Vertx5HttpRequest {
           final Handler<Throwable> onWriteFailure = t -> promise
               .tryFail(t instanceof IOException ? t : new IOException(t.getMessage(), t));
 
-          // If the caller asked for 100-continue semantics we first flush the headers,
-          // wait for the server to acknowledge, then stream the body.
-          if (request.isExpectContinue()) {
-            req.continueHandler(v -> writeBody(req, request.body(), onWriteFailure));
-            req.writeHead().onFailure(onWriteFailure);
-          } else {
-            // Normal request - send headers and body
-            writeBody(req, request.body(), onWriteFailure);
-          }
+          // The body is always sent right after the headers, without waiting for a 100-continue
+          // acknowledgement, even when the request carries the Expect header: servers and proxies
+          // may send the interim 100 response zero or multiple times, and Vert.x fires the
+          // continueHandler for each one. Gating the body on it hangs requests that never get a
+          // 100 and writes the (single-use InputStream) body again for every extra one, failing
+          // with 'Request already complete'. Sending the body unconditionally is valid HTTP and
+          // matches the Vert.x 4 client behavior; Vert.x itself consumes interim 1xx responses,
+          // so the Expect header staying on the wire is harmless.
+          writeBody(req, request.body(), onWriteFailure);
 
           return promise.future();
         })

@@ -16,6 +16,7 @@ buildNumber.properties
 .settings/
 .classpath
 .factorypath
+bin/
 
 ### Java template
 *.class
@@ -39,6 +40,7 @@ hs_err_pid*
 
 ## Directory-based project format:
 .idea/
+.openidea/
 # if you remove the above rule, at least ignore the following:
 
 # Gradle:
