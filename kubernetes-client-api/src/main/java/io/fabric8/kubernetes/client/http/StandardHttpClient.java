@@ -131,7 +131,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
         if (!HttpResponse.isSuccessful(response.code())) {
           return interceptor.afterFailure(copy, response, this)
               .thenCompose(b -> {
-                if (Boolean.TRUE.equals(b)) {
+                if (Boolean.TRUE.equals(b) && isReplayable(effectiveRequest)) {
                   // before starting another request, make sure the old one is cancelled / closed
                   response.body().cancel();
                   CompletableFuture<HttpResponse<AsyncBody>> result = consumeBytesDirect(copy.build(), effectiveConsumer);
@@ -188,7 +188,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       HttpResponse<?> httpResponse = responseExtractor.apply(response);
       if (httpResponse != null) {
         final int code = httpResponse.code();
-        if (code == 429 || code >= 500) {
+        if ((code == 429 || code >= 500) && isReplayable(request)) {
           retryInterval = Math.max(retryAfterMillis(httpResponse), retryInterval);
           logger.debug(
               "HTTP operation on url: {} should be retried as the response code was {}, retrying after {} millis",
@@ -199,7 +199,7 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
     } else {
       final Throwable actualCause = unwrapCompletionException(throwable);
       builder.interceptors.forEach((s, interceptor) -> interceptor.afterConnectionFailure(request, actualCause));
-      if (actualCause instanceof IOException) {
+      if (actualCause instanceof IOException && isReplayable(request)) {
         if (isTerminalTlsTrustFailure(actualCause)) {
           logger.debug(
               String.format(
@@ -216,6 +216,13 @@ public abstract class StandardHttpClient<C extends HttpClient, F extends HttpCli
       }
     }
     return -1;
+  }
+
+  /**
+   * An InputStream body can be consumed only once: sending the request again would send an empty or truncated body.
+   */
+  private static boolean isReplayable(StandardHttpRequest request) {
+    return !(request.body() instanceof StandardHttpRequest.InputStreamBodyContent);
   }
 
   static Throwable unwrapCompletionException(Throwable throwable) {
