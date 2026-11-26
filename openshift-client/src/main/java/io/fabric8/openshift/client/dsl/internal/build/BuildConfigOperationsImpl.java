@@ -253,9 +253,12 @@ public class BuildConfigOperationsImpl
 
   protected Build submitToApiServer(InputStream inputStream, long contentLength) {
     try {
+      // The content length is known, so the body can be sent without an Expect: 100-continue
+      // handshake. The handshake was an OkHttp workaround and is harmful with proxies that drop
+      // or duplicate the interim 100 response: a dropped one hangs the upload and a duplicated
+      // one makes the Vert.x 5 client write the non-replayable body twice.
       HttpRequest.Builder requestBuilder = this.httpClient.newHttpRequestBuilder()
           .post("application/octet-stream", inputStream, contentLength)
-          .expectContinue()
           .timeout(getOperationContext().getTimeout(), getOperationContext().getTimeoutUnit())
           .uri(getQueryParameters());
       return waitForResult(handleResponse(this.httpClient, requestBuilder, new TypeReference<Build>() {

@@ -10,6 +10,7 @@
 * Fix #8195: (kubernetes-client-api) `KubernetesResourceUtil.sanitizeName` no longer fails on empty names and produces valid names regardless of the default locale
 * Fix #8237: (kubernetes-model-common) `Jackson2JdkTypesModule` keeps writing `Locale` map keys as `zh_TW_#Hant` and reading `und` as the root locale with Jackson 3.2.4 and 3.3
 * Fix #8239: (crd-generator) `org.w3c.dom.Node` properties keep the schema that accepts any value on Jackson 3.3, which describes them as strings
+* Fix #8253: (openshift-client, httpclient-vertx-5) the binary build upload no longer uses an `Expect: 100-continue` handshake, and the Vert.x 5 HTTP client sends the request body without waiting for the interim `100` response: proxies that drop the interim response hung the upload indefinitely, and proxies that duplicate it made the client write the single-use body twice and then retry it with an already consumed stream
 
 #### Improvements
 * Fix #8180: (kubernetes-client-api) Optimized `Utils.convertSystemPropertyNameToEnvVar`.
